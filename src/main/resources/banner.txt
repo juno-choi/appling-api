@@ -1,0 +1,9 @@
+${AnsiColor.RED}
+  ,---.                ,--.,--.
+ /  O  \  ,---.  ,---. |  |`--',--,--,  ,---.
+|  .-.  || .-. || .-. ||  |,--.|      \| .-. |
+|  | |  || '-' '| '-' '|  ||  ||  ||  |' '-' '
+`--' `--'|  |-' |  |-' `--'`--'`--''--'.`-  /
+         `--'   `--'                   `---'
+${AnsiColor.RED}🍎 Spring ver.${spring-boot.version}
+${AnsiBackground.DEFAULT}${AnsiColor.DEFAULT}
