@@ -37,6 +37,8 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:mysql'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {
@@ -101,8 +103,9 @@ jacocoTestCoverageVerification {
                     '*.vo.*',
                     '*.enums.*',
                     '*.api.*',
-                    '*.config.*',
+                    '*.common.*',
                     '*.security.*',
+                    '*.entity.*',
                     '*.entity.*.Q*',
             ]
 
@@ -125,8 +128,9 @@ jacocoTestCoverageVerification {
                     '*.vo.*',
                     '*.enums.*',
                     '*.api.*',
-                    '*.config.*',
+                    '*.common.*',
                     '*.security.*',
+                    '*.entity.*',
                     '*.entity.*.Q*',
             ]
 
