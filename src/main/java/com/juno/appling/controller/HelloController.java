@@ -4,8 +4,6 @@ import com.juno.appling.domain.dto.Api;
 import com.juno.appling.domain.dto.TestDto;
 import com.juno.appling.domain.vo.MessageVo;
 import com.juno.appling.service.HelloService;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
