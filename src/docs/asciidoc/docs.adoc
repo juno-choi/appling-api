@@ -1,0 +1,13 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+:toc: left
+:toclevels: 2
+:toc-title: Appling API
+:doctype: book
+:source-highlighter: highlightjs
+:sectlinks:
+
+= 🍎 Appling API
+
+include::member/member.adoc[]
