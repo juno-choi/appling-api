@@ -1,1 +1,60 @@
 
+spring:
+  #profile 설정
+  profiles:
+    active: ${server.profile:local}
+
+logging:
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+  level:
+    root: info
+    com.juno.appling: info
+
+server:
+  port: 8000
+
+--- #local
+logging:
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+  level:
+    root: info
+    com.juno.appling: debug
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create-drop  #절대 수정 금지
+    show-sql: true
+  datasource:
+    hikari:
+      driver-class-name: org.h2.Driver
+      jdbc-url: jdbc:h2:mem:appling
+      username: sa
+      password:
+
+--- #dev
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    hibernate:
+      ddl-auto: update  #절대 수정 금지
+    show-sql: true
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: ${db.url:jdbc:mysql://localhost/hyugi}
+      username: ${db.username:juno}
+      password: ${db.password:password}
