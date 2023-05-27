@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Getter
 @Setter
@@ -23,4 +24,8 @@ public class JoinDto {
     private String nickname;
     @NotNull(message = "birth 비어있을 수 없습니다.")
     private String birth;
+
+    public void passwordEncoder(BCryptPasswordEncoder encoder){
+        this.password = encoder.encode(this.password);
+    }
 }

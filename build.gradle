@@ -103,8 +103,9 @@ jacocoTestCoverageVerification {
                     '*.vo.*',
                     '*.enums.*',
                     '*.api.*',
-                    '*.config.*',
+                    '*.common.*',
                     '*.security.*',
+                    '*.entity.*',
                     '*.entity.*.Q*',
             ]
 
@@ -127,8 +128,9 @@ jacocoTestCoverageVerification {
                     '*.vo.*',
                     '*.enums.*',
                     '*.api.*',
-                    '*.config.*',
+                    '*.common.*',
                     '*.security.*',
+                    '*.entity.*',
                     '*.entity.*.Q*',
             ]
 
