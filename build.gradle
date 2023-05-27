@@ -103,6 +103,7 @@ jacocoTestCoverageVerification {
                     '*.api.*',
                     '*.config.*',
                     '*.security.*',
+                    '*.entity.*.Q*',
             ]
 
             limit {
@@ -126,6 +127,7 @@ jacocoTestCoverageVerification {
                     '*.api.*',
                     '*.config.*',
                     '*.security.*',
+                    '*.entity.*.Q*',
             ]
 
             limit {
