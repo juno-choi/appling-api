@@ -1,5 +1,6 @@
 package com.juno.appling.domain.entity.member;
 
+import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.enums.member.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -38,11 +39,9 @@ public class Member {
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime modifiedAt = LocalDateTime.now();
 
-    @Builder
-    public Member(@NotNull Long id, @NotNull String password, @NotNull String email, @NotNull String nickname, @NotNull String name, String birth, Role role, String snsId, String snsType) {
-        this.id = id;
-        this.password = password;
+    private Member(@NotNull String email, @NotNull String password, @NotNull String nickname, @NotNull String name, String birth, Role role, String snsId, String snsType) {
         this.email = email;
+        this.password = password;
         this.nickname = nickname;
         this.name = name;
         this.birth = birth;
@@ -50,4 +49,9 @@ public class Member {
         this.snsId = snsId;
         this.snsType = snsType;
     }
+
+    public static Member createMember(JoinDto joinDto){
+        return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(), joinDto.getName(), joinDto.getBirth(), Role.USER, null, null);
+    }
+
 }

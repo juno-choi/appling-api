@@ -1,0 +1,26 @@
+package com.juno.appling.domain.dto.member;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class JoinDto {
+    @NotNull(message = "email 비어있을 수 없습니다.")
+    @Email(message = "email 형식을 맞춰주세요.", regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$")
+    private String email;
+    @NotNull(message = "password 비어있을 수 없습니다.")
+    private String password;
+    @NotNull(message = "name 비어있을 수 없습니다.")
+    private String name;
+    @NotNull(message = "nickname 비어있을 수 없습니다.")
+    private String nickname;
+    @NotNull(message = "birth 비어있을 수 없습니다.")
+    private String birth;
+}
