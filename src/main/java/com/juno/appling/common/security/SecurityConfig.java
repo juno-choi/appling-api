@@ -3,25 +3,38 @@ package com.juno.appling.common.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
     private final AuthService authService;
-    private final ObjectPostProcessor<Object> objectPostProcessor;
+
+    private static final String[] SETTING_LIST = {
+            "/h2-console/**", "/h2-console", "/favicon.ico", "/docs.html", "/docs.html/**"
+    };
 
     private static final String[] WHITE_LIST = {
-            "/**", "/member/**"
+            "/member/**"
     };
+
+    private static final String[] USER_LIST = {
+            "/v1/**"
+    };
+
+    private static final String[] SELLER_LIST = {
+            "/v2/**"
+    };
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return web -> web.ignoring().requestMatchers(SETTING_LIST);
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -33,15 +46,16 @@ public class SecurityConfig {
                     try{
                         auth
                                 .requestMatchers(WHITE_LIST).permitAll()
+                                .requestMatchers(USER_LIST).hasRole("USER")
+                                .requestMatchers(SELLER_LIST).hasRole("SELLER")
                                 .anyRequest().authenticated()
                         ;
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-                }).addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(c ->
+                }).exceptionHandling(c ->
                         c.authenticationEntryPoint(null).accessDeniedHandler(null)
-                )
+                ).apply(new JwtSecurityConfig(authService))
         ;
         return http.build();
     }
@@ -49,17 +63,5 @@ public class SecurityConfig {
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
-    }
-
-    private LoginFilter loginFilter() throws Exception {
-        LoginFilter filter = new LoginFilter();
-        filter.setAuthenticationManager(authenticationManager(new AuthenticationManagerBuilder(objectPostProcessor)));
-        filter.setFilterProcessesUrl("/auth/login");
-        return filter;
-    }
-
-    public AuthenticationManager authenticationManager(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(authService).passwordEncoder(passwordEncoder());
-        return auth.build();
     }
 }
