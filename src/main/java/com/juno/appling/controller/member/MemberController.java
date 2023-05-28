@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.juno.appling.domain.enums.ResultCode.*;
 
@@ -29,5 +26,16 @@ public class MemberController {
                 .message(POST.MESSAGE)
                 .data(memberService.join(joinDto))
                 .build());
+    }
+
+    @GetMapping("/hello")
+    public ResponseEntity<Api<String>> hello(){
+        return ResponseEntity.ok(
+                Api.<String>builder()
+                        .code(SUCCESS.CODE)
+                        .message(SUCCESS.MESSAGE)
+                        .data("hello")
+                        .build()
+        );
     }
 }
