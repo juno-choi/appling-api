@@ -2,7 +2,9 @@ package com.juno.appling.controller.member;
 
 import com.juno.appling.domain.dto.Api;
 import com.juno.appling.domain.dto.member.JoinDto;
+import com.juno.appling.domain.dto.member.LoginDto;
 import com.juno.appling.domain.vo.member.JoinVo;
+import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,13 +30,13 @@ public class MemberController {
                 .build());
     }
 
-    @GetMapping("/hello")
-    public ResponseEntity<Api<String>> hello(){
+    @PostMapping("/login")
+    public ResponseEntity<Api<LoginVo>> login(@RequestBody @Validated LoginDto loginDto, BindingResult bindingResult){
         return ResponseEntity.ok(
-                Api.<String>builder()
+                Api.<LoginVo>builder()
                         .code(SUCCESS.CODE)
                         .message(SUCCESS.MESSAGE)
-                        .data("hello")
+                        .data(memberService.login(loginDto))
                         .build()
         );
     }

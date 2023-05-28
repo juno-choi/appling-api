@@ -1,10 +1,16 @@
 package com.juno.appling.service.member;
 
+import com.juno.appling.common.security.TokenProvider;
 import com.juno.appling.domain.dto.member.JoinDto;
+import com.juno.appling.domain.dto.member.LoginDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.vo.member.JoinVo;
+import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +23,9 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final TokenProvider tokenProvider;
+
     @Transactional
     public JoinVo join(JoinDto joinDto){
         joinDto.passwordEncoder(passwordEncoder);
@@ -31,5 +40,19 @@ public class MemberService {
                 .name(saveMember.getName())
                 .nickname(saveMember.getNickname())
                 .build();
+    }
+
+    public LoginVo login(LoginDto loginDto) {
+        // id, pw 기반으로 UsernamePasswordAuthenticationToken 객체 생
+        UsernamePasswordAuthenticationToken authenticationToken = loginDto.toAuthentication();
+
+        // security에 구현한 AuthService가 싫행됨
+        Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+        LoginVo loginVo = tokenProvider.generateTokenDto(authenticate);
+
+        // TODO refresh token 저장
+
+        return loginVo;
     }
 }
