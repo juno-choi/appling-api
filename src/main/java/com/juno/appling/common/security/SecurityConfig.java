@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
-    private final AuthService authService;
+    private final TokenProvider tokenProvider;
 
     private static final String[] SETTING_LIST = {
             "/h2-console/**", "/h2-console", "/favicon.ico", "/docs.html", "/docs.html/**"
@@ -55,7 +55,7 @@ public class SecurityConfig {
                     }
                 }).exceptionHandling(c ->
                         c.authenticationEntryPoint(null).accessDeniedHandler(null)
-                ).apply(new JwtSecurityConfig(authService))
+                ).apply(new JwtSecurityConfig(tokenProvider))
         ;
         return http.build();
     }
