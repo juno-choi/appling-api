@@ -14,6 +14,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
     private final TokenProvider tokenProvider;
+    private final CustomEntryPoint entryPoint;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
 
     private static final String[] SETTING_LIST = {
             "/h2-console/**", "/h2-console", "/favicon.ico", "/docs.html", "/docs.html/**"
@@ -54,7 +56,7 @@ public class SecurityConfig {
                         e.printStackTrace();
                     }
                 }).exceptionHandling(c ->
-                        c.authenticationEntryPoint(null).accessDeniedHandler(null)
+                        c.authenticationEntryPoint(entryPoint).accessDeniedHandler(accessDeniedHandler)
                 ).apply(new JwtSecurityConfig(tokenProvider))
         ;
         return http.build();
