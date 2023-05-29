@@ -471,6 +471,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
 Content-Length: 107
 
@@ -494,7 +497,7 @@ Content-Length: 107
 <h4 id="_request"><a class="link" href="#_request">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /member/join HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/member/join HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 126
 Host: 127.0.0.1
@@ -558,6 +561,9 @@ Host: 127.0.0.1
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
 Content-Length: 146
 
@@ -624,7 +630,7 @@ Content-Length: 146
 <h4 id="_request_2"><a class="link" href="#_request_2">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /member/login HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/member/login HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 60
 Host: 127.0.0.1
@@ -670,6 +676,9 @@ Host: 127.0.0.1
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
 Content-Length: 485
 
@@ -678,9 +687,9 @@ Content-Length: 485
   "message" : "success",
   "data" : {
     "type" : "Bearer ",
-    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTM2NjYzMH0.VBfrC2OhNngnFjVN4whz0mNMHWdf6flziTPjZC2j1kvhG6Q-f3OiS5gEq5FcouKKVxcTll6ucLjyWOaIyF__dQ",
-    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5Njk2MzB9.XwvQnELHqHpdfw8Ac9dpdetLpkk91_UgSEOXrnZ2TZGSRtQ7x5P0O9c6iNr0z1TUIis-aoqPmsKFZJ0GXolD3w",
-    "access_token_expired" : 1685366630782
+    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTM2OTM5Nn0.ucaTSwF5vtcigfDgH4uMrLieq5J-QJzYUFN01xbzC2w_Vcerku0Pz51ObjAXEQdZzJZt4gmmQ8xvbnbfZlKAyw",
+    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5NzIzOTZ9.k51szhb9Gee2LBWa1Aulwilt81WS53NjCxg23J6z__zsINVSAXAhkO0a8hLqar4GTXT-YBWzbwO3OJ6fFAA4uA",
+    "access_token_expired" : 1685369396496
   }
 }</code></pre>
 </div>
@@ -742,7 +751,7 @@ Content-Length: 485
 <h4 id="_request_3"><a class="link" href="#_request_3">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /member/refresh/eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5Njk2MzB9.XwvQnELHqHpdfw8Ac9dpdetLpkk91_UgSEOXrnZ2TZGSRtQ7x5P0O9c6iNr0z1TUIis-aoqPmsKFZJ0GXolD3w HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member/refresh/eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5NzIzOTZ9.k51szhb9Gee2LBWa1Aulwilt81WS53NjCxg23J6z__zsINVSAXAhkO0a8hLqar4GTXT-YBWzbwO3OJ6fFAA4uA HTTP/1.1
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
@@ -750,7 +759,7 @@ Host: 127.0.0.1</code></pre>
 <div class="sect3">
 <h4 id="_request_field_3"><a class="link" href="#_request_field_3">🔵 REQUEST FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /member/refresh/{refresh_token}</caption>
+<caption class="title">Table 1. /api/member/refresh/{refresh_token}</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -774,6 +783,9 @@ Host: 127.0.0.1</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Disposition: inline;filename=f.txt
 Content-Type: application/json;charset=UTF-8
 Content-Length: 485
@@ -783,9 +795,9 @@ Content-Length: 485
   "message" : "success",
   "data" : {
     "type" : "Bearer ",
-    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTM2NjYzMH0.--Cw49uuvJerlv-5zTcvQ2dXQzK-POZ7Z_yxi4Qfaatl9XZPfZsixpAFV1d9pb7W7zzvkaXlrNO5Ae9vyuc4mQ",
-    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5Njk2MzB9.XwvQnELHqHpdfw8Ac9dpdetLpkk91_UgSEOXrnZ2TZGSRtQ7x5P0O9c6iNr0z1TUIis-aoqPmsKFZJ0GXolD3w",
-    "access_token_expired" : 1685366630960
+    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTM2OTM5Nn0.dr_jDcfwG5fAgoeKc9OQw3m_RC1TY7whjgfnH0wU6Em4mYTj9_YNQT6Nm4E1wgwTwHHPYUBz9wXZk5jjbS7Uhw",
+    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5NzIzOTZ9.k51szhb9Gee2LBWa1Aulwilt81WS53NjCxg23J6z__zsINVSAXAhkO0a8hLqar4GTXT-YBWzbwO3OJ6fFAA4uA",
+    "access_token_expired" : 1685369396675
   }
 }</code></pre>
 </div>
@@ -847,8 +859,8 @@ Content-Length: 485
 <h4 id="_request_4"><a class="link" href="#_request_4">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /member HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTM2NjYzMH0.kN5tKLT-1unyljwkun7sy0Uy9srfWcBwpa8TkgzSwE26ARMOZmSC9LA5Y7EDYKgGzL2IXRE4bhSKrO4iCj7g2Q
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTM2OTM5NX0.voRojCIUN8Y47cdv-rkdJEt4OHNvyiV_LzE-O_ay55r7F4dDLMPazbtO_0vyBr7KIzXCvdfWN9pG1EOjG9zFFQ
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
@@ -879,6 +891,9 @@ Host: 127.0.0.1</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
 Content-Length: 284
 
@@ -891,8 +906,8 @@ Content-Length: 284
     "nickname" : "nick",
     "name" : "name",
     "role" : "USER",
-    "created_at" : "2023-05-29T21:53:50.040618",
-    "modified_at" : "2023-05-29T21:53:50.040618"
+    "created_at" : "2023-05-29T22:39:55.801269",
+    "modified_at" : "2023-05-29T22:39:55.801269"
   }
 }</code></pre>
 </div>

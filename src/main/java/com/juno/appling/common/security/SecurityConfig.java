@@ -22,15 +22,15 @@ public class SecurityConfig {
     };
 
     private static final String[] WHITE_LIST = {
-            "/member/**"
+            "/api/member/**"
     };
 
     private static final String[] USER_LIST = {
-            "/v1/**"
+            "/api/v1/**"
     };
 
     private static final String[] SELLER_LIST = {
-            "/v2/**"
+            "/api/v2/**"
     };
 
     @Bean
