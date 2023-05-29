@@ -40,4 +40,15 @@ public class MemberController {
                         .build()
         );
     }
+
+    @GetMapping("/refresh/{refresh_token}")
+    public ResponseEntity<Api<LoginVo>> refresh(@PathVariable(value = "refresh_token") String refreshToken){
+        return ResponseEntity.ok(
+                Api.<LoginVo>builder()
+                        .code(SUCCESS.CODE)
+                        .message(SUCCESS.MESSAGE)
+                        .data(memberService.refresh(refreshToken))
+                        .build()
+        );
+    }
 }
