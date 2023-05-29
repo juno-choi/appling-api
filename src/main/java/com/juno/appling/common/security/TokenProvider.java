@@ -53,7 +53,7 @@ public class TokenProvider {
                 .compact();
 
         return LoginVo.builder()
-                .type("Bearer")
+                .type("Bearer ")
                 .accessToken(accessToken)
                 .accessTokenExpired(accessTokenExpiresIn.getTime())
                 .refreshToken(refreshToken)
@@ -112,5 +112,10 @@ public class TokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    public Long getMemberId(String token) {
+        Claims claims = parseClaims(token);
+        return Long.parseLong(claims.get("sub").toString());
     }
 }

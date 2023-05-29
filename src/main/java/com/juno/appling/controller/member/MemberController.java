@@ -5,7 +5,9 @@ import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.dto.member.LoginDto;
 import com.juno.appling.domain.vo.member.JoinVo;
 import com.juno.appling.domain.vo.member.LoginVo;
+import com.juno.appling.domain.vo.member.MemberVo;
 import com.juno.appling.service.member.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +50,17 @@ public class MemberController {
                         .code(SUCCESS.CODE)
                         .message(SUCCESS.MESSAGE)
                         .data(memberService.refresh(refreshToken))
+                        .build()
+        );
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Api<MemberVo>> member(HttpServletRequest request){
+        return ResponseEntity.ok(
+                Api.<MemberVo>builder()
+                        .code(SUCCESS.CODE)
+                        .message(SUCCESS.MESSAGE)
+                        .data(memberService.member(request))
                         .build()
         );
     }

@@ -7,7 +7,6 @@ import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.repository.member.MemberRepository;
 import com.juno.appling.service.member.MemberService;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +16,8 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -33,7 +34,6 @@ class MemberControllerDocs extends BaseTest {
 
     @Test
     @DisplayName("/member/join")
-    @Order(1)
     void join() throws Exception {
         //given
         JoinDto joinDto = new JoinDto("juno@member.com", "password", "name", "nick", "19941030");
@@ -65,7 +65,6 @@ class MemberControllerDocs extends BaseTest {
 
     @Test
     @DisplayName("/member/login")
-    @Order(2)
     void login() throws Exception{
         //given
         String email = "juno@member.com";
@@ -97,7 +96,6 @@ class MemberControllerDocs extends BaseTest {
 
     @Test
     @DisplayName("/member/refresh/{refresh_token}")
-    @Order(3)
     void refresh() throws Exception{
         //given
         String email = "juno3@member.com";
@@ -126,5 +124,42 @@ class MemberControllerDocs extends BaseTest {
                         fieldWithPath("data.access_token_expired").type(JsonFieldType.NUMBER).description("access token expired")
                 )
         ));
+    }
+
+    @Test
+    @DisplayName("/member")
+    void member() throws Exception {
+        //given
+        String email = "juno4@member.com";
+        String password = "password";
+        JoinDto joinDto = new JoinDto(email, password, "name", "nick", "19941030");
+        memberService.join(joinDto);
+        LoginDto loginDto = new LoginDto(email, password);
+        LoginVo loginVo = memberService.login(loginDto);
+
+        //when
+        ResultActions resultActions = mock.perform(
+                RestDocumentationRequestBuilders.get("/member")
+                .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
+        ).andDo(print());
+
+        //then
+        resultActions.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token")
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.member_id").type(JsonFieldType.NUMBER).description("member id"),
+                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("email"),
+                        fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("nickname"),
+                        fieldWithPath("data.name").type(JsonFieldType.STRING).description("name"),
+                        fieldWithPath("data.role").type(JsonFieldType.STRING).description("role"),
+                        fieldWithPath("data.created_at").type(JsonFieldType.STRING).description("생성일"),
+                        fieldWithPath("data.modified_at").type(JsonFieldType.STRING).description("수정일")
+                )
+        ));
+
     }
 }
