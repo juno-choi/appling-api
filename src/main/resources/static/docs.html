@@ -444,6 +444,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Appling API</div>
 <ul class="sectlevel1">
+<li><a href="#_공통">📗 공통</a>
+<ul class="sectlevel2">
+<li><a href="#_에러">📄 에러</a></li>
+</ul>
+</li>
 <li><a href="#_회원">📗 회원</a>
 <ul class="sectlevel2">
 <li><a href="#_회원_가입">📄 회원 가입</a></li>
@@ -457,12 +462,36 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
+<h2 id="_공통"><a class="link" href="#_공통">📗 공통</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_에러"><a class="link" href="#_에러">📄 에러</a></h3>
+<div class="sect3">
+<h4 id="_400_bad_request"><a class="link" href="#_400_bad_request">🔴 400 BAD_REQUEST</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+Content-Length: 107
+
+{
+  "code" : "0400",
+  "message" : "bad request",
+  "errors" : [ "이미 존재하는 회원입니다." ]
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_회원"><a class="link" href="#_회원">📗 회원</a></h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_회원_가입"><a class="link" href="#_회원_가입">📄 회원 가입</a></h3>
 <div class="sect3">
-<h4 id="_request"><a class="link" href="#_request">✅ REQUEST</a></h4>
+<h4 id="_request"><a class="link" href="#_request">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /member/join HTTP/1.1
@@ -481,7 +510,7 @@ Host: 127.0.0.1
 </div>
 </div>
 <div class="sect3">
-<h4 id="_request_field"><a class="link" href="#_request_field">✅ REQUEST FIELD</a></h4>
+<h4 id="_request_field"><a class="link" href="#_request_field">🔵 REQUEST FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -525,7 +554,7 @@ Host: 127.0.0.1
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response"><a class="link" href="#_response">✅ RESPONSE</a></h4>
+<h4 id="_response"><a class="link" href="#_response">🟢 RESPONSE</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
@@ -545,7 +574,7 @@ Content-Length: 146
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_field"><a class="link" href="#_response_field">✅ RESPONSE FIELD</a></h4>
+<h4 id="_response_field"><a class="link" href="#_response_field">🟢 RESPONSE FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -592,7 +621,7 @@ Content-Length: 146
 <div class="sect2">
 <h3 id="_로그인"><a class="link" href="#_로그인">📄 로그인</a></h3>
 <div class="sect3">
-<h4 id="_request_2"><a class="link" href="#_request_2">✅ REQUEST</a></h4>
+<h4 id="_request_2"><a class="link" href="#_request_2">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /member/login HTTP/1.1
@@ -608,7 +637,7 @@ Host: 127.0.0.1
 </div>
 </div>
 <div class="sect3">
-<h4 id="_request_field_2"><a class="link" href="#_request_field_2">✅ REQUEST FIELD</a></h4>
+<h4 id="_request_field_2"><a class="link" href="#_request_field_2">🔵 REQUEST FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -637,28 +666,28 @@ Host: 127.0.0.1
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_2"><a class="link" href="#_response_2">✅ RESPONSE</a></h4>
+<h4 id="_response_2"><a class="link" href="#_response_2">🟢 RESPONSE</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 484
+Content-Length: 485
 
 {
   "code" : "0000",
   "message" : "success",
   "data" : {
-    "type" : "Bearer",
-    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTMzMzA5MX0.9qvs4GHNy3o_Vs6Q9fqlPJkTC3dQEFCNLCwUqneBBALdITRdi7ZrxfttF79pi5dO6IE9A-MLBCsHfFgTntLBwA",
-    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5MzYwOTF9.mpxpw6ezJ8TOQWweNIIGtAPdTGEGgphF9LHrcN4EBcLO2olt28VRMxgPmMDxRH6xAVwdNCCA5KVnO_XoJ2V5HQ",
-    "access_token_expired" : 1685333091566
+    "type" : "Bearer ",
+    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTM2NjYzMH0.VBfrC2OhNngnFjVN4whz0mNMHWdf6flziTPjZC2j1kvhG6Q-f3OiS5gEq5FcouKKVxcTll6ucLjyWOaIyF__dQ",
+    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5Njk2MzB9.XwvQnELHqHpdfw8Ac9dpdetLpkk91_UgSEOXrnZ2TZGSRtQ7x5P0O9c6iNr0z1TUIis-aoqPmsKFZJ0GXolD3w",
+    "access_token_expired" : 1685366630782
   }
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_field_2"><a class="link" href="#_response_field_2">✅ RESPONSE FIELD</a></h4>
+<h4 id="_response_field_2"><a class="link" href="#_response_field_2">🟢 RESPONSE FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -710,16 +739,16 @@ Content-Length: 484
 <div class="sect2">
 <h3 id="_토큰_재발급"><a class="link" href="#_토큰_재발급">📄 토큰 재발급</a></h3>
 <div class="sect3">
-<h4 id="_request_3"><a class="link" href="#_request_3">✅ REQUEST</a></h4>
+<h4 id="_request_3"><a class="link" href="#_request_3">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /member/refresh/eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5MzYwOTF9.mpxpw6ezJ8TOQWweNIIGtAPdTGEGgphF9LHrcN4EBcLO2olt28VRMxgPmMDxRH6xAVwdNCCA5KVnO_XoJ2V5HQ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /member/refresh/eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5Njk2MzB9.XwvQnELHqHpdfw8Ac9dpdetLpkk91_UgSEOXrnZ2TZGSRtQ7x5P0O9c6iNr0z1TUIis-aoqPmsKFZJ0GXolD3w HTTP/1.1
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_request_field_3"><a class="link" href="#_request_field_3">✅ REQUEST FIELD</a></h4>
+<h4 id="_request_field_3"><a class="link" href="#_request_field_3">🔵 REQUEST FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. /member/refresh/{refresh_token}</caption>
 <colgroup>
@@ -741,29 +770,29 @@ Host: 127.0.0.1</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_3"><a class="link" href="#_response_3">✅ RESPONSE</a></h4>
+<h4 id="_response_3"><a class="link" href="#_response_3">🟢 RESPONSE</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Disposition: inline;filename=f.txt
 Content-Type: application/json;charset=UTF-8
-Content-Length: 484
+Content-Length: 485
 
 {
   "code" : "0000",
   "message" : "success",
   "data" : {
-    "type" : "Bearer",
-    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTMzMzA5MX0.fC1m_fq828kHHu0hz1ceO1Ew55t4nfZ_RYri26BUxo7t1QoGNbYh5XHpm1iZRhh0eJsVyCdYeGa6R20fseF8SQ",
-    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5MzYwOTF9.mpxpw6ezJ8TOQWweNIIGtAPdTGEGgphF9LHrcN4EBcLO2olt28VRMxgPmMDxRH6xAVwdNCCA5KVnO_XoJ2V5HQ",
-    "access_token_expired" : 1685333091940
+    "type" : "Bearer ",
+    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTM2NjYzMH0.--Cw49uuvJerlv-5zTcvQ2dXQzK-POZ7Z_yxi4Qfaatl9XZPfZsixpAFV1d9pb7W7zzvkaXlrNO5Ae9vyuc4mQ",
+    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5Njk2MzB9.XwvQnELHqHpdfw8Ac9dpdetLpkk91_UgSEOXrnZ2TZGSRtQ7x5P0O9c6iNr0z1TUIis-aoqPmsKFZJ0GXolD3w",
+    "access_token_expired" : 1685366630960
   }
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_field_3"><a class="link" href="#_response_field_3">✅ RESPONSE FIELD</a></h4>
+<h4 id="_response_field_3"><a class="link" href="#_response_field_3">🟢 RESPONSE FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -815,17 +844,17 @@ Content-Length: 484
 <div class="sect2">
 <h3 id="_회원_정보_조회"><a class="link" href="#_회원_정보_조회">📄 회원 정보 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_4"><a class="link" href="#_request_4">✅ REQUEST</a></h4>
+<h4 id="_request_4"><a class="link" href="#_request_4">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /member HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTMzNzM4Nn0.uD3zqMiZm_Ei_CFZkI1tdZILPP3vRpMJauyUgWpJpjpPcC9NnD73Xx7mW8wsHC9pFXjoyfvdu9WxZEstAvF5wA
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTM2NjYzMH0.kN5tKLT-1unyljwkun7sy0Uy9srfWcBwpa8TkgzSwE26ARMOZmSC9LA5Y7EDYKgGzL2IXRE4bhSKrO4iCj7g2Q
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_request_header"><a class="link" href="#_request_header">✅ REQUEST HEADER</a></h4>
+<h4 id="_request_header"><a class="link" href="#_request_header">🔵 REQUEST HEADER</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -846,12 +875,12 @@ Host: 127.0.0.1</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_4"><a class="link" href="#_response_4">✅ RESPONSE</a></h4>
+<h4 id="_response_4"><a class="link" href="#_response_4">🟢 RESPONSE</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 282
+Content-Length: 284
 
 {
   "code" : "0000",
@@ -862,15 +891,15 @@ Content-Length: 282
     "nickname" : "nick",
     "name" : "name",
     "role" : "USER",
-    "created_at" : "2023-05-29T13:46:26.05115",
-    "modified_at" : "2023-05-29T13:46:26.05115"
+    "created_at" : "2023-05-29T21:53:50.040618",
+    "modified_at" : "2023-05-29T21:53:50.040618"
   }
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_field_4"><a class="link" href="#_response_field_4">✅ RESPONSE FIELD</a></h4>
+<h4 id="_response_field_4"><a class="link" href="#_response_field_4">🟢 RESPONSE FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -939,7 +968,7 @@ Content-Length: 282
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-27 20:40:16 +0900
+Last updated 2023-05-29 21:52:30 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
