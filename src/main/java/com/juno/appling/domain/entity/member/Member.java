@@ -14,9 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Member {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    @NotNull
     private Long id;
 
     @NotNull

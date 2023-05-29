@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  appling:
+    container_name: appling
+    build: .
+    ports:
+      - 8000:8000
+    environment:
+      - server.profile=prod
+      - TZ=Asia/Seoul
+      - db.url=jdbc:mysql://master/appling
+      - db.username=juno
+      - db.password=password
+networks:
+  default:
+    external:
+      name: normal
