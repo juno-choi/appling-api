@@ -33,14 +33,14 @@ class MemberControllerDocs extends BaseTest {
     private MemberRepository memberRepository;
 
     @Test
-    @DisplayName("/member/join")
+    @DisplayName("/api/member/join")
     void join() throws Exception {
         //given
         JoinDto joinDto = new JoinDto("juno@member.com", "password", "name", "nick", "19941030");
 
         //when
         ResultActions resultActions = mock.perform(
-                post("/member/join").contentType(MediaType.APPLICATION_JSON)
+                post("/api/member/join").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(joinDto))
         ).andDo(print());
 
@@ -64,7 +64,7 @@ class MemberControllerDocs extends BaseTest {
     }
 
     @Test
-    @DisplayName("/member/login")
+    @DisplayName("/api/member/login")
     void login() throws Exception{
         //given
         String email = "juno@member.com";
@@ -73,7 +73,7 @@ class MemberControllerDocs extends BaseTest {
 
         //when
         ResultActions resultActions = mock.perform(
-                post("/member/login").contentType(MediaType.APPLICATION_JSON)
+                post("/api/member/login").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginDto))
         ).andDo(print());
 
@@ -95,7 +95,7 @@ class MemberControllerDocs extends BaseTest {
     }
 
     @Test
-    @DisplayName("/member/refresh/{refresh_token}")
+    @DisplayName("/api/member/refresh/{refresh_token}")
     void refresh() throws Exception{
         //given
         String email = "juno3@member.com";
@@ -107,7 +107,7 @@ class MemberControllerDocs extends BaseTest {
 
         //when
         ResultActions resultActions = mock.perform(
-                RestDocumentationRequestBuilders.get("/member/refresh/{refresh_token}", loginVo.getRefreshToken())
+                RestDocumentationRequestBuilders.get("/api/member/refresh/{refresh_token}", loginVo.getRefreshToken())
         ).andDo(print());
 
         //then
@@ -127,7 +127,7 @@ class MemberControllerDocs extends BaseTest {
     }
 
     @Test
-    @DisplayName("/member")
+    @DisplayName("/api/member")
     void member() throws Exception {
         //given
         String email = "juno4@member.com";
@@ -139,7 +139,7 @@ class MemberControllerDocs extends BaseTest {
 
         //when
         ResultActions resultActions = mock.perform(
-                RestDocumentationRequestBuilders.get("/member")
+                RestDocumentationRequestBuilders.get("/api/member")
                 .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
         ).andDo(print());
 

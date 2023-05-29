@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.juno.appling.domain.enums.ResultCode.*;
 
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
