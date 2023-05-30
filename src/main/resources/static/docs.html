@@ -474,13 +474,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Content-Type: application/json;charset=UTF-8
-Content-Length: 107
+Content-Type: application/problem+json;charset=UTF-8
+Content-Length: 253
 
 {
-  "code" : "0400",
-  "message" : "bad request",
-  "errors" : [ "이미 존재하는 회원입니다." ]
+  "type" : "/docs.html",
+  "title" : "BAD REQUEST",
+  "status" : 400,
+  "detail" : "입력 값을 확인해주세요.",
+  "instance" : "/api/member/join",
+  "errors" : [ {
+    "point" : "",
+    "detail" : "이미 존재하는 회원입니다."
+  } ]
 }</code></pre>
 </div>
 </div>
@@ -687,9 +693,9 @@ Content-Length: 485
   "message" : "success",
   "data" : {
     "type" : "Bearer ",
-    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTM2OTM5Nn0.ucaTSwF5vtcigfDgH4uMrLieq5J-QJzYUFN01xbzC2w_Vcerku0Pz51ObjAXEQdZzJZt4gmmQ8xvbnbfZlKAyw",
-    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5NzIzOTZ9.k51szhb9Gee2LBWa1Aulwilt81WS53NjCxg23J6z__zsINVSAXAhkO0a8hLqar4GTXT-YBWzbwO3OJ6fFAA4uA",
-    "access_token_expired" : 1685369396496
+    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTQ2Mzg4NH0._lTrqs6f9yvWG1HJmF9Jod2mCvR9op24suXeD0GiDytftE4locaITD7vq2UGnBxgpk9zrQbpu9bMkGdnSCxpHQ",
+    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODYwNjY4ODR9.0EDtxgtIfVcNWN-H3p_LeCh0CFyWPxkrTt4X1NmIV3Vgix6WlADuyWz4l-yMvTUuMMiXb_n5AGQWsX5n3sAH1w",
+    "access_token_expired" : 1685463884238
   }
 }</code></pre>
 </div>
@@ -751,7 +757,7 @@ Content-Length: 485
 <h4 id="_request_3"><a class="link" href="#_request_3">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member/refresh/eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5NzIzOTZ9.k51szhb9Gee2LBWa1Aulwilt81WS53NjCxg23J6z__zsINVSAXAhkO0a8hLqar4GTXT-YBWzbwO3OJ6fFAA4uA HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member/refresh/eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODYwNjY4ODR9.0EDtxgtIfVcNWN-H3p_LeCh0CFyWPxkrTt4X1NmIV3Vgix6WlADuyWz4l-yMvTUuMMiXb_n5AGQWsX5n3sAH1w HTTP/1.1
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
@@ -795,9 +801,9 @@ Content-Length: 485
   "message" : "success",
   "data" : {
     "type" : "Bearer ",
-    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTM2OTM5Nn0.dr_jDcfwG5fAgoeKc9OQw3m_RC1TY7whjgfnH0wU6Em4mYTj9_YNQT6Nm4E1wgwTwHHPYUBz9wXZk5jjbS7Uhw",
-    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODU5NzIzOTZ9.k51szhb9Gee2LBWa1Aulwilt81WS53NjCxg23J6z__zsINVSAXAhkO0a8hLqar4GTXT-YBWzbwO3OJ6fFAA4uA",
-    "access_token_expired" : 1685369396675
+    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTQ2Mzg4NH0.nHgHm1EAojftGO6qWpq8n4bg9rUHgNIXz_duOWXd6lveejgKVkxAfq166zQaNYIuawns0brQPBysjG0rSbarVQ",
+    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODYwNjY4ODR9.0EDtxgtIfVcNWN-H3p_LeCh0CFyWPxkrTt4X1NmIV3Vgix6WlADuyWz4l-yMvTUuMMiXb_n5AGQWsX5n3sAH1w",
+    "access_token_expired" : 1685463884418
   }
 }</code></pre>
 </div>
@@ -860,7 +866,7 @@ Content-Length: 485
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTM2OTM5NX0.voRojCIUN8Y47cdv-rkdJEt4OHNvyiV_LzE-O_ay55r7F4dDLMPazbtO_0vyBr7KIzXCvdfWN9pG1EOjG9zFFQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTQ2Mzg4M30.KRqoc3wcz8LSmek97CmohPtUVfBe3ul_e8BqjxzUBTQxRes7MbdiyTELBhZpiQKAYmg3bOr-kjSbPDghsjzFmQ
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
@@ -906,8 +912,8 @@ Content-Length: 284
     "nickname" : "nick",
     "name" : "name",
     "role" : "USER",
-    "created_at" : "2023-05-29T22:39:55.801269",
-    "modified_at" : "2023-05-29T22:39:55.801269"
+    "created_at" : "2023-05-31T00:54:43.553506",
+    "modified_at" : "2023-05-31T00:54:43.553506"
   }
 }</code></pre>
 </div>
@@ -983,7 +989,7 @@ Content-Length: 284
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-29 21:52:30 +0900
+Last updated 2023-05-30 23:29:47 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

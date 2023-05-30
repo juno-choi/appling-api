@@ -1,11 +1,12 @@
 package com.juno.appling.common.security;
 
-import com.juno.appling.domain.dto.ErrorApi;
-import com.juno.appling.domain.enums.ResultCode;
+import com.juno.appling.domain.dto.ErrorDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
+import org.springframework.http.ProblemDetail;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,19 +24,19 @@ public class CustomEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        List<ErrorDto> errors = new ArrayList<>();
+        errors.add(ErrorDto.builder().point("ACCESS TOKEN / REFRESH TOKEN").detail("please check request token").build());
+
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), "FORBIDDEN");
+        pb.setType(URI.create("/docs.html"));
+        pb.setProperty("errors", errors);
+        pb.setInstance(URI.create(request.getRequestURI()));
+        ObjectMapper objectMapper = new ObjectMapper();
+
         PrintWriter writer = response.getWriter();
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        List<String> errorList = new ArrayList<>();
-        errorList.add("FORBIDDEN");
-        ErrorApi<String> errorApi = ErrorApi.<String>builder()
-                .code(ResultCode.FORBIDDEN.CODE)
-                .message(ResultCode.FORBIDDEN.MESSAGE)
-                .errors(errorList)
-                .build();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        writer.write(objectMapper.writeValueAsString(errorApi));
+        writer.write(objectMapper.writeValueAsString(pb));
     }
 }

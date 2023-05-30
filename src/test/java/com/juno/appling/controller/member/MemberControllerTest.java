@@ -3,7 +3,6 @@ package com.juno.appling.controller.member;
 import com.juno.appling.BaseTest;
 import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.entity.member.Member;
-import com.juno.appling.domain.enums.ResultCode;
 import com.juno.appling.repository.member.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +35,6 @@ class MemberControllerTest extends BaseTest {
         ).andDo(print());
         //then
         String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        Assertions.assertThat(contentAsString).contains(ResultCode.BAD_REQUEST.CODE);
+        Assertions.assertThat(contentAsString).contains("400");
     }
 }
