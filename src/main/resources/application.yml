@@ -14,6 +14,8 @@ logging:
 server:
   port: 8000
 
+api-prefix: /api
+
 # echo 'spring-boot-security-jwt-juno-spring-boot-security-jwt-juno-appling' | base64
 jwt:
   secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LWp1bm8tc3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LWp1bm8tYXBwbGluZwo=
