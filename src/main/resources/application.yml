@@ -41,13 +41,16 @@ spring:
     hibernate:
       ddl-auto: create-drop  #절대 수정 금지
     show-sql: true
+    defer-datasource-initialization: true
   datasource:
     hikari:
       driver-class-name: org.h2.Driver
       jdbc-url: jdbc:h2:mem:appling
       username: sa
       password:
-
+  sql:
+    init:
+      data-locations: classpath:init.sql
 --- #dev
 spring:
   config:
