@@ -39,6 +39,7 @@ public class SecurityConfig {
                         auth
                                 .requestMatchers(WHITE_LIST).permitAll()
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
+                                .requestMatchers("/docs.html").permitAll()
                                 .requestMatchers(SELLER_LIST).hasRole("SELLER")
                                 .anyRequest().authenticated()
                         ;
