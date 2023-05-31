@@ -22,7 +22,7 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("회원 인증 처리");
+        log.debug("회원 인증 처리");
         Member member = memberRepository.findByEmail(username).orElseThrow(() ->
                 new UsernameNotFoundException("유효하지 않은 회원입니다.")
         );

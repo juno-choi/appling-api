@@ -24,9 +24,9 @@ public class AuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        log.info("인증처리 시작");
+        log.debug("인증처리 시작");
         String jwtToken = resolveToken(request);
-        log.info("토큰 권한 Security 저장");
+        log.debug("토큰 권한 Security 저장");
 
         // 2. validateToken 으로 토큰 유효성 검사
         // 정상 토큰이면 해당 토큰으로 Authentication 을 가져와서 SecurityContext 에 저장
