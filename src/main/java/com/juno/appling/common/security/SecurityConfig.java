@@ -38,19 +38,14 @@ public class SecurityConfig {
                 .csrf(c -> c.disable())
                 .cors(c -> c.disable())
                 .headers(c -> c.frameOptions(f -> f.disable()).disable())
-                .authorizeHttpRequests(auth -> {
-                    try{
+                .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers(WHITE_LIST).permitAll()
                                 .requestMatchers(DEFAULT_LIST).permitAll()
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                                 .requestMatchers(SELLER_LIST).hasRole("SELLER")
                                 .anyRequest().authenticated()
-                        ;
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }).exceptionHandling(c ->
+                ).exceptionHandling(c ->
                         c.authenticationEntryPoint(entryPoint).accessDeniedHandler(accessDeniedHandler)
                 ).sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .apply(new JwtSecurityConfig(tokenProvider))
