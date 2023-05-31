@@ -51,7 +51,7 @@ public class Member {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Member createMember(JoinDto joinDto){
+    public static Member of(JoinDto joinDto){
         LocalDateTime now = LocalDateTime.now();
         return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(), joinDto.getName(), joinDto.getBirth(), Role.USER, null, null, now, now);
     }
