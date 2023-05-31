@@ -1,5 +1,6 @@
 package com.juno.appling.common.security;
 
+import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpStatus;
 import com.juno.appling.domain.dto.ErrorDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ public class CustomEntryPoint implements AuthenticationEntryPoint {
         List<ErrorDto> errors = new ArrayList<>();
         errors.add(ErrorDto.builder().point("ACCESS TOKEN / REFRESH TOKEN").detail("please check request token").build());
 
-        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), "FORBIDDEN");
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.SC_FORBIDDEN), "FORBIDDEN");
         pb.setType(URI.create("/docs.html"));
         pb.setProperty("errors", errors);
         pb.setInstance(URI.create(request.getRequestURI()));

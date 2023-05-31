@@ -1,5 +1,6 @@
 package com.juno.appling.common.security;
 
+import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpStatus;
 import com.juno.appling.domain.dto.ErrorDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         List<ErrorDto> errors = new ArrayList<>();
         errors.add(ErrorDto.builder().point("UNAUTHORIZED").detail("unauthorized token").build());
 
-        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), "UNAUTHORIZED");
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.SC_UNAUTHORIZED), "UNAUTHORIZED");
         pb.setType(URI.create("/docs.html"));
         pb.setProperty("errors", errors);
         pb.setInstance(URI.create(request.getRequestURI()));
