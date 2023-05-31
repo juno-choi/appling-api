@@ -37,7 +37,7 @@ public class SecurityConfig {
         http
                 .csrf(c -> c.disable())
                 .cors(c -> c.disable())
-                .headers(c -> c.frameOptions(f -> f.sameOrigin()))
+                .headers(c -> c.frameOptions(f -> f.disable()).disable())
                 .authorizeHttpRequests(auth -> {
                     try{
                         auth
