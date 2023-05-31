@@ -29,7 +29,7 @@ class AuthControllerTest extends BaseTest {
     void joinFail() throws Exception{
         //given
         JoinDto joinDto = new JoinDto("join@mail.com", "password", "name", "nick", "19941030");
-        memberRepository.save(Member.createMember(joinDto));
+        memberRepository.save(Member.of(joinDto));
         //when
         ResultActions resultActions = mock.perform(
                 post(PREFIX+"/join").contentType(MediaType.APPLICATION_JSON)

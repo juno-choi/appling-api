@@ -1,6 +1,7 @@
 package com.juno.appling.controller.member;
 
 import com.juno.appling.domain.dto.Api;
+import com.juno.appling.domain.vo.MessageVo;
 import com.juno.appling.domain.vo.member.MemberVo;
 import com.juno.appling.service.member.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +24,17 @@ public class MemberController {
                         .code(SUCCESS.CODE)
                         .message(SUCCESS.MESSAGE)
                         .data(memberService.member(request))
+                        .build()
+        );
+    }
+
+    @PostMapping("/seller")
+    public ResponseEntity<Api<MessageVo>> applySeller(HttpServletRequest request){
+        return ResponseEntity.ok(
+                Api.<MessageVo>builder()
+                        .code(SUCCESS.CODE)
+                        .message(SUCCESS.MESSAGE)
+                        .data(memberService.applySeller(request))
                         .build()
         );
     }

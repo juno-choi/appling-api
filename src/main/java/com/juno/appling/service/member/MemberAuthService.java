@@ -44,7 +44,7 @@ public class MemberAuthService {
             throw new IllegalArgumentException("이미 존재하는 회원입니다.");
         }
 
-        Member saveMember = memberRepository.save(Member.createMember(joinDto));
+        Member saveMember = memberRepository.save(Member.of(joinDto));
         return JoinVo.builder()
                 .email(saveMember.getEmail())
                 .name(saveMember.getName())
