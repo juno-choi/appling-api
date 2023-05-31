@@ -1,8 +1,6 @@
 package com.juno.appling.common.advice;
 
-import com.juno.appling.domain.dto.ErrorApi;
 import com.juno.appling.domain.dto.ErrorDto;
-import com.juno.appling.domain.enums.ResultCode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -11,12 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestControllerAdvice(basePackages = "com.juno")
+@RestControllerAdvice
 public class CommonAdvice {
     @ExceptionHandler
     public ResponseEntity<ProblemDetail> illegalArgumentException(IllegalArgumentException e, HttpServletRequest request){
@@ -45,6 +44,21 @@ public class CommonAdvice {
         pb.setProperty("errors", errors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(pb);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ProblemDetail> noHandlerFoundException(NoHandlerFoundException e, HttpServletRequest request){
+        List<ErrorDto> errors = new ArrayList<>();
+        errors.add(ErrorDto.builder().point("").detail("NOT FOUND").build());
+
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), "URL을 찾을 수 없습니다.");
+        pb.setInstance(URI.create(request.getRequestURI()));
+        pb.setType(URI.create("/docs.html"));
+        pb.setTitle("NOT FOUND");
+        pb.setProperty("errors", errors);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(pb);
     }
 }
