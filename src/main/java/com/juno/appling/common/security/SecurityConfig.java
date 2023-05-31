@@ -18,19 +18,13 @@ public class SecurityConfig {
     private final CustomEntryPoint entryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
 
-
-    private static final String[] DEFAULT_LIST = {
-            "/docs.html"
-    };
-
-    private static final String[] WHITE_LIST = {
-            "/api/auth/**"
-    };
-
     private static final String[] SELLER_LIST = {
             "/api/v2/**"
     };
 
+    private static final String[] MEMBER_LIST = {
+            "/api/member/**"
+    };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -40,11 +34,10 @@ public class SecurityConfig {
                 .headers(c -> c.frameOptions(f -> f.disable()).disable())
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers(WHITE_LIST).permitAll()
-                                .requestMatchers(DEFAULT_LIST).permitAll()
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                                 .requestMatchers(SELLER_LIST).hasRole("SELLER")
-                                .anyRequest().authenticated()
+                                .requestMatchers(MEMBER_LIST).hasRole("MEMBER")
+                                .anyRequest().permitAll()
                 ).exceptionHandling(c ->
                         c.authenticationEntryPoint(entryPoint).accessDeniedHandler(accessDeniedHandler)
                 ).sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
