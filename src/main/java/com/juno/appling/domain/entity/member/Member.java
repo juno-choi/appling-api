@@ -56,4 +56,8 @@ public class Member {
         return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(), joinDto.getName(), joinDto.getBirth(), Role.MEMBER, null, null, now, now);
     }
 
+    public void patchMemberRole(Role role){
+        this.role = role;
+    }
+
 }

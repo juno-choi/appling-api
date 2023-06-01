@@ -3,6 +3,8 @@ package com.juno.appling.service.member;
 import com.juno.appling.common.security.TokenProvider;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.member.MemberApplySeller;
+import com.juno.appling.domain.enums.member.MemberApplySellerStatus;
+import com.juno.appling.domain.enums.member.Role;
 import com.juno.appling.domain.vo.MessageVo;
 import com.juno.appling.domain.vo.member.MemberVo;
 import com.juno.appling.repository.member.MemberApplySellerRepository;
@@ -58,10 +60,21 @@ public class MemberService {
         String token = resolveToken(request);
         Long memberId = tokenProvider.getMemberId(token);
 
-        memberApplySellerRepository.save(MemberApplySeller.of(memberId));
+        MemberApplySeller saveMemberApply = memberApplySellerRepository.save(MemberApplySeller.of(memberId));
+
+        // TODO 임시로 판매자 권인 승인하도록 로직을 만들어둠 나중에는 admin에서 승인해주어야 함
+        permitSeller(memberId, saveMemberApply);
 
         return MessageVo.builder()
-                .message("성공")
+                .message("임시적으로 SELLER 즉시 승인")
                 .build();
+    }
+
+    private void permitSeller(Long memberId, MemberApplySeller saveMemberApply) {
+        saveMemberApply.patchApplyStatus(MemberApplySellerStatus.PERMIT);
+        Member member = memberRepository.findById(memberId).orElseThrow(() ->
+                new IllegalArgumentException("존재하지 않는 회원입니다.")
+        );
+        member.patchMemberRole(Role.SELLER);
     }
 }
