@@ -4,6 +4,7 @@ import com.juno.appling.common.security.TokenProvider;
 import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.dto.member.LoginDto;
 import com.juno.appling.domain.entity.member.Member;
+import com.juno.appling.domain.enums.member.Role;
 import com.juno.appling.domain.vo.member.JoinVo;
 import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.repository.member.MemberRepository;
@@ -19,8 +20,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -86,7 +90,17 @@ public class MemberAuthService {
         String sub = claims.get("sub").toString();
         long now = (new Date()).getTime();
         Date accessTokenExpired = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
-        String accessToken = tokenProvider.createAccessToken(sub, claims.get(AUTHORITIES_KEY).toString(), accessTokenExpired);
+
+        Member member = memberRepository.findById(Long.parseLong(sub)).orElseThrow(() ->
+                new IllegalArgumentException("유효하지 않은 회원입니다.")
+        );
+
+        Role role = Role.valueOf(member.getRole().NAME);
+        String[] roleSplitList = role.ROLE_LIST.split(",");
+        List<String> trimRoleList = Arrays.stream(roleSplitList).map(r -> String.format("ROLE_%s", r.trim())).collect(Collectors.toList());
+        String roleList = trimRoleList.toString().replace("[", "").replace("]", "").replaceAll(" ", "");
+
+        String accessToken = tokenProvider.createAccessToken(String.valueOf(member.getId()), roleList, accessTokenExpired);
 
         Authentication authentication = tokenProvider.getAuthentication(accessToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
