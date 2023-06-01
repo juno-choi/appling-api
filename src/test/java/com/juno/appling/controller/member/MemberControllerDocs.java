@@ -3,6 +3,7 @@ package com.juno.appling.controller.member;
 import com.juno.appling.BaseTest;
 import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.dto.member.LoginDto;
+import com.juno.appling.domain.enums.member.Role;
 import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.service.member.MemberAuthService;
 import com.juno.appling.service.member.MemberService;
@@ -66,7 +67,7 @@ class MemberControllerDocs extends BaseTest {
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("email"),
                         fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("nickname"),
                         fieldWithPath("data.name").type(JsonFieldType.STRING).description("name"),
-                        fieldWithPath("data.role").type(JsonFieldType.STRING).description("role"),
+                        fieldWithPath("data.role").type(JsonFieldType.STRING).description(String.format("권한 (일반 유저 : %s, 판매자 : %s)", Role.MEMBER, Role.SELLER)),
                         fieldWithPath("data.created_at").type(JsonFieldType.STRING).description("생성일"),
                         fieldWithPath("data.modified_at").type(JsonFieldType.STRING).description("수정일")
                 )

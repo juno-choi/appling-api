@@ -692,16 +692,16 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 494
+Content-Length: 510
 
 {
   "code" : "0000",
   "message" : "success",
   "data" : {
     "type" : "Bearer ",
-    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTQ5NTAwNH0.frWD9em_vw0-4TL-h_oSYO6kB626LGL3C5RmjCTYC_CTEFQ17FGbzJmCYarJzae1FGU_X6PhNI2phQIrKUMVOQ",
-    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODYwOTgwMDR9.k8lmcGZI3Il2-_W2a0_gQcnSZ1UiYKPENHbtUd5_ZVD6fVQa5ONpa3ZDxWKg93Q9X2ReuXFv7DjsCr00D-mFrA",
-    "access_token_expired" : 1685495004239
+    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfVVNFUiIsImV4cCI6MTY4NTU3OTYxOH0.ucmXC9RDivXacnzPQTS8i6aWCaubitfUAshK0BWkrbjkwCaY4CV4-1MI5gVmuboYGJ4JhUsrKl_DD7senhadHQ",
+    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODYxODI2MTh9.Jg0wn7qF03iYcKvcIl5TXH9gaWF_7IH-yLFXIJTjRvlLCpw3VBnX4p8o8ubTMfxkg01EYC1WUoJvxITRfY29JQ",
+    "access_token_expired" : 1685579618676
   }
 }</code></pre>
 </div>
@@ -763,7 +763,7 @@ Content-Length: 494
 <h4 id="_request_3"><a class="link" href="#_request_3">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/auth/refresh/eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODYwOTgwMDR9.k8lmcGZI3Il2-_W2a0_gQcnSZ1UiYKPENHbtUd5_ZVD6fVQa5ONpa3ZDxWKg93Q9X2ReuXFv7DjsCr00D-mFrA HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/auth/refresh/eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODYxODI2MTl9.qNasYUDHSShsqCwQ5C6J9D13Sv7uNDzP0XkSAG3ohn6e1ZFUaZvcDN-K3q0cE5aKsP0wlkr7BF7BjI8DSfm-0w HTTP/1.1
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
@@ -800,16 +800,16 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Disposition: inline;filename=f.txt
 Content-Type: application/json;charset=UTF-8
-Content-Length: 494
+Content-Length: 510
 
 {
   "code" : "0000",
   "message" : "success",
   "data" : {
     "type" : "Bearer ",
-    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTQ5NTAwNH0.SETTOM1r4RrnCdqPzsWGsTGwWb64YPLPiaVf3J7E-oEjhX23mCrJs-Gls1Nsm7ZCHVkaHI-X10Gwdo6ryANTtw",
-    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODYwOTgwMDR9.k8lmcGZI3Il2-_W2a0_gQcnSZ1UiYKPENHbtUd5_ZVD6fVQa5ONpa3ZDxWKg93Q9X2ReuXFv7DjsCr00D-mFrA",
-    "access_token_expired" : 1685495004913
+    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1IiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfVVNFUiIsImV4cCI6MTY4NTU3OTYxOX0.gTcn133FmHlwM2R83rWLEWpXpKLDeXPj1AndI28-t6gf3sb7Wr6vwkw8aVPJ5NPudKZC6-2ENW_F1h5IE7Z1rA",
+    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODYxODI2MTl9.qNasYUDHSShsqCwQ5C6J9D13Sv7uNDzP0XkSAG3ohn6e1ZFUaZvcDN-K3q0cE5aKsP0wlkr7BF7BjI8DSfm-0w",
+    "access_token_expired" : 1685579619293
   }
 }</code></pre>
 </div>
@@ -872,7 +872,7 @@ Content-Length: 494
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTQ5NTc2N30.UHbH5hYpNSng43g5dcZSJJIim20BcfjP8Bcb7sm5ijHF9u_pdWd364LW15uxJQ1kZ6cZfJWX2-yaJl8poFVcgA
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3IiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfVVNFUiIsImV4cCI6MTY4NTU3OTYxOX0.ZQAyFKHmUSzk1dgCdobGVoqXrBbU3XmxbzSwWt6p60kfnOj-A0IWlRMcvELFHXtEVpndMbIOdBStzrEUiuotvg
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
@@ -907,19 +907,19 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 295
+Content-Length: 297
 
 {
   "code" : "0000",
   "message" : "success",
   "data" : {
-    "member_id" : 1,
+    "member_id" : 7,
     "email" : "juno@member.com",
     "nickname" : "nick",
     "name" : "name",
-    "role" : "USER",
-    "created_at" : "2023-05-31T09:46:07.213033",
-    "modified_at" : "2023-05-31T09:46:07.213033"
+    "role" : "MEMBER",
+    "created_at" : "2023-06-01T09:03:39.593613",
+    "modified_at" : "2023-06-01T09:03:39.593613"
   }
 }</code></pre>
 </div>
@@ -974,7 +974,7 @@ Content-Length: 295
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.role</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">role</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">권한 (일반 유저 : MEMBER, 판매자 : SELLER)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.created_at</code></p></td>
@@ -1002,7 +1002,7 @@ Content-Length: 295
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTQ5NTc2N30.UHbH5hYpNSng43g5dcZSJJIim20BcfjP8Bcb7sm5ijHF9u_pdWd364LW15uxJQ1kZ6cZfJWX2-yaJl8poFVcgA
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3IiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfVVNFUiIsImV4cCI6MTY4NTU3OTYxOX0.ZQAyFKHmUSzk1dgCdobGVoqXrBbU3XmxbzSwWt6p60kfnOj-A0IWlRMcvELFHXtEVpndMbIOdBStzrEUiuotvg
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
@@ -1037,19 +1037,19 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 295
+Content-Length: 297
 
 {
   "code" : "0000",
   "message" : "success",
   "data" : {
-    "member_id" : 1,
+    "member_id" : 7,
     "email" : "juno@member.com",
     "nickname" : "nick",
     "name" : "name",
-    "role" : "USER",
-    "created_at" : "2023-05-31T09:46:07.213033",
-    "modified_at" : "2023-05-31T09:46:07.213033"
+    "role" : "MEMBER",
+    "created_at" : "2023-06-01T09:03:39.593613",
+    "modified_at" : "2023-06-01T09:03:39.593613"
   }
 }</code></pre>
 </div>
@@ -1104,7 +1104,7 @@ Content-Length: 295
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.role</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">role</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">권한 (일반 유저 : MEMBER, 판매자 : SELLER)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.created_at</code></p></td>
@@ -1127,7 +1127,7 @@ Content-Length: 295
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/member/seller HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NTQ5NjgyMn0.qYcu0RJT8t82wYK0C8D_BWUpBdpDXp4iSheOyoGYeEHWb5RAJka5bgExFDvjwXI0kzz9xs8Rh9mejDGfhmmVIQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3IiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfVVNFUiIsImV4cCI6MTY4NTU3OTYxOX0.ZQAyFKHmUSzk1dgCdobGVoqXrBbU3XmxbzSwWt6p60kfnOj-A0IWlRMcvELFHXtEVpndMbIOdBStzrEUiuotvg
 Host: 127.0.0.1
 Content-Type: application/x-www-form-urlencoded</code></pre>
 </div>
