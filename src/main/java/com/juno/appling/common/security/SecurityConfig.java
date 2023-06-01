@@ -1,5 +1,6 @@
 package com.juno.appling.common.security;
 
+import com.juno.appling.domain.enums.member.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -35,8 +36,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
-                                .requestMatchers(SELLER_LIST).hasRole("SELLER")
-                                .requestMatchers(MEMBER_LIST).hasRole("MEMBER")
+                                .requestMatchers(SELLER_LIST).hasRole(Role.SELLER.NAME)
+                                .requestMatchers(MEMBER_LIST).hasRole(Role.MEMBER.NAME)
                                 .anyRequest().permitAll()
                 ).exceptionHandling(c ->
                         c.authenticationEntryPoint(entryPoint).accessDeniedHandler(accessDeniedHandler)

@@ -29,9 +29,12 @@ public class AuthService implements UserDetailsService {
 
         Role role = member.getRole();
         Set<String> roleSet = new HashSet<>();
-        // 회원들은 default MEMBER 권한을 모두 가진다.
-        roleSet.add(Role.MEMBER.name());
-        roleSet.add(role.ROLE);
+        String roleListToString = Role.valueOf(role.NAME).ROLE_LIST;
+        String[] roleList = roleListToString.split(",");
+
+        for(String r : roleList){
+            roleSet.add(r.trim());
+        }
 
         String[] roles = Arrays.copyOf(roleSet.toArray(), roleSet.size(), String[].class);
 
