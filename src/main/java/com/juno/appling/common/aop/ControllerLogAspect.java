@@ -1,10 +1,13 @@
 package com.juno.appling.common.aop;
 
 import com.juno.appling.domain.dto.ErrorDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
@@ -24,6 +27,9 @@ import java.util.List;
 @Aspect
 @Slf4j
 public class ControllerLogAspect {
+    @Value("${docs}")
+    private String docs;
+
     @Around("execution(* com.juno.appling.controller..*.*(..))")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
@@ -45,7 +51,7 @@ public class ControllerLogAspect {
 
                     ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), "잘못된 입력입니다.");
                     pb.setInstance(URI.create(requestURI));
-                    pb.setType(URI.create("/docs.html"));
+                    pb.setType(URI.create(docs));
                     pb.setTitle("BAD REQUEST");
                     pb.setProperty("errors", errors);
 

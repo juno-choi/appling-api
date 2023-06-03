@@ -5,6 +5,8 @@ import com.juno.appling.domain.dto.ErrorDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
@@ -22,6 +24,8 @@ import java.util.List;
 
 @Component
 public class CustomEntryPoint implements AuthenticationEntryPoint {
+    @Value("${docs}")
+    private String docs;
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
@@ -29,7 +33,7 @@ public class CustomEntryPoint implements AuthenticationEntryPoint {
         errors.add(ErrorDto.builder().point("ACCESS TOKEN / REFRESH TOKEN").detail("please check request token").build());
 
         ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.SC_FORBIDDEN), "FORBIDDEN");
-        pb.setType(URI.create("/docs.html"));
+        pb.setType(URI.create(docs));
         pb.setProperty("errors", errors);
         pb.setInstance(URI.create(request.getRequestURI()));
         ObjectMapper objectMapper = new ObjectMapper();
