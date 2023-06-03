@@ -3,10 +3,12 @@ package com.juno.appling.controller.member;
 import com.juno.appling.BaseTest;
 import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.dto.member.LoginDto;
+import com.juno.appling.domain.enums.ResultCode;
 import com.juno.appling.domain.enums.member.Role;
 import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.service.member.MemberAuthService;
 import com.juno.appling.service.member.MemberService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.nio.charset.StandardCharsets;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -56,6 +60,9 @@ class MemberControllerDocs extends BaseTest {
         ).andDo(print());
 
         //then
+        String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.CODE);
+
         resultActions.andDo(docs.document(
                 requestHeaders(
                         headerWithName(AUTHORIZATION).description("access token")
@@ -85,6 +92,9 @@ class MemberControllerDocs extends BaseTest {
         ).andDo(print());
 
         //then
+        String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.CODE);
+
         resultActions.andDo(docs.document(
                 requestHeaders(
                         headerWithName(AUTHORIZATION).description("access token")
