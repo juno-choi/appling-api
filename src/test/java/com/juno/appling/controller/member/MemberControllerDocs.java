@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -36,11 +35,11 @@ class MemberControllerDocs extends BaseTest {
     @Autowired
     private MemberAuthService memberAuthService;
 
-    private final String PREFIX = "/api/member";
-
-    private final String EMAIL = "juno@member.com";
-    private final String PASSWORD = "password";
+    private final static String PREFIX = "/api/member";
+    private final static String EMAIL = "juno@member.com";
+    private final static String PASSWORD = "password";
     private LoginVo loginVo = null;
+
     @BeforeAll
     void setup(){
         JoinDto joinDto = new JoinDto(EMAIL, PASSWORD, "name", "nick", "19941030");
@@ -61,7 +60,7 @@ class MemberControllerDocs extends BaseTest {
 
         //then
         String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.CODE);
+        Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.code);
 
         resultActions.andDo(docs.document(
                 requestHeaders(
@@ -93,7 +92,7 @@ class MemberControllerDocs extends BaseTest {
 
         //then
         String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.CODE);
+        Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.code);
 
         resultActions.andDo(docs.document(
                 requestHeaders(

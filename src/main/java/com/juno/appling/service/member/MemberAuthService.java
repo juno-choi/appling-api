@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -95,10 +94,10 @@ public class MemberAuthService {
                 new IllegalArgumentException("유효하지 않은 회원입니다.")
         );
 
-        Role role = Role.valueOf(member.getRole().NAME);
-        String[] roleSplitList = role.ROLE_LIST.split(",");
+        Role role = Role.valueOf(member.getRole().name);
+        String[] roleSplitList = role.roleList.split(",");
         List<String> trimRoleList = Arrays.stream(roleSplitList).map(r -> String.format("ROLE_%s", r.trim())).toList();
-        String roleList = trimRoleList.toString().replace("[", "").replace("]", "").replaceAll(" ", "");
+        String roleList = trimRoleList.toString().replace("[", "").replace("]", "").replace(" ", "");
 
         String accessToken = tokenProvider.createAccessToken(String.valueOf(member.getId()), roleList, accessTokenExpired);
 

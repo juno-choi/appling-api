@@ -21,7 +21,7 @@ public class CommonAdvice {
     @Value("${docs}")
     private String docs;
 
-    private final String ERRORS = "errors";
+    private final static String ERRORS = "errors";
 
 
     @ExceptionHandler

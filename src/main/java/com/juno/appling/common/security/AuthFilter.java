@@ -20,7 +20,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequiredArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
     private final TokenProvider tokenProvider;
-    private final String BEARER_PREFIX = "Bearer ";
+    private final static String BEARER_PREFIX = "Bearer ";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

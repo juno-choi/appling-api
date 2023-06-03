@@ -25,8 +25,8 @@ public class AuthController {
     @PostMapping("/join")
     public ResponseEntity<Api<JoinVo>> join(@RequestBody @Validated JoinDto joinDto, BindingResult bindingResult){
         return ResponseEntity.status(HttpStatus.CREATED).body(Api.<JoinVo>builder()
-                .code(POST.CODE)
-                .message(POST.MESSAGE)
+                .code(POST.code)
+                .message(POST.message)
                 .data(memberAuthService.join(joinDto))
                 .build());
     }
@@ -35,8 +35,8 @@ public class AuthController {
     public ResponseEntity<Api<LoginVo>> login(@RequestBody @Validated LoginDto loginDto, BindingResult bindingResult){
         return ResponseEntity.ok(
                 Api.<LoginVo>builder()
-                        .code(SUCCESS.CODE)
-                        .message(SUCCESS.MESSAGE)
+                        .code(SUCCESS.code)
+                        .message(SUCCESS.message)
                         .data(memberAuthService.login(loginDto))
                         .build()
         );
@@ -46,8 +46,8 @@ public class AuthController {
     public ResponseEntity<Api<LoginVo>> refresh(@PathVariable(value = "refresh_token") String refreshToken){
         return ResponseEntity.ok(
                 Api.<LoginVo>builder()
-                        .code(SUCCESS.CODE)
-                        .message(SUCCESS.MESSAGE)
+                        .code(SUCCESS.code)
+                        .message(SUCCESS.message)
                         .data(memberAuthService.refresh(refreshToken))
                         .build()
         );

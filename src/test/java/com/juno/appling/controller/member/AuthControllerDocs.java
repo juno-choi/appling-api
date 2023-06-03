@@ -29,7 +29,7 @@ class AuthControllerDocs extends BaseTest {
     @Autowired
     private MemberAuthService memberAuthService;
 
-    private final String PREFIX = "/api/auth";
+    private final static String PREFIX = "/api/auth";
 
     @Test
     @DisplayName(PREFIX+"/join")
@@ -45,7 +45,7 @@ class AuthControllerDocs extends BaseTest {
 
         //then
         String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        Assertions.assertThat(contentAsString).contains(ResultCode.POST.CODE);
+        Assertions.assertThat(contentAsString).contains(ResultCode.POST.code);
 
         resultActions.andDo(docs.document(
                 requestFields(
@@ -84,7 +84,7 @@ class AuthControllerDocs extends BaseTest {
 
         //then
         String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.CODE);
+        Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.code);
 
         resultActions.andDo(docs.document(
                 requestFields(
@@ -120,7 +120,7 @@ class AuthControllerDocs extends BaseTest {
 
         //then
         String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.CODE);
+        Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.code);
 
         resultActions.andDo(docs.document(
                 pathParameters(

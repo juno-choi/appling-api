@@ -36,8 +36,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
-                                .requestMatchers(SELLER_LIST).hasRole(Role.SELLER.NAME)
-                                .requestMatchers(MEMBER_LIST).hasRole(Role.MEMBER.NAME)
+                                .requestMatchers(SELLER_LIST).hasRole(Role.SELLER.name)
+                                .requestMatchers(MEMBER_LIST).hasRole(Role.MEMBER.name)
                                 .anyRequest().permitAll()
                 ).exceptionHandling(c ->
                         c.authenticationEntryPoint(entryPoint).accessDeniedHandler(accessDeniedHandler)
