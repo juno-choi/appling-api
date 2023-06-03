@@ -38,7 +38,7 @@ public class MemberAuthService {
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String TYPE = "Bearer ";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 30;            // 30분
 
     @Transactional
     public JoinVo join(JoinDto joinDto){
@@ -84,7 +84,7 @@ public class MemberAuthService {
         }
 
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();
-        String originAccessToken = ops.get(refreshToken).toString();
+        String originAccessToken = Optional.ofNullable(ops.get(refreshToken)).orElse("").toString();
         Claims claims = tokenProvider.parseClaims(originAccessToken);
 
         String sub = claims.get("sub").toString();
