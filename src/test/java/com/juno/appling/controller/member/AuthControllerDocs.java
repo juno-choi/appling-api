@@ -3,8 +3,10 @@ package com.juno.appling.controller.member;
 import com.juno.appling.BaseTest;
 import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.dto.member.LoginDto;
+import com.juno.appling.domain.enums.ResultCode;
 import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.service.member.MemberAuthService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.nio.charset.StandardCharsets;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -40,6 +44,9 @@ class AuthControllerDocs extends BaseTest {
         ).andDo(print());
 
         //then
+        String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        Assertions.assertThat(contentAsString).contains(ResultCode.POST.CODE);
+
         resultActions.andDo(docs.document(
                 requestFields(
                         fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
@@ -76,6 +83,9 @@ class AuthControllerDocs extends BaseTest {
         ).andDo(print());
 
         //then
+        String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.CODE);
+
         resultActions.andDo(docs.document(
                 requestFields(
                         fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
@@ -109,6 +119,9 @@ class AuthControllerDocs extends BaseTest {
         ).andDo(print());
 
         //then
+        String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.CODE);
+
         resultActions.andDo(docs.document(
                 pathParameters(
                         parameterWithName("refresh_token").description("refresh token")

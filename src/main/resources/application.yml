@@ -19,6 +19,7 @@ server:
   port: 8000
 
 api-prefix: /api
+docs: /docs.html
 
 # echo 'spring-boot-security-jwt-juno-spring-boot-security-jwt-juno-appling' | base64
 jwt:

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
@@ -24,6 +25,9 @@ import java.util.List;
 @Aspect
 @Slf4j
 public class ControllerLogAspect {
+    @Value("${docs}")
+    private String docs;
+
     @Around("execution(* com.juno.appling.controller..*.*(..))")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
@@ -35,18 +39,17 @@ public class ControllerLogAspect {
 
         Object[] args = pjp.getArgs();
         for(Object a : args){
-            if(a instanceof BindingResult){   // object type == BindingResult
-                BindingResult bindingResult = (BindingResult) a;
+            if(a instanceof BindingResult bindingResult){   // object type == BindingResult
                 if(bindingResult.hasErrors()){  // 유효성 검사에 걸리는 에러가 존재한다면
                     List<ErrorDto> errors = new ArrayList<>();
                     for(FieldError error : bindingResult.getFieldErrors()){
                         errors.add(ErrorDto.builder().point(error.getField()).detail(error.getDefaultMessage()).build());
                     }
 
-                    ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), "잘못된 입력입니다.");
+                    ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "잘못된 입력입니다.");
                     pb.setInstance(URI.create(requestURI));
-                    pb.setType(URI.create("/docs.html"));
-                    pb.setTitle("BAD REQUEST");
+                    pb.setType(URI.create(docs));
+                    pb.setTitle(HttpStatus.BAD_REQUEST.name());
                     pb.setProperty("errors", errors);
 
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
