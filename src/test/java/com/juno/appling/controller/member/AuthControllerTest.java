@@ -23,7 +23,7 @@ class AuthControllerTest extends BaseTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    private final String PREFIX = "/api/auth";
+    private final static String PREFIX = "/api/auth";
 
     @Nested
     class join{

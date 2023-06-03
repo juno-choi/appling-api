@@ -21,8 +21,8 @@ public class MemberController {
     public ResponseEntity<Api<MemberVo>> member(HttpServletRequest request){
         return ResponseEntity.ok(
                 Api.<MemberVo>builder()
-                        .code(SUCCESS.CODE)
-                        .message(SUCCESS.MESSAGE)
+                        .code(SUCCESS.code)
+                        .message(SUCCESS.message)
                         .data(memberService.member(request))
                         .build()
         );
@@ -32,8 +32,8 @@ public class MemberController {
     public ResponseEntity<Api<MessageVo>> applySeller(HttpServletRequest request){
         return ResponseEntity.ok(
                 Api.<MessageVo>builder()
-                        .code(SUCCESS.CODE)
-                        .message(SUCCESS.MESSAGE)
+                        .code(SUCCESS.code)
+                        .message(SUCCESS.message)
                         .data(memberService.applySeller(request))
                         .build()
         );

@@ -5,11 +5,11 @@ public enum ResultCode {
     POST("0001", "201 success"),
     ;
 
-    ResultCode(String CODE, String MESSAGE) {
-        this.CODE = CODE;
-        this.MESSAGE = MESSAGE;
+    ResultCode(String code, String message) {
+        this.code = code;
+        this.message = message;
     }
 
-    public String CODE;
-    public String MESSAGE;
+    public String code;
+    public String message;
 }
