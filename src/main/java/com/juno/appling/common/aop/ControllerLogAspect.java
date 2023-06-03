@@ -41,8 +41,7 @@ public class ControllerLogAspect {
 
         Object[] args = pjp.getArgs();
         for(Object a : args){
-            if(a instanceof BindingResult){   // object type == BindingResult
-                BindingResult bindingResult = (BindingResult) a;
+            if(a instanceof BindingResult bindingResult){   // object type == BindingResult
                 if(bindingResult.hasErrors()){  // 유효성 검사에 걸리는 에러가 존재한다면
                     List<ErrorDto> errors = new ArrayList<>();
                     for(FieldError error : bindingResult.getFieldErrors()){
