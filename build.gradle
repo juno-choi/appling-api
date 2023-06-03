@@ -4,6 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.0'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'jacoco'
+    id 'org.sonarqube' version '3.3'
 }
 
 group = 'com.juno'
@@ -45,6 +46,7 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation "org.testcontainers:testcontainers:1.18.1"
+    implementation 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
 }
 
 tasks.named('test') {
@@ -65,9 +67,9 @@ jacoco {
 
 jacocoTestReport {
     reports {
-        xml.enabled true
-        csv.enabled true
-        html.enabled true
+        xml.enabled true    // sonarqube 분석
+        csv.enabled false
+        html.enabled false
 
         xml.destination file("${buildDir}/jacoco/index.xml")
         csv.destination file("${buildDir}/jacoco/index.csv")
@@ -146,5 +148,20 @@ jacocoTestCoverageVerification {
                 minimum = 0.50
             }
         }
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.host.url", "http://39.118.30.247:9000/"
+        property "sonar.sources", "src"
+        property "sonar.language", "java"
+        property "sonar.projectKey", "appling-api"
+        property "sonar.projectName", "appling-api-prod"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.java.binaries", "${buildDir}/classes"
+        property "sonar.test.inclusions", "**/*Test.java, **/*Docs.java"
+        property "sonar.exclusions", "**/resources/static/**, **/Q*.class, **/test/**"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/jacoco/index.xml"
     }
 }
