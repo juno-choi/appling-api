@@ -97,7 +97,7 @@ public class MemberAuthService {
 
         Role role = Role.valueOf(member.getRole().NAME);
         String[] roleSplitList = role.ROLE_LIST.split(",");
-        List<String> trimRoleList = Arrays.stream(roleSplitList).map(r -> String.format("ROLE_%s", r.trim())).collect(Collectors.toList());
+        List<String> trimRoleList = Arrays.stream(roleSplitList).map(r -> String.format("ROLE_%s", r.trim())).toList();
         String roleList = trimRoleList.toString().replace("[", "").replace("]", "").replaceAll(" ", "");
 
         String accessToken = tokenProvider.createAccessToken(String.valueOf(member.getId()), roleList, accessTokenExpired);
