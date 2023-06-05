@@ -47,6 +47,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation "org.testcontainers:testcontainers:1.18.1"
     implementation 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
+
+    // Bill Of Materials (bom) 추가
+    // https://mvnrepository.com/artifact/software.amazon.awssdk/bom
+    implementation platform('software.amazon.awssdk:bom:2.17.230')
+    // AWS s3 추가
+    implementation 'software.amazon.awssdk:s3'
 }
 
 tasks.named('test') {

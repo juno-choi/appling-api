@@ -21,6 +21,14 @@ server:
 api-prefix: /api
 docs: /docs.html
 
+# aws 설정
+cloud:
+  s3:
+    bucket: appling-s3
+    access-id: AKIA24YSH3IB6DLUN5N6
+    secret-key: 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
+    url: https://appling-s3.s3.ap-northeast-2.amazonaws.com/
+
 # echo 'spring-boot-security-jwt-juno-spring-boot-security-jwt-juno-appling' | base64
 jwt:
   secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LWp1bm8tc3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LWp1bm8tYXBwbGluZwo=
