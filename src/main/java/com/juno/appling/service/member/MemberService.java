@@ -25,11 +25,11 @@ public class MemberService {
     private final MemberApplySellerRepository memberApplySellerRepository;
     private final TokenProvider tokenProvider;
 
-    private static final String TYPE = "Bearer ";
+
 
 
     public MemberVo member(HttpServletRequest request) {
-        String token = resolveToken(request);
+        String token = tokenProvider.resolveToken(request);
         Long memberId = tokenProvider.getMemberId(token);
 
         Member findMember = memberRepository.findById(memberId).orElseThrow(() ->
@@ -47,17 +47,11 @@ public class MemberService {
                 .snsType(findMember.getSnsType())
                 .build();
     }
-    private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(TYPE)) {
-            return bearerToken.substring(TYPE.length());
-        }
-        return null;
-    }
+
 
     @Transactional
     public MessageVo applySeller(HttpServletRequest request) {
-        String token = resolveToken(request);
+        String token = tokenProvider.resolveToken(request);
         Long memberId = tokenProvider.getMemberId(token);
 
         MemberApplySeller saveMemberApply = memberApplySellerRepository.save(MemberApplySeller.of(memberId));
