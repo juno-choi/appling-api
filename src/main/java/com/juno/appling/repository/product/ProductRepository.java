@@ -1,4 +1,4 @@
-package com.juno.appling.service;
+package com.juno.appling.repository.product;
 
 import com.juno.appling.domain.entity.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
