@@ -31,6 +31,9 @@ public class BaseTest {
 
     protected ObjectMapper objectMapper = new ObjectMapper();
 
+    protected String SELLER_EMAIL = "seller@appling.com";
+    protected String PASSWORD = "password";
+
     @BeforeEach
     void setUp(final WebApplicationContext context,
                final RestDocumentationContextProvider provider) throws Exception {

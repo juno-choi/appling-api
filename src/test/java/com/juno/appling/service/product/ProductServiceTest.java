@@ -13,13 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -47,11 +42,6 @@ class ProductServiceTest {
         LoginVo login = memberAuthService.login(loginDto);
         request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
 
-        List<MultipartFile> files = new LinkedList<>();
-        files.add(new MockMultipartFile("test1", "test1.txt", StandardCharsets.UTF_8.name(), "abcd".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test2", "test2.txt", StandardCharsets.UTF_8.name(), "222".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test3", "test3.txt", StandardCharsets.UTF_8.name(), "3".getBytes(StandardCharsets.UTF_8)));
-
         ProductDto dto = ProductDto.builder()
                 .mainTitle("메인 제목")
                 .mainExplanation("메인 설명")
@@ -62,13 +52,13 @@ class ProductServiceTest {
                 .purchaseInquiry("취급 방법")
                 .originPrice(1000)
                 .price(100)
-                .mainImage(null)
-                .image1(null)
-                .image2(null)
-                .image3(null)
+                .mainImage("https://image0")
+                .image1("https://image1")
+                .image2("https://image2")
+                .image3("https://image3")
                 .build();
         //when
-        ProductVo productVo = productService.postProduct(dto, files, request);
+        ProductVo productVo = productService.postProduct(dto, request);
 
         //then
         Optional<Product> byId = productRepository.findById(productVo.getId());

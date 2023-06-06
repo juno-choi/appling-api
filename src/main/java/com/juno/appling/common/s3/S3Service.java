@@ -29,7 +29,7 @@ public class S3Service {
     @Transactional
     public List<String> putObject(String path, String fileName, List<MultipartFile> files){
         List<String> list = new LinkedList<>();
-        int count = 1;
+        int count = 0;
         Long size = Long.parseLong(env.getProperty("cloud.s3.size"));
 
         for(MultipartFile file : files){
