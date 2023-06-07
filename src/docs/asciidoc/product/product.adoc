@@ -1,0 +1,25 @@
+== 📗 상품
+
+```
+이미지 등록 관련해서는 Common 부분을 참고해주세요
+```
+
+link:/docs.html#_이미지_업로드[이미지 등록]
+
+
+### 📄 상품 등록
+
+==== 🔵 REQUEST
+include::{snippets}/product-controller-docs/post-product/http-request.adoc[]
+
+==== 🔵 REQUEST FIELD
+
+include::{snippets}/product-controller-docs/post-product/request-fields.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/product-controller-docs/post-product/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/product-controller-docs/post-product/response-fields.adoc[]

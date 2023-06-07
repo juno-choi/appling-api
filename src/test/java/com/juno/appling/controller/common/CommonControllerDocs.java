@@ -44,7 +44,7 @@ class CommonControllerDocs extends BaseTest {
     @MockBean
     private S3Service s3Service;
 
-    private final String PREFIX = "/common";
+    private final String PREFIX = "/api/common";
 
     @Test
     @DisplayName(PREFIX + "/image")

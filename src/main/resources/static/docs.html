@@ -449,6 +449,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_에러">📄 에러</a></li>
 </ul>
 </li>
+<li><a href="#_member_권한">MEMBER 권한</a>
+<ul class="sectlevel1">
 <li><a href="#_공통_2">📗 공통</a>
 <ul class="sectlevel2">
 <li><a href="#_이미지_업로드">📄 이미지 업로드</a></li>
@@ -469,6 +471,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 </ul>
+</li>
+<li><a href="#_seller_권한">SELLER 권한</a>
+<ul class="sectlevel1">
+<li><a href="#_상품">📗 상품</a>
+<ul class="sectlevel2">
+<li><a href="#_상품_등록">📄 상품 등록</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 <div id="content">
@@ -486,7 +499,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/problem+json;charset=UTF-8
-Content-Length: 251
+Content-Length: 261
 
 {
   "type" : "/docs.html",
@@ -505,6 +518,7 @@ Content-Length: 251
 </div>
 </div>
 </div>
+<h1 id="_member_권한" class="sect0"><a class="link" href="#_member_권한">MEMBER 권한</a></h1>
 <div class="sect1">
 <h2 id="_공통_2"><a class="link" href="#_공통_2">📗 공통</a></h2>
 <div class="sectionbody">
@@ -514,9 +528,9 @@ Content-Length: 251
 <h4 id="_request"><a class="link" href="#_request">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /common/image HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/common/image HTTP/1.1
 Content-Type: application/x-www-form-urlencoded;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg2MDQ5MjczfQ.PhC_dOMcLFg6gDZupGxn3XvMKX3H0-AqQt53YVoNxSJwWjst4B2aRqVbTQMxOM147z0x71kpx0B-BXt8KVRzAQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg2MTM3NDg0fQ.QHlYBPIQ-acO9reYWuN9BP8uNpkLhc3M1vnEdIl9ZaYNErEg8eTAmS8bWNWoUKfHgnk69KEU540ICQcljtJG4A
 Host: 127.0.0.1
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -632,7 +646,7 @@ Content-Type: application/x-www-form-urlencoded
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/auth/join HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 124
+Content-Length: 130
 Host: 127.0.0.1
 
 {
@@ -698,7 +712,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 144
+Content-Length: 152
 
 {
   "code" : "0001",
@@ -765,7 +779,7 @@ Content-Length: 144
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/auth/login HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 59
+Content-Length: 62
 Host: 127.0.0.1
 
 {
@@ -813,16 +827,16 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 488
+Content-Length: 497
 
 {
   "code" : "0000",
   "message" : "success",
   "data" : {
     "type" : "Bearer ",
-    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg2MDQ5Mjc2fQ.cvjKOmfG29-e5G0jG4fqpz-pkKndWHIjrN9zINJgenQrwa_rhG1L5DzWWFg-8J57RsRt_SyMS3vc3rzZyF7BBw",
-    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODY2NTIyNzZ9.husTcndsrve1_UgrFLYZl_ua1In9aJEl99WNoxqg38tfjfEBwVMDv1v0SZifv86YrgEM7yUH7MKdjVIAqaG4Ug",
-    "access_token_expired" : 1686049276176
+    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg2MTM3NDg4fQ.C9n8NCPE_B-haaYFOVq8A7LtFBc4RBL7gtgK9Au3K2MuGP2sdopznpQChl55QTOK6dh8yIqOT2plDfxW5uvNQQ",
+    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODY3NDA0ODh9.dtwteUa-gRtokdXZgucL6s8U7dzzD4c5va6igOURn5cjJC7eQyqhEzkkqHwQgfJmFYxl63Kk___tC93W4fQ43A",
+    "access_token_expired" : 1686137488541
   }
 }</code></pre>
 </div>
@@ -884,7 +898,7 @@ Content-Length: 488
 <h4 id="_request_4"><a class="link" href="#_request_4">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/auth/refresh/eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODY2NTIyNzZ9.husTcndsrve1_UgrFLYZl_ua1In9aJEl99WNoxqg38tfjfEBwVMDv1v0SZifv86YrgEM7yUH7MKdjVIAqaG4Ug HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/auth/refresh/eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODY3NDA0ODh9.dtwteUa-gRtokdXZgucL6s8U7dzzD4c5va6igOURn5cjJC7eQyqhEzkkqHwQgfJmFYxl63Kk___tC93W4fQ43A HTTP/1.1
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
@@ -921,16 +935,16 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Disposition: inline;filename=f.txt
 Content-Type: application/json;charset=UTF-8
-Content-Length: 488
+Content-Length: 497
 
 {
   "code" : "0000",
   "message" : "success",
   "data" : {
     "type" : "Bearer ",
-    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg2MDQ5Mjc2fQ.L1gLEF6_7PethjNQU3lmEBxWyJy1NiOxr4Dx3ExZDOSXfFETSV39QW3Vld2VYnwMVi_FGbE1sFuatqdneB09RQ",
-    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODY2NTIyNzZ9.husTcndsrve1_UgrFLYZl_ua1In9aJEl99WNoxqg38tfjfEBwVMDv1v0SZifv86YrgEM7yUH7MKdjVIAqaG4Ug",
-    "access_token_expired" : 1686049276386
+    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg2MTM3NDg4fQ.801NzpoNhKg0sVZspXQFvuS5QW67e7hDxBg1d98fFwrq7QOcRST_garFGLlO3Fi-w_PHQsssxyNdKH1M_suRWA",
+    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODY3NDA0ODh9.dtwteUa-gRtokdXZgucL6s8U7dzzD4c5va6igOURn5cjJC7eQyqhEzkkqHwQgfJmFYxl63Kk___tC93W4fQ43A",
+    "access_token_expired" : 1686137488795
   }
 }</code></pre>
 </div>
@@ -993,7 +1007,7 @@ Content-Length: 488
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg2MDQ5Mjc2fQ.UDN5KbAkNYVR-2elO0g0mhhrCf550_DtdCgRJhGqy4IF8pxNEsNUD9QjccRkr_udiKNaDJ_Ji6ocVNUhl9z8Qw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg2MTM3NDg5fQ.AeY1uBPZpdconrWGyyNh1LfEY1ZNJO3quvuG4bF6fzW0PlprmIQscAFBMy6qkoy2oqLnXaq456ZIL1OvRfL5-Q
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
@@ -1028,7 +1042,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 285
+Content-Length: 297
 
 {
   "code" : "0000",
@@ -1039,8 +1053,8 @@ Content-Length: 285
     "nickname" : "nick",
     "name" : "name",
     "role" : "SELLER",
-    "created_at" : "2023-06-06T19:31:16.611633",
-    "modified_at" : "2023-06-06T19:31:16.611633"
+    "created_at" : "2023-06-07T20:01:29.086547",
+    "modified_at" : "2023-06-07T20:01:29.086547"
   }
 }</code></pre>
 </div>
@@ -1123,7 +1137,7 @@ Content-Length: 285
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg2MDQ5Mjc2fQ.UDN5KbAkNYVR-2elO0g0mhhrCf550_DtdCgRJhGqy4IF8pxNEsNUD9QjccRkr_udiKNaDJ_Ji6ocVNUhl9z8Qw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg2MTM3NDg5fQ.AeY1uBPZpdconrWGyyNh1LfEY1ZNJO3quvuG4bF6fzW0PlprmIQscAFBMy6qkoy2oqLnXaq456ZIL1OvRfL5-Q
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
@@ -1158,7 +1172,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 285
+Content-Length: 297
 
 {
   "code" : "0000",
@@ -1169,8 +1183,8 @@ Content-Length: 285
     "nickname" : "nick",
     "name" : "name",
     "role" : "SELLER",
-    "created_at" : "2023-06-06T19:31:16.611633",
-    "modified_at" : "2023-06-06T19:31:16.611633"
+    "created_at" : "2023-06-07T20:01:29.086547",
+    "modified_at" : "2023-06-07T20:01:29.086547"
   }
 }</code></pre>
 </div>
@@ -1248,7 +1262,7 @@ Content-Length: 285
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/member/seller HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg2MDQ5Mjc2fQ.UDN5KbAkNYVR-2elO0g0mhhrCf550_DtdCgRJhGqy4IF8pxNEsNUD9QjccRkr_udiKNaDJ_Ji6ocVNUhl9z8Qw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg2MTM3NDg5fQ.AeY1uBPZpdconrWGyyNh1LfEY1ZNJO3quvuG4bF6fzW0PlprmIQscAFBMy6qkoy2oqLnXaq456ZIL1OvRfL5-Q
 Host: 127.0.0.1
 Content-Type: application/x-www-form-urlencoded</code></pre>
 </div>
@@ -1284,7 +1298,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 119
+Content-Length: 125
 
 {
   "code" : "0000",
@@ -1333,10 +1347,272 @@ Content-Length: 119
 </div>
 </div>
 </div>
+<h1 id="_seller_권한" class="sect0"><a class="link" href="#_seller_권한">SELLER 권한</a></h1>
+<div class="sect1">
+<h2 id="_상품"><a class="link" href="#_상품">📗 상품</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">이미지 등록 관련해서는 Common 부분을 참고해주세요</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><a href="/docs.html#_이미지_업로드">이미지 등록</a></p>
+</div>
+<div class="sect2">
+<h3 id="_상품_등록"><a class="link" href="#_상품_등록">📄 상품 등록</a></h3>
+<div class="sect3">
+<h4 id="_request_8"><a class="link" href="#_request_8">🔵 REQUEST</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/seller/product HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg2MTM3NDg5fQ._BE80c8Vre7zQDTa2O0lVRjXWUA2TCnHUK19TTTBR7LxdcvTDVYFafmvTMBckogF6aHEcQ5erJ9dAGxN4w4nmw
+Content-Length: 477
+Host: 127.0.0.1
+
+{
+  "price" : 9000,
+  "origin" : "원산지",
+  "producer" : "공급자",
+  "image1" : "https://image1",
+  "image2" : "https://image2",
+  "image3" : "https://image3",
+  "main_title" : "메인 타이틀",
+  "main_explanation" : "메인 설명",
+  "product_main_explanation" : "상품 메인 설명",
+  "product_sub_explanation" : "상품 서브 설명",
+  "origin_price" : 10000,
+  "purchase_inquiry" : "취급 방법",
+  "main_image" : "https://메인이미지"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_request_field_4"><a class="link" href="#_request_field_4">🔵 REQUEST FIELD</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>main_title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>main_explanation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메인 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>product_main_explanation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 메인 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>product_sub_explanation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 보조 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>origin_price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">원가</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">실제 판매가</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>purchase_inquiry</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">취급방법</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>origin</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">원산지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>producer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">공급자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>main_image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메인 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지3</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_response_8"><a class="link" href="#_response_8">🟢 RESPONSE</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+Content-Length: 587
+
+{
+  "code" : "0001",
+  "message" : "201 success",
+  "data" : {
+    "id" : 1,
+    "main_title" : "메인 타이틀",
+    "main_explanation" : "메인 설명",
+    "product_main_explanation" : "상품 메인 설명",
+    "product_sub_explanation" : "상품 서브 설명",
+    "origin_price" : 10000,
+    "price" : 9000,
+    "purchase_inquiry" : "취급 방법",
+    "origin" : "원산지",
+    "producer" : "공급자",
+    "main_image" : "https://메인이미지",
+    "image1" : "https://image1",
+    "image2" : "https://image2",
+    "image3" : "https://image3"
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_field_8"><a class="link" href="#_response_field_8">🟢 RESPONSE FIELD</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메세지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">등록 상품 id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.main_title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메인 타이틀</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.main_explanation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메인 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.product_main_explanation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 메인 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.product_sub_explanation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 서브 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.origin_price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 원가</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 실제 판매 가격</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.purchase_inquiry</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">취급 방법</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.origin</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">원산지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.producer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">공급자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.main_image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메인 이미지 url</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.image1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.image2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.image3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지3</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-06-06 19:36:33 +0900
+Last updated 2023-06-07 20:04:57 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

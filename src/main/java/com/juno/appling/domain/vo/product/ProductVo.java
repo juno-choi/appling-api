@@ -26,15 +26,4 @@ public class ProductVo extends BaseVo {
     private String image1;
     private String image2;
     private String image3;
-
-    public void updateImages(String url, List<String> fileNames){
-        for(int i=0; i<fileNames.size(); i++){
-            switch (i){
-                case 0 -> this.mainImage =  String.format("%s/%s", url, Optional.ofNullable(fileNames.get(0)).orElse(""));
-                case 1 -> this.image1 =  String.format("%s/%s", url, Optional.ofNullable(fileNames.get(1)).orElse(""));
-                case 2 -> this.image2 =  String.format("%s/%s", url, Optional.ofNullable(fileNames.get(2)).orElse(""));
-                case 3 -> this.image3 =  String.format("%s/%s", url, Optional.ofNullable(fileNames.get(3)).orElse(""));
-            }
-        }
-    }
 }

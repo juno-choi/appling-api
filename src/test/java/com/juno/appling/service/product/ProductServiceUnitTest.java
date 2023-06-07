@@ -54,29 +54,15 @@ class ProductServiceUnitTest {
         request.addHeader(AUTHORIZATION, "Bearer token");
         String mainTitle = "메인 제목";
 
-        ProductDto dto = ProductDto.builder()
-                .mainTitle(mainTitle)
-                .mainExplanation("메인 설명")
-                .productMainExplanation("상품 메인 설명")
-                .productSubExplanation("상품 서브 설명")
-                .producer("공급자")
-                .origin("원산지")
-                .purchaseInquiry("취급 방법")
-                .originPrice(1000)
-                .price(100)
-                .mainImage("https://main_image")
-                .image1("https://image1")
-                .image2("https://image2")
-                .image3("https://image3")
-                .build();
+        ProductDto productDto = new ProductDto(mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2", "https://image3");
 
         given(tokenProvider.resolveToken(any())).willReturn("token");
         LocalDateTime now = LocalDateTime.now();
         Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030", Role.SELLER, null, null, now, now);
         given(memberRepository.findById(any())).willReturn(Optional.of(member));
-        given(productRepository.save(any())).willReturn(Product.of(member, dto));
+        given(productRepository.save(any())).willReturn(Product.of(member, productDto));
         //when
-        ProductVo productVo = productService.postProduct(dto, request);
+        ProductVo productVo = productService.postProduct(productDto, request);
 
         //then
         Assertions.assertThat(productVo.getMainTitle()).isEqualTo(mainTitle);
