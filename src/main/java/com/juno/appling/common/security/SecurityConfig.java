@@ -20,7 +20,7 @@ public class SecurityConfig {
     private final CustomAccessDeniedHandler accessDeniedHandler;
 
     private static final String[] SELLER_LIST = {
-            "/api/v2/**"
+            "/api/seller/**"
     };
 
     private static final String[] MEMBER_LIST = {

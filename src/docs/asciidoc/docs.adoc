@@ -16,7 +16,12 @@ endif::[]
 
 ==== 🔴 400 BAD_REQUEST
 
-include::{snippets}/auth-controller-test/join-fail/http-response.adoc[]
+include::{snippets}/join/join-fail/http-response.adoc[]
 
+= MEMBER 권한
+include::common/common.adoc[]
 include::member/auth.adoc[]
 include::member/member.adoc[]
+
+= SELLER 권한
+include::product/product.adoc[]

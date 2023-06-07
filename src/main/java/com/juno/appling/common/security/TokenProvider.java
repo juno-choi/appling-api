@@ -5,6 +5,7 @@ import com.juno.appling.domain.vo.member.LoginVo;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +15,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Arrays;
@@ -21,13 +23,15 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 @Slf4j
 @Component
 public class TokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 30;            // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 7;  // 7일
-
+    private static final String TYPE = "Bearer ";
     private final Key key;
 
     public TokenProvider(@Value("${jwt.secret}") String secretKey) {
@@ -117,5 +121,13 @@ public class TokenProvider {
     public Long getMemberId(String token) {
         Claims claims = parseClaims(token);
         return Long.parseLong(claims.get("sub").toString());
+    }
+
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(AUTHORIZATION);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(TYPE)) {
+            return bearerToken.substring(TYPE.length());
+        }
+        return null;
     }
 }
