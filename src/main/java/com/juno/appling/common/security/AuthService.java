@@ -29,7 +29,7 @@ public class AuthService implements UserDetailsService {
 
         Role role = member.getRole();
         Set<String> roleSet = new HashSet<>();
-        String roleListToString = Role.valueOf(role.name).roleList;
+        String roleListToString = Role.valueOf(role.role).roleList;
         String[] roleList = roleListToString.split(",");
 
         for(String r : roleList){

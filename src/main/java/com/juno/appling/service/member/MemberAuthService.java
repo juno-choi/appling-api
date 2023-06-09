@@ -94,7 +94,7 @@ public class MemberAuthService {
                 new IllegalArgumentException("유효하지 않은 회원입니다.")
         );
 
-        Role role = Role.valueOf(member.getRole().name);
+        Role role = Role.valueOf(member.getRole().role);
         String[] roleSplitList = role.roleList.split(",");
         List<String> trimRoleList = Arrays.stream(roleSplitList).map(r -> String.format("ROLE_%s", r.trim())).toList();
         String roleList = trimRoleList.toString().replace("[", "").replace("]", "").replace(" ", "");
