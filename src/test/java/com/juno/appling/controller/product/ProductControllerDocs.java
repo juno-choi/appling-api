@@ -7,8 +7,6 @@ import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.service.member.MemberAuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -24,7 +22,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@Execution(ExecutionMode.SAME_THREAD)
 class ProductControllerDocs extends BaseTest {
     @Autowired
     private MemberAuthService memberAuthService;

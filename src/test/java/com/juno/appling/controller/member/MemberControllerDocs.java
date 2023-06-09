@@ -9,12 +9,8 @@ import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.service.member.MemberAuthService;
 import com.juno.appling.service.member.MemberService;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -30,8 +26,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Execution(ExecutionMode.SAME_THREAD)
 class MemberControllerDocs extends BaseTest {
     @Autowired
     private MemberService memberService;
@@ -41,20 +35,13 @@ class MemberControllerDocs extends BaseTest {
     private final static String PREFIX = "/api/member";
     private final static String EMAIL = "juno@member.com";
     private final static String PASSWORD = "password";
-    private LoginVo loginVo = null;
-
-    @BeforeAll
-    void setup(){
-        JoinDto joinDto = new JoinDto(EMAIL, PASSWORD, "name", "nick", "19941030");
-        memberAuthService.join(joinDto);
-        LoginDto loginDto = new LoginDto(EMAIL, PASSWORD);
-        this.loginVo = memberAuthService.login(loginDto);
-    }
 
     @Test
     @DisplayName(PREFIX)
     void member() throws Exception {
         //given
+        LoginDto loginDto = new LoginDto(EMAIL, PASSWORD);
+        LoginVo loginVo = memberAuthService.login(loginDto);
         //when
         ResultActions resultActions = mock.perform(
                 get(PREFIX)
@@ -87,6 +74,10 @@ class MemberControllerDocs extends BaseTest {
     @DisplayName(PREFIX+"/seller")
     void applySeller() throws Exception {
         //given
+        JoinDto joinDto = new JoinDto(EMAIL, PASSWORD, "name", "nick", "19941030");
+        memberAuthService.join(joinDto);
+        LoginDto loginDto = new LoginDto(EMAIL, PASSWORD);
+        LoginVo loginVo = memberAuthService.login(loginDto);
         //when
         ResultActions resultActions = mock.perform(
                 post(PREFIX+"/seller")
