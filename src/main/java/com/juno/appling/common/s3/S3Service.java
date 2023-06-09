@@ -14,6 +14,7 @@ import software.amazon.awssdk.services.s3.model.*;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -33,7 +34,7 @@ public class S3Service {
         Long size = Long.parseLong(env.getProperty("cloud.s3.size"));
 
         for(MultipartFile file : files){
-            String originFileName = file.getOriginalFilename();
+            String originFileName = Optional.ofNullable(file.getOriginalFilename()).orElse("");
             String fileExtension = originFileName.substring(originFileName.indexOf('.'));
             Long fileSize = file.getSize();
             String contentType = file.getContentType();
