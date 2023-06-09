@@ -35,7 +35,6 @@ class ProductServiceTest {
     private MockHttpServletRequest request = new MockHttpServletRequest();
 
     @Test
-    @Disabled
     @DisplayName("상품 등록 성공")
     void postProduct() {
         //given
