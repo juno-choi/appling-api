@@ -3,6 +3,8 @@ package com.juno.appling;
 import com.juno.appling.config.RestdocsConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,6 +24,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 @AutoConfigureRestDocs
 @Import(RestdocsConfig.class)
 @ExtendWith(RestDocumentationExtension.class)
+@Execution(ExecutionMode.SAME_THREAD)
 public class BaseTest {
     @Autowired
     protected MockMvc mock;
@@ -31,6 +34,7 @@ public class BaseTest {
 
     protected ObjectMapper objectMapper = new ObjectMapper();
 
+    protected String MEMBER_EMAIL = "member@appling.com";
     protected String SELLER_EMAIL = "seller@appling.com";
     protected String PASSWORD = "password";
 
