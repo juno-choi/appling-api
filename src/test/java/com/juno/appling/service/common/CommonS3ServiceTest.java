@@ -35,7 +35,7 @@ class CommonS3ServiceTest {
     private MockHttpServletRequest request = new MockHttpServletRequest();
 
     @Test
-    @Disabled
+    @Disabled("s3에 실제로 데이터가 올라가는 테스트임")
     @DisplayName("이미 등록 성공")
     void uploadImage() {
         //given
