@@ -53,6 +53,10 @@ dependencies {
     implementation platform('software.amazon.awssdk:bom:2.17.230')
     // AWS s3 추가
     implementation 'software.amazon.awssdk:s3'
+
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
 }
 
 tasks.named('test') {
