@@ -131,7 +131,8 @@ public class MemberAuthService {
         map.add("code", code);
 
         // TODO code를 통해 access token 발급 진행
-        KakaoLoginResponseDto kakaoToken = webClient.post().uri("https://kauth.kakao.com/oauth/token")
+
+        KakaoLoginResponseDto kakaoToken = WebClient.create("https://kauth.kakao.com/oauth/token").post()
                 .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
                 .body(
                         BodyInserters.fromFormData(map)
@@ -139,6 +140,15 @@ public class MemberAuthService {
                 .retrieve()
                 .bodyToMono(KakaoLoginResponseDto.class)
                 .block();
+
+//        KakaoLoginResponseDto kakaoToken = webClient.post().uri("https://kauth.kakao.com/oauth/token")
+//                .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
+//                .body(
+//                        BodyInserters.fromFormData(map)
+//                )
+//                .retrieve()
+//                .bodyToMono(KakaoLoginResponseDto.class)
+//                .block();
 
         return LoginVo.builder()
                 .type(TYPE)
