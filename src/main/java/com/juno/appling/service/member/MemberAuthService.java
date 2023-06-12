@@ -16,7 +16,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -29,7 +28,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -127,20 +129,11 @@ public class MemberAuthService {
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("grant_type", "authorization_code");
-        map.add("client_id", env.getProperty("kakao.client_id"));
-        map.add("redirect_url", env.getProperty("kakao.redirect_url"));
+        map.add("client_id", env.getProperty("kakao.client-id"));
+        map.add("redirect_url", env.getProperty("kakao.redirect-url"));
         map.add("code", code);
 
         // TODO code를 통해 access token 발급 진행
-
-        String kakaoTokenAsString = kakaoClient.post().uri(("/oauth/token"))
-                .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
-                .body(
-                        BodyInserters.fromFormData(map)
-                )
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
 
         KakaoLoginResponseDto kakaoToken = kakaoClient.post().uri(("/oauth/token"))
                 .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")

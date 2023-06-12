@@ -66,14 +66,13 @@ class MemberAuthServiceUnitTest {
     @DisplayName("test")
     void test() throws Exception {
         //given
-        given(env.getProperty(eq("kakao.client_id"))).willReturn("kakao client id");
+        given(env.getProperty(eq("kakao.client-id"))).willReturn("kakao client id");
         KakaoLoginResponseDto dto = KakaoLoginResponseDto.builder()
                 .access_token("access token")
                 .expires_in(1L)
                 .refresh_token("refresh token")
                 .refresh_token_expires_in(2L)
                 .build();
-        mockWebServer.enqueue(new MockResponse().setHeader("Content-Type", MediaType.APPLICATION_JSON).setBody(objectMapper.writeValueAsString(dto)));
         mockWebServer.enqueue(new MockResponse().setHeader("Content-Type", MediaType.APPLICATION_JSON).setBody(objectMapper.writeValueAsString(dto)));
         //when
         memberAuthService.loginKakao("kakao login token");

@@ -22,8 +22,8 @@ api-prefix: /api
 docs: /docs.html
 
 kakao:
-  client_id: ${kakao.id}
-  redirect_url: ${kakao.url}
+  client-id: ${kakao.id:kakao_client_id}
+  redirect-url: ${kakao.url:kakao_url}
 
 # aws 설정
 cloud:
