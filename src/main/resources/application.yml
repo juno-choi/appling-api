@@ -21,6 +21,10 @@ server:
 api-prefix: /api
 docs: /docs.html
 
+kakao:
+  client-id: ${kakao.id:kakao_client_id}
+  redirect-url: ${kakao.url:kakao_url}
+
 # aws 설정
 cloud:
   s3:
