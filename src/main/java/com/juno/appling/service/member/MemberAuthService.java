@@ -16,6 +16,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -40,7 +41,7 @@ public class MemberAuthService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
     private final RedisTemplate<String, Object> redisTemplate;
-    private final WebClient webClient;
+    private final WebClient kakaoClient;
     private final Environment env;
 
     private static final String AUTHORITIES_KEY = "auth";
@@ -122,7 +123,7 @@ public class MemberAuthService {
 
     @Transactional
     public LoginVo loginKakao(String code) {
-        log.info("code ={}", code);
+        log.info("code = {}", code);
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("grant_type", "authorization_code");
@@ -132,7 +133,16 @@ public class MemberAuthService {
 
         // TODO code를 통해 access token 발급 진행
 
-        KakaoLoginResponseDto kakaoToken = WebClient.create("https://kauth.kakao.com/oauth/token").post()
+        String kakaoTokenAsString = kakaoClient.post().uri(("/oauth/token"))
+                .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
+                .body(
+                        BodyInserters.fromFormData(map)
+                )
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        KakaoLoginResponseDto kakaoToken = kakaoClient.post().uri(("/oauth/token"))
                 .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
                 .body(
                         BodyInserters.fromFormData(map)
@@ -140,15 +150,6 @@ public class MemberAuthService {
                 .retrieve()
                 .bodyToMono(KakaoLoginResponseDto.class)
                 .block();
-
-//        KakaoLoginResponseDto kakaoToken = webClient.post().uri("https://kauth.kakao.com/oauth/token")
-//                .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
-//                .body(
-//                        BodyInserters.fromFormData(map)
-//                )
-//                .retrieve()
-//                .bodyToMono(KakaoLoginResponseDto.class)
-//                .block();
 
         return LoginVo.builder()
                 .type(TYPE)
