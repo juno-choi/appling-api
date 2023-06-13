@@ -13,16 +13,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-class OAuthControllerTest extends BaseTest {
+class OAuthControllerDocs extends BaseTest {
     private static MockWebServer mockWebServer;
 
     private final String PREFIX = "/api/oauth";
@@ -58,12 +62,29 @@ class OAuthControllerTest extends BaseTest {
                 .refresh_token_expires_in(2L)
                 .build();
         mockWebServer.enqueue(new MockResponse().setHeader("Content-Type", MediaType.APPLICATION_JSON).setBody(objectMapper.writeValueAsString(dto)));
+
         //when
         ResultActions resultActions = mock.perform(
-                get(PREFIX + "/kakao").param("code", "kakao login token")
+                get(PREFIX + "/kakao").param("code", "kakao_code")
         ).andDo(print());
+
         //then
+        resultActions.andExpect(status().is2xxSuccessful());
 
+        //docs
+        resultActions.andDo(docs.document(
+                queryParameters(
+                        parameterWithName("code").description("kakao login code")
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.type").type(JsonFieldType.STRING).description("token type"),
+                        fieldWithPath("data.access_token").type(JsonFieldType.STRING).description("카카오에서 발급된 access token"),
+                        fieldWithPath("data.refresh_token").type(JsonFieldType.STRING).description("카카오에서 발급된 refresh token"),
+                        fieldWithPath("data.access_token_expired").type(JsonFieldType.NUMBER).description("access token expired"),
+                        fieldWithPath("data.refresh_token_expired").type(JsonFieldType.NUMBER).description("refresh token expired")
+                )
+        ));
     }
-
 }
