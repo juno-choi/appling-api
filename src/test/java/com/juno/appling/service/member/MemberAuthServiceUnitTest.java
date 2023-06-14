@@ -142,8 +142,23 @@ class MemberAuthServiceUnitTest {
 
         //then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("SNS 인증 먼저 진행해주세요.");
+                .hasMessageContaining("이메일이 존재하지 않는 회원입니다.");
     }
+
+    @Test
+    @DisplayName("kakao 전달 받은 내용이 없어 fail")
+    void kakaoLoginFail2() throws Exception {
+        //given
+        String kakaoReturnString = "";
+        mockWebServer.enqueue(new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON).setBody(kakaoReturnString));
+        //when
+        Throwable throwable = catchThrowable(() -> memberAuthService.loginKakao("kakao_access_token"));
+
+        //then
+        assertThat(throwable).isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("카카오에서 반환 받은 값이 존재하지 않습니다.");
+    }
+
 
     @Test
     @DisplayName("kakao login success")

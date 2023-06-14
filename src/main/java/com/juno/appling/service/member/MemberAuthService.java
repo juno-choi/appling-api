@@ -108,7 +108,7 @@ public class MemberAuthService {
                 new IllegalArgumentException("유효하지 않은 회원입니다.")
         );
 
-        Role role = Role.valueOf(member.getRole().role);
+        Role role = Role.valueOf(member.getRole().roleName);
         String[] roleSplitList = role.roleList.split(",");
         List<String> trimRoleList = Arrays.stream(roleSplitList).map(r -> String.format("ROLE_%s", r.trim())).toList();
         String roleList = trimRoleList.toString().replace("[", "").replace("]", "").replace(" ", "");
@@ -157,10 +157,14 @@ public class MemberAuthService {
     public LoginVo loginKakao(String accessToken) {
         KakaoMemberResponseDto info = kakaoApiClient.post().uri(("/v2/user/me"))
                 .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
-                .header(AUTHORIZATION, TYPE+accessToken)
+                .header(AUTHORIZATION, TYPE + accessToken)
                 .retrieve()
                 .bodyToMono(KakaoMemberResponseDto.class)
-                .block();
+                .blockOptional()
+                .orElseThrow(() -> {
+                    throw new IllegalStateException("카카오에서 반환 받은 값이 존재하지 않습니다.");
+                });
+
 
         boolean hasEmail = info.kakao_account.has_email;
         if(!hasEmail){
@@ -180,7 +184,7 @@ public class MemberAuthService {
             member = findMember.get();
         }
 
-        Role role = Role.valueOf(member.getRole().role);
+        Role role = Role.valueOf(member.getRole().roleName);
         String[] roleSplitList = role.roleList.split(",");
         List<SimpleGrantedAuthority> grantedList = new LinkedList<>();
         for(String r : roleSplitList){

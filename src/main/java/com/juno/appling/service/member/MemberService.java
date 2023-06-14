@@ -56,7 +56,6 @@ public class MemberService {
 
         MemberApplySeller saveMemberApply = memberApplySellerRepository.save(MemberApplySeller.of(memberId));
 
-        // TODO 임시로 판매자 권인 승인하도록 로직을 만들어둠 나중에는 admin에서 승인해주어야 함
         permitSeller(memberId, saveMemberApply);
 
         return MessageVo.builder()
