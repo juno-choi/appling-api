@@ -96,3 +96,20 @@ include::{snippets}/o-auth-controller-docs/oauth-kakao/http-response.adoc[]
 ==== 🟢 RESPONSE FIELD
 
 include::{snippets}/o-auth-controller-docs/oauth-kakao/response-fields.adoc[]
+
+### 📄 Kakao Access Token으로 로그인 (미가입시 자동 회원가입)
+
+==== 🔵 REQUEST
+include::{snippets}/o-auth-controller-docs/oauth-kakao-login/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/o-auth-controller-docs/oauth-kakao-login/query-parameters.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/o-auth-controller-docs/oauth-kakao-login/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/o-auth-controller-docs/oauth-kakao-login/response-fields.adoc[]
