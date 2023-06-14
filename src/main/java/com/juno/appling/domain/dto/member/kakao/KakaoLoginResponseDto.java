@@ -1,4 +1,4 @@
-package com.juno.appling.domain.dto.member;
+package com.juno.appling.domain.dto.member.kakao;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -22,7 +22,6 @@ public class JoinDto {
     private String name;
     @NotNull(message = "nickname 비어있을 수 없습니다.")
     private String nickname;
-    @NotNull(message = "birth 비어있을 수 없습니다.")
     private String birth;
 
     public void passwordEncoder(BCryptPasswordEncoder encoder){

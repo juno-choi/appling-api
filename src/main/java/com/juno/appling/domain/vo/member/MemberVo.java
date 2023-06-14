@@ -2,6 +2,7 @@ package com.juno.appling.domain.vo.member;
 
 
 import com.juno.appling.domain.enums.member.Role;
+import com.juno.appling.domain.enums.member.SnsJoinType;
 import com.juno.appling.domain.vo.BaseVo;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,7 @@ public class MemberVo extends BaseVo {
     private String nickname;
     private String name;
     private Role role;
-    private String snsType;
+    private SnsJoinType snsType;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

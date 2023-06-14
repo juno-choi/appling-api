@@ -2,10 +2,12 @@ package com.juno.appling.service.member;
 
 import com.juno.appling.common.security.TokenProvider;
 import com.juno.appling.domain.dto.member.JoinDto;
-import com.juno.appling.domain.dto.member.KakaoLoginResponseDto;
+import com.juno.appling.domain.dto.member.kakao.KakaoLoginResponseDto;
+import com.juno.appling.domain.dto.member.kakao.KakaoMemberResponseDto;
 import com.juno.appling.domain.dto.member.LoginDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.enums.member.Role;
+import com.juno.appling.domain.enums.member.SnsJoinType;
 import com.juno.appling.domain.vo.member.JoinVo;
 import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.repository.member.MemberRepository;
@@ -19,6 +21,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,10 +31,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +46,7 @@ public class MemberAuthService {
     private final TokenProvider tokenProvider;
     private final RedisTemplate<String, Object> redisTemplate;
     private final WebClient kakaoClient;
+    private final WebClient kakaoApiClient;
     private final Environment env;
 
     private static final String AUTHORITIES_KEY = "auth";
@@ -123,8 +126,7 @@ public class MemberAuthService {
                 .build();
     }
 
-    @Transactional
-    public LoginVo loginKakao(String code) {
+    public LoginVo authKakao(String code) {
         log.info("code = {}", code);
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -132,8 +134,6 @@ public class MemberAuthService {
         map.add("client_id", env.getProperty("kakao.client-id"));
         map.add("redirect_url", env.getProperty("kakao.redirect-url"));
         map.add("code", code);
-
-        // TODO code를 통해 access token 발급 진행
 
         KakaoLoginResponseDto kakaoToken = kakaoClient.post().uri(("/oauth/token"))
                 .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
@@ -151,5 +151,45 @@ public class MemberAuthService {
                 .refreshToken(kakaoToken.refresh_token)
                 .refreshTokenExpired(kakaoToken.refresh_token_expires_in)
                 .build();
+    }
+
+    @Transactional
+    public LoginVo loginKakao(String accessToken) {
+        KakaoMemberResponseDto info = kakaoApiClient.post().uri(("/v2/user/me"))
+                .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
+                .header(AUTHORIZATION, TYPE+accessToken)
+                .retrieve()
+                .bodyToMono(KakaoMemberResponseDto.class)
+                .block();
+
+        boolean hasEmail = info.kakao_account.has_email;
+        if(!hasEmail){
+            throw new IllegalArgumentException("이메일이 존재하지 않는 회원입니다. SNS 인증 먼저 진행해주세요.");
+        }
+
+        String email = info.kakao_account.email;
+        String snsId = String.valueOf(info.id);
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+        Member member;
+        if(findMember.isEmpty()){
+            // 회원 가입 진행
+            JoinDto joinDto = new JoinDto(email, snsId, info.kakao_account.profile.nickname, info.kakao_account.profile.nickname, null);
+            joinDto.passwordEncoder(passwordEncoder);
+            member = memberRepository.save(Member.of(joinDto, snsId, SnsJoinType.KAKAO));
+        }else{
+            member = findMember.get();
+        }
+
+        Role role = Role.valueOf(member.getRole().role);
+        String[] roleSplitList = role.roleList.split(",");
+        List<SimpleGrantedAuthority> grantedList = new LinkedList<>();
+        for(String r : roleSplitList){
+            grantedList.add(new SimpleGrantedAuthority(r));
+        }
+
+        // 토큰 인증 저장
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, snsId, grantedList);
+        Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        return tokenProvider.generateTokenDto(authenticate);
     }
 }
