@@ -39,22 +39,21 @@ public class ControllerLogAspect {
 
         Object[] args = pjp.getArgs();
         for(Object a : args){
-            if(a instanceof BindingResult bindingResult){   // object type == BindingResult
-                if(bindingResult.hasErrors()){  // 유효성 검사에 걸리는 에러가 존재한다면
-                    List<ErrorDto> errors = new ArrayList<>();
-                    for(FieldError error : bindingResult.getFieldErrors()){
-                        errors.add(ErrorDto.builder().point(error.getField()).detail(error.getDefaultMessage()).build());
-                    }
-
-                    ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "잘못된 입력입니다.");
-                    pb.setInstance(URI.create(requestURI));
-                    pb.setType(URI.create(docs));
-                    pb.setTitle(HttpStatus.BAD_REQUEST.name());
-                    pb.setProperty("errors", errors);
-
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                            .body(pb);
+            // 유효성 검사에 걸리는 에러가 존재한다면
+            if(a instanceof BindingResult bindingResult && bindingResult.hasErrors()){   // object type == BindingResult
+                List<ErrorDto> errors = new ArrayList<>();
+                for(FieldError error : bindingResult.getFieldErrors()){
+                    errors.add(ErrorDto.builder().point(error.getField()).detail(error.getDefaultMessage()).build());
                 }
+
+                ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "잘못된 입력입니다.");
+                pb.setInstance(URI.create(requestURI));
+                pb.setType(URI.create(docs));
+                pb.setTitle(HttpStatus.BAD_REQUEST.name());
+                pb.setProperty("errors", errors);
+
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(pb);
             }
         }
 
