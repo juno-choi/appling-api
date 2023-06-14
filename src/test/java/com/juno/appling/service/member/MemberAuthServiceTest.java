@@ -6,6 +6,8 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.assertj.core.api.Assertions.*;
+
 
 @SpringBootTest
 class MemberAuthServiceTest {
@@ -22,7 +24,7 @@ class MemberAuthServiceTest {
         //when
         LoginVo kakaoLoginToken = memberAuthService.authKakao("kakao login code");
         //then
-        Assertions.assertThat(kakaoLoginToken).isNotNull();
+        assertThat(kakaoLoginToken).isNotNull();
     }
 
     @Test
@@ -31,7 +33,8 @@ class MemberAuthServiceTest {
     void kakaoLoginSuccess() throws Exception {
         //given
         //when
-        memberAuthService.loginKakao("c5gOv5YdZbUEKY0EUGzC-nd-gIKN7kVvQ24qhGQiCinI2gAAAYi4Gfl3");
+        LoginVo loginVo = memberAuthService.loginKakao("c5gOv5YdZbUEKY0EUGzC-nd-gIKN7kVvQ24qhGQiCinI2gAAAYi4Gfl3");
         //then
+        assertThat(loginVo).isNotNull();
     }
 }
