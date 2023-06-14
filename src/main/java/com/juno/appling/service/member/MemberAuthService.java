@@ -21,6 +21,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,10 +31,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
 
@@ -172,12 +170,26 @@ public class MemberAuthService {
         String email = info.kakao_account.email;
         String snsId = String.valueOf(info.id);
         Optional<Member> findMember = memberRepository.findByEmail(email);
+        Member member;
         if(findMember.isEmpty()){
             // 회원 가입 진행
             JoinDto joinDto = new JoinDto(email, snsId, info.kakao_account.profile.nickname, info.kakao_account.profile.nickname, null);
-            memberRepository.save(Member.of(joinDto, snsId, SnsJoinType.KAKAO));
+            joinDto.passwordEncoder(passwordEncoder);
+            member = memberRepository.save(Member.of(joinDto, snsId, SnsJoinType.KAKAO));
+        }else{
+            member = findMember.get();
         }
 
-        return tokenProvider.generateTokenDto(new UsernamePasswordAuthenticationToken(email, snsId));
+        Role role = Role.valueOf(member.getRole().role);
+        String[] roleSplitList = role.roleList.split(",");
+        List<SimpleGrantedAuthority> grantedList = new LinkedList<>();
+        for(String r : roleSplitList){
+            grantedList.add(new SimpleGrantedAuthority(r));
+        }
+
+        // 토큰 인증 저장
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, snsId, grantedList);
+        Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        return tokenProvider.generateTokenDto(authenticate);
     }
 }

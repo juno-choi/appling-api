@@ -2,7 +2,10 @@ package com.juno.appling.service.member;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.juno.appling.common.security.TokenProvider;
+import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.dto.member.kakao.KakaoLoginResponseDto;
+import com.juno.appling.domain.entity.member.Member;
+import com.juno.appling.domain.enums.member.SnsJoinType;
 import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.repository.member.MemberRepository;
 import okhttp3.mockwebserver.MockResponse;
@@ -16,10 +19,14 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -186,10 +193,54 @@ class MemberAuthServiceUnitTest {
                         .refreshToken("refresh token")
                         .type(TYPE)
                         .build());
+        String snsId = "snsId";
+        JoinDto joinDto = new JoinDto("kakao@email.com", snsId, "카카오회원", "카카오회원", null);
+        given(memberRepository.save(any())).willReturn(Member.of(joinDto, snsId, SnsJoinType.KAKAO));
+        given(authenticationManagerBuilder.getObject()).willReturn(mockAuthenticationManager());
+
         //when
         LoginVo loginVo = memberAuthService.loginKakao("kakao_access_token");
 
         //then
         assertThat(loginVo).isNotNull();
+    }
+
+    private AuthenticationManager mockAuthenticationManager() {
+        return authentication -> new Authentication() {
+            @Override
+            public Collection<? extends GrantedAuthority> getAuthorities() {
+                return null;
+            }
+
+            @Override
+            public Object getCredentials() {
+                return null;
+            }
+
+            @Override
+            public Object getDetails() {
+                return null;
+            }
+
+            @Override
+            public Object getPrincipal() {
+                return null;
+            }
+
+            @Override
+            public boolean isAuthenticated() {
+                return false;
+            }
+
+            @Override
+            public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+
+            }
+
+            @Override
+            public String getName() {
+                return null;
+            }
+        };
     }
 }
