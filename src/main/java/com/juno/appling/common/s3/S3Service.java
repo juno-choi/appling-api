@@ -59,7 +59,6 @@ public class S3Service {
             }
 
             if(response.sdkHttpResponse().statusText().orElse("FAIL").equals("OK")){
-                //TODO s3 이미지 정상 등록 후 행
                 list.add(makeFileName);
             }else{
                 throw new RuntimeException("AWS에 파일을 올리는데 실패했습니다.");
