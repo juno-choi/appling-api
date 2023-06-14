@@ -75,7 +75,7 @@ class MemberAuthServiceUnitTest {
                 .build();
         mockWebServer.enqueue(new MockResponse().setHeader("Content-Type", MediaType.APPLICATION_JSON).setBody(objectMapper.writeValueAsString(dto)));
         //when
-        memberAuthService.loginKakao("kakao login token");
+        memberAuthService.authKakao("kakao login token");
         //then
 
     }

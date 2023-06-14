@@ -124,7 +124,7 @@ public class MemberAuthService {
     }
 
     @Transactional
-    public LoginVo loginKakao(String code) {
+    public LoginVo authKakao(String code) {
         log.info("code = {}", code);
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -151,5 +151,10 @@ public class MemberAuthService {
                 .refreshToken(kakaoToken.refresh_token)
                 .refreshTokenExpired(kakaoToken.refresh_token_expires_in)
                 .build();
+    }
+
+    public LoginVo loginKakao(String accessToken) {
+
+        return null;
     }
 }
