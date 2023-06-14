@@ -157,10 +157,14 @@ public class MemberAuthService {
     public LoginVo loginKakao(String accessToken) {
         KakaoMemberResponseDto info = kakaoApiClient.post().uri(("/v2/user/me"))
                 .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
-                .header(AUTHORIZATION, TYPE+accessToken)
+                .header(AUTHORIZATION, TYPE + accessToken)
                 .retrieve()
                 .bodyToMono(KakaoMemberResponseDto.class)
-                .block();
+                .blockOptional()
+                .orElseThrow(() -> {
+                    throw new IllegalStateException("카카오에서 반환 받은 값이 존재하지 않습니다.");
+                });
+
 
         boolean hasEmail = info.kakao_account.has_email;
         if(!hasEmail){
