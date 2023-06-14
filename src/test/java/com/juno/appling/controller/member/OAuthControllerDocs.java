@@ -1,7 +1,7 @@
 package com.juno.appling.controller.member;
 
 import com.juno.appling.BaseTest;
-import com.juno.appling.domain.dto.member.KakaoLoginResponseDto;
+import com.juno.appling.domain.dto.member.kakao.KakaoLoginResponseDto;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -31,7 +32,7 @@ class OAuthControllerDocs extends BaseTest {
 
     private final String PREFIX = "/api/oauth";
 
-    @MockBean
+    @MockBean(name = "kakaoClient")
     private WebClient kakaoClient;
 
     private static WebClient webClient;
@@ -61,7 +62,7 @@ class OAuthControllerDocs extends BaseTest {
                 .refresh_token("refresh token")
                 .refresh_token_expires_in(2L)
                 .build();
-        mockWebServer.enqueue(new MockResponse().setHeader("Content-Type", MediaType.APPLICATION_JSON).setBody(objectMapper.writeValueAsString(dto)));
+        mockWebServer.enqueue(new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON).setBody(objectMapper.writeValueAsString(dto)));
 
         //when
         ResultActions resultActions = mock.perform(

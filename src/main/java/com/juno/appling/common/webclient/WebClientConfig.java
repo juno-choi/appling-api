@@ -9,6 +9,12 @@ public class WebClientConfig {
     @Bean
     public WebClient kakaoClient(){
         return WebClient.builder().baseUrl("https://kauth.kakao.com").build();
-
     }
+
+    @Bean
+    public WebClient kakaoApiClient(){
+        return WebClient.builder().baseUrl("https://kapi.kakao.com").build();
+    }
+
+
 }
