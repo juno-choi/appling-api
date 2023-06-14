@@ -8,6 +8,6 @@ public enum Role {
     SELLER("SELLER", "MEMBER, SELLER"),
     ADMIN("ADMIN", "MEMBER, SELLER, ADMIN"),
     ;
-    public final String role;
+    public final String name;
     public final String roleList;
 }

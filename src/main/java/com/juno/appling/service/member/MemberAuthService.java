@@ -108,7 +108,7 @@ public class MemberAuthService {
                 new IllegalArgumentException("유효하지 않은 회원입니다.")
         );
 
-        Role role = Role.valueOf(member.getRole().role);
+        Role role = Role.valueOf(member.getRole().name);
         String[] roleSplitList = role.roleList.split(",");
         List<String> trimRoleList = Arrays.stream(roleSplitList).map(r -> String.format("ROLE_%s", r.trim())).toList();
         String roleList = trimRoleList.toString().replace("[", "").replace("]", "").replace(" ", "");
@@ -184,7 +184,7 @@ public class MemberAuthService {
             member = findMember.get();
         }
 
-        Role role = Role.valueOf(member.getRole().role);
+        Role role = Role.valueOf(member.getRole().name);
         String[] roleSplitList = role.roleList.split(",");
         List<SimpleGrantedAuthority> grantedList = new LinkedList<>();
         for(String r : roleSplitList){
