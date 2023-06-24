@@ -1,6 +1,9 @@
 package com.juno.appling.domain.dto.member.kakao;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Setter
 @Builder

@@ -5,39 +5,44 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ProductDto {
-    @NotNull
+
+    @NotNull(message = "main_title 비어있을 수 없습니다.")
     @JsonProperty("main_title")
     private String mainTitle;
-    @NotNull
+    @NotNull(message = "main_explanation 비어있을 수 없습니다.")
     @JsonProperty("main_explanation")
     private String mainExplanation;
-    @NotNull
+    @NotNull(message = "product_main_explanation 비어있을 수 없습니다.")
     @JsonProperty("product_main_explanation")
     private String productMainExplanation;
-    @NotNull
+    @NotNull(message = "product_sub_explanation 비어있을 수 없습니다.")
     @JsonProperty("product_sub_explanation")
     private String productSubExplanation;
-    @NotNull
+    @NotNull(message = "origin_price 비어있을 수 없습니다.")
     @JsonProperty("origin_price")
     private int originPrice;
-    @NotNull
+    @NotNull(message = "price 비어있을 수 없습니다.")
     private int price;
-    @NotNull
+    @NotNull(message = "purchase_inquiry 비어있을 수 없습니다.")
     @JsonProperty("purchase_inquiry")
     private String purchaseInquiry;
-    @NotNull
+    @NotNull(message = "origin 비어있을 수 없습니다.")
     private String origin;
-    @NotNull
+    @NotNull(message = "producer 비어있을 수 없습니다.")
     private String producer;
-    @NotNull
+    @NotNull(message = "main_image 비어있을 수 없습니다.")
     @JsonProperty("main_image")
     private String mainImage;
     private String image1;

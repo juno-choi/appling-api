@@ -1,29 +1,29 @@
 package com.juno.appling.service.product;
 
-import com.juno.appling.common.s3.S3Service;
 import com.juno.appling.common.security.TokenProvider;
 import com.juno.appling.domain.dto.product.ProductDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.product.Product;
+import com.juno.appling.domain.vo.product.ProductListVo;
 import com.juno.appling.domain.vo.product.ProductVo;
 import com.juno.appling.repository.member.MemberRepository;
+import com.juno.appling.repository.product.ProductCustomRepository;
 import com.juno.appling.repository.product.ProductRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductCustomRepository productCustomRepository;
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
 
@@ -52,5 +52,19 @@ public class ProductService {
                 .build();
 
         return productVo;
+    }
+
+    public ProductListVo getProductList(Pageable pageable, String search){
+        search = Optional.ofNullable(search.trim()).orElse("");
+        Page<ProductVo> page = productCustomRepository.findAll(pageable, search);
+
+        return ProductListVo.builder()
+                .totalPage(page.getTotalPages())
+                .totalElements(page.getTotalElements())
+                .numberOfElements(page.getNumberOfElements())
+                .last(page.isLast())
+                .empty(page.isLast())
+                .list(page.getContent())
+                .build();
     }
 }
