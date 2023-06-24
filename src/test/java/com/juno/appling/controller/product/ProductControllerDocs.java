@@ -92,7 +92,11 @@ class ProductControllerDocs extends BaseTest {
                         fieldWithPath("data.list[].image2").type(JsonFieldType.STRING).description("이미지2"),
                         fieldWithPath("data.list[].image3").type(JsonFieldType.STRING).description("이미지3"),
                         fieldWithPath("data.list[].create_at").type(JsonFieldType.STRING).description("등록일"),
-                        fieldWithPath("data.list[].modified_at").type(JsonFieldType.STRING).description("수정일")
+                        fieldWithPath("data.list[].modified_at").type(JsonFieldType.STRING).description("수정일"),
+                        fieldWithPath("data.list[].seller.member_id").type(JsonFieldType.NUMBER).description("판매자 id"),
+                        fieldWithPath("data.list[].seller.email").type(JsonFieldType.STRING).description("판매자 email"),
+                        fieldWithPath("data.list[].seller.nickname").type(JsonFieldType.STRING).description("판매자 닉네임"),
+                        fieldWithPath("data.list[].seller.name").type(JsonFieldType.STRING).description("판매자 이름")
                 )
         ));
     }
@@ -136,7 +140,11 @@ class ProductControllerDocs extends BaseTest {
                         fieldWithPath("data.image2").type(JsonFieldType.STRING).description("이미지2"),
                         fieldWithPath("data.image3").type(JsonFieldType.STRING).description("이미지3"),
                         fieldWithPath("data.create_at").type(JsonFieldType.STRING).description("등록일"),
-                        fieldWithPath("data.modified_at").type(JsonFieldType.STRING).description("수정일")
+                        fieldWithPath("data.modified_at").type(JsonFieldType.STRING).description("수정일"),
+                        fieldWithPath("data.seller.member_id").type(JsonFieldType.NUMBER).description("판매자 id"),
+                        fieldWithPath("data.seller.email").type(JsonFieldType.STRING).description("판매자 email"),
+                        fieldWithPath("data.seller.nickname").type(JsonFieldType.STRING).description("판매자 닉네임"),
+                        fieldWithPath("data.seller.name").type(JsonFieldType.STRING).description("판매자 이름")
                 )
         ));
     }
