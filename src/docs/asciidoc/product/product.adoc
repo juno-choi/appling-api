@@ -10,28 +10,50 @@ link:/docs.html#_이미지_업로드[이미지 등록]
 ### 📄 상품 등록
 
 ==== 🔵 REQUEST
-include::{snippets}/product-controller-docs/post-product/http-request.adoc[]
+include::{snippets}/seller-product-controller-docs/post-product/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/seller-product-controller-docs/post-product/request-headers.adoc[]
 
 ==== 🔵 REQUEST FIELD
 
-include::{snippets}/product-controller-docs/post-product/request-fields.adoc[]
+include::{snippets}/seller-product-controller-docs/post-product/request-fields.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/product-controller-docs/post-product/http-response.adoc[]
+include::{snippets}/seller-product-controller-docs/post-product/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/product-controller-docs/post-product/response-fields.adoc[]
+include::{snippets}/seller-product-controller-docs/post-product/response-fields.adoc[]
 
 ### 📄 상품 검색
+
+==== 🔵 REQUEST
+include::{snippets}/product-controller-docs/get-product-list/http-request.adoc[]
+
+==== 🔵 REQUEST FIELD
+
+include::{snippets}/product-controller-docs/get-product-list/query-parameters.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/product-controller-docs/get-product-list/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/product-controller-docs/get-product-list/response-fields.adoc[]
+
+
+### 📄 상품 상세
 
 ==== 🔵 REQUEST
 include::{snippets}/product-controller-docs/get-product/http-request.adoc[]
 
 ==== 🔵 REQUEST FIELD
 
-include::{snippets}/product-controller-docs/get-product/query-parameters.adoc[]
+include::{snippets}/product-controller-docs/get-product/path-parameters.adoc[]
 
 ==== 🟢 RESPONSE
 

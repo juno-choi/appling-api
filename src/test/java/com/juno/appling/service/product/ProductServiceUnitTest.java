@@ -21,6 +21,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -59,5 +60,18 @@ class ProductServiceUnitTest {
 
         //then
         Assertions.assertThat(productVo.getMainTitle()).isEqualTo(mainTitle);
+    }
+
+    @Test
+    @DisplayName("상품 조회에 실패")
+    void getProductFail1() {
+        //given
+        //when
+        Throwable throwable = catchThrowable(() -> productService.getProduct(0L));
+
+        //then
+        Assertions.assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 상품");
+
     }
 }
