@@ -134,6 +134,7 @@ jacocoTestCoverageVerification {
                     '*.security.*',
                     '*.entity.*',
                     '*.entity.*.Q*',
+                    '*.*CustomRepository',
             ]
 
             limit {
@@ -159,6 +160,7 @@ jacocoTestCoverageVerification {
                     '*.security.*',
                     '*.entity.*',
                     '*.entity.*.Q*',
+                    '*.*CustomRepository',
             ]
 
             limit {
