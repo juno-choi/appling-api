@@ -21,8 +21,8 @@ public class ProductDto {
     @NotNull(message = "main_title 비어있을 수 없습니다.")
     @JsonProperty("main_title")
     private String mainTitle;
-    @NotNull(message = "mainExplanation 비어있을 수 없습니다.")
-    @JsonProperty("mainExplanation")
+    @NotNull(message = "main_explanation 비어있을 수 없습니다.")
+    @JsonProperty("main_explanation")
     private String mainExplanation;
     @NotNull(message = "product_main_explanation 비어있을 수 없습니다.")
     @JsonProperty("product_main_explanation")

@@ -7,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,8 +35,10 @@ public class Product {
     private String image1;
     private String image2;
     private String image3;
+    private LocalDateTime createAt;
+    private LocalDateTime modifiedAt;
 
-    private Product(Member member, String mainTitle, String mainExplanation, String productMainExplanation, String productSubExplanation, int originPrice, int price, String purchaseInquiry, String origin, String producer, String mainImage, String image1, String image2, String image3) {
+    private Product(Member member, String mainTitle, String mainExplanation, String productMainExplanation, String productSubExplanation, int originPrice, int price, String purchaseInquiry, String origin, String producer, String mainImage, String image1, String image2, String image3, LocalDateTime createAt, LocalDateTime modifiedAt) {
         this.member = member;
         this.mainTitle = mainTitle;
         this.mainExplanation = mainExplanation;
@@ -49,9 +53,12 @@ public class Product {
         this.image1 = image1;
         this.image2 = image2;
         this.image3 = image3;
+        this.createAt = createAt;
+        this.modifiedAt = modifiedAt;
     }
 
     public static Product of(Member member, ProductDto productDto){
-        return new Product(member, productDto.getMainTitle(), productDto.getMainExplanation(), productDto.getProductMainExplanation(), productDto.getProductSubExplanation(), productDto.getOriginPrice(), productDto.getPrice(), productDto.getPurchaseInquiry(), productDto.getOrigin(), productDto.getProducer(), productDto.getMainImage(), productDto.getImage1(), productDto.getImage2(), productDto.getImage3());
+        LocalDateTime now = LocalDateTime.now();
+        return new Product(member, productDto.getMainTitle(), productDto.getMainExplanation(), productDto.getProductMainExplanation(), productDto.getProductSubExplanation(), productDto.getOriginPrice(), productDto.getPrice(), productDto.getPurchaseInquiry(), productDto.getOrigin(), productDto.getProducer(), productDto.getMainImage(), productDto.getImage1(), productDto.getImage2(), productDto.getImage3(), now, now);
     }
 }

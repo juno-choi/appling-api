@@ -2,15 +2,20 @@ package com.juno.appling.service.product;
 
 import com.juno.appling.domain.dto.member.LoginDto;
 import com.juno.appling.domain.dto.product.ProductDto;
+import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.product.Product;
 import com.juno.appling.domain.vo.member.LoginVo;
+import com.juno.appling.domain.vo.product.ProductListVo;
 import com.juno.appling.domain.vo.product.ProductVo;
+import com.juno.appling.repository.member.MemberRepository;
 import com.juno.appling.repository.product.ProductRepository;
 import com.juno.appling.service.member.MemberAuthService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +31,8 @@ class ProductServiceTest {
     private ProductService productService;
     @Autowired
     private MemberAuthService memberAuthService;
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -52,5 +59,31 @@ class ProductServiceTest {
 
         assertThat(byId).isNotEmpty();
         assertThat(email).isEqualTo(loginDto.getEmail());
+    }
+
+    @Test
+    @DisplayName("상품 리스트 불러오기")
+    void getProductList() {
+        //given
+        Member member = memberRepository.findByEmail("seller@appling.com").get();
+
+        ProductDto productDto = new ProductDto("메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+        ProductDto searchDto = new ProductDto("검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+        productRepository.save(Product.of(member, searchDto));
+
+        for(int i=0; i<25; i++){
+            productRepository.save(Product.of(member, productDto));
+        }
+
+        for(int i=0; i<10; i++){
+            productRepository.save(Product.of(member, searchDto));
+        }
+
+        Pageable pageable = Pageable.ofSize(5);
+        pageable = pageable.next();
+        //when
+        ProductListVo searchList = productService.getProductList(pageable, "검색");
+        //then
+        Assertions.assertThat(searchList.getList().stream().findFirst().get().getMainTitle()).contains("검색");
     }
 }

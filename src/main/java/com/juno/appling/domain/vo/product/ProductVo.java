@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
 @Builder
@@ -23,4 +25,6 @@ public class ProductVo extends BaseVo {
     private String image1;
     private String image2;
     private String image3;
+    private LocalDateTime createAt;
+    private LocalDateTime modifiedAt;
 }
