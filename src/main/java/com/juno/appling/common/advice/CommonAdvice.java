@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -27,6 +30,38 @@ public class CommonAdvice {
     @ExceptionHandler
     public ResponseEntity<ProblemDetail> illegalArgumentException(IllegalArgumentException e, HttpServletRequest request){
         List<ErrorDto> errors = new ArrayList<>();
+        errors.add(ErrorDto.builder().point("").detail(e.getMessage()).build());
+
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "입력 값을 확인해주세요.");
+        pb.setInstance(URI.create(request.getRequestURI()));
+        pb.setType(URI.create(docs));
+        pb.setTitle(HttpStatus.BAD_REQUEST.name());
+        pb.setProperty(ERRORS, errors);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(pb);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ProblemDetail> methodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request){
+        List<ErrorDto> errors = new ArrayList<>();
+        FieldError fieldError = e.getBindingResult().getFieldError();
+        errors.add(ErrorDto.builder().point(fieldError.getField()).detail(fieldError.getDefaultMessage()).build());
+
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "입력 값을 확인해주세요.");
+        pb.setInstance(URI.create(request.getRequestURI()));
+        pb.setType(URI.create(docs));
+        pb.setTitle(HttpStatus.BAD_REQUEST.name());
+        pb.setProperty(ERRORS, errors);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(pb);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ProblemDetail> httpMessageNotReadableException(HttpMessageNotReadableException e, HttpServletRequest request){
+        List<ErrorDto> errors = new ArrayList<>();
+
         errors.add(ErrorDto.builder().point("").detail(e.getMessage()).build());
 
         ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "입력 값을 확인해주세요.");
