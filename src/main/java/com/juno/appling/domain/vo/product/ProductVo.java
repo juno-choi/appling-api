@@ -27,4 +27,5 @@ public class ProductVo extends BaseVo {
     private String image3;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
+    private SellerVo seller;
 }

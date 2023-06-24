@@ -53,7 +53,7 @@ class AuthControllerDocs extends BaseTest {
                         fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
                         fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
                         fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
-                        fieldWithPath("birth").type(JsonFieldType.STRING).description("생년월일 ex) 19941030")
+                        fieldWithPath("birth").type(JsonFieldType.STRING).description("생년월일 ex) 19941030").optional()
                 ),
                 responseFields(
                         fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),

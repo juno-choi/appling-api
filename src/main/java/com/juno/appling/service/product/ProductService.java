@@ -6,6 +6,7 @@ import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.product.Product;
 import com.juno.appling.domain.vo.product.ProductListVo;
 import com.juno.appling.domain.vo.product.ProductVo;
+import com.juno.appling.domain.vo.product.SellerVo;
 import com.juno.appling.repository.member.MemberRepository;
 import com.juno.appling.repository.product.ProductCustomRepository;
 import com.juno.appling.repository.product.ProductRepository;
@@ -90,6 +91,12 @@ public class ProductService {
                 .image3(product.getImage3())
                 .createAt(product.getCreateAt())
                 .modifiedAt(product.getModifiedAt())
+                .seller(SellerVo.builder()
+                        .name(product.getMember().getName())
+                        .email(product.getMember().getEmail())
+                        .nickname(product.getMember().getEmail())
+                        .memberId(product.getMember().getId())
+                        .build())
                 .build();
     }
 }

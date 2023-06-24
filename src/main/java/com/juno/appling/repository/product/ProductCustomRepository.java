@@ -3,6 +3,7 @@ package com.juno.appling.repository.product;
 import com.juno.appling.common.querydsl.QuerydslConfig;
 import com.juno.appling.domain.entity.product.QProduct;
 import com.juno.appling.domain.vo.product.ProductVo;
+import com.juno.appling.domain.vo.product.SellerVo;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,13 @@ public class ProductCustomRepository {
                     product.image2,
                     product.image3,
                     product.createAt,
-                    product.modifiedAt
+                    product.modifiedAt,
+                    Projections.constructor(SellerVo.class,
+                        product.member.id,
+                        product.member.email,
+                        product.member.nickname,
+                        product.member.name
+                    )
                 ))
                 .from(product)
                 .where(builder)
