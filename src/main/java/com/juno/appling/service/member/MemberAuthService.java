@@ -2,9 +2,9 @@ package com.juno.appling.service.member;
 
 import com.juno.appling.common.security.TokenProvider;
 import com.juno.appling.domain.dto.member.JoinDto;
+import com.juno.appling.domain.dto.member.LoginDto;
 import com.juno.appling.domain.dto.member.kakao.KakaoLoginResponseDto;
 import com.juno.appling.domain.dto.member.kakao.KakaoMemberResponseDto;
-import com.juno.appling.domain.dto.member.LoginDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.enums.member.Role;
 import com.juno.appling.domain.enums.member.SnsJoinType;

@@ -1,6 +1,5 @@
 package com.juno.appling.service.product;
 
-import com.juno.appling.common.s3.S3Service;
 import com.juno.appling.common.security.TokenProvider;
 import com.juno.appling.domain.dto.product.ProductDto;
 import com.juno.appling.domain.entity.member.Member;
@@ -10,14 +9,8 @@ import com.juno.appling.repository.member.MemberRepository;
 import com.juno.appling.repository.product.ProductRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

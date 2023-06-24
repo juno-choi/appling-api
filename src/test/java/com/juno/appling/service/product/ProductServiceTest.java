@@ -7,18 +7,16 @@ import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.domain.vo.product.ProductVo;
 import com.juno.appling.repository.product.ProductRepository;
 import com.juno.appling.service.member.MemberAuthService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest
