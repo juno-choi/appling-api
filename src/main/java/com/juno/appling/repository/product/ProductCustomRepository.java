@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,7 +24,9 @@ public class ProductCustomRepository {
         QProduct product = QProduct.product;
         BooleanBuilder builder = new BooleanBuilder();
 
-        if(search != null || !search.equals("")){
+        search = Optional.ofNullable(search).orElse("").trim();
+
+        if(!search.equals("")){
             builder.and(product.mainTitle.contains(search));
         }
 
