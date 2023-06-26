@@ -18,6 +18,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestControllerAdvice
 public class CommonAdvice {
@@ -46,7 +47,10 @@ public class CommonAdvice {
     public ResponseEntity<ProblemDetail> methodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request){
         List<ErrorDto> errors = new ArrayList<>();
         FieldError fieldError = e.getBindingResult().getFieldError();
-        errors.add(ErrorDto.builder().point(fieldError.getField()).detail(fieldError.getDefaultMessage()).build());
+        errors.add(ErrorDto.builder()
+                .point(Optional.ofNullable(fieldError.getField()).orElse(""))
+                .detail(Optional.ofNullable(fieldError.getDefaultMessage()).orElse(""))
+                .build());
 
         ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "입력 값을 확인해주세요.");
         pb.setInstance(URI.create(request.getRequestURI()));
