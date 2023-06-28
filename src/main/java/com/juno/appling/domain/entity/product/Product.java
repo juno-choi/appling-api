@@ -1,5 +1,6 @@
 package com.juno.appling.domain.entity.product;
 
+import com.juno.appling.domain.dto.product.PatchProductDto;
 import com.juno.appling.domain.dto.product.ProductDto;
 import com.juno.appling.domain.entity.member.Member;
 import jakarta.persistence.*;
@@ -60,5 +61,24 @@ public class Product {
     public static Product of(Member member, ProductDto productDto){
         LocalDateTime now = LocalDateTime.now();
         return new Product(member, productDto.getMainTitle(), productDto.getMainExplanation(), productDto.getProductMainExplanation(), productDto.getProductSubExplanation(), productDto.getOriginPrice(), productDto.getPrice(), productDto.getPurchaseInquiry(), productDto.getOrigin(), productDto.getProducer(), productDto.getMainImage(), productDto.getImage1(), productDto.getImage2(), productDto.getImage3(), now, now);
+    }
+
+    public void put(PatchProductDto patchProductDto){
+        LocalDateTime now = LocalDateTime.now();
+
+        this.mainTitle = patchProductDto.getMainTitle();
+        this.mainExplanation = patchProductDto.getMainExplanation();
+        this.productMainExplanation = patchProductDto.getProductMainExplanation();
+        this.productSubExplanation = patchProductDto.getProductSubExplanation();
+        this.originPrice = patchProductDto.getOriginPrice();
+        this.price = patchProductDto.getPrice();
+        this.purchaseInquiry = patchProductDto.getPurchaseInquiry();
+        this.origin = patchProductDto.getOrigin();
+        this.producer = patchProductDto.getProducer();
+        this.mainImage = patchProductDto.getMainImage();
+        this.image1 = patchProductDto.getImage1();
+        this.image2 = patchProductDto.getImage2();
+        this.image3 = patchProductDto.getImage3();
+        this.modifiedAt = now;
     }
 }

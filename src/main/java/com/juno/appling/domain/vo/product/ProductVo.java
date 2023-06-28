@@ -1,5 +1,6 @@
 package com.juno.appling.domain.vo.product;
 
+import com.juno.appling.domain.entity.product.Product;
 import com.juno.appling.domain.vo.BaseVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,4 +29,23 @@ public class ProductVo extends BaseVo {
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
     private SellerVo seller;
+
+    public static ProductVo productReturnVo(Product product){
+        return ProductVo.builder()
+                .id(product.getId())
+                .mainTitle(product.getMainTitle())
+                .mainExplanation(product.getMainExplanation())
+                .productMainExplanation(product.getProductMainExplanation())
+                .productSubExplanation(product.getProductSubExplanation())
+                .purchaseInquiry(product.getPurchaseInquiry())
+                .producer(product.getProducer())
+                .origin(product.getOrigin())
+                .originPrice(product.getOriginPrice())
+                .price(product.getPrice())
+                .mainImage(product.getMainImage())
+                .image1(product.getImage1())
+                .image2(product.getImage2())
+                .image3(product.getImage3())
+                .build();
+    }
 }

@@ -1,6 +1,7 @@
 package com.juno.appling.service.product;
 
 import com.juno.appling.domain.dto.member.LoginDto;
+import com.juno.appling.domain.dto.product.PatchProductDto;
 import com.juno.appling.domain.dto.product.ProductDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.product.Product;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -84,6 +86,23 @@ class ProductServiceTest {
         //when
         ProductListVo searchList = productService.getProductList(pageable, "검색");
         //then
-        Assertions.assertThat(searchList.getList().stream().findFirst().get().getMainTitle()).contains("검색");
+        assertThat(searchList.getList().stream().findFirst().get().getMainTitle()).contains("검색");
+    }
+
+    @Test
+    @DisplayName("상품 수정 성공")
+    void putProductSuccess(){
+        // given
+        Member member = memberRepository.findByEmail("seller@appling.com").get();
+        ProductDto productDto = new ProductDto("메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+        Product originalProduct = productRepository.save(Product.of(member, productDto));
+        String originalProductMainTitle = originalProduct.getMainTitle();
+        Long productId = originalProduct.getId();
+        PatchProductDto patchProductDto = new PatchProductDto(productId, "수정된 제목", "수정된 설명", "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+        // when
+        productService.putProduct(patchProductDto);
+        // then
+        Product changeProduct = productRepository.findById(productId).get();
+        assertThat(changeProduct.getMainTitle()).isNotEqualTo(originalProductMainTitle);
     }
 }
