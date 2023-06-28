@@ -34,3 +34,15 @@ volumes:
   sonarqube_logs:
   postgresql:
   postgresql_data:
+
+# 소나큐브 기본 사양인데 소나큐브가 자꾸 꺼진다면 다음 설정을 확인해주자~!
+# sysctl vm.max_map_count
+# sysctl fs.file-max
+# ulimit -n
+# ulimit -u
+
+# 설정 값이 미달이라면 아래 명령어를 통해 설정값을 변경해주어야 함.
+# sysctl -w vm.max_map_count=524288
+# sysctl -w fs.file-max=131072
+# ulimit -n 131072
+# ulimit -u 8192
