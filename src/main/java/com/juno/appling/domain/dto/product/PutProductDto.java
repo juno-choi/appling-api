@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class PatchProductDto {
+public class PutProductDto {
     @NotNull(message = "id값은 비어있을 수 없습니다.")
     private Long id;
     @NotNull(message = "main_title 비어있을 수 없습니다.")

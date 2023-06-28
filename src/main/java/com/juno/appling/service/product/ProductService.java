@@ -1,7 +1,7 @@
 package com.juno.appling.service.product;
 
 import com.juno.appling.common.security.TokenProvider;
-import com.juno.appling.domain.dto.product.PatchProductDto;
+import com.juno.appling.domain.dto.product.PutProductDto;
 import com.juno.appling.domain.dto.product.ProductDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.product.Product;
@@ -17,8 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -89,12 +87,12 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductVo putProduct(PatchProductDto patchProductDto){
-        Long targetProductId = patchProductDto.getId();
+    public ProductVo putProduct(PutProductDto putProductDto){
+        Long targetProductId = putProductDto.getId();
         Product product = productRepository.findById(targetProductId).orElseThrow(() ->
             new IllegalArgumentException("유효하지 않은 상품입니다.")
         );
-        product.put(patchProductDto);
+        product.put(putProductDto);
 
         return ProductVo.productReturnVo(product);
     }

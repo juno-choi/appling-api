@@ -1,7 +1,7 @@
 package com.juno.appling.service.product;
 
 import com.juno.appling.common.security.TokenProvider;
-import com.juno.appling.domain.dto.product.PatchProductDto;
+import com.juno.appling.domain.dto.product.PutProductDto;
 import com.juno.appling.domain.dto.product.ProductDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.product.Product;
@@ -79,7 +79,7 @@ class ProductServiceUnitTest {
     @DisplayName("수정하려는 상품이 존재하지 않는 경우 실패")
     void putProductFail1(){
         // given
-        PatchProductDto dto = new PatchProductDto(0L, null, null,null,null,0,0,null,null,null,null,null,null,null);
+        PutProductDto dto = new PutProductDto(0L, null, null,null,null,0,0,null,null,null,null,null,null,null);
         given(productRepository.findById(any())).willReturn(Optional.ofNullable(null));
         // when
         Throwable throwable = catchThrowable(() -> productService.putProduct(dto));
@@ -92,7 +92,7 @@ class ProductServiceUnitTest {
     @DisplayName("수정하려는 상품이 존재하지만 회원의 정보가 없을 경우엔 실패")
     void putProductFail2(){
         // given
-        PatchProductDto dto = new PatchProductDto(1L, null, null,null,null,0,0,null,null,null,null,null,null,null);
+        PutProductDto dto = new PutProductDto(1L, null, null,null,null,0,0,null,null,null,null,null,null,null);
 
         given(tokenProvider.resolveToken(any())).willReturn("token");
         LocalDateTime now = LocalDateTime.now();

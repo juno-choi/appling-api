@@ -1,7 +1,7 @@
 package com.juno.appling.service.product;
 
 import com.juno.appling.domain.dto.member.LoginDto;
-import com.juno.appling.domain.dto.product.PatchProductDto;
+import com.juno.appling.domain.dto.product.PutProductDto;
 import com.juno.appling.domain.dto.product.ProductDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.product.Product;
@@ -11,7 +11,6 @@ import com.juno.appling.domain.vo.product.ProductVo;
 import com.juno.appling.repository.member.MemberRepository;
 import com.juno.appling.repository.product.ProductRepository;
 import com.juno.appling.service.member.MemberAuthService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -98,9 +96,9 @@ class ProductServiceTest {
         Product originalProduct = productRepository.save(Product.of(member, productDto));
         String originalProductMainTitle = originalProduct.getMainTitle();
         Long productId = originalProduct.getId();
-        PatchProductDto patchProductDto = new PatchProductDto(productId, "수정된 제목", "수정된 설명", "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+        PutProductDto putProductDto = new PutProductDto(productId, "수정된 제목", "수정된 설명", "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
         // when
-        productService.putProduct(patchProductDto);
+        productService.putProduct(putProductDto);
         // then
         Product changeProduct = productRepository.findById(productId).get();
         assertThat(changeProduct.getMainTitle()).isNotEqualTo(originalProductMainTitle);
