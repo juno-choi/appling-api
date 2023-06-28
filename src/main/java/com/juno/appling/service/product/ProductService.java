@@ -1,6 +1,7 @@
 package com.juno.appling.service.product;
 
 import com.juno.appling.common.security.TokenProvider;
+import com.juno.appling.domain.dto.product.PutProductDto;
 import com.juno.appling.domain.dto.product.ProductDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.product.Product;
@@ -17,8 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -30,29 +29,17 @@ public class ProductService {
 
     @Transactional
     public ProductVo postProduct(ProductDto productDto, HttpServletRequest request){
+        Member member = getMember(request);
+
+        Product product = productRepository.save(Product.of(member, productDto));
+        return ProductVo.productReturnVo(product);
+    }
+
+    private Member getMember(HttpServletRequest request) {
         String token = tokenProvider.resolveToken(request);
         Long memberId = tokenProvider.getMemberId(token);
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
-
-        Product product = productRepository.save(Product.of(member, productDto));
-        ProductVo productVo = ProductVo.builder()
-                .id(product.getId())
-                .mainTitle(product.getMainTitle())
-                .mainExplanation(product.getMainExplanation())
-                .productMainExplanation(product.getProductMainExplanation())
-                .productSubExplanation(product.getProductSubExplanation())
-                .purchaseInquiry(product.getPurchaseInquiry())
-                .producer(product.getProducer())
-                .origin(product.getOrigin())
-                .originPrice(product.getOriginPrice())
-                .price(product.getPrice())
-                .mainImage(product.getMainImage())
-                .image1(product.getImage1())
-                .image2(product.getImage2())
-                .image3(product.getImage3())
-                .build();
-
-        return productVo;
+        return member;
     }
 
     public ProductListVo getProductList(Pageable pageable, String search){
@@ -97,5 +84,16 @@ public class ProductService {
                         .memberId(product.getMember().getId())
                         .build())
                 .build();
+    }
+
+    @Transactional
+    public ProductVo putProduct(PutProductDto putProductDto){
+        Long targetProductId = putProductDto.getId();
+        Product product = productRepository.findById(targetProductId).orElseThrow(() ->
+            new IllegalArgumentException("유효하지 않은 상품입니다.")
+        );
+        product.put(putProductDto);
+
+        return ProductVo.productReturnVo(product);
     }
 }

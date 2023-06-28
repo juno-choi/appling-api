@@ -1,6 +1,7 @@
 package com.juno.appling.service.product;
 
 import com.juno.appling.common.security.TokenProvider;
+import com.juno.appling.domain.dto.product.PutProductDto;
 import com.juno.appling.domain.dto.product.ProductDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.product.Product;
@@ -8,7 +9,6 @@ import com.juno.appling.domain.enums.member.Role;
 import com.juno.appling.domain.vo.product.ProductVo;
 import com.juno.appling.repository.member.MemberRepository;
 import com.juno.appling.repository.product.ProductRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +21,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -59,7 +60,7 @@ class ProductServiceUnitTest {
         ProductVo productVo = productService.postProduct(productDto, request);
 
         //then
-        Assertions.assertThat(productVo.getMainTitle()).isEqualTo(mainTitle);
+        assertThat(productVo.getMainTitle()).isEqualTo(mainTitle);
     }
 
     @Test
@@ -70,8 +71,40 @@ class ProductServiceUnitTest {
         Throwable throwable = catchThrowable(() -> productService.getProduct(0L));
 
         //then
-        Assertions.assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유효하지 않은 상품");
+    }
 
+    @Test
+    @DisplayName("수정하려는 상품이 존재하지 않는 경우 실패")
+    void putProductFail1(){
+        // given
+        PutProductDto dto = new PutProductDto(0L, null, null,null,null,0,0,null,null,null,null,null,null,null);
+        given(productRepository.findById(any())).willReturn(Optional.ofNullable(null));
+        // when
+        Throwable throwable = catchThrowable(() -> productService.putProduct(dto));
+        // then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 상품");
+    }
+
+    @Test
+    @DisplayName("수정하려는 상품이 존재하지만 회원의 정보가 없을 경우엔 실패")
+    void putProductFail2(){
+        // given
+        PutProductDto dto = new PutProductDto(1L, null, null,null,null,0,0,null,null,null,null,null,null,null);
+
+        given(tokenProvider.resolveToken(any())).willReturn("token");
+        LocalDateTime now = LocalDateTime.now();
+        Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030", Role.SELLER, null, null, now, now);
+
+        ProductDto productDto = new ProductDto();
+        given(productRepository.findById(any())).willReturn(Optional.ofNullable(Product.of(member, productDto)));
+        given(memberRepository.findById(any())).willReturn(Optional.ofNullable(null));
+        // when
+        Throwable throwable = catchThrowable(() -> productService.putProduct(dto));
+        // then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 회원");
     }
 }
