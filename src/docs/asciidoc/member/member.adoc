@@ -17,6 +17,28 @@ include::{snippets}/member-controller-docs/member/http-response.adoc[]
 
 include::{snippets}/member-controller-docs/member/response-fields.adoc[]
 
+### 📄 회원 정보 수정
+
+==== 🔵 REQUEST
+include::{snippets}/member-controller-docs/patch-member/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/member-controller-docs/patch-member/request-headers.adoc[]
+
+==== 🔵 REQUEST BODY
+
+include::{snippets}/member-controller-docs/patch-member/request-fields.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/member-controller-docs/patch-member/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/member-controller-docs/patch-member/response-fields.adoc[]
+
+
 ### 📄 Seller 권한 신청
 
 ==== 🔵 REQUEST

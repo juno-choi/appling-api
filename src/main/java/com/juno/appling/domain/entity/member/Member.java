@@ -3,6 +3,7 @@ package com.juno.appling.domain.entity.member;
 import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.enums.member.Role;
 import com.juno.appling.domain.enums.member.SnsJoinType;
+import com.juno.appling.domain.enums.member.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -37,6 +38,9 @@ public class Member {
     
     @Enumerated(EnumType.STRING)
     private SnsJoinType snsType;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -76,6 +80,26 @@ public class Member {
     public static Member of(JoinDto joinDto, String snsId, SnsJoinType snsType){
         LocalDateTime now = LocalDateTime.now();
         return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(), joinDto.getName(), joinDto.getBirth(), Role.MEMBER, snsId, snsType, now, now);
+    }
+
+    public void patchMember(String birth, String name, String nickname, String password){
+        LocalDateTime now = LocalDateTime.now();
+        if(!birth.isEmpty()){
+            this.birth = birth;
+            this.modifiedAt = now;
+        }
+        if(!name.isEmpty()){
+            this.name = name;
+            this.modifiedAt = now;
+        }
+        if(!nickname.isEmpty()){
+            this.nickname = nickname;
+            this.modifiedAt = now;
+        }
+        if(!password.isEmpty()){
+            this.password = password;
+            this.modifiedAt = now;
+        }
     }
 
     public void patchMemberRole(Role role){

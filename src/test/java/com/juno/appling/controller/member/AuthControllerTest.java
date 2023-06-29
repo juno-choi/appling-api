@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class AuthControllerTest extends BaseTest {
     @Autowired
     private MemberRepository memberRepository;
