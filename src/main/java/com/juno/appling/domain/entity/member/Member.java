@@ -3,6 +3,7 @@ package com.juno.appling.domain.entity.member;
 import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.enums.member.Role;
 import com.juno.appling.domain.enums.member.SnsJoinType;
+import com.juno.appling.domain.enums.member.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -37,6 +38,9 @@ public class Member {
     
     @Enumerated(EnumType.STRING)
     private SnsJoinType snsType;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
