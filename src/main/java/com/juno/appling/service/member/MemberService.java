@@ -1,6 +1,7 @@
 package com.juno.appling.service.member;
 
 import com.juno.appling.common.security.TokenProvider;
+import com.juno.appling.domain.dto.member.PatchMemberDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.member.MemberApplySeller;
 import com.juno.appling.domain.enums.member.MemberApplySellerStatus;
@@ -11,8 +12,11 @@ import com.juno.appling.repository.member.MemberApplySellerRepository;
 import com.juno.appling.repository.member.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,13 +25,10 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberApplySellerRepository memberApplySellerRepository;
     private final TokenProvider tokenProvider;
-
-
-
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public MemberVo member(HttpServletRequest request) {
-        String token = tokenProvider.resolveToken(request);
-        Long memberId = tokenProvider.getMemberId(token);
+        Long memberId = tokenProvider.getMemberId(request);
 
         Member findMember = memberRepository.findById(memberId).orElseThrow(() ->
                 new IllegalArgumentException("존재하지 않는 회원입니다.")
@@ -45,11 +46,9 @@ public class MemberService {
                 .build();
     }
 
-
     @Transactional
     public MessageVo applySeller(HttpServletRequest request) {
-        String token = tokenProvider.resolveToken(request);
-        Long memberId = tokenProvider.getMemberId(token);
+        Long memberId = tokenProvider.getMemberId(request);
 
         MemberApplySeller saveMemberApply = memberApplySellerRepository.save(MemberApplySeller.of(memberId));
 
@@ -66,5 +65,30 @@ public class MemberService {
                 new IllegalArgumentException("존재하지 않는 회원입니다.")
         );
         member.patchMemberRole(Role.SELLER);
+    }
+
+    @Transactional
+    public MessageVo patchMember(PatchMemberDto patchMemberDto, HttpServletRequest request){
+        Long memberId = tokenProvider.getMemberId(request);
+        Member member = memberRepository.findById(memberId).orElseThrow(() ->
+                new IllegalArgumentException("존재하지 않는 회원입니다.")
+        );
+
+        if(memberId != member.getId()){
+            throw new IllegalArgumentException("다른 회원의 정보를 수정할 수 없습니다.");
+        }
+
+        String birth = Optional.ofNullable(patchMemberDto.getBirth()).orElse("").replaceAll("-", "").trim();
+        String name = Optional.ofNullable(patchMemberDto.getName()).orElse("").trim();
+        String nickname = Optional.ofNullable(patchMemberDto.getNickname()).orElse("").trim();
+        String password = Optional.ofNullable(patchMemberDto.getPassword()).orElse("").trim();
+        if(!password.isEmpty()){
+            password = passwordEncoder.encode(password);
+        }
+        member.patchMember(birth, name, nickname, password);
+
+        return MessageVo.builder()
+                .message("회원 정보 수정 성공")
+                .build();
     }
 }

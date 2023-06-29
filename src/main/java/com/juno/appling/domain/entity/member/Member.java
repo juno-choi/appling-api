@@ -82,6 +82,26 @@ public class Member {
         return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(), joinDto.getName(), joinDto.getBirth(), Role.MEMBER, snsId, snsType, now, now);
     }
 
+    public void patchMember(String birth, String name, String nickname, String password){
+        LocalDateTime now = LocalDateTime.now();
+        if(!birth.isEmpty()){
+            this.birth = birth;
+            this.modifiedAt = now;
+        }
+        if(!name.isEmpty()){
+            this.name = name;
+            this.modifiedAt = now;
+        }
+        if(!nickname.isEmpty()){
+            this.nickname = nickname;
+            this.modifiedAt = now;
+        }
+        if(!password.isEmpty()){
+            this.birth = password;
+            this.modifiedAt = now;
+        }
+    }
+
     public void patchMemberRole(Role role){
         this.role = role;
     }
