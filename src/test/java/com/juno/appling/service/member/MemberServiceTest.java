@@ -21,7 +21,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class MemberServiceTest {
     @Autowired
     private MemberService memberService;
-
     @Autowired
     private MemberRepository memberRepository;
 
@@ -45,12 +44,12 @@ public class MemberServiceTest {
 
         JoinDto joinDto = new JoinDto(email, password, "수정자", "수정할거야", "19991010");
         joinDto.passwordEncoder(passwordEncoder);
-        Member member = memberRepository.save(Member.of(joinDto));
+        memberRepository.save(Member.of(joinDto));
         LoginDto loginDto = new LoginDto(email, password);
         LoginVo login = memberAuthService.login(loginDto);
         request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
 
-        PatchMemberDto patchMemberDto = new PatchMemberDto(member.getId(), changeBirth, changeName, changePassword, "수정되버림", null);
+        PatchMemberDto patchMemberDto = new PatchMemberDto(changeBirth, changeName, changePassword, "수정되버림", null);
         // when
         MessageVo messageVo = memberService.patchMember(patchMemberDto, request);
         // then

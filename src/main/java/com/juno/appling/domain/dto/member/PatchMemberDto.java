@@ -3,7 +3,6 @@ package com.juno.appling.domain.dto.member;
 import com.juno.appling.domain.enums.member.Status;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,9 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PatchMemberDto {
-    @NotNull(message = "id 비어있을 수 없습니다.")
-    private Long id;
-
     private String birth;
     private String name;
     private String password;

@@ -74,10 +74,6 @@ public class MemberService {
                 new IllegalArgumentException("존재하지 않는 회원입니다.")
         );
 
-        if(memberId != member.getId()){
-            throw new IllegalArgumentException("다른 회원의 정보를 수정할 수 없습니다.");
-        }
-
         String birth = Optional.ofNullable(patchMemberDto.getBirth()).orElse("").replaceAll("-", "").trim();
         String name = Optional.ofNullable(patchMemberDto.getName()).orElse("").trim();
         String nickname = Optional.ofNullable(patchMemberDto.getNickname()).orElse("").trim();

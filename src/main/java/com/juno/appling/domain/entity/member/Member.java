@@ -97,7 +97,7 @@ public class Member {
             this.modifiedAt = now;
         }
         if(!password.isEmpty()){
-            this.birth = password;
+            this.password = password;
             this.modifiedAt = now;
         }
     }

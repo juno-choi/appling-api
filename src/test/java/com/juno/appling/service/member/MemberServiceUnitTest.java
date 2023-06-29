@@ -42,7 +42,7 @@ class MemberServiceUnitTest {
     @DisplayName("회원이 존재하지 않을경우 회원 수정 실패")
     void patchMemberFail1(){
         // given
-        PatchMemberDto patchMemberDto = new PatchMemberDto(0L, null, null, null, null, null);
+        PatchMemberDto patchMemberDto = new PatchMemberDto( null, null, null, null, null);
 
         given(tokenProvider.getMemberId(request)).willReturn(0L);
         // when
@@ -52,18 +52,4 @@ class MemberServiceUnitTest {
                 .hasMessageContaining("존재하지 않는 회원");
     }
 
-    @Test
-    @DisplayName("회원이 정보가 다를 경우 회원 수정 실패")
-    void patchMemberFail2(){
-        // given
-        PatchMemberDto patchMemberDto = new PatchMemberDto(0L, null, null, null, null, null);
-
-        given(tokenProvider.getMemberId(request)).willReturn(0L);
-        given(memberRepository.findById(anyLong())).willReturn(Optional.of(new Member(1L, "mail@mail.com", "", "", "", "", null, null, null, null, null)));
-        // when
-        Throwable throwable = catchThrowable(() -> memberService.patchMember(patchMemberDto, request));
-        // then
-        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("다른 회원의 정보를 수정할 수 없습니다");
-    }
 }
