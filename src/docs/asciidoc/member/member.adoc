@@ -1,6 +1,6 @@
-== 📗 회원
+== 🍎 회원
 
-### 📄 회원 정보 조회
+### 📗 회원 정보 조회
 
 ==== 🔵 REQUEST
 include::{snippets}/member-controller-docs/member/http-request.adoc[]
@@ -17,7 +17,7 @@ include::{snippets}/member-controller-docs/member/http-response.adoc[]
 
 include::{snippets}/member-controller-docs/member/response-fields.adoc[]
 
-### 📄 회원 정보 수정
+### 📗 회원 정보 수정
 
 ==== 🔵 REQUEST
 include::{snippets}/member-controller-docs/patch-member/http-request.adoc[]
@@ -39,7 +39,7 @@ include::{snippets}/member-controller-docs/patch-member/http-response.adoc[]
 include::{snippets}/member-controller-docs/patch-member/response-fields.adoc[]
 
 
-### 📄 Seller 권한 신청
+### 📗 Seller 권한 신청
 
 ==== 🔵 REQUEST
 include::{snippets}/member-controller-docs/apply-seller/http-request.adoc[]

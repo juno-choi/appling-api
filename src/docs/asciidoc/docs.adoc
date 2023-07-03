@@ -10,9 +10,9 @@ endif::[]
 
 = 🍎 Appling API
 
-== 📗 공통
+== 🍎 공통
 
-=== 📄 에러
+=== 📕 에러
 
 ==== 🔴 400 BAD_REQUEST
 

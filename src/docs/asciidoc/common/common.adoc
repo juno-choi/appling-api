@@ -1,6 +1,6 @@
-== 📗 공통
+== 🍎 공통
 
-### 📄 이미지 업로드
+### 📗 이미지 업로드
 
 #### 🔵 REQUEST
 include::{snippets}/common-controller-docs/upload-image/http-request.adoc[]
