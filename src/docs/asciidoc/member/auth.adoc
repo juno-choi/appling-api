@@ -1,6 +1,6 @@
-== 📗 회원 인증
+== 🍎 회원 인증
 
-### 📄 회원 가입
+### 📗 회원 가입
 
 ==== 🔵 REQUEST
 include::{snippets}/auth-controller-docs/join/http-request.adoc[]
@@ -17,7 +17,7 @@ include::{snippets}/auth-controller-docs/join/http-response.adoc[]
 
 include::{snippets}/auth-controller-docs/join/response-fields.adoc[]
 
-### 📄 로그인
+### 📗 로그인
 
 ==== 🔵 REQUEST
 include::{snippets}/auth-controller-docs/login/http-request.adoc[]
@@ -34,7 +34,7 @@ include::{snippets}/auth-controller-docs/login/http-response.adoc[]
 
 include::{snippets}/auth-controller-docs/login/response-fields.adoc[]
 
-### 📄 토큰 재발급
+### 📗 토큰 재발급
 
 ==== 🔵 REQUEST
 include::{snippets}/auth-controller-docs/refresh/http-request.adoc[]
@@ -51,7 +51,7 @@ include::{snippets}/auth-controller-docs/refresh/http-response.adoc[]
 
 include::{snippets}/auth-controller-docs/refresh/response-fields.adoc[]
 
-### 📄 회원 정보 조회
+### 📗 회원 정보 조회
 
 ==== 🔵 REQUEST
 include::{snippets}/member-controller-docs/member/http-request.adoc[]
@@ -68,7 +68,7 @@ include::{snippets}/member-controller-docs/member/http-response.adoc[]
 
 include::{snippets}/member-controller-docs/member/response-fields.adoc[]
 
-== 📗 Kakao 인증
+== 🍎 Kakao 인증
 
 ✅ 로그인 코드 발급 url
 
@@ -80,7 +80,7 @@ ex
 https://kauth.kakao.com/oauth/authorize?client_id=04376f3d0a7618a3622f9c541d90d272&redirect_uri=http://3.34.1.129:8000/api/oauth/kakao&response_type=code
 ```
 
-### 📄 Kakao 토큰 발급
+### 📗 Kakao 토큰 발급
 
 ==== 🔵 REQUEST
 include::{snippets}/o-auth-controller-docs/oauth-kakao/http-request.adoc[]
@@ -97,7 +97,7 @@ include::{snippets}/o-auth-controller-docs/oauth-kakao/http-response.adoc[]
 
 include::{snippets}/o-auth-controller-docs/oauth-kakao/response-fields.adoc[]
 
-### 📄 Kakao Access Token으로 로그인 (미가입시 자동 회원가입)
+### 📗 Kakao Access Token으로 로그인 (미가입시 자동 회원가입)
 
 ==== 🔵 REQUEST
 include::{snippets}/o-auth-controller-docs/oauth-kakao-login/http-request.adoc[]

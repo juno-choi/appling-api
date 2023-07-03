@@ -1,5 +1,6 @@
 package com.juno.appling.service.product;
 
+import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.dto.member.LoginDto;
 import com.juno.appling.domain.dto.product.PutProductDto;
 import com.juno.appling.domain.dto.product.ProductDto;
@@ -41,7 +42,7 @@ class ProductServiceTest {
 
     @Test
     @DisplayName("상품 등록 성공")
-    void postProduct() {
+    void postProductSuccess() {
         //given
         LoginDto loginDto = new LoginDto("seller@appling.com", "password");
         LoginVo login = memberAuthService.login(loginDto);
@@ -63,7 +64,7 @@ class ProductServiceTest {
 
     @Test
     @DisplayName("상품 리스트 불러오기")
-    void getProductList() {
+    void getProductListSuccess() {
         //given
         Member member = memberRepository.findByEmail("seller@appling.com").get();
 
@@ -85,6 +86,35 @@ class ProductServiceTest {
         ProductListVo searchList = productService.getProductList(pageable, "검색");
         //then
         assertThat(searchList.getList().stream().findFirst().get().getMainTitle()).contains("검색");
+    }
+
+    @Test
+    @DisplayName("상품 리스트 판매자 계정 조건으로 불러오기")
+    void getProductListSuccess2() {
+        //given
+        Member seller = memberRepository.findByEmail("seller@appling.com").get();
+        Member seller2 = memberRepository.findByEmail("seller2@appling.com").get();
+        LoginDto loginDto = new LoginDto("seller@appling.com", "password");
+        LoginVo login = memberAuthService.login(loginDto);
+
+        ProductDto productDto = new ProductDto("메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+        ProductDto searchDto = new ProductDto("검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+        productRepository.save(Product.of(seller, searchDto));
+
+        for(int i=0; i<10; i++){
+            productRepository.save(Product.of(seller, searchDto));
+        }
+        for(int i=0; i<10; i++){
+            productRepository.save(Product.of(seller2, productDto));
+        }
+
+        Pageable pageable = Pageable.ofSize(5);
+        pageable = pageable.next();
+        request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
+        //when
+        ProductListVo searchList = productService.getProductListBySeller(pageable, "", request);
+        //then
+        assertThat(searchList.getList().stream().findFirst().get().getSeller().getMemberId()).isEqualTo(seller.getId());
     }
 
     @Test

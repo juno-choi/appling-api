@@ -1,4 +1,4 @@
-== 📗 상품
+== 🍎 상품
 
 ```
 이미지 등록 관련해서는 Common 부분을 참고해주세요
@@ -7,7 +7,7 @@
 link:/docs.html#_이미지_업로드[이미지 등록]
 
 
-### 📄 상품 등록
+### 📗 상품 등록
 
 ==== 🔵 REQUEST
 include::{snippets}/seller-product-controller-docs/post-product/http-request.adoc[]
@@ -29,7 +29,7 @@ include::{snippets}/seller-product-controller-docs/post-product/http-response.ad
 include::{snippets}/seller-product-controller-docs/post-product/response-fields.adoc[]
 
 
-### 📄 상품 수정
+### 📗 상품 수정
 
 ==== 🔵 REQUEST
 include::{snippets}/seller-product-controller-docs/put-product/http-request.adoc[]
@@ -51,7 +51,7 @@ include::{snippets}/seller-product-controller-docs/put-product/http-response.ado
 include::{snippets}/seller-product-controller-docs/put-product/response-fields.adoc[]
 
 
-### 📄 상품 검색
+### 📗 상품 검색
 
 ==== 🔵 REQUEST
 include::{snippets}/product-controller-docs/get-product-list/http-request.adoc[]
@@ -68,8 +68,29 @@ include::{snippets}/product-controller-docs/get-product-list/http-response.adoc[
 
 include::{snippets}/product-controller-docs/get-product-list/response-fields.adoc[]
 
+### 📗 상품 검색 (Seller 전용)
 
-### 📄 상품 상세
+==== 🔵 REQUEST
+include::{snippets}/seller-product-controller-docs/get-product-list/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/seller-product-controller-docs/get-product-list/request-headers.adoc[]
+
+==== 🔵 REQUEST FIELD
+
+include::{snippets}/seller-product-controller-docs/get-product-list/query-parameters.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/seller-product-controller-docs/get-product-list/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/seller-product-controller-docs/get-product-list/response-fields.adoc[]
+
+
+### 📗 상품 상세
 
 ==== 🔵 REQUEST
 include::{snippets}/product-controller-docs/get-product/http-request.adoc[]

@@ -36,6 +36,7 @@ public class BaseTest {
 
     protected String MEMBER_EMAIL = "member@appling.com";
     protected String SELLER_EMAIL = "seller@appling.com";
+    protected String SELLER2_EMAIL = "seller2@appling.com";
     protected String PASSWORD = "password";
 
     @BeforeEach
