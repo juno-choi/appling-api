@@ -1,15 +1,16 @@
 package com.juno.appling.service.product;
 
-import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.dto.member.LoginDto;
 import com.juno.appling.domain.dto.product.PutProductDto;
 import com.juno.appling.domain.dto.product.ProductDto;
 import com.juno.appling.domain.entity.member.Member;
+import com.juno.appling.domain.entity.product.Category;
 import com.juno.appling.domain.entity.product.Product;
 import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.domain.vo.product.ProductListVo;
 import com.juno.appling.domain.vo.product.ProductVo;
 import com.juno.appling.repository.member.MemberRepository;
+import com.juno.appling.repository.product.CategoryRepository;
 import com.juno.appling.repository.product.ProductRepository;
 import com.juno.appling.service.member.MemberAuthService;
 import org.junit.jupiter.api.DisplayName;
@@ -34,9 +35,10 @@ class ProductServiceTest {
     private MemberAuthService memberAuthService;
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     private MockHttpServletRequest request = new MockHttpServletRequest();
 
@@ -48,7 +50,7 @@ class ProductServiceTest {
         LoginVo login = memberAuthService.login(loginDto);
         request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
 
-        ProductDto productDto = new ProductDto("메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2", "https://image3");
+        ProductDto productDto = new ProductDto(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2", "https://image3");
 
         //when
         ProductVo productVo = productService.postProduct(productDto, request);
@@ -68,16 +70,18 @@ class ProductServiceTest {
         //given
         Member member = memberRepository.findByEmail("seller@appling.com").get();
 
-        ProductDto productDto = new ProductDto("메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
-        ProductDto searchDto = new ProductDto("검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
-        productRepository.save(Product.of(member, searchDto));
+        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+        ProductDto searchDto = new ProductDto(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+        Category category = categoryRepository.findById(1L).get();
+
+        productRepository.save(Product.of(member, category, searchDto));
 
         for(int i=0; i<25; i++){
-            productRepository.save(Product.of(member, productDto));
+            productRepository.save(Product.of(member, category, productDto));
         }
 
         for(int i=0; i<10; i++){
-            productRepository.save(Product.of(member, searchDto));
+            productRepository.save(Product.of(member, category, searchDto));
         }
 
         Pageable pageable = Pageable.ofSize(5);
@@ -96,16 +100,17 @@ class ProductServiceTest {
         Member seller2 = memberRepository.findByEmail("seller2@appling.com").get();
         LoginDto loginDto = new LoginDto("seller@appling.com", "password");
         LoginVo login = memberAuthService.login(loginDto);
+        Category category = categoryRepository.findById(1L).get();
 
-        ProductDto productDto = new ProductDto("메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
-        ProductDto searchDto = new ProductDto("검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
-        productRepository.save(Product.of(seller, searchDto));
+        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+        ProductDto searchDto = new ProductDto(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+        productRepository.save(Product.of(seller, category, searchDto));
 
         for(int i=0; i<10; i++){
-            productRepository.save(Product.of(seller, searchDto));
+            productRepository.save(Product.of(seller, category, searchDto));
         }
         for(int i=0; i<10; i++){
-            productRepository.save(Product.of(seller2, productDto));
+            productRepository.save(Product.of(seller2, category, productDto));
         }
 
         Pageable pageable = Pageable.ofSize(5);
@@ -122,11 +127,14 @@ class ProductServiceTest {
     void putProductSuccess(){
         // given
         Member member = memberRepository.findByEmail("seller@appling.com").get();
-        ProductDto productDto = new ProductDto("메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
-        Product originalProduct = productRepository.save(Product.of(member, productDto));
+        Category category = categoryRepository.findById(1L).get();
+
+        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+        Product originalProduct = productRepository.save(Product.of(member, category, productDto));
         String originalProductMainTitle = originalProduct.getMainTitle();
         Long productId = originalProduct.getId();
-        PutProductDto putProductDto = new PutProductDto(productId, "수정된 제목", "수정된 설명", "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
+        Long categoryId = originalProduct.getCategory().getId();
+        PutProductDto putProductDto = new PutProductDto(productId, 2L, "수정된 제목", "수정된 설명", "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
         // when
         productService.putProduct(putProductDto);
         // then

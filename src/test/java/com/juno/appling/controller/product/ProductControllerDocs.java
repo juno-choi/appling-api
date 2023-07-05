@@ -4,9 +4,11 @@ import com.juno.appling.BaseTest;
 import com.juno.appling.domain.dto.member.LoginDto;
 import com.juno.appling.domain.dto.product.ProductDto;
 import com.juno.appling.domain.entity.member.Member;
+import com.juno.appling.domain.entity.product.Category;
 import com.juno.appling.domain.entity.product.Product;
 import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.repository.member.MemberRepository;
+import com.juno.appling.repository.product.CategoryRepository;
 import com.juno.appling.repository.product.ProductRepository;
 import com.juno.appling.service.member.MemberAuthService;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +34,9 @@ class ProductControllerDocs extends BaseTest {
     private MemberRepository memberRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+
 
     private final static String PREFIX = "/api/product";
 
@@ -39,21 +44,18 @@ class ProductControllerDocs extends BaseTest {
     @DisplayName(PREFIX)
     void getProductList() throws Exception{
         //given
-        LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
-        LoginVo login = memberAuthService.login(loginDto);
-
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-
-        ProductDto productDto = new ProductDto("메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
-        ProductDto searchDto = new ProductDto("검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
-        productRepository.save(Product.of(member, searchDto));
+        Category category = categoryRepository.findById(1L).get();
+        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
+        ProductDto searchDto = new ProductDto(1L,"검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
+        productRepository.save(Product.of(member, category, searchDto));
 
         for(int i=0; i<25; i++){
-            productRepository.save(Product.of(member, productDto));
+            productRepository.save(Product.of(member, category, productDto));
         }
 
         for(int i=0; i<10; i++){
-            productRepository.save(Product.of(member, searchDto));
+            productRepository.save(Product.of(member, category, searchDto));
         }
         //when
         ResultActions perform = mock.perform(
@@ -96,7 +98,11 @@ class ProductControllerDocs extends BaseTest {
                         fieldWithPath("data.list[].seller.member_id").type(JsonFieldType.NUMBER).description("판매자 id"),
                         fieldWithPath("data.list[].seller.email").type(JsonFieldType.STRING).description("판매자 email"),
                         fieldWithPath("data.list[].seller.nickname").type(JsonFieldType.STRING).description("판매자 닉네임"),
-                        fieldWithPath("data.list[].seller.name").type(JsonFieldType.STRING).description("판매자 이름")
+                        fieldWithPath("data.list[].seller.name").type(JsonFieldType.STRING).description("판매자 이름"),
+                        fieldWithPath("data.list[].category.category_id").type(JsonFieldType.NUMBER).description("카테고리 id"),
+                        fieldWithPath("data.list[].category.name").type(JsonFieldType.STRING).description("카테고리 명"),
+                        fieldWithPath("data.list[].category.created_at").type(JsonFieldType.STRING).description("카테고리 생성일"),
+                        fieldWithPath("data.list[].category.modified_at").type(JsonFieldType.STRING).description("카테고리 수정일")
                 )
         ));
     }
@@ -105,13 +111,10 @@ class ProductControllerDocs extends BaseTest {
     @DisplayName(PREFIX+"/{id}")
     void getProduct() throws Exception{
         //given
-        LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
-        LoginVo login = memberAuthService.login(loginDto);
-
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-
-        ProductDto productDto = new ProductDto("메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
-        Product product = productRepository.save(Product.of(member, productDto));
+        Category category = categoryRepository.findById(1L).get();
+        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
+        Product product = productRepository.save(Product.of(member, category, productDto));
         //when
         ResultActions perform = mock.perform(
                 RestDocumentationRequestBuilders.get(PREFIX+"/{id}", product.getId())
@@ -144,7 +147,34 @@ class ProductControllerDocs extends BaseTest {
                         fieldWithPath("data.seller.member_id").type(JsonFieldType.NUMBER).description("판매자 id"),
                         fieldWithPath("data.seller.email").type(JsonFieldType.STRING).description("판매자 email"),
                         fieldWithPath("data.seller.nickname").type(JsonFieldType.STRING).description("판매자 닉네임"),
-                        fieldWithPath("data.seller.name").type(JsonFieldType.STRING).description("판매자 이름")
+                        fieldWithPath("data.seller.name").type(JsonFieldType.STRING).description("판매자 이름"),
+                        fieldWithPath("data.category.category_id").type(JsonFieldType.NUMBER).description("카테고리 id"),
+                        fieldWithPath("data.category.name").type(JsonFieldType.STRING).description("카테고리 명"),
+                        fieldWithPath("data.category.created_at").type(JsonFieldType.STRING).description("카테고리 생성일"),
+                        fieldWithPath("data.category.modified_at").type(JsonFieldType.STRING).description("카테고리 수정일")
+                )
+        ));
+    }
+
+
+    @Test
+    @DisplayName(PREFIX+"/category")
+    void getCategoryList() throws Exception{
+        //given
+        //when
+        ResultActions perform = mock.perform(
+                RestDocumentationRequestBuilders.get(PREFIX+"/category")
+        );
+        //then
+        perform.andExpect(status().is2xxSuccessful());
+        perform.andDo(docs.document(
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.list[].category_id").type(JsonFieldType.NUMBER).description("카테고리 id"),
+                        fieldWithPath("data.list[].name").type(JsonFieldType.STRING).description("카테고리 명"),
+                        fieldWithPath("data.list[].created_at").type(JsonFieldType.STRING).description("카테고리 생성일"),
+                        fieldWithPath("data.list[].modified_at").type(JsonFieldType.STRING).description("카테고리 수정일")
                 )
         ));
     }

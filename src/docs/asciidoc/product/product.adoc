@@ -29,6 +29,20 @@ include::{snippets}/seller-product-controller-docs/post-product/http-response.ad
 include::{snippets}/seller-product-controller-docs/post-product/response-fields.adoc[]
 
 
+### 📗 카테고리 리스트
+
+==== 🔵 REQUEST
+include::{snippets}/product-controller-docs/get-category-list/http-request.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/product-controller-docs/get-category-list/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/product-controller-docs/get-category-list/response-fields.adoc[]
+
+
 ### 📗 상품 수정
 
 ==== 🔵 REQUEST
