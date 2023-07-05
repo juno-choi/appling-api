@@ -45,11 +45,11 @@ public class Member {
     private Status status;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "buyer_info_id")
     private BuyerInfo buyerInfo;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<RecipientInfo> buyerInfoList = new ArrayList<>();
+    private List<RecipientInfo> recipientInfoList = new ArrayList<>();
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

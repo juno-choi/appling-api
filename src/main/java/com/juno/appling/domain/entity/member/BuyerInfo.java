@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class BuyerInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "precipient_info_id")
+    @Column(name = "buyer_info_id")
     private Long id;
 
     @NotNull
