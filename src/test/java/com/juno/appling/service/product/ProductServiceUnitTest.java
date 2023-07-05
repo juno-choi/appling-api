@@ -101,11 +101,26 @@ class ProductServiceUnitTest {
     }
 
     @Test
-    @DisplayName("수정하려는 상품이 존재하지 않는 경우 실패")
+    @DisplayName("수정하려는 상품의 카테고리가 존재하지 않는 경우 실패")
     void putProductFail1(){
         // given
-        PutProductDto dto = new PutProductDto(0L, null, null,null,null,0,0,null,null,null,null,null,null,null);
+        PutProductDto dto = new PutProductDto(0L, 0L, null, null,null,null,0,0,null,null,null,null,null,null,null);
+        // when
+        Throwable throwable = catchThrowable(() -> productService.putProduct(dto));
+        // then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 카테고리");
+    }
+
+
+    @Test
+    @DisplayName("수정하려는 상품이 존재하지 않는 경우 실패")
+    void putProductFail2(){
+        // given
+        PutProductDto dto = new PutProductDto(0L, 1L, null, null,null,null,0,0,null,null,null,null,null,null,null);
+        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(new Category()));
         given(productRepository.findById(any())).willReturn(Optional.ofNullable(null));
+
         // when
         Throwable throwable = catchThrowable(() -> productService.putProduct(dto));
         // then

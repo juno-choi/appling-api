@@ -104,10 +104,19 @@ public class ProductService {
     @Transactional
     public ProductVo putProduct(PutProductDto putProductDto){
         Long targetProductId = putProductDto.getId();
+
+        Long categoryId = putProductDto.getCategoryId();
+
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() ->
+            new IllegalArgumentException("유효하지 않은 카테고리입니다.")
+        );
+
         Product product = productRepository.findById(targetProductId).orElseThrow(() ->
             new IllegalArgumentException("유효하지 않은 상품입니다.")
         );
+
         product.put(putProductDto);
+        product.putCategory(category);
 
         return ProductVo.productReturnVo(product);
     }

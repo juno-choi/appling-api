@@ -86,4 +86,8 @@ public class Product {
         this.image3 = putProductDto.getImage3();
         this.modifiedAt = now;
     }
+
+    public void putCategory(Category category){
+        this.category = category;
+    }
 }
