@@ -2,6 +2,7 @@ package com.juno.appling.repository.product;
 
 import com.juno.appling.common.querydsl.QuerydslConfig;
 import com.juno.appling.domain.entity.product.QProduct;
+import com.juno.appling.domain.vo.product.CategoryVo;
 import com.juno.appling.domain.vo.product.ProductVo;
 import com.juno.appling.domain.vo.product.SellerVo;
 import com.querydsl.core.BooleanBuilder;
@@ -56,6 +57,12 @@ public class ProductCustomRepository {
                         product.member.email,
                         product.member.nickname,
                         product.member.name
+                    ),
+                    Projections.constructor(CategoryVo.class,
+                            product.category.id,
+                            product.category.name,
+                            product.category.createdAt,
+                            product.category.modifiedAt
                     )
                 ))
                 .from(product)

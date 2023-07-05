@@ -20,8 +20,12 @@ public class Product {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "member_id")
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     private String mainTitle;
     private String mainExplanation;
@@ -39,8 +43,9 @@ public class Product {
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
 
-    private Product(Member member, String mainTitle, String mainExplanation, String productMainExplanation, String productSubExplanation, int originPrice, int price, String purchaseInquiry, String origin, String producer, String mainImage, String image1, String image2, String image3, LocalDateTime createAt, LocalDateTime modifiedAt) {
+    private Product(Member member, Category category, String mainTitle, String mainExplanation, String productMainExplanation, String productSubExplanation, int originPrice, int price, String purchaseInquiry, String origin, String producer, String mainImage, String image1, String image2, String image3, LocalDateTime createAt, LocalDateTime modifiedAt) {
         this.member = member;
+        this.category = category;
         this.mainTitle = mainTitle;
         this.mainExplanation = mainExplanation;
         this.productMainExplanation = productMainExplanation;
@@ -58,9 +63,9 @@ public class Product {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Product of(Member member, ProductDto productDto){
+    public static Product of(Member member, Category category, ProductDto productDto){
         LocalDateTime now = LocalDateTime.now();
-        return new Product(member, productDto.getMainTitle(), productDto.getMainExplanation(), productDto.getProductMainExplanation(), productDto.getProductSubExplanation(), productDto.getOriginPrice(), productDto.getPrice(), productDto.getPurchaseInquiry(), productDto.getOrigin(), productDto.getProducer(), productDto.getMainImage(), productDto.getImage1(), productDto.getImage2(), productDto.getImage3(), now, now);
+        return new Product(member, category, productDto.getMainTitle(), productDto.getMainExplanation(), productDto.getProductMainExplanation(), productDto.getProductSubExplanation(), productDto.getOriginPrice(), productDto.getPrice(), productDto.getPurchaseInquiry(), productDto.getOrigin(), productDto.getProducer(), productDto.getMainImage(), productDto.getImage1(), productDto.getImage2(), productDto.getImage3(), now, now);
     }
 
     public void put(PutProductDto putProductDto){
@@ -80,5 +85,9 @@ public class Product {
         this.image2 = putProductDto.getImage2();
         this.image3 = putProductDto.getImage3();
         this.modifiedAt = now;
+    }
+
+    public void putCategory(Category category){
+        this.category = category;
     }
 }
