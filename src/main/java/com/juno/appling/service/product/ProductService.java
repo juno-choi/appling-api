@@ -6,6 +6,7 @@ import com.juno.appling.domain.dto.product.ProductDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.product.Category;
 import com.juno.appling.domain.entity.product.Product;
+import com.juno.appling.domain.vo.product.CategoryVo;
 import com.juno.appling.domain.vo.product.ProductListVo;
 import com.juno.appling.domain.vo.product.ProductVo;
 import com.juno.appling.domain.vo.product.SellerVo;
@@ -90,6 +91,12 @@ public class ProductService {
                         .email(product.getMember().getEmail())
                         .nickname(product.getMember().getEmail())
                         .memberId(product.getMember().getId())
+                        .build())
+                .category(CategoryVo.builder()
+                        .categoryId(product.getCategory().getId())
+                        .name(product.getCategory().getName())
+                        .createdAt(product.getCategory().getCreatedAt())
+                        .modifiedAt(product.getCategory().getModifiedAt())
                         .build())
                 .build();
     }
