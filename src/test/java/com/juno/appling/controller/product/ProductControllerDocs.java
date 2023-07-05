@@ -44,9 +44,6 @@ class ProductControllerDocs extends BaseTest {
     @DisplayName(PREFIX)
     void getProductList() throws Exception{
         //given
-        LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
-        LoginVo login = memberAuthService.login(loginDto);
-
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
         ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
@@ -114,9 +111,6 @@ class ProductControllerDocs extends BaseTest {
     @DisplayName(PREFIX+"/{id}")
     void getProduct() throws Exception{
         //given
-        LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
-        LoginVo login = memberAuthService.login(loginDto);
-
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
         ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
@@ -158,6 +152,29 @@ class ProductControllerDocs extends BaseTest {
                         fieldWithPath("data.category.name").type(JsonFieldType.STRING).description("카테고리 명"),
                         fieldWithPath("data.category.created_at").type(JsonFieldType.STRING).description("카테고리 생성일"),
                         fieldWithPath("data.category.modified_at").type(JsonFieldType.STRING).description("카테고리 수정일")
+                )
+        ));
+    }
+
+
+    @Test
+    @DisplayName(PREFIX+"/category")
+    void getCategoryList() throws Exception{
+        //given
+        //when
+        ResultActions perform = mock.perform(
+                RestDocumentationRequestBuilders.get(PREFIX+"/category")
+        );
+        //then
+        perform.andExpect(status().is2xxSuccessful());
+        perform.andDo(docs.document(
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.list[].category_id").type(JsonFieldType.NUMBER).description("카테고리 id"),
+                        fieldWithPath("data.list[].name").type(JsonFieldType.STRING).description("카테고리 명"),
+                        fieldWithPath("data.list[].created_at").type(JsonFieldType.STRING).description("카테고리 생성일"),
+                        fieldWithPath("data.list[].modified_at").type(JsonFieldType.STRING).description("카테고리 수정일")
                 )
         ));
     }

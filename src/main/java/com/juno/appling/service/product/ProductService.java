@@ -6,10 +6,7 @@ import com.juno.appling.domain.dto.product.ProductDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.product.Category;
 import com.juno.appling.domain.entity.product.Product;
-import com.juno.appling.domain.vo.product.CategoryVo;
-import com.juno.appling.domain.vo.product.ProductListVo;
-import com.juno.appling.domain.vo.product.ProductVo;
-import com.juno.appling.domain.vo.product.SellerVo;
+import com.juno.appling.domain.vo.product.*;
 import com.juno.appling.repository.member.MemberRepository;
 import com.juno.appling.repository.product.CategoryRepository;
 import com.juno.appling.repository.product.ProductCustomRepository;
@@ -20,6 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -132,6 +132,23 @@ public class ProductService {
                 .last(page.isLast())
                 .empty(page.isLast())
                 .list(page.getContent())
+                .build();
+    }
+
+    public CategoryListVo getCategoryList(){
+        List<Category> categoryList = categoryRepository.findAll();
+        List<CategoryVo> categoryVoList = new LinkedList<>();
+        for(Category c : categoryList){
+            categoryVoList.add(CategoryVo.builder()
+                    .categoryId(c.getId())
+                    .name(c.getName())
+                    .createdAt(c.getCreatedAt())
+                    .modifiedAt(c.getModifiedAt())
+                    .build());
+        }
+
+        return CategoryListVo.builder()
+                .list(categoryVoList)
                 .build();
     }
 }
