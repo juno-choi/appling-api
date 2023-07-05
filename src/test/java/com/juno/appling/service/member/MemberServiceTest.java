@@ -73,7 +73,7 @@ public class MemberServiceTest {
         LoginVo login = memberAuthService.login(loginDto);
         request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
 
-        PostBuyerInfoDto postBuyerInfoDto = new PostBuyerInfoDto(null, "구매할사람", "buyer@mail.com", "01012341234");
+        PostBuyerInfoDto postBuyerInfoDto = new PostBuyerInfoDto("구매할사람", "buyer@mail.com", "01012341234");
         // when
         MessageVo messageVo = memberService.postBuyerInfo(postBuyerInfoDto, request);
         // then

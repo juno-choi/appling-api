@@ -4,6 +4,7 @@ import com.juno.appling.BaseTest;
 import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.dto.member.LoginDto;
 import com.juno.appling.domain.dto.member.PatchMemberDto;
+import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.enums.ResultCode;
 import com.juno.appling.domain.enums.member.Role;
@@ -28,6 +29,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.requestHe
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MemberControllerDocs extends BaseTest {
@@ -148,6 +150,42 @@ class MemberControllerDocs extends BaseTest {
                         fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임").optional(),
                         fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호").optional(),
                         fieldWithPath("status").type(JsonFieldType.STRING).description("회원 상태(아직 사용하지 않음) ex)탈퇴").optional()
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.message").type(JsonFieldType.STRING).description("결과 메세지")
+                )
+        ));
+    }
+
+
+    @Test
+    @DisplayName(PREFIX+"/buyer-info")
+    void postBuyerInfo() throws Exception {
+        //given
+        LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
+        LoginVo loginVo = memberAuthService.login(loginDto);
+        PostBuyerInfoDto postBuyerInfoDto = new PostBuyerInfoDto("구매할사람", "buyer@appling.com", "01012341234");
+        //when
+        ResultActions resultActions = mock.perform(
+                post(PREFIX+"/buyer-info")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postBuyerInfoDto))
+                        .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
+        );
+
+        //then
+        resultActions.andExpect(status().is2xxSuccessful());
+
+        resultActions.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token")
+                ),
+                requestFields(
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("구매자 이름"),
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("구매자 email"),
+                        fieldWithPath("tel").type(JsonFieldType.STRING).description("구매자 전화번호")
                 ),
                 responseFields(
                         fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),

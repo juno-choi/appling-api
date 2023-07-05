@@ -52,7 +52,7 @@ class MemberServiceUnitTest {
     @DisplayName("회원이 존재하지 않을경우 구매자 정보 입력에 실패")
     void postBuyerInfoFail1(){
         // given
-        PostBuyerInfoDto postBuyerInfoDto = new PostBuyerInfoDto(null, "최준호", "buyer_info@appling.com", "01012341234");
+        PostBuyerInfoDto postBuyerInfoDto = new PostBuyerInfoDto("최준호", "buyer_info@appling.com", "01012341234");
 
         given(tokenProvider.getMemberId(request)).willReturn(0L);
         // when

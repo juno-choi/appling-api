@@ -12,7 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostBuyerInfoDto {
-    private Long id;
     @NotNull(message = "name 비어잆을 수 없습니다.")
     private String name;
     @Email(message = "email 형식을 지켜주세요.")
