@@ -3,6 +3,7 @@ package com.juno.appling.service.member;
 import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.dto.member.LoginDto;
 import com.juno.appling.domain.dto.member.PatchMemberDto;
+import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.vo.MessageVo;
 import com.juno.appling.domain.vo.member.LoginVo;
@@ -54,5 +55,28 @@ public class MemberServiceTest {
         MessageVo messageVo = memberService.patchMember(patchMemberDto, request);
         // then
         Assertions.assertThat(messageVo.getMessage()).contains("회원 정보 수정 성공");
+    }
+
+
+
+    @Test
+    @DisplayName("회원 구매자 정보 등록에 성공")
+    void postBuyerInfoSuccess1(){
+        // given
+        String email = "buyer-info@mail.com";
+        String password = "password";
+
+        JoinDto joinDto = new JoinDto(email, password, "구매자", "구매자야", "19991010");
+        joinDto.passwordEncoder(passwordEncoder);
+        memberRepository.save(Member.of(joinDto));
+        LoginDto loginDto = new LoginDto(email, password);
+        LoginVo login = memberAuthService.login(loginDto);
+        request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
+
+        PostBuyerInfoDto postBuyerInfoDto = new PostBuyerInfoDto(null, "구매할사람", "buyer@mail.com", "01012341234");
+        // when
+        MessageVo messageVo = memberService.postBuyerInfo(postBuyerInfoDto, request);
+        // then
+        Assertions.assertThat(messageVo.getMessage()).contains("구매자 정보 등록 성공");
     }
 }

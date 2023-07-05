@@ -115,4 +115,8 @@ public class Member {
         this.role = role;
     }
 
+    public void putBuyerInfo(BuyerInfo buyerInfo){
+        this.buyerInfo = buyerInfo;
+    }
+
 }
