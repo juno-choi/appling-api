@@ -23,7 +23,7 @@ public class Product {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 

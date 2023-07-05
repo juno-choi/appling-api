@@ -4,11 +4,13 @@ import com.juno.appling.common.security.TokenProvider;
 import com.juno.appling.domain.dto.product.PutProductDto;
 import com.juno.appling.domain.dto.product.ProductDto;
 import com.juno.appling.domain.entity.member.Member;
+import com.juno.appling.domain.entity.product.Category;
 import com.juno.appling.domain.entity.product.Product;
 import com.juno.appling.domain.vo.product.ProductListVo;
 import com.juno.appling.domain.vo.product.ProductVo;
 import com.juno.appling.domain.vo.product.SellerVo;
 import com.juno.appling.repository.member.MemberRepository;
+import com.juno.appling.repository.product.CategoryRepository;
 import com.juno.appling.repository.product.ProductCustomRepository;
 import com.juno.appling.repository.product.ProductRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,12 +28,18 @@ public class ProductService {
     private final ProductCustomRepository productCustomRepository;
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
+    private final CategoryRepository categoryRepository;
 
     @Transactional
     public ProductVo postProduct(ProductDto productDto, HttpServletRequest request){
+        Long categoryId = productDto.getCategoryId();
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() ->
+                new IllegalArgumentException("유효하지 않은 카테고리입니다.")
+        );
+
         Member member = getMember(request);
 
-        Product product = productRepository.save(Product.of(member, null, productDto));
+        Product product = productRepository.save(Product.of(member, category, productDto));
         return ProductVo.productReturnVo(product);
     }
 
