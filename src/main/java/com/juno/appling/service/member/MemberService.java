@@ -3,11 +3,14 @@ package com.juno.appling.service.member;
 import com.juno.appling.common.security.TokenProvider;
 import com.juno.appling.domain.dto.member.PatchMemberDto;
 import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
+import com.juno.appling.domain.dto.member.PostRecipientInfo;
 import com.juno.appling.domain.dto.member.PutBuyerInfoDto;
 import com.juno.appling.domain.entity.member.BuyerInfo;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.member.MemberApplySeller;
+import com.juno.appling.domain.entity.member.RecipientInfo;
 import com.juno.appling.domain.enums.member.MemberApplySellerStatus;
+import com.juno.appling.domain.enums.member.RecipientInfoStatus;
 import com.juno.appling.domain.enums.member.Role;
 import com.juno.appling.domain.vo.MessageVo;
 import com.juno.appling.domain.vo.member.BuyerInfoVo;
@@ -15,6 +18,7 @@ import com.juno.appling.domain.vo.member.MemberVo;
 import com.juno.appling.repository.member.BuyerInfoRepository;
 import com.juno.appling.repository.member.MemberApplySellerRepository;
 import com.juno.appling.repository.member.MemberRepository;
+import com.juno.appling.repository.member.RecipientInfoRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,6 +36,14 @@ public class MemberService {
     private final TokenProvider tokenProvider;
     private final BCryptPasswordEncoder passwordEncoder;
     private final BuyerInfoRepository buyerInfoRepository;
+    private final RecipientInfoRepository recipientInfoRepository;
+
+    private Member getMember(HttpServletRequest request) {
+        Long memberId = tokenProvider.getMemberId(request);
+        return memberRepository.findById(memberId).orElseThrow(() ->
+                new IllegalArgumentException("존재하지 않는 회원입니다.")
+        );
+    }
 
     public MemberVo member(HttpServletRequest request) {
         Member findMember = getMember(request);
@@ -103,13 +115,6 @@ public class MemberService {
                 .build();
     }
 
-    private Member getMember(HttpServletRequest request) {
-        Long memberId = tokenProvider.getMemberId(request);
-        return memberRepository.findById(memberId).orElseThrow(() ->
-                new IllegalArgumentException("존재하지 않는 회원입니다.")
-        );
-    }
-
     public BuyerInfoVo getBuyerInfo(HttpServletRequest request){
         Member member = getMember(request);
         BuyerInfo buyerInfo = Optional.ofNullable(member.getBuyerInfo()).orElse(
@@ -135,6 +140,15 @@ public class MemberService {
         buyerInfo.put(putBuyerInfoDto.getName(), putBuyerInfoDto.getEmail(), putBuyerInfoDto.getTel());
         return MessageVo.builder()
                 .message("구매자 정보 수정 성공")
+                .build();
+    }
+
+    @Transactional
+    public MessageVo postRecipientInfo(PostRecipientInfo postRecipientInfo, HttpServletRequest request){
+        Member member = getMember(request);
+        recipientInfoRepository.save(RecipientInfo.of(member, postRecipientInfo.getName(), postRecipientInfo.getAddress(), postRecipientInfo.getTel(), RecipientInfoStatus.NORMAL));
+        return MessageVo.builder()
+                .message("수령인 정보 등록 성공")
                 .build();
     }
 }

@@ -271,4 +271,40 @@ class MemberControllerDocs extends BaseTest {
                 )
         ));
     }
+
+    @Test
+    @DisplayName(PREFIX+"/recipient (POST)")
+    void postRecipientInfo() throws Exception {
+        //given
+        LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
+        LoginVo loginVo = memberAuthService.login(loginDto);
+        PostRecipientInfo postRecipientInfo = new PostRecipientInfo("수령인", "recipient@appling.com", "01012341234");
+        //when
+        ResultActions resultActions = mock.perform(
+                post(PREFIX+"/recipient")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postRecipientInfo))
+                        .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
+        );
+
+        //then
+        resultActions.andExpect(status().is2xxSuccessful());
+
+        resultActions.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token")
+                ),
+                requestFields(
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("수령인 이름"),
+                        fieldWithPath("address").type(JsonFieldType.STRING).description("수령인 주소"),
+                        fieldWithPath("tel").type(JsonFieldType.STRING).description("수령인 전화번호")
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.message").type(JsonFieldType.STRING).description("결과 메세지")
+                )
+        ));
+    }
+
 }

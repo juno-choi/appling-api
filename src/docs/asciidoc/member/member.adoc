@@ -130,3 +130,29 @@ include::{snippets}/member-controller-docs/get-buyer-info/http-response.adoc[]
 ==== 🟢 RESPONSE FIELD
 
 include::{snippets}/member-controller-docs/get-buyer-info/response-fields.adoc[]
+
+
+### 📗 수령인 정보 등록
+
+==== 🔵 REQUEST
+include::{snippets}/member-controller-docs/post-recipient-info/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/member-controller-docs/post-recipient-info/request-headers.adoc[]
+
+==== 🔵 REQUEST BODY
+
+include::{snippets}/member-controller-docs/post-recipient-info/request-body.adoc[]
+
+==== 🔵 REQUEST FIELD
+
+include::{snippets}/member-controller-docs/post-recipient-info/request-fields.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/member-controller-docs/post-recipient-info/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/member-controller-docs/post-recipient-info/response-fields.adoc[]

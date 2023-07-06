@@ -3,6 +3,7 @@ package com.juno.appling.controller.member;
 import com.juno.appling.domain.dto.Api;
 import com.juno.appling.domain.dto.member.PatchMemberDto;
 import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
+import com.juno.appling.domain.dto.member.PostRecipientInfo;
 import com.juno.appling.domain.dto.member.PutBuyerInfoDto;
 import com.juno.appling.domain.vo.MessageVo;
 import com.juno.appling.domain.vo.member.BuyerInfoVo;
@@ -79,7 +80,6 @@ public class MemberController {
                 );
     }
 
-
     @PutMapping("/buyer-info")
     public ResponseEntity<Api<MessageVo>> putBuyerInfo(@RequestBody @Validated PutBuyerInfoDto putBuyerInfoDto, BindingResult bindingResult){
         return ResponseEntity.ok(Api.<MessageVo>builder()
@@ -88,5 +88,16 @@ public class MemberController {
                 .data(memberService.putBuyerInfo(putBuyerInfoDto))
                 .build()
         );
+    }
+
+    @PostMapping("/recipient")
+    public ResponseEntity<Api<MessageVo>> postRecipientInfo(@RequestBody @Validated PostRecipientInfo postRecipientInfo, HttpServletRequest request, BindingResult bindingResult){
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Api.<MessageVo>builder()
+                        .code(POST.code)
+                        .message(POST.message)
+                        .data(memberService.postRecipientInfo(postRecipientInfo, request))
+                        .build()
+                );
     }
 }

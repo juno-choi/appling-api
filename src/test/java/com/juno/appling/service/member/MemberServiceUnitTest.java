@@ -3,6 +3,7 @@ package com.juno.appling.service.member;
 import com.juno.appling.common.security.TokenProvider;
 import com.juno.appling.domain.dto.member.PatchMemberDto;
 import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
+import com.juno.appling.domain.dto.member.PostRecipientInfo;
 import com.juno.appling.domain.dto.member.PutBuyerInfoDto;
 import com.juno.appling.domain.entity.member.BuyerInfo;
 import com.juno.appling.domain.entity.member.Member;
@@ -125,5 +126,17 @@ class MemberServiceUnitTest {
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유효하지 않은 구매자 정보");
+    }
+
+    @Test
+    @DisplayName("회원이 존재하지 않을경우 수령인 정보 불러오기에 실패")
+    void postRecipientInfoFail1(){
+        // given
+        PostRecipientInfo recipientInfo = new PostRecipientInfo();
+        // when
+        Throwable throwable = catchThrowable(() -> memberService.postRecipientInfo(recipientInfo, request));
+        // then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("존재하지 않는 회원");
     }
 }
