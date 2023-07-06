@@ -43,6 +43,24 @@ include::{snippets}/member-controller-docs/patch-member/http-response.adoc[]
 include::{snippets}/member-controller-docs/patch-member/response-fields.adoc[]
 
 
+
+### 📗 Seller 권한 신청
+
+==== 🔵 REQUEST
+include::{snippets}/member-controller-docs/apply-seller/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/member-controller-docs/apply-seller/request-headers.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/member-controller-docs/apply-seller/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/member-controller-docs/apply-seller/response-fields.adoc[]
+
 ### 📗 구매자 정보 등록
 
 ==== 🔵 REQUEST
@@ -69,19 +87,19 @@ include::{snippets}/member-controller-docs/post-buyer-info/http-response.adoc[]
 include::{snippets}/member-controller-docs/post-buyer-info/response-fields.adoc[]
 
 
-### 📗 Seller 권한 신청
+### 📗 구매자 정보 불러오기
 
 ==== 🔵 REQUEST
-include::{snippets}/member-controller-docs/apply-seller/http-request.adoc[]
+include::{snippets}/member-controller-docs/get-buyer-info/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/member-controller-docs/apply-seller/request-headers.adoc[]
+include::{snippets}/member-controller-docs/get-buyer-info/request-headers.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/member-controller-docs/apply-seller/http-response.adoc[]
+include::{snippets}/member-controller-docs/get-buyer-info/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/member-controller-docs/apply-seller/response-fields.adoc[]
+include::{snippets}/member-controller-docs/get-buyer-info/response-fields.adoc[]

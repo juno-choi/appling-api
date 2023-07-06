@@ -4,6 +4,7 @@ import com.juno.appling.domain.dto.Api;
 import com.juno.appling.domain.dto.member.PatchMemberDto;
 import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
 import com.juno.appling.domain.vo.MessageVo;
+import com.juno.appling.domain.vo.member.BuyerInfoVo;
 import com.juno.appling.domain.vo.member.MemberVo;
 import com.juno.appling.service.member.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import static com.juno.appling.domain.enums.ResultCode.POST;
 import static com.juno.appling.domain.enums.ResultCode.SUCCESS;
 
 @RestController
@@ -59,10 +61,20 @@ public class MemberController {
     public ResponseEntity<Api<MessageVo>> postBuyerInfo(@RequestBody @Validated PostBuyerInfoDto postBuyerInfoDto, HttpServletRequest request, BindingResult bindingResult){
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Api.<MessageVo>builder()
-                        .code(SUCCESS.code)
-                        .message(SUCCESS.message)
+                        .code(POST.code)
+                        .message(POST.message)
                         .data(memberService.postBuyerInfo(postBuyerInfoDto, request))
                         .build()
         );
+    }
+
+    @GetMapping("/buyer-info")
+    public ResponseEntity<Api<BuyerInfoVo>> getBuyerInfo(HttpServletRequest request){
+        return ResponseEntity.ok(Api.<BuyerInfoVo>builder()
+                        .code(SUCCESS.code)
+                        .message(SUCCESS.message)
+                        .data(memberService.getBuyerInfo(request))
+                        .build()
+                );
     }
 }

@@ -5,12 +5,14 @@ import com.juno.appling.domain.dto.member.JoinDto;
 import com.juno.appling.domain.dto.member.LoginDto;
 import com.juno.appling.domain.dto.member.PatchMemberDto;
 import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
+import com.juno.appling.domain.entity.member.BuyerInfo;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.enums.ResultCode;
 import com.juno.appling.domain.enums.member.Role;
 import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.repository.member.MemberRepository;
 import com.juno.appling.service.member.MemberAuthService;
+import com.juno.appling.service.member.MemberService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 
@@ -40,6 +43,8 @@ class MemberControllerDocs extends BaseTest {
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private MemberService memberService;
 
     private final static String PREFIX = "/api/member";
     private final static String EMAIL = "juno@member.com";
@@ -161,7 +166,7 @@ class MemberControllerDocs extends BaseTest {
 
 
     @Test
-    @DisplayName(PREFIX+"/buyer-info")
+    @DisplayName(PREFIX+"/buyer-info (POST)")
     void postBuyerInfo() throws Exception {
         //given
         LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
@@ -195,4 +200,40 @@ class MemberControllerDocs extends BaseTest {
         ));
     }
 
+
+
+    @Test
+    @DisplayName(PREFIX+"/buyer-info (GET)")
+    @Transactional
+    void getBuyerInfo() throws Exception {
+        //given
+        LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
+        LoginVo loginVo = memberAuthService.login(loginDto);
+        Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
+        member.putBuyerInfo(BuyerInfo.of(null, "구매자", "buyer-info@appling.com", "01012344321"));
+
+        //when
+        ResultActions resultActions = mock.perform(
+                get(PREFIX+"/buyer-info")
+                        .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
+        );
+
+        //then
+        resultActions.andExpect(status().is2xxSuccessful());
+
+        resultActions.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token")
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.name").type(JsonFieldType.STRING).description("구매자 이름"),
+                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("구매자 email"),
+                        fieldWithPath("data.tel").type(JsonFieldType.STRING).description("구매자 연락처"),
+                        fieldWithPath("data.created_at").type(JsonFieldType.STRING).description("생성일"),
+                        fieldWithPath("data.modified_at").type(JsonFieldType.STRING).description("수정일")
+                )
+        ));
+    }
 }
