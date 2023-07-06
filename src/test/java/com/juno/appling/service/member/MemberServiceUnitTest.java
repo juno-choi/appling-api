@@ -61,5 +61,15 @@ class MemberServiceUnitTest {
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("존재하지 않는 회원");
     }
-
+    @Test
+    @DisplayName("회원이 존재하지 않을경우 구매자 정보 불러오기에 실패")
+    void getBuyerInfoFail1(){
+        // given
+        given(tokenProvider.getMemberId(request)).willReturn(0L);
+        // when
+        Throwable throwable = catchThrowable(() -> memberService.getBuyerInfo(request));
+        // then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("존재하지 않는 회원");
+    }
 }

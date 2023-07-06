@@ -33,11 +33,7 @@ public class MemberService {
     private final BuyerInfoRepository buyerInfoRepository;
 
     public MemberVo member(HttpServletRequest request) {
-        Long memberId = tokenProvider.getMemberId(request);
-
-        Member findMember = memberRepository.findById(memberId).orElseThrow(() ->
-                new IllegalArgumentException("존재하지 않는 회원입니다.")
-        );
+        Member findMember = getMember(request);
 
         return MemberVo.builder()
                 .memberId(findMember.getId())
@@ -74,10 +70,7 @@ public class MemberService {
 
     @Transactional
     public MessageVo patchMember(PatchMemberDto patchMemberDto, HttpServletRequest request){
-        Long memberId = tokenProvider.getMemberId(request);
-        Member member = memberRepository.findById(memberId).orElseThrow(() ->
-                new IllegalArgumentException("존재하지 않는 회원입니다.")
-        );
+        Member member = getMember(request);
 
         String birth = Optional.ofNullable(patchMemberDto.getBirth()).orElse("").replaceAll("-", "").trim();
         String name = Optional.ofNullable(patchMemberDto.getName()).orElse("").trim();
@@ -95,16 +88,33 @@ public class MemberService {
 
     @Transactional
     public MessageVo postBuyerInfo(PostBuyerInfoDto postBuyerInfoDto, HttpServletRequest request){
-        Long memberId = tokenProvider.getMemberId(request);
-        Member member = memberRepository.findById(memberId).orElseThrow(() ->
-                new IllegalArgumentException("존재하지 않는 회원입니다.")
-        );
+        Member member = getMember(request);
 
         BuyerInfo buyerInfo = buyerInfoRepository.save(BuyerInfo.of(null, postBuyerInfoDto.getName(), postBuyerInfoDto.getEmail(), postBuyerInfoDto.getTel()));
         member.putBuyerInfo(buyerInfo);
 
         return MessageVo.builder()
                 .message("구매자 정보 등록 성공")
+                .build();
+    }
+
+    private Member getMember(HttpServletRequest request) {
+        Long memberId = tokenProvider.getMemberId(request);
+        return memberRepository.findById(memberId).orElseThrow(() ->
+                new IllegalArgumentException("존재하지 않는 회원입니다.")
+        );
+    }
+
+    public BuyerInfoVo getBuyerInfo(HttpServletRequest request){
+        Member member = getMember(request);
+        BuyerInfo buyerInfo = member.getBuyerInfo();
+        return BuyerInfoVo.builder()
+                .id(buyerInfo.getId())
+                .email(buyerInfo.getEmail())
+                .name(buyerInfo.getName())
+                .tel(buyerInfo.getTel())
+                .createdAt(buyerInfo.getCreatedAt())
+                .modifiedAt(buyerInfo.getModifiedAt())
                 .build();
     }
 }
