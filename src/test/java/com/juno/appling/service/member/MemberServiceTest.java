@@ -123,10 +123,8 @@ public class MemberServiceTest {
 
         PutBuyerInfoDto putBuyerInfoDto = new PutBuyerInfoDto(originBuyerInfo.getId(), "수정된사람", "buyer-info@mail.com", "01043214123");
         // when
-        BuyerInfoVo buyerInfo = memberService.putBuyerInfo(putBuyerInfoDto, request);
+        MessageVo messageVo = memberService.putBuyerInfo(putBuyerInfoDto);
         // then
-        Assertions.assertThat(buyerInfo.getEmail()).isEqualTo(putBuyerInfoDto.getEmail());
-        Assertions.assertThat(buyerInfo.getTel()).isEqualTo(putBuyerInfoDto.getTel());
-        Assertions.assertThat(buyerInfo.getName()).isEqualTo(putBuyerInfoDto.getName());
+        Assertions.assertThat(messageVo.getMessage()).contains("등록 성공");
     }
 }

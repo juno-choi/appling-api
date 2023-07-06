@@ -42,9 +42,15 @@ public class BuyerInfo {
         return new BuyerInfo(id, name, email, tel, now, now);
     }
 
+    public static BuyerInfo ofEmpty(){
+        return new BuyerInfo(null, "", "", "", null, null);
+    }
+
     public void put(@NotNull String name, @NotNull String email, @NotNull String tel){
+        tel = tel.replaceAll("-", "");
         this.name = name;
         this.email = email;
         this.tel = tel;
+        this.modifiedAt = LocalDateTime.now();
     }
 }

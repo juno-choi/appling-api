@@ -6,6 +6,7 @@ import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
 import com.juno.appling.domain.dto.member.PutBuyerInfoDto;
 import com.juno.appling.domain.entity.member.BuyerInfo;
 import com.juno.appling.domain.entity.member.Member;
+import com.juno.appling.domain.vo.member.BuyerInfoVo;
 import com.juno.appling.repository.member.BuyerInfoRepository;
 import com.juno.appling.repository.member.MemberApplySellerRepository;
 import com.juno.appling.repository.member.MemberRepository;
@@ -101,12 +102,26 @@ class MemberServiceUnitTest {
     }
 
     @Test
+    @DisplayName("구매자 정보 존재하지 않을 경우 빈값으로 불러오기에 성공")
+    void getBuyerInfoSuccess1(){
+        // given
+        given(tokenProvider.getMemberId(request)).willReturn(0L);
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(new Member()));
+        // when
+        BuyerInfoVo buyerInfo = memberService.getBuyerInfo(request);
+        // then
+        assertThat(buyerInfo.getName()).isEqualTo("");
+        assertThat(buyerInfo.getEmail()).isEqualTo("");
+        assertThat(buyerInfo.getTel()).isEqualTo("");
+    }
+
+    @Test
     @DisplayName("구매자 정보가 존재하지 않을 경우 수정에 실패")
     void putBuyerInfoFail1(){
         // given
         PutBuyerInfoDto putBuyerInfoDto = new PutBuyerInfoDto();
         // when
-        Throwable throwable = catchThrowable(() -> memberService.putBuyerInfo(putBuyerInfoDto, request));
+        Throwable throwable = catchThrowable(() -> memberService.putBuyerInfo(putBuyerInfoDto));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유효하지 않은 구매자 정보");

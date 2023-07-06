@@ -87,6 +87,33 @@ include::{snippets}/member-controller-docs/post-buyer-info/http-response.adoc[]
 include::{snippets}/member-controller-docs/post-buyer-info/response-fields.adoc[]
 
 
+### 📗 구매자 정보 수정
+
+==== 🔵 REQUEST
+include::{snippets}/member-controller-docs/put-buyer-info/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/member-controller-docs/put-buyer-info/request-headers.adoc[]
+
+==== 🔵 REQUEST BODY
+
+include::{snippets}/member-controller-docs/put-buyer-info/request-body.adoc[]
+
+==== 🔵 REQUEST FIELD
+
+include::{snippets}/member-controller-docs/put-buyer-info/request-fields.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/member-controller-docs/put-buyer-info/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/member-controller-docs/put-buyer-info/response-fields.adoc[]
+
+
+
 ### 📗 구매자 정보 불러오기
 
 ==== 🔵 REQUEST

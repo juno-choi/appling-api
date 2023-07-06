@@ -1,15 +1,13 @@
 package com.juno.appling.controller.member;
 
 import com.juno.appling.BaseTest;
-import com.juno.appling.domain.dto.member.JoinDto;
-import com.juno.appling.domain.dto.member.LoginDto;
-import com.juno.appling.domain.dto.member.PatchMemberDto;
-import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
+import com.juno.appling.domain.dto.member.*;
 import com.juno.appling.domain.entity.member.BuyerInfo;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.enums.ResultCode;
 import com.juno.appling.domain.enums.member.Role;
 import com.juno.appling.domain.vo.member.LoginVo;
+import com.juno.appling.repository.member.BuyerInfoRepository;
 import com.juno.appling.repository.member.MemberRepository;
 import com.juno.appling.service.member.MemberAuthService;
 import com.juno.appling.service.member.MemberService;
@@ -45,6 +43,8 @@ class MemberControllerDocs extends BaseTest {
     private MemberRepository memberRepository;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private BuyerInfoRepository buyerInfoRepository;
 
     private final static String PREFIX = "/api/member";
     private final static String EMAIL = "juno@member.com";
@@ -164,7 +164,6 @@ class MemberControllerDocs extends BaseTest {
         ));
     }
 
-
     @Test
     @DisplayName(PREFIX+"/buyer-info (POST)")
     void postBuyerInfo() throws Exception {
@@ -200,8 +199,6 @@ class MemberControllerDocs extends BaseTest {
         ));
     }
 
-
-
     @Test
     @DisplayName(PREFIX+"/buyer-info (GET)")
     @Transactional
@@ -233,6 +230,44 @@ class MemberControllerDocs extends BaseTest {
                         fieldWithPath("data.tel").type(JsonFieldType.STRING).description("구매자 연락처"),
                         fieldWithPath("data.created_at").type(JsonFieldType.STRING).description("생성일"),
                         fieldWithPath("data.modified_at").type(JsonFieldType.STRING).description("수정일")
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName(PREFIX+"/buyer-info (PUT)")
+    void putBuyerInfo() throws Exception {
+        //given
+        LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
+        LoginVo loginVo = memberAuthService.login(loginDto);
+
+        BuyerInfo buyerInfo = buyerInfoRepository.save(BuyerInfo.of(null, "구매자", "buyer@mail.com", "01012341234"));
+        PutBuyerInfoDto putBuyerInfoDto = new PutBuyerInfoDto(buyerInfo.getId(), "수정자", "put-buyer@mail.com", "01043214321");
+        //when
+        ResultActions resultActions = mock.perform(
+                put(PREFIX+"/buyer-info")
+                        .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(putBuyerInfoDto))
+        );
+
+        //then
+        resultActions.andExpect(status().is2xxSuccessful());
+
+        resultActions.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token")
+                ),
+                requestFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("구매자 정보 id"),
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("구매자 이름"),
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("구매자 email"),
+                        fieldWithPath("tel").type(JsonFieldType.STRING).description("구매자 전화번호")
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.message").type(JsonFieldType.STRING).description("결과 메세지")
                 )
         ));
     }
