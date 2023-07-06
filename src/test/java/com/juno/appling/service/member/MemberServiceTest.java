@@ -62,7 +62,7 @@ public class MemberServiceTest {
     @DisplayName("회원 구매자 정보 등록에 성공")
     void postBuyerInfoSuccess1(){
         // given
-        String email = "buyer-info@mail.com";
+        String email = "buyer@mail.com";
         String password = "password";
 
         JoinDto joinDto = new JoinDto(email, password, "구매자", "구매자야", "19991010");
@@ -83,7 +83,7 @@ public class MemberServiceTest {
     @DisplayName("회원 구매자 정보 불러오기에 성공")
     void getBuyerInfoSuccess1(){
         // given
-        String email = "buyer-info2@mail.com";
+        String email = "buyer2@mail.com";
         String password = "password";
 
         JoinDto joinDto = new JoinDto(email, password, "구매자정보", "구매자정보등록", "19991010");
@@ -107,7 +107,7 @@ public class MemberServiceTest {
     @DisplayName("회원 구매자 정보 수정에 성공")
     void putBuyerInfoSuccess1(){
         // given
-        String email = "buyer-info3@mail.com";
+        String email = "buyer3@mail.com";
         String password = "password";
 
         JoinDto joinDto = new JoinDto(email, password, "구매자정보", "구매자정보등록", "19991010");
@@ -121,10 +121,10 @@ public class MemberServiceTest {
         memberService.postBuyerInfo(postBuyerInfoDto, request);
         BuyerInfoVo originBuyerInfo = memberService.getBuyerInfo(request);
 
-        PutBuyerInfoDto putBuyerInfoDto = new PutBuyerInfoDto(originBuyerInfo.getId(), "수정된사람", "buyer-info@mail.com", "01043214123");
+        PutBuyerInfoDto putBuyerInfoDto = new PutBuyerInfoDto(originBuyerInfo.getId(), "수정된사람", "buyer@mail.com", "01043214123");
         // when
         MessageVo messageVo = memberService.putBuyerInfo(putBuyerInfoDto);
         // then
-        Assertions.assertThat(messageVo.getMessage()).contains("등록 성공");
+        Assertions.assertThat(messageVo.getMessage()).contains("수정 성공");
     }
 }

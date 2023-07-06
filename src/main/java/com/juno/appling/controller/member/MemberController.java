@@ -59,7 +59,7 @@ public class MemberController {
         );
     }
 
-    @PostMapping("/buyer-info")
+    @PostMapping("/buyer")
     public ResponseEntity<Api<MessageVo>> postBuyerInfo(@RequestBody @Validated PostBuyerInfoDto postBuyerInfoDto, HttpServletRequest request, BindingResult bindingResult){
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Api.<MessageVo>builder()
@@ -70,7 +70,7 @@ public class MemberController {
         );
     }
 
-    @GetMapping("/buyer-info")
+    @GetMapping("/buyer")
     public ResponseEntity<Api<BuyerInfoVo>> getBuyerInfo(HttpServletRequest request){
         return ResponseEntity.ok(Api.<BuyerInfoVo>builder()
                         .code(SUCCESS.code)
@@ -80,7 +80,7 @@ public class MemberController {
                 );
     }
 
-    @PutMapping("/buyer-info")
+    @PutMapping("/buyer")
     public ResponseEntity<Api<MessageVo>> putBuyerInfo(@RequestBody @Validated PutBuyerInfoDto putBuyerInfoDto, BindingResult bindingResult){
         return ResponseEntity.ok(Api.<MessageVo>builder()
                 .code(SUCCESS.code)

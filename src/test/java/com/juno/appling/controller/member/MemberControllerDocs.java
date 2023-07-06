@@ -165,7 +165,7 @@ class MemberControllerDocs extends BaseTest {
     }
 
     @Test
-    @DisplayName(PREFIX+"/buyer-info (POST)")
+    @DisplayName(PREFIX+"/buyer (POST)")
     void postBuyerInfo() throws Exception {
         //given
         LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
@@ -173,7 +173,7 @@ class MemberControllerDocs extends BaseTest {
         PostBuyerInfoDto postBuyerInfoDto = new PostBuyerInfoDto("구매할사람", "buyer@appling.com", "01012341234");
         //when
         ResultActions resultActions = mock.perform(
-                post(PREFIX+"/buyer-info")
+                post(PREFIX+"/buyer")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postBuyerInfoDto))
                         .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
@@ -200,18 +200,18 @@ class MemberControllerDocs extends BaseTest {
     }
 
     @Test
-    @DisplayName(PREFIX+"/buyer-info (GET)")
+    @DisplayName(PREFIX+"/buyer (GET)")
     @Transactional
     void getBuyerInfo() throws Exception {
         //given
         LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
         LoginVo loginVo = memberAuthService.login(loginDto);
         Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
-        member.putBuyerInfo(BuyerInfo.of(null, "구매자", "buyer-info@appling.com", "01012344321"));
+        member.putBuyerInfo(BuyerInfo.of(null, "구매자", "buyer@appling.com", "01012344321"));
 
         //when
         ResultActions resultActions = mock.perform(
-                get(PREFIX+"/buyer-info")
+                get(PREFIX+"/buyer")
                         .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
         );
 
@@ -235,7 +235,7 @@ class MemberControllerDocs extends BaseTest {
     }
 
     @Test
-    @DisplayName(PREFIX+"/buyer-info (PUT)")
+    @DisplayName(PREFIX+"/buyer (PUT)")
     void putBuyerInfo() throws Exception {
         //given
         LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
@@ -245,7 +245,7 @@ class MemberControllerDocs extends BaseTest {
         PutBuyerInfoDto putBuyerInfoDto = new PutBuyerInfoDto(buyerInfo.getId(), "수정자", "put-buyer@mail.com", "01043214321");
         //when
         ResultActions resultActions = mock.perform(
-                put(PREFIX+"/buyer-info")
+                put(PREFIX+"/buyer")
                         .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(putBuyerInfoDto))
