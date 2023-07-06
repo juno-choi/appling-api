@@ -3,6 +3,8 @@ package com.juno.appling.service.member;
 import com.juno.appling.common.security.TokenProvider;
 import com.juno.appling.domain.dto.member.PatchMemberDto;
 import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
+import com.juno.appling.domain.dto.member.PutBuyerInfoDto;
+import com.juno.appling.repository.member.BuyerInfoRepository;
 import com.juno.appling.repository.member.MemberApplySellerRepository;
 import com.juno.appling.repository.member.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +18,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 
@@ -31,6 +32,8 @@ class MemberServiceUnitTest {
     private MemberApplySellerRepository memberApplySellerRepository;
     @Mock
     private TokenProvider tokenProvider;
+    @Mock
+    private BuyerInfoRepository buyerInfoRepository;
 
     HttpServletRequest request = new MockHttpServletRequest();
 
@@ -61,6 +64,7 @@ class MemberServiceUnitTest {
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("존재하지 않는 회원");
     }
+
     @Test
     @DisplayName("회원이 존재하지 않을경우 구매자 정보 불러오기에 실패")
     void getBuyerInfoFail1(){
@@ -71,5 +75,17 @@ class MemberServiceUnitTest {
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("존재하지 않는 회원");
+    }
+
+    @Test
+    @DisplayName("구매자 정보가 존재하지 않을 경우 수정에 실패")
+    void putBuyerInfoFail1(){
+        // given
+        PutBuyerInfoDto putBuyerInfoDto = new PutBuyerInfoDto();
+        // when
+        Throwable throwable = catchThrowable(() -> memberService.putBuyerInfo(putBuyerInfoDto, request));
+        // then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 구매자 정보");
     }
 }

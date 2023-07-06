@@ -41,4 +41,10 @@ public class BuyerInfo {
         tel = tel.replaceAll("-", "");
         return new BuyerInfo(id, name, email, tel, now, now);
     }
+
+    public void put(@NotNull String name, @NotNull String email, @NotNull String tel){
+        this.name = name;
+        this.email = email;
+        this.tel = tel;
+    }
 }

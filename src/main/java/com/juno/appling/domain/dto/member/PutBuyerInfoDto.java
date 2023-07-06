@@ -11,7 +11,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostBuyerInfoDto {
+public class PutBuyerInfoDto {
+    @NotNull(message = "id 비어있을 수 없습니다.")
+    private Long id;
     @NotNull(message = "name 비어있을 수 없습니다.")
     private String name;
     @Email(message = "email 형식을 지켜주세요.")

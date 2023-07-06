@@ -1,9 +1,6 @@
 package com.juno.appling.service.member;
 
-import com.juno.appling.domain.dto.member.JoinDto;
-import com.juno.appling.domain.dto.member.LoginDto;
-import com.juno.appling.domain.dto.member.PatchMemberDto;
-import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
+import com.juno.appling.domain.dto.member.*;
 import com.juno.appling.domain.entity.member.BuyerInfo;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.vo.MessageVo;
@@ -104,5 +101,32 @@ public class MemberServiceTest {
         Assertions.assertThat(buyerInfo.getEmail()).isEqualTo(postBuyerInfoDto.getEmail());
         Assertions.assertThat(buyerInfo.getTel()).isEqualTo(postBuyerInfoDto.getTel());
         Assertions.assertThat(buyerInfo.getName()).isEqualTo(postBuyerInfoDto.getName());
+    }
+
+    @Test
+    @DisplayName("회원 구매자 정보 수정에 성공")
+    void putBuyerInfoSuccess1(){
+        // given
+        String email = "buyer-info3@mail.com";
+        String password = "password";
+
+        JoinDto joinDto = new JoinDto(email, password, "구매자정보", "구매자정보등록", "19991010");
+        joinDto.passwordEncoder(passwordEncoder);
+        Member member = memberRepository.save(Member.of(joinDto));
+        LoginDto loginDto = new LoginDto(email, password);
+        LoginVo login = memberAuthService.login(loginDto);
+        request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
+
+        PostBuyerInfoDto postBuyerInfoDto = new PostBuyerInfoDto("구매할사람", "buyer@mail.com", "01012341234");
+        memberService.postBuyerInfo(postBuyerInfoDto, request);
+        BuyerInfoVo originBuyerInfo = memberService.getBuyerInfo(request);
+
+        PutBuyerInfoDto putBuyerInfoDto = new PutBuyerInfoDto(originBuyerInfo.getId(), "수정된사람", "buyer-info@mail.com", "01043214123");
+        // when
+        BuyerInfoVo buyerInfo = memberService.putBuyerInfo(putBuyerInfoDto, request);
+        // then
+        Assertions.assertThat(buyerInfo.getEmail()).isEqualTo(putBuyerInfoDto.getEmail());
+        Assertions.assertThat(buyerInfo.getTel()).isEqualTo(putBuyerInfoDto.getTel());
+        Assertions.assertThat(buyerInfo.getName()).isEqualTo(putBuyerInfoDto.getName());
     }
 }

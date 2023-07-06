@@ -3,6 +3,7 @@ package com.juno.appling.service.member;
 import com.juno.appling.common.security.TokenProvider;
 import com.juno.appling.domain.dto.member.PatchMemberDto;
 import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
+import com.juno.appling.domain.dto.member.PutBuyerInfoDto;
 import com.juno.appling.domain.entity.member.BuyerInfo;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.member.MemberApplySeller;
@@ -108,6 +109,23 @@ public class MemberService {
     public BuyerInfoVo getBuyerInfo(HttpServletRequest request){
         Member member = getMember(request);
         BuyerInfo buyerInfo = member.getBuyerInfo();
+        return BuyerInfoVo.builder()
+                .id(buyerInfo.getId())
+                .email(buyerInfo.getEmail())
+                .name(buyerInfo.getName())
+                .tel(buyerInfo.getTel())
+                .createdAt(buyerInfo.getCreatedAt())
+                .modifiedAt(buyerInfo.getModifiedAt())
+                .build();
+    }
+
+    @Transactional
+    public BuyerInfoVo putBuyerInfo(PutBuyerInfoDto putBuyerInfoDto, HttpServletRequest request){
+        Long buyerInfoId = putBuyerInfoDto.getId();
+        BuyerInfo buyerInfo = buyerInfoRepository.findById(buyerInfoId).orElseThrow(() ->
+                new IllegalArgumentException("유효하지 않은 구매자 정보입니다.")
+        );
+        buyerInfo.put(putBuyerInfoDto.getName(), putBuyerInfoDto.getEmail(), putBuyerInfoDto.getTel());
         return BuyerInfoVo.builder()
                 .id(buyerInfo.getId())
                 .email(buyerInfo.getEmail())
