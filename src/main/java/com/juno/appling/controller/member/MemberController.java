@@ -8,6 +8,7 @@ import com.juno.appling.domain.dto.member.PutBuyerDto;
 import com.juno.appling.domain.vo.MessageVo;
 import com.juno.appling.domain.vo.member.BuyerVo;
 import com.juno.appling.domain.vo.member.MemberVo;
+import com.juno.appling.domain.vo.member.RecipientListVo;
 import com.juno.appling.service.member.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -97,6 +98,16 @@ public class MemberController {
                         .code(POST.code)
                         .message(POST.message)
                         .data(memberService.postRecipient(postRecipientDtoInfo, request))
+                        .build()
+                );
+    }
+
+    @GetMapping("/recipient")
+    public ResponseEntity<Api<RecipientListVo>> getRecipientList(HttpServletRequest request){
+        return ResponseEntity.ok(Api.<RecipientListVo>builder()
+                        .code(SUCCESS.code)
+                        .message(SUCCESS.message)
+                        .data(memberService.getRecipient(request))
                         .build()
                 );
     }
