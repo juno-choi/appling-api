@@ -1,6 +1,6 @@
 package com.juno.appling;
 
-import com.juno.appling.config.RestdocsConfig;
+import com.juno.appling.config.redis.RestdocsConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Execution;
