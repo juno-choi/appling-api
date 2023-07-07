@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -41,6 +43,13 @@ public class Member {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyer_id")
+    private Buyer buyer;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Recipient> recipientList = new ArrayList<>();
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -104,6 +113,10 @@ public class Member {
 
     public void patchMemberRole(Role role){
         this.role = role;
+    }
+
+    public void putBuyer(Buyer buyer){
+        this.buyer = buyer;
     }
 
 }
