@@ -18,6 +18,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -30,6 +31,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.*;
 
@@ -141,6 +143,12 @@ public class MemberAuthService {
                         BodyInserters.fromFormData(map)
                 )
                 .retrieve()
+                .onStatus(http -> http.isError(), response ->
+                    response.bodyToMono(String.class)
+                        .handle((error, sink) ->
+                            sink.error(new RuntimeException(error))
+                        )
+                )
                 .bodyToMono(KakaoLoginResponseDto.class)
                 .block();
 
