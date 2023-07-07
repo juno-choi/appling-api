@@ -129,12 +129,23 @@ class MemberServiceUnitTest {
     }
 
     @Test
-    @DisplayName("회원이 존재하지 않을경우 수령인 정보 불러오기에 실패")
+    @DisplayName("회원이 존재하지 않을경우 수령인 정보 등록에 실패")
     void postRecipientFail1(){
         // given
         PostRecipientDto recipient = new PostRecipientDto();
         // when
         Throwable throwable = catchThrowable(() -> memberService.postRecipient(recipient, request));
+        // then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("존재하지 않는 회원");
+    }
+
+    @Test
+    @DisplayName("회원이 존재하지 않을경우 수령인 정보 불러오기에 실패")
+    void getRecipientFail1(){
+        // given
+        // when
+        Throwable throwable = catchThrowable(() -> memberService.getRecipient(request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("존재하지 않는 회원");

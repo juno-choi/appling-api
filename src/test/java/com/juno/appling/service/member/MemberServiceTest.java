@@ -1,10 +1,14 @@
 package com.juno.appling.service.member;
 
+import com.juno.appling.CommonTest;
 import com.juno.appling.domain.dto.member.*;
 import com.juno.appling.domain.entity.member.Member;
+import com.juno.appling.domain.entity.member.Recipient;
+import com.juno.appling.domain.enums.member.RecipientInfoStatus;
 import com.juno.appling.domain.vo.MessageVo;
 import com.juno.appling.domain.vo.member.BuyerVo;
 import com.juno.appling.domain.vo.member.LoginVo;
+import com.juno.appling.domain.vo.member.RecipientListVo;
 import com.juno.appling.repository.member.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
+import static com.juno.appling.CommonTest.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -52,7 +59,7 @@ public class MemberServiceTest {
         // when
         MessageVo messageVo = memberService.patchMember(patchMemberDto, request);
         // then
-        Assertions.assertThat(messageVo.getMessage()).contains("회원 정보 수정 성공");
+        assertThat(messageVo.getMessage()).contains("회원 정보 수정 성공");
     }
 
 
@@ -75,7 +82,7 @@ public class MemberServiceTest {
         // when
         MessageVo messageVo = memberService.postBuyer(postBuyerDto, request);
         // then
-        Assertions.assertThat(messageVo.getMessage()).contains("구매자 정보 등록 성공");
+        assertThat(messageVo.getMessage()).contains("구매자 정보 등록 성공");
     }
 
     @Test
@@ -97,9 +104,9 @@ public class MemberServiceTest {
         // when
         BuyerVo buyer = memberService.getBuyer(request);
         // then
-        Assertions.assertThat(buyer.getEmail()).isEqualTo(postBuyerDto.getEmail());
-        Assertions.assertThat(buyer.getTel()).isEqualTo(postBuyerDto.getTel());
-        Assertions.assertThat(buyer.getName()).isEqualTo(postBuyerDto.getName());
+        assertThat(buyer.getEmail()).isEqualTo(postBuyerDto.getEmail());
+        assertThat(buyer.getTel()).isEqualTo(postBuyerDto.getTel());
+        assertThat(buyer.getName()).isEqualTo(postBuyerDto.getName());
     }
 
     @Test
@@ -124,6 +131,32 @@ public class MemberServiceTest {
         // when
         MessageVo messageVo = memberService.putBuyer(putBuyerDto);
         // then
-        Assertions.assertThat(messageVo.getMessage()).contains("수정 성공");
+        assertThat(messageVo.getMessage()).contains("수정 성공");
+    }
+
+    @Test
+    @DisplayName("수령인 정보 불러오기 성공")
+    @Transactional
+    void getRecipientList(){
+        // given
+        LoginDto loginDto = new LoginDto(MEMBER_EMAIL.getVal(), PASSWORD.getVal());
+        LoginVo login = memberAuthService.login(loginDto);
+        Member member = memberRepository.findByEmail(MEMBER_EMAIL.getVal()).get();
+
+        Recipient recipient1 = Recipient.of(member, "수령인1", "주소", "01012341234", RecipientInfoStatus.NORMAL);
+        Recipient recipient2 = Recipient.of(member, "수령인2", "주소2", "01012341234", RecipientInfoStatus.NORMAL);
+
+        member.getRecipientList().add(recipient1);
+        member.getRecipientList().add(recipient2);
+
+        request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
+        // when
+        RecipientListVo recipient = memberService.getRecipient(request);
+        // then
+        assertThat(recipient.getList()
+                .get(0)
+                .getName()
+        ).isEqualTo(recipient2.getName());
+
     }
 }

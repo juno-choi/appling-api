@@ -8,13 +8,15 @@ import com.juno.appling.domain.dto.member.PutBuyerDto;
 import com.juno.appling.domain.entity.member.Buyer;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.member.MemberApplySeller;
-import com.juno.appling.domain.entity.member.RecipientInfo;
+import com.juno.appling.domain.entity.member.Recipient;
 import com.juno.appling.domain.enums.member.MemberApplySellerStatus;
 import com.juno.appling.domain.enums.member.RecipientInfoStatus;
 import com.juno.appling.domain.enums.member.Role;
 import com.juno.appling.domain.vo.MessageVo;
 import com.juno.appling.domain.vo.member.BuyerVo;
 import com.juno.appling.domain.vo.member.MemberVo;
+import com.juno.appling.domain.vo.member.RecipientListVo;
+import com.juno.appling.domain.vo.member.RecipientVo;
 import com.juno.appling.repository.member.BuyerRepository;
 import com.juno.appling.repository.member.MemberApplySellerRepository;
 import com.juno.appling.repository.member.MemberRepository;
@@ -25,6 +27,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -146,9 +151,32 @@ public class MemberService {
     @Transactional
     public MessageVo postRecipient(PostRecipientDto postRecipientDtoInfo, HttpServletRequest request){
         Member member = getMember(request);
-        recipientRepository.save(RecipientInfo.of(member, postRecipientDtoInfo.getName(), postRecipientDtoInfo.getAddress(), postRecipientDtoInfo.getTel(), RecipientInfoStatus.NORMAL));
+        recipientRepository.save(Recipient.of(member, postRecipientDtoInfo.getName(), postRecipientDtoInfo.getAddress(), postRecipientDtoInfo.getTel(), RecipientInfoStatus.NORMAL));
         return MessageVo.builder()
                 .message("수령인 정보 등록 성공")
+                .build();
+    }
+
+    public RecipientListVo getRecipient(HttpServletRequest request){
+        Member member = getMember(request);
+
+        List<Recipient> recipientList = member.getRecipientList();
+        List<RecipientVo> list = new LinkedList<>();
+
+        for(Recipient r : recipientList){
+            list.add(RecipientVo.builder()
+                    .id(r.getId())
+                    .address(r.getAddress())
+                    .status(r.getStatus())
+                    .name(r.getName())
+                    .tel(r.getTel())
+                    .createdAt(r.getCreatedAt())
+                    .modifiedAt(r.getModifiedAt())
+                    .build());
+        }
+        Collections.reverse(list);
+        return RecipientListVo.builder()
+                .list(list)
                 .build();
     }
 }
