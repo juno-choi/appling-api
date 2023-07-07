@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-public class BuyerInfoVo extends BaseVo {
+public class BuyerVo extends BaseVo {
     @NotNull
     private Long id;
     @NotNull

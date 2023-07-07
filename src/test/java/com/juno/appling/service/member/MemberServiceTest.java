@@ -1,10 +1,9 @@
 package com.juno.appling.service.member;
 
 import com.juno.appling.domain.dto.member.*;
-import com.juno.appling.domain.entity.member.BuyerInfo;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.vo.MessageVo;
-import com.juno.appling.domain.vo.member.BuyerInfoVo;
+import com.juno.appling.domain.vo.member.BuyerVo;
 import com.juno.appling.domain.vo.member.LoginVo;
 import com.juno.appling.repository.member.MemberRepository;
 import org.assertj.core.api.Assertions;
@@ -60,7 +59,7 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("회원 구매자 정보 등록에 성공")
-    void postBuyerInfoSuccess1(){
+    void postBuyerSuccess1(){
         // given
         String email = "buyer@mail.com";
         String password = "password";
@@ -72,16 +71,16 @@ public class MemberServiceTest {
         LoginVo login = memberAuthService.login(loginDto);
         request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
 
-        PostBuyerInfoDto postBuyerInfoDto = new PostBuyerInfoDto("구매할사람", "buyer@mail.com", "01012341234");
+        PostBuyerDto postBuyerDto = new PostBuyerDto("구매할사람", "buyer@mail.com", "01012341234");
         // when
-        MessageVo messageVo = memberService.postBuyerInfo(postBuyerInfoDto, request);
+        MessageVo messageVo = memberService.postBuyer(postBuyerDto, request);
         // then
         Assertions.assertThat(messageVo.getMessage()).contains("구매자 정보 등록 성공");
     }
 
     @Test
     @DisplayName("회원 구매자 정보 불러오기에 성공")
-    void getBuyerInfoSuccess1(){
+    void getBuyerSuccess1(){
         // given
         String email = "buyer2@mail.com";
         String password = "password";
@@ -93,19 +92,19 @@ public class MemberServiceTest {
         LoginVo login = memberAuthService.login(loginDto);
         request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
 
-        PostBuyerInfoDto postBuyerInfoDto = new PostBuyerInfoDto("구매할사람", "buyer@mail.com", "01012341234");
-        memberService.postBuyerInfo(postBuyerInfoDto, request);
+        PostBuyerDto postBuyerDto = new PostBuyerDto("구매할사람", "buyer@mail.com", "01012341234");
+        memberService.postBuyer(postBuyerDto, request);
         // when
-        BuyerInfoVo buyerInfo = memberService.getBuyerInfo(request);
+        BuyerVo buyer = memberService.getBuyer(request);
         // then
-        Assertions.assertThat(buyerInfo.getEmail()).isEqualTo(postBuyerInfoDto.getEmail());
-        Assertions.assertThat(buyerInfo.getTel()).isEqualTo(postBuyerInfoDto.getTel());
-        Assertions.assertThat(buyerInfo.getName()).isEqualTo(postBuyerInfoDto.getName());
+        Assertions.assertThat(buyer.getEmail()).isEqualTo(postBuyerDto.getEmail());
+        Assertions.assertThat(buyer.getTel()).isEqualTo(postBuyerDto.getTel());
+        Assertions.assertThat(buyer.getName()).isEqualTo(postBuyerDto.getName());
     }
 
     @Test
     @DisplayName("회원 구매자 정보 수정에 성공")
-    void putBuyerInfoSuccess1(){
+    void putBuyerSuccess1(){
         // given
         String email = "buyer3@mail.com";
         String password = "password";
@@ -117,13 +116,13 @@ public class MemberServiceTest {
         LoginVo login = memberAuthService.login(loginDto);
         request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
 
-        PostBuyerInfoDto postBuyerInfoDto = new PostBuyerInfoDto("구매할사람", "buyer@mail.com", "01012341234");
-        memberService.postBuyerInfo(postBuyerInfoDto, request);
-        BuyerInfoVo originBuyerInfo = memberService.getBuyerInfo(request);
+        PostBuyerDto postBuyerDto = new PostBuyerDto("구매할사람", "buyer@mail.com", "01012341234");
+        memberService.postBuyer(postBuyerDto, request);
+        BuyerVo originBuyer = memberService.getBuyer(request);
 
-        PutBuyerInfoDto putBuyerInfoDto = new PutBuyerInfoDto(originBuyerInfo.getId(), "수정된사람", "buyer@mail.com", "01043214123");
+        PutBuyerDto putBuyerDto = new PutBuyerDto(originBuyer.getId(), "수정된사람", "buyer@mail.com", "01043214123");
         // when
-        MessageVo messageVo = memberService.putBuyerInfo(putBuyerInfoDto);
+        MessageVo messageVo = memberService.putBuyer(putBuyerDto);
         // then
         Assertions.assertThat(messageVo.getMessage()).contains("수정 성공");
     }

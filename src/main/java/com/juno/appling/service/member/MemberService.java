@@ -2,10 +2,10 @@ package com.juno.appling.service.member;
 
 import com.juno.appling.common.security.TokenProvider;
 import com.juno.appling.domain.dto.member.PatchMemberDto;
-import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
-import com.juno.appling.domain.dto.member.PostRecipientInfo;
-import com.juno.appling.domain.dto.member.PutBuyerInfoDto;
-import com.juno.appling.domain.entity.member.BuyerInfo;
+import com.juno.appling.domain.dto.member.PostBuyerDto;
+import com.juno.appling.domain.dto.member.PostRecipientDto;
+import com.juno.appling.domain.dto.member.PutBuyerDto;
+import com.juno.appling.domain.entity.member.Buyer;
 import com.juno.appling.domain.entity.member.Member;
 import com.juno.appling.domain.entity.member.MemberApplySeller;
 import com.juno.appling.domain.entity.member.RecipientInfo;
@@ -13,12 +13,12 @@ import com.juno.appling.domain.enums.member.MemberApplySellerStatus;
 import com.juno.appling.domain.enums.member.RecipientInfoStatus;
 import com.juno.appling.domain.enums.member.Role;
 import com.juno.appling.domain.vo.MessageVo;
-import com.juno.appling.domain.vo.member.BuyerInfoVo;
+import com.juno.appling.domain.vo.member.BuyerVo;
 import com.juno.appling.domain.vo.member.MemberVo;
-import com.juno.appling.repository.member.BuyerInfoRepository;
+import com.juno.appling.repository.member.BuyerRepository;
 import com.juno.appling.repository.member.MemberApplySellerRepository;
 import com.juno.appling.repository.member.MemberRepository;
-import com.juno.appling.repository.member.RecipientInfoRepository;
+import com.juno.appling.repository.member.RecipientRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,8 +35,8 @@ public class MemberService {
     private final MemberApplySellerRepository memberApplySellerRepository;
     private final TokenProvider tokenProvider;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final BuyerInfoRepository buyerInfoRepository;
-    private final RecipientInfoRepository recipientInfoRepository;
+    private final BuyerRepository buyerRepository;
+    private final RecipientRepository recipientRepository;
 
     private Member getMember(HttpServletRequest request) {
         Long memberId = tokenProvider.getMemberId(request);
@@ -100,53 +100,53 @@ public class MemberService {
     }
 
     @Transactional
-    public MessageVo postBuyerInfo(PostBuyerInfoDto postBuyerInfoDto, HttpServletRequest request){
+    public MessageVo postBuyer(PostBuyerDto postBuyerDto, HttpServletRequest request){
         Member member = getMember(request);
 
-        if(member.getBuyerInfo() != null){
+        if(member.getBuyer() != null){
             throw new IllegalArgumentException("이미 구매자 정보를 등록하셨습니다.");
         }
 
-        BuyerInfo buyerInfo = buyerInfoRepository.save(BuyerInfo.of(null, postBuyerInfoDto.getName(), postBuyerInfoDto.getEmail(), postBuyerInfoDto.getTel()));
-        member.putBuyerInfo(buyerInfo);
+        Buyer buyer = buyerRepository.save(Buyer.of(null, postBuyerDto.getName(), postBuyerDto.getEmail(), postBuyerDto.getTel()));
+        member.putBuyer(buyer);
 
         return MessageVo.builder()
                 .message("구매자 정보 등록 성공")
                 .build();
     }
 
-    public BuyerInfoVo getBuyerInfo(HttpServletRequest request){
+    public BuyerVo getBuyer(HttpServletRequest request){
         Member member = getMember(request);
-        BuyerInfo buyerInfo = Optional.ofNullable(member.getBuyerInfo()).orElse(
-                BuyerInfo.ofEmpty()
+        Buyer buyer = Optional.ofNullable(member.getBuyer()).orElse(
+                Buyer.ofEmpty()
         );
 
-        return BuyerInfoVo.builder()
-                .id(buyerInfo.getId())
-                .email(buyerInfo.getEmail())
-                .name(buyerInfo.getName())
-                .tel(buyerInfo.getTel())
-                .createdAt(buyerInfo.getCreatedAt())
-                .modifiedAt(buyerInfo.getModifiedAt())
+        return BuyerVo.builder()
+                .id(buyer.getId())
+                .email(buyer.getEmail())
+                .name(buyer.getName())
+                .tel(buyer.getTel())
+                .createdAt(buyer.getCreatedAt())
+                .modifiedAt(buyer.getModifiedAt())
                 .build();
     }
 
     @Transactional
-    public MessageVo putBuyerInfo(PutBuyerInfoDto putBuyerInfoDto){
-        Long buyerInfoId = putBuyerInfoDto.getId();
-        BuyerInfo buyerInfo = buyerInfoRepository.findById(buyerInfoId).orElseThrow(() ->
+    public MessageVo putBuyer(PutBuyerDto putBuyerDto){
+        Long buyerId = putBuyerDto.getId();
+        Buyer buyer = buyerRepository.findById(buyerId).orElseThrow(() ->
                 new IllegalArgumentException("유효하지 않은 구매자 정보입니다.")
         );
-        buyerInfo.put(putBuyerInfoDto.getName(), putBuyerInfoDto.getEmail(), putBuyerInfoDto.getTel());
+        buyer.put(putBuyerDto.getName(), putBuyerDto.getEmail(), putBuyerDto.getTel());
         return MessageVo.builder()
                 .message("구매자 정보 수정 성공")
                 .build();
     }
 
     @Transactional
-    public MessageVo postRecipientInfo(PostRecipientInfo postRecipientInfo, HttpServletRequest request){
+    public MessageVo postRecipient(PostRecipientDto postRecipientDtoInfo, HttpServletRequest request){
         Member member = getMember(request);
-        recipientInfoRepository.save(RecipientInfo.of(member, postRecipientInfo.getName(), postRecipientInfo.getAddress(), postRecipientInfo.getTel(), RecipientInfoStatus.NORMAL));
+        recipientRepository.save(RecipientInfo.of(member, postRecipientDtoInfo.getName(), postRecipientDtoInfo.getAddress(), postRecipientDtoInfo.getTel(), RecipientInfoStatus.NORMAL));
         return MessageVo.builder()
                 .message("수령인 정보 등록 성공")
                 .build();

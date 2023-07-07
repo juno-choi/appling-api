@@ -2,13 +2,13 @@ package com.juno.appling.service.member;
 
 import com.juno.appling.common.security.TokenProvider;
 import com.juno.appling.domain.dto.member.PatchMemberDto;
-import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
-import com.juno.appling.domain.dto.member.PostRecipientInfo;
-import com.juno.appling.domain.dto.member.PutBuyerInfoDto;
-import com.juno.appling.domain.entity.member.BuyerInfo;
+import com.juno.appling.domain.dto.member.PostBuyerDto;
+import com.juno.appling.domain.dto.member.PostRecipientDto;
+import com.juno.appling.domain.dto.member.PutBuyerDto;
+import com.juno.appling.domain.entity.member.Buyer;
 import com.juno.appling.domain.entity.member.Member;
-import com.juno.appling.domain.vo.member.BuyerInfoVo;
-import com.juno.appling.repository.member.BuyerInfoRepository;
+import com.juno.appling.domain.vo.member.BuyerVo;
+import com.juno.appling.repository.member.BuyerRepository;
 import com.juno.appling.repository.member.MemberApplySellerRepository;
 import com.juno.appling.repository.member.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,7 +40,7 @@ class MemberServiceUnitTest {
     @Mock
     private TokenProvider tokenProvider;
     @Mock
-    private BuyerInfoRepository buyerInfoRepository;
+    private BuyerRepository buyerRepository;
 
     HttpServletRequest request = new MockHttpServletRequest();
 
@@ -61,13 +61,13 @@ class MemberServiceUnitTest {
 
     @Test
     @DisplayName("회원이 존재하지 않을경우 구매자 정보 입력에 실패")
-    void postBuyerInfoFail1(){
+    void postBuyerFail1(){
         // given
-        PostBuyerInfoDto postBuyerInfoDto = new PostBuyerInfoDto("최준호", "buyer_info@appling.com", "01012341234");
+        PostBuyerDto postBuyerDto = new PostBuyerDto("최준호", "buyer_info@appling.com", "01012341234");
 
         given(tokenProvider.getMemberId(request)).willReturn(0L);
         // when
-        Throwable throwable = catchThrowable(() -> memberService.postBuyerInfo(postBuyerInfoDto, request));
+        Throwable throwable = catchThrowable(() -> memberService.postBuyer(postBuyerDto, request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("존재하지 않는 회원");
@@ -75,16 +75,16 @@ class MemberServiceUnitTest {
 
     @Test
     @DisplayName("이미 구매자 정보를 입력했을 경우 입력에 실패")
-    void postBuyerInfoFail2(){
+    void postBuyerFail2(){
         // given
-        PostBuyerInfoDto postBuyerInfoDto = new PostBuyerInfoDto("최준호", "buyer_info@appling.com", "01012341234");
+        PostBuyerDto postBuyerDto = new PostBuyerDto("최준호", "buyer_info@appling.com", "01012341234");
 
         given(tokenProvider.getMemberId(request)).willReturn(1L);
         Member member = new Member();
-        member.putBuyerInfo(BuyerInfo.of(null, "구매자", "buyer@mail.com", "01012341234"));
+        member.putBuyer(Buyer.of(null, "구매자", "buyer@mail.com", "01012341234"));
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         // when
-        Throwable throwable = catchThrowable(() -> memberService.postBuyerInfo(postBuyerInfoDto, request));
+        Throwable throwable = catchThrowable(() -> memberService.postBuyer(postBuyerDto, request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("이미 구매자 정보를 등록");
@@ -92,11 +92,11 @@ class MemberServiceUnitTest {
 
     @Test
     @DisplayName("회원이 존재하지 않을경우 구매자 정보 불러오기에 실패")
-    void getBuyerInfoFail1(){
+    void getBuyerFail1(){
         // given
         given(tokenProvider.getMemberId(request)).willReturn(0L);
         // when
-        Throwable throwable = catchThrowable(() -> memberService.getBuyerInfo(request));
+        Throwable throwable = catchThrowable(() -> memberService.getBuyer(request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("존재하지 않는 회원");
@@ -104,25 +104,25 @@ class MemberServiceUnitTest {
 
     @Test
     @DisplayName("구매자 정보 존재하지 않을 경우 빈값으로 불러오기에 성공")
-    void getBuyerInfoSuccess1(){
+    void getBuyerSuccess1(){
         // given
         given(tokenProvider.getMemberId(request)).willReturn(0L);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(new Member()));
         // when
-        BuyerInfoVo buyerInfo = memberService.getBuyerInfo(request);
+        BuyerVo buyer = memberService.getBuyer(request);
         // then
-        assertThat(buyerInfo.getName()).isEqualTo("");
-        assertThat(buyerInfo.getEmail()).isEqualTo("");
-        assertThat(buyerInfo.getTel()).isEqualTo("");
+        assertThat(buyer.getName()).isEqualTo("");
+        assertThat(buyer.getEmail()).isEqualTo("");
+        assertThat(buyer.getTel()).isEqualTo("");
     }
 
     @Test
     @DisplayName("구매자 정보가 존재하지 않을 경우 수정에 실패")
-    void putBuyerInfoFail1(){
+    void putBuyerFail1(){
         // given
-        PutBuyerInfoDto putBuyerInfoDto = new PutBuyerInfoDto();
+        PutBuyerDto putBuyerDto = new PutBuyerDto();
         // when
-        Throwable throwable = catchThrowable(() -> memberService.putBuyerInfo(putBuyerInfoDto));
+        Throwable throwable = catchThrowable(() -> memberService.putBuyer(putBuyerDto));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유효하지 않은 구매자 정보");
@@ -130,11 +130,11 @@ class MemberServiceUnitTest {
 
     @Test
     @DisplayName("회원이 존재하지 않을경우 수령인 정보 불러오기에 실패")
-    void postRecipientInfoFail1(){
+    void postRecipientFail1(){
         // given
-        PostRecipientInfo recipientInfo = new PostRecipientInfo();
+        PostRecipientDto recipient = new PostRecipientDto();
         // when
-        Throwable throwable = catchThrowable(() -> memberService.postRecipientInfo(recipientInfo, request));
+        Throwable throwable = catchThrowable(() -> memberService.postRecipient(recipient, request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("존재하지 않는 회원");

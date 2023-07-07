@@ -46,7 +46,7 @@ public class Member {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyer_info_id")
-    private BuyerInfo buyerInfo;
+    private Buyer buyer;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<RecipientInfo> recipientInfoList = new ArrayList<>();
@@ -115,8 +115,8 @@ public class Member {
         this.role = role;
     }
 
-    public void putBuyerInfo(BuyerInfo buyerInfo){
-        this.buyerInfo = buyerInfo;
+    public void putBuyer(Buyer buyer){
+        this.buyer = buyer;
     }
 
 }

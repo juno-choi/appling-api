@@ -2,11 +2,11 @@ package com.juno.appling.controller.member;
 
 import com.juno.appling.domain.dto.Api;
 import com.juno.appling.domain.dto.member.PatchMemberDto;
-import com.juno.appling.domain.dto.member.PostBuyerInfoDto;
-import com.juno.appling.domain.dto.member.PostRecipientInfo;
-import com.juno.appling.domain.dto.member.PutBuyerInfoDto;
+import com.juno.appling.domain.dto.member.PostBuyerDto;
+import com.juno.appling.domain.dto.member.PostRecipientDto;
+import com.juno.appling.domain.dto.member.PutBuyerDto;
 import com.juno.appling.domain.vo.MessageVo;
-import com.juno.appling.domain.vo.member.BuyerInfoVo;
+import com.juno.appling.domain.vo.member.BuyerVo;
 import com.juno.appling.domain.vo.member.MemberVo;
 import com.juno.appling.service.member.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -60,43 +60,43 @@ public class MemberController {
     }
 
     @PostMapping("/buyer")
-    public ResponseEntity<Api<MessageVo>> postBuyerInfo(@RequestBody @Validated PostBuyerInfoDto postBuyerInfoDto, HttpServletRequest request, BindingResult bindingResult){
+    public ResponseEntity<Api<MessageVo>> postBuyer(@RequestBody @Validated PostBuyerDto postBuyerDto, HttpServletRequest request, BindingResult bindingResult){
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Api.<MessageVo>builder()
                         .code(POST.code)
                         .message(POST.message)
-                        .data(memberService.postBuyerInfo(postBuyerInfoDto, request))
+                        .data(memberService.postBuyer(postBuyerDto, request))
                         .build()
         );
     }
 
     @GetMapping("/buyer")
-    public ResponseEntity<Api<BuyerInfoVo>> getBuyerInfo(HttpServletRequest request){
-        return ResponseEntity.ok(Api.<BuyerInfoVo>builder()
+    public ResponseEntity<Api<BuyerVo>> getBuyer(HttpServletRequest request){
+        return ResponseEntity.ok(Api.<BuyerVo>builder()
                         .code(SUCCESS.code)
                         .message(SUCCESS.message)
-                        .data(memberService.getBuyerInfo(request))
+                        .data(memberService.getBuyer(request))
                         .build()
                 );
     }
 
     @PutMapping("/buyer")
-    public ResponseEntity<Api<MessageVo>> putBuyerInfo(@RequestBody @Validated PutBuyerInfoDto putBuyerInfoDto, BindingResult bindingResult){
+    public ResponseEntity<Api<MessageVo>> putBuyer(@RequestBody @Validated PutBuyerDto putBuyerDto, BindingResult bindingResult){
         return ResponseEntity.ok(Api.<MessageVo>builder()
                 .code(SUCCESS.code)
                 .message(SUCCESS.message)
-                .data(memberService.putBuyerInfo(putBuyerInfoDto))
+                .data(memberService.putBuyer(putBuyerDto))
                 .build()
         );
     }
 
     @PostMapping("/recipient")
-    public ResponseEntity<Api<MessageVo>> postRecipientInfo(@RequestBody @Validated PostRecipientInfo postRecipientInfo, HttpServletRequest request, BindingResult bindingResult){
+    public ResponseEntity<Api<MessageVo>> postRecipient(@RequestBody @Validated PostRecipientDto postRecipientDtoInfo, HttpServletRequest request, BindingResult bindingResult){
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Api.<MessageVo>builder()
                         .code(POST.code)
                         .message(POST.message)
-                        .data(memberService.postRecipientInfo(postRecipientInfo, request))
+                        .data(memberService.postRecipient(postRecipientDtoInfo, request))
                         .build()
                 );
     }
