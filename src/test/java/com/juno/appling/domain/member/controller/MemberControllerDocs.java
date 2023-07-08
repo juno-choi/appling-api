@@ -2,14 +2,12 @@ package com.juno.appling.domain.member.controller;
 
 import com.juno.appling.BaseTest;
 import com.juno.appling.domain.member.dto.*;
-import com.juno.appling.domain.member.entity.Buyer;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.entity.Recipient;
 import com.juno.appling.config.base.ResultCode;
 import com.juno.appling.domain.member.enums.RecipientInfoStatus;
 import com.juno.appling.domain.member.enums.Role;
 import com.juno.appling.domain.member.vo.LoginVo;
-import com.juno.appling.domain.member.repository.BuyerRepository;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.member.repository.RecipientRepository;
 import com.juno.appling.domain.member.service.MemberAuthService;
@@ -46,8 +44,6 @@ class MemberControllerDocs extends BaseTest {
     private MemberRepository memberRepository;
     @Autowired
     private MemberService memberService;
-    @Autowired
-    private BuyerRepository buyerRepository;
     @Autowired
     private RecipientRepository recipientRepository;
 
@@ -160,114 +156,6 @@ class MemberControllerDocs extends BaseTest {
                         fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임").optional(),
                         fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호").optional(),
                         fieldWithPath("status").type(JsonFieldType.STRING).description("회원 상태(아직 사용하지 않음) ex)탈퇴").optional()
-                ),
-                responseFields(
-                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-                        fieldWithPath("data.message").type(JsonFieldType.STRING).description("결과 메세지")
-                )
-        ));
-    }
-
-    @Test
-    @DisplayName(PREFIX+"/buyer (POST)")
-    void postBuyer() throws Exception {
-        //given
-        LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
-        LoginVo loginVo = memberAuthService.login(loginDto);
-        PostBuyerDto postBuyerDto = new PostBuyerDto("구매할사람", "buyer@appling.com", "01012341234");
-        //when
-        ResultActions resultActions = mock.perform(
-                post(PREFIX+"/buyer")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postBuyerDto))
-                        .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
-        );
-
-        //then
-        resultActions.andExpect(status().is2xxSuccessful());
-
-        resultActions.andDo(docs.document(
-                requestHeaders(
-                        headerWithName(AUTHORIZATION).description("access token")
-                ),
-                requestFields(
-                        fieldWithPath("name").type(JsonFieldType.STRING).description("구매자 이름"),
-                        fieldWithPath("email").type(JsonFieldType.STRING).description("구매자 email"),
-                        fieldWithPath("tel").type(JsonFieldType.STRING).description("구매자 전화번호")
-                ),
-                responseFields(
-                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-                        fieldWithPath("data.message").type(JsonFieldType.STRING).description("결과 메세지")
-                )
-        ));
-    }
-
-    @Test
-    @DisplayName(PREFIX+"/buyer (GET)")
-    @Transactional
-    void getBuyer() throws Exception {
-        //given
-        LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
-        LoginVo loginVo = memberAuthService.login(loginDto);
-        Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
-        member.putBuyer(Buyer.of(null, "구매자", "buyer@appling.com", "01012344321"));
-
-        //when
-        ResultActions resultActions = mock.perform(
-                get(PREFIX+"/buyer")
-                        .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
-        );
-
-        //then
-        resultActions.andExpect(status().is2xxSuccessful());
-
-        resultActions.andDo(docs.document(
-                requestHeaders(
-                        headerWithName(AUTHORIZATION).description("access token")
-                ),
-                responseFields(
-                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-                        fieldWithPath("data.name").type(JsonFieldType.STRING).description("구매자 이름"),
-                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("구매자 email"),
-                        fieldWithPath("data.tel").type(JsonFieldType.STRING).description("구매자 연락처"),
-                        fieldWithPath("data.created_at").type(JsonFieldType.STRING).description("생성일"),
-                        fieldWithPath("data.modified_at").type(JsonFieldType.STRING).description("수정일")
-                )
-        ));
-    }
-
-    @Test
-    @DisplayName(PREFIX+"/buyer (PUT)")
-    void putBuyer() throws Exception {
-        //given
-        LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
-        LoginVo loginVo = memberAuthService.login(loginDto);
-
-        Buyer buyer = buyerRepository.save(Buyer.of(null, "구매자", "buyer@mail.com", "01012341234"));
-        PutBuyerDto putBuyerDto = new PutBuyerDto(buyer.getId(), "수정자", "put-buyer@mail.com", "01043214321");
-        //when
-        ResultActions resultActions = mock.perform(
-                put(PREFIX+"/buyer")
-                        .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(putBuyerDto))
-        );
-
-        //then
-        resultActions.andExpect(status().is2xxSuccessful());
-
-        resultActions.andDo(docs.document(
-                requestHeaders(
-                        headerWithName(AUTHORIZATION).description("access token")
-                ),
-                requestFields(
-                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("구매자 정보 id"),
-                        fieldWithPath("name").type(JsonFieldType.STRING).description("구매자 이름"),
-                        fieldWithPath("email").type(JsonFieldType.STRING).description("구매자 email"),
-                        fieldWithPath("tel").type(JsonFieldType.STRING).description("구매자 전화번호")
                 ),
                 responseFields(
                         fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),

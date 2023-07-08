@@ -2,10 +2,7 @@ package com.juno.appling.domain.member.service;
 
 import com.juno.appling.config.security.TokenProvider;
 import com.juno.appling.domain.member.dto.PatchMemberDto;
-import com.juno.appling.domain.member.dto.PostBuyerDto;
 import com.juno.appling.domain.member.dto.PostRecipientDto;
-import com.juno.appling.domain.member.dto.PutBuyerDto;
-import com.juno.appling.domain.member.entity.Buyer;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.entity.MemberApplySeller;
 import com.juno.appling.domain.member.entity.Recipient;
@@ -13,11 +10,9 @@ import com.juno.appling.domain.member.enums.MemberApplySellerStatus;
 import com.juno.appling.domain.member.enums.RecipientInfoStatus;
 import com.juno.appling.domain.member.enums.Role;
 import com.juno.appling.config.base.MessageVo;
-import com.juno.appling.domain.member.vo.BuyerVo;
 import com.juno.appling.domain.member.vo.MemberVo;
 import com.juno.appling.domain.member.vo.RecipientListVo;
 import com.juno.appling.domain.member.vo.RecipientVo;
-import com.juno.appling.domain.member.repository.BuyerRepository;
 import com.juno.appling.domain.member.repository.MemberApplySellerRepository;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.member.repository.RecipientRepository;
@@ -40,7 +35,6 @@ public class MemberService {
     private final MemberApplySellerRepository memberApplySellerRepository;
     private final TokenProvider tokenProvider;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final BuyerRepository buyerRepository;
     private final RecipientRepository recipientRepository;
 
     private Member getMember(HttpServletRequest request) {
@@ -101,50 +95,6 @@ public class MemberService {
 
         return MessageVo.builder()
                 .message("회원 정보 수정 성공")
-                .build();
-    }
-
-    @Transactional
-    public MessageVo postBuyer(PostBuyerDto postBuyerDto, HttpServletRequest request){
-        Member member = getMember(request);
-
-        if(member.getBuyer() != null){
-            throw new IllegalArgumentException("이미 구매자 정보를 등록하셨습니다.");
-        }
-
-        Buyer buyer = buyerRepository.save(Buyer.of(null, postBuyerDto.getName(), postBuyerDto.getEmail(), postBuyerDto.getTel()));
-        member.putBuyer(buyer);
-
-        return MessageVo.builder()
-                .message("구매자 정보 등록 성공")
-                .build();
-    }
-
-    public BuyerVo getBuyer(HttpServletRequest request){
-        Member member = getMember(request);
-        Buyer buyer = Optional.ofNullable(member.getBuyer()).orElse(
-                Buyer.ofEmpty()
-        );
-
-        return BuyerVo.builder()
-                .id(buyer.getId())
-                .email(buyer.getEmail())
-                .name(buyer.getName())
-                .tel(buyer.getTel())
-                .createdAt(buyer.getCreatedAt())
-                .modifiedAt(buyer.getModifiedAt())
-                .build();
-    }
-
-    @Transactional
-    public MessageVo putBuyer(PutBuyerDto putBuyerDto){
-        Long buyerId = putBuyerDto.getId();
-        Buyer buyer = buyerRepository.findById(buyerId).orElseThrow(() ->
-                new IllegalArgumentException("유효하지 않은 구매자 정보입니다.")
-        );
-        buyer.put(putBuyerDto.getName(), putBuyerDto.getEmail(), putBuyerDto.getTel());
-        return MessageVo.builder()
-                .message("구매자 정보 수정 성공")
                 .build();
     }
 

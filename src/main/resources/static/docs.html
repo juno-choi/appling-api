@@ -473,10 +473,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_회원_정보_조회_2">📗 회원 정보 조회</a></li>
 <li><a href="#_회원_정보_수정">📗 회원 정보 수정</a></li>
 <li><a href="#_seller_권한_신청">📗 Seller 권한 신청</a></li>
-<li><a href="#_구매자_정보_등록">📗 구매자 정보 등록</a></li>
-<li><a href="#_구매자_정보_수정">📗 구매자 정보 수정</a></li>
-<li><a href="#_구매자_정보_불러오기">📗 구매자 정보 불러오기</a></li>
 <li><a href="#_수령인_정보_등록">📗 수령인 정보 등록</a></li>
+<li><a href="#_수령인_정보_불러오기">📗 수령인 정보 불러오기</a></li>
 </ul>
 </li>
 <li><a href="#_상품">🍎 상품</a>
@@ -507,7 +505,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/problem+json;charset=UTF-8
-Content-Length: 261
+Content-Length: 251
 
 {
   "type" : "/docs.html",
@@ -537,7 +535,7 @@ Content-Length: 261
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/common/image HTTP/1.1
 Content-Type: application/x-www-form-urlencoded;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg4NTQ2MDA4fQ.V6Xd-N21ySXFKTDFXIMdKv0AmO2_2KHKsZQRQ-UZe4Ft90BHzmekSSC2hfnI0MiG1rClA1vOiuZ7N9rt7TZYqw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg4ODA0MjQ2fQ.fzlj6yv6Os5aKTgB-GFfTPmjI6MEytP-cDuxmilbRiUs0Uc5AUhWNqiNiTa9lFFNdJwd8epQaulo7nT3hLC7Bg
 Host: 127.0.0.1
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -659,7 +657,7 @@ Content-Type: application/x-www-form-urlencoded
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/auth/join HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 130
+Content-Length: 124
 Host: 127.0.0.1
 
 {
@@ -732,7 +730,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 152
+Content-Length: 144
 
 {
   "code" : "0001",
@@ -799,7 +797,7 @@ Content-Length: 152
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/auth/login HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 62
+Content-Length: 59
 Host: 127.0.0.1
 
 {
@@ -851,16 +849,16 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 497
+Content-Length: 488
 
 {
   "code" : "0000",
   "message" : "success",
   "data" : {
     "type" : "Bearer ",
-    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4NTQ2MDE0fQ.pPebAPHxE7s_LM045ntSgm8usGImcI4Kousz1OlewVC9EHB8sweGyKywxj9JtPWyJ1R29-W6dfurM0Ex22XUZg",
-    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODkxNDkwMTR9.AntYuCOC6YYwuFwJV7Bo3c2OP4EDP2572n--JNWWQ2gSsPDGDnrZtmVLBLWrgUTsDJKq-NXR1O8iu-wX9Jj3nA",
-    "access_token_expired" : 1688546014602
+    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4ODA0MjUyfQ.eEVzxiGAYD50EZ9amALugfkWGhyGGftctD5IoNwp1SN8rxVR4jqk4Rr68LKRwZJznPyixPMy_hT_Y1S88QFJzw",
+    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODk0MDcyNTJ9.3j1zNtsuuw4AJ5jLMh2r0HSaSS98hX3Y9N3ll95q5KBOLhuyUb3ce9VBh60sD5xHScS7pHio_h0tG1Pl3guEZw",
+    "access_token_expired" : 1688804252055
   }
 }</code></pre>
 </div>
@@ -922,7 +920,7 @@ Content-Length: 497
 <h4 id="_request_4"><a class="link" href="#_request_4">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/auth/refresh/eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODkxNDkwMTR9.AntYuCOC6YYwuFwJV7Bo3c2OP4EDP2572n--JNWWQ2gSsPDGDnrZtmVLBLWrgUTsDJKq-NXR1O8iu-wX9Jj3nA HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/auth/refresh/eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODk0MDcyNTJ9.3j1zNtsuuw4AJ5jLMh2r0HSaSS98hX3Y9N3ll95q5KBOLhuyUb3ce9VBh60sD5xHScS7pHio_h0tG1Pl3guEZw HTTP/1.1
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
@@ -961,16 +959,16 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Disposition: inline;filename=f.txt
 Content-Type: application/json;charset=UTF-8
-Content-Length: 497
+Content-Length: 488
 
 {
   "code" : "0000",
   "message" : "success",
   "data" : {
     "type" : "Bearer ",
-    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4NTQ2MDE0fQ.MQM3W_VF5uxWFMbvTrtrSt0e149icz0vdtRQHUe_CvbyrY9qhhEpTpk-0l9nZaCft4XEVVju7zdBVKa2ekcNgQ",
-    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODkxNDkwMTR9.AntYuCOC6YYwuFwJV7Bo3c2OP4EDP2572n--JNWWQ2gSsPDGDnrZtmVLBLWrgUTsDJKq-NXR1O8iu-wX9Jj3nA",
-    "access_token_expired" : 1688546014794
+    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4ODA0MjUyfQ.DmFUjm9X0EtVGvsE2zfxSlOSk6HvLMsSG3_yA94_nqQSdR2IMghZg0aEsSoHbU578OqVmBiEKF7lFkCFsPmE5w",
+    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODk0MDcyNTJ9.3j1zNtsuuw4AJ5jLMh2r0HSaSS98hX3Y9N3ll95q5KBOLhuyUb3ce9VBh60sD5xHScS7pHio_h0tG1Pl3guEZw",
+    "access_token_expired" : 1688804252234
   }
 }</code></pre>
 </div>
@@ -1033,7 +1031,7 @@ Content-Length: 497
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg4NTQ2MDE1fQ.wcx-INYWbchkuO3tc4jq8oN8nTrhMKU476_Tx7qMGdrMy2Gfzz_ZR-tdsb83SPPi4pdEMCTI-3mNh1aB5THkgQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3IiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg4ODA0MjUyfQ.4zrWl1TlxwMcrxgFfmsBwMPfv48mJQPL_fCJdtTp_hopXaMfa1y3mp35nFQtHwbe6sHVx-taB5Ctx1uZTLvdfQ
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
@@ -1071,19 +1069,19 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 297
+Content-Length: 285
 
 {
   "code" : "0000",
   "message" : "success",
   "data" : {
-    "member_id" : 8,
+    "member_id" : 7,
     "email" : "juno@member.com",
     "nickname" : "nick",
     "name" : "name",
     "role" : "SELLER",
-    "created_at" : "2023-07-05T17:03:35.005123",
-    "modified_at" : "2023-07-05T17:03:35.005123"
+    "created_at" : "2023-07-08T16:47:32.327377",
+    "modified_at" : "2023-07-08T16:47:32.327377"
   }
 }</code></pre>
 </div>
@@ -1219,7 +1217,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 238
+Content-Length: 228
 
 {
   "code" : "0000",
@@ -1334,16 +1332,16 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 497
+Content-Length: 488
 
 {
   "code" : "0000",
   "message" : "success",
   "data" : {
     "type" : "Bearer ",
-    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4NTQ2MDE2fQ.f3jIe4XtyZTP6hEzsVlTGqExb64rzF_-HndfH_o2pWeonh08eq8HuBtkYNE3tAX7RVxit34oL8QrjmfX51KPNA",
-    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODkxNDkwMTZ9.XcqMqgcGk7cosNa97rgdOpBcysDFRSxMqz_tB8c1O40olsVd995KK-JuYQTcZTjLBv8UPpF5rLFysOZ7q6XbiQ",
-    "access_token_expired" : 1688546016653
+    "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4ODA0MjUzfQ.Av5fHtqvX_B3fqtMewT1BwUV2wemtuAkhGnOKRD6JYjolulGEYtCD9R8pLaNJLdj3O0cIoUbOy9ooD23HOrS9g",
+    "refresh_token" : "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODk0MDcyNTN9.39m3iQAGXREZgWNeVJfFRT9R88Os7nIeJYou83837ddtHH99Xmn4kImnjh6RnSDn1oWHnzl_4i9SOOiJ5l-XSQ",
+    "access_token_expired" : 1688804253695
   }
 }</code></pre>
 </div>
@@ -1411,7 +1409,7 @@ Content-Length: 497
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg4NTQ2MDE1fQ.wcx-INYWbchkuO3tc4jq8oN8nTrhMKU476_Tx7qMGdrMy2Gfzz_ZR-tdsb83SPPi4pdEMCTI-3mNh1aB5THkgQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3IiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg4ODA0MjUyfQ.4zrWl1TlxwMcrxgFfmsBwMPfv48mJQPL_fCJdtTp_hopXaMfa1y3mp35nFQtHwbe6sHVx-taB5Ctx1uZTLvdfQ
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
@@ -1449,19 +1447,19 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 297
+Content-Length: 285
 
 {
   "code" : "0000",
   "message" : "success",
   "data" : {
-    "member_id" : 8,
+    "member_id" : 7,
     "email" : "juno@member.com",
     "nickname" : "nick",
     "name" : "name",
     "role" : "SELLER",
-    "created_at" : "2023-07-05T17:03:35.005123",
-    "modified_at" : "2023-07-05T17:03:35.005123"
+    "created_at" : "2023-07-08T16:47:32.327377",
+    "modified_at" : "2023-07-08T16:47:32.327377"
   }
 }</code></pre>
 </div>
@@ -1540,8 +1538,8 @@ Content-Length: 297
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/member HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4NTQ2MDE1fQ.pYmU10C0p5fosKeR4Vb14qASVoBUT5DXJX-d6P9TuQcU46lktI-FoP6K-oZVp_0qAAJqnZjOBEc7xbdIAU8qaw
-Content-Length: 137
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4ODA0MjUyfQ.XalXvSMeUNhZ66QstWLVOuhK2xSKvFkVSJmCQwyQ1MrM7zkdk62wNXvlyNPNKJJnae2T7YtlqQdjXqQ2Tuie_A
+Content-Length: 131
 Host: 127.0.0.1
 
 {
@@ -1689,7 +1687,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 116
+Content-Length: 110
 
 {
   "code" : "0000",
@@ -1743,7 +1741,7 @@ Content-Length: 116
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/member/seller HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4NTQ2MDE1fQ.X6Lr0xBbtm5_mxD1-gGybUNz2pHIowFMbKjLs3H-qtkBdWekWl1OuEdjFb8YgzuAeiHlJAB14beV0tZt_LinoQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3IiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4ODA0MjUyfQ.4x7O-89yAaHiLp44UhTpnoftjsibGWlDOSK7l5GYDul3oJLoLfg6sINp2mrj4hzZJPwd7bV4PceQM2czmxZM9g
 Host: 127.0.0.1
 Content-Type: application/x-www-form-urlencoded</code></pre>
 </div>
@@ -1782,7 +1780,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 125
+Content-Length: 119
 
 {
   "code" : "0000",
@@ -1830,20 +1828,20 @@ Content-Length: 125
 </div>
 </div>
 <div class="sect2">
-<h3 id="_구매자_정보_등록"><a class="link" href="#_구매자_정보_등록">📗 구매자 정보 등록</a></h3>
+<h3 id="_수령인_정보_등록"><a class="link" href="#_수령인_정보_등록">📗 수령인 정보 등록</a></h3>
 <div class="sect3">
 <h4 id="_request_11"><a class="link" href="#_request_11">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/member/buyer HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/member/recipient HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4NTQ2MDE1fQ.DI3JBlMjx4oCBKLuD8S4qRKX4baxZFRIxbgIK1qcnTUhfCno6Txt2vIncg0NGonm8CZz_PPgZQbzKtHpGA2Vnw
-Content-Length: 94
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4ODA0MjUyfQ.mN19BYdzbeIy-UN511YuC1hUF_zGv1QEQ9VIkKkBfGZ19DffuqJZpgq-ZPk_lhdxpTEhTm-dIRxVO8MHxWa8jQ
+Content-Length: 90
 Host: 127.0.0.1
 
 {
-  "name" : "구매할사람",
-  "email" : "buyer@appling.com",
+  "name" : "수령인",
+  "address" : "recipient@appling.com",
   "tel" : "01012341234"
 }</code></pre>
 </div>
@@ -1878,8 +1876,8 @@ Host: 127.0.0.1
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-json hljs" data-lang="json">{
-  "name" : "구매할사람",
-  "email" : "buyer@appling.com",
+  "name" : "수령인",
+  "address" : "recipient@appling.com",
   "tel" : "01012341234"
 }</code></pre>
 </div>
@@ -1907,19 +1905,19 @@ Host: 127.0.0.1
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">구매자 이름</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">수령인 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>address</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">구매자 email</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">수령인 주소</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>tel</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">구매자 전화번호</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">수령인 전화번호</p></td>
 </tr>
 </tbody>
 </table>
@@ -1933,13 +1931,13 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 119
+Content-Length: 117
 
 {
-  "code" : "0000",
-  "message" : "success",
+  "code" : "0001",
+  "message" : "201 success",
   "data" : {
-    "message" : "구매자 정보 등록 성공"
+    "message" : "수령인 정보 등록 성공"
   }
 }</code></pre>
 </div>
@@ -1981,23 +1979,14 @@ Content-Length: 119
 </div>
 </div>
 <div class="sect2">
-<h3 id="_구매자_정보_수정"><a class="link" href="#_구매자_정보_수정">📗 구매자 정보 수정</a></h3>
+<h3 id="_수령인_정보_불러오기"><a class="link" href="#_수령인_정보_불러오기">📗 수령인 정보 불러오기</a></h3>
 <div class="sect3">
 <h4 id="_request_12"><a class="link" href="#_request_12">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/member/buyer HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4NjE5MDI0fQ.dCY_zS-S8HesqQ9PbdZwJ1_TJCRlPyDm02ply6kU3V5ONmX11t3UOlyY5xkHd4j7OOxRKqkkr7reTDzpECGXwg
-Content-Length: 102
-Host: 127.0.0.1
-
-{
-  "id" : 1,
-  "name" : "수정자",
-  "email" : "put-buyer@mail.com",
-  "tel" : "01043214321"
-}</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member/recipient HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4ODA0MjUyfQ.mN19BYdzbeIy-UN511YuC1hUF_zGv1QEQ9VIkKkBfGZ19DffuqJZpgq-ZPk_lhdxpTEhTm-dIRxVO8MHxWa8jQ
+Host: 127.0.0.1</code></pre>
 </div>
 </div>
 </div>
@@ -2026,64 +2015,6 @@ Host: 127.0.0.1
 </table>
 </div>
 <div class="sect3">
-<h4 id="_request_body_3"><a class="link" href="#_request_body_3">🔵 REQUEST BODY</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-json hljs" data-lang="json">{
-  "id" : 1,
-  "name" : "수정자",
-  "email" : "put-buyer@mail.com",
-  "tel" : "01043214321"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_request_field_6"><a class="link" href="#_request_field_6">🔵 REQUEST FIELD</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">필드명</th>
-<th class="tableblock halign-left valign-top">타입</th>
-<th class="tableblock halign-left valign-top">필수여부</th>
-<th class="tableblock halign-left valign-top">설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">구매자 정보 id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">구매자 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">구매자 email</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tel</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">구매자 전화번호</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
 <h4 id="_response_12"><a class="link" href="#_response_12">🟢 RESPONSE</a></h4>
 <div class="listingblock">
 <div class="content">
@@ -2092,13 +2023,53 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 119
+Content-Length: 1294
 
 {
   "code" : "0000",
   "message" : "success",
   "data" : {
-    "message" : "구매자 정보 수정 성공"
+    "list" : [ {
+      "id" : 3,
+      "name" : "수령인2",
+      "address" : "주소2",
+      "tel" : "01012341234",
+      "status" : "NORMAL",
+      "created_at" : "2023-07-08T16:47:32.922788",
+      "modified_at" : "2023-07-08T16:47:32.922788"
+    }, {
+      "id" : 2,
+      "name" : "수령인1",
+      "address" : "주소",
+      "tel" : "01012341234",
+      "status" : "NORMAL",
+      "created_at" : "2023-07-08T16:47:32.922782",
+      "modified_at" : "2023-07-08T16:47:32.922782"
+    }, {
+      "id" : 3,
+      "name" : "수령인2",
+      "address" : "주소2",
+      "tel" : "01012341234",
+      "status" : "NORMAL",
+      "created_at" : "2023-07-08T16:47:32.922788",
+      "modified_at" : "2023-07-08T16:47:32.922788"
+    }, {
+      "id" : 2,
+      "name" : "수령인1",
+      "address" : "주소",
+      "tel" : "01012341234",
+      "status" : "NORMAL",
+      "created_at" : "2023-07-08T16:47:32.922782",
+      "modified_at" : "2023-07-08T16:47:32.922782"
+    }, {
+      "id" : 1,
+      "name" : "수령인",
+      "address" : "recipient@appling.com",
+      "tel" : "01012341234",
+      "status" : "NORMAL",
+      "created_at" : "2023-07-08T16:47:32.59235",
+      "modified_at" : "2023-07-08T16:47:32.59235"
+    } ]
   }
 }</code></pre>
 </div>
@@ -2131,276 +2102,39 @@ Content-Length: 119
 <td class="tableblock halign-left valign-top"><p class="tableblock">결과 메세지</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메세지</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">수령인 이름</p></td>
 </tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_구매자_정보_불러오기"><a class="link" href="#_구매자_정보_불러오기">📗 구매자 정보 불러오기</a></h3>
-<div class="sect3">
-<h4 id="_request_13"><a class="link" href="#_request_13">🔵 REQUEST</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member/buyer HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4NjA3ODgzfQ.of_ynzbrQio7Qrre5i0wo-E6tdytqKEI24TkQTyjrlOm2ncY35DrEThLpinW94mCCTZV_CsnlaIFSePBLAr7uA
-Host: 127.0.0.1</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_request_header_10"><a class="link" href="#_request_header_10">🔵 REQUEST HEADER</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
 <tr>
-<th class="tableblock halign-left valign-top">header</th>
-<th class="tableblock halign-left valign-top">필수여부</th>
-<th class="tableblock halign-left valign-top">설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">access token</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_response_13"><a class="link" href="#_response_13">🟢 RESPONSE</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json;charset=UTF-8
-Content-Length: 267
-
-{
-  "code" : "0000",
-  "message" : "success",
-  "data" : {
-    "name" : "구매자",
-    "email" : "buyer@appling.com",
-    "tel" : "01012344321",
-    "created_at" : "2023-07-06T10:14:48.8132677",
-    "modified_at" : "2023-07-06T10:14:48.8132677"
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_field_13"><a class="link" href="#_response_field_13">🟢 RESPONSE FIELD</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">필드명</th>
-<th class="tableblock halign-left valign-top">타입</th>
-<th class="tableblock halign-left valign-top">설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].address</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">수령인 주소</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].tel</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메세지</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">수령인 연락처</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].status</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">구매자 이름</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상태값</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.email</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">구매자 email</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.tel</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">구매자 연락처</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.created_at</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].created_at</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">생성일</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.modified_at</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].modified_at</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">수정일</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_수령인_정보_등록"><a class="link" href="#_수령인_정보_등록">📗 수령인 정보 등록</a></h3>
-<div class="sect3">
-<h4 id="_request_14"><a class="link" href="#_request_14">🔵 REQUEST</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/member/recipient HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjg4NjI3MDgxfQ.Wk2_UrSSMbgGfqgJ2gLAUkWLHp8KOEyt528cvZ0WdOq0BUNoTygsBSzIzhEn5tGbZUvsdZDU-nFjaEz6ghrb5w
-Content-Length: 94
-Host: 127.0.0.1
-
-{
-  "name" : "수령인",
-  "address" : "recipient@appling.com",
-  "tel" : "01012341234"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_request_header_11"><a class="link" href="#_request_header_11">🔵 REQUEST HEADER</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">header</th>
-<th class="tableblock halign-left valign-top">필수여부</th>
-<th class="tableblock halign-left valign-top">설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">access token</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_request_body_4"><a class="link" href="#_request_body_4">🔵 REQUEST BODY</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-json hljs" data-lang="json">{
-  "name" : "수령인",
-  "address" : "recipient@appling.com",
-  "tel" : "01012341234"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_request_field_7"><a class="link" href="#_request_field_7">🔵 REQUEST FIELD</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">필드명</th>
-<th class="tableblock halign-left valign-top">타입</th>
-<th class="tableblock halign-left valign-top">필수여부</th>
-<th class="tableblock halign-left valign-top">설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">수령인 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>address</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">수령인 주소</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tel</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">수령인 전화번호</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_response_14"><a class="link" href="#_response_14">🟢 RESPONSE</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json;charset=UTF-8
-Content-Length: 123
-
-{
-  "code" : "0001",
-  "message" : "201 success",
-  "data" : {
-    "message" : "수령인 정보 등록 성공"
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_field_14"><a class="link" href="#_response_field_14">🟢 RESPONSE FIELD</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">필드명</th>
-<th class="tableblock halign-left valign-top">타입</th>
-<th class="tableblock halign-left valign-top">설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메세지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.message</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메세지</p></td>
 </tr>
 </tbody>
 </table>
@@ -2413,7 +2147,7 @@ Content-Length: 123
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">이미지 등록 관련해서는 com.juno.appling.CommonTest 부분을 참고해주세요</code></pre>
+<pre class="highlightjs highlight"><code class="language-none hljs">이미지 등록 관련해서는 Common 부분을 참고해주세요</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2422,13 +2156,13 @@ Content-Length: 123
 <div class="sect2">
 <h3 id="_상품_등록"><a class="link" href="#_상품_등록">📗 상품 등록</a></h3>
 <div class="sect3">
-<h4 id="_request_15"><a class="link" href="#_request_15">🔵 REQUEST</a></h4>
+<h4 id="_request_13"><a class="link" href="#_request_13">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/seller/product HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg4NTQ2MDE3fQ.OeIDQFeGX304eESLNYTYKDby2A6eDtHu9IBJvXkwjAhps-KRkbDAstLWtNPTj0J64xj_QGMwNBoizQ9cpGznCQ
-Content-Length: 499
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg4ODA0MjU0fQ.zIAWUJjx0zu_IQhq3TfzC69kP0Nq1JygECouXIi-KMjtIzx8HE6ThAPoDm7vJ8IetY0-AvAzRA6eKo0U81ceog
+Content-Length: 484
 Host: 127.0.0.1
 
 {
@@ -2451,7 +2185,7 @@ Host: 127.0.0.1
 </div>
 </div>
 <div class="sect3">
-<h4 id="_request_header_12"><a class="link" href="#_request_header_12">🔵 REQUEST HEADER</a></h4>
+<h4 id="_request_header_10"><a class="link" href="#_request_header_10">🔵 REQUEST HEADER</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2475,7 +2209,7 @@ Host: 127.0.0.1
 </table>
 </div>
 <div class="sect3">
-<h4 id="_request_field_8"><a class="link" href="#_request_field_8">🔵 REQUEST FIELD</a></h4>
+<h4 id="_request_field_6"><a class="link" href="#_request_field_6">🔵 REQUEST FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -2580,7 +2314,7 @@ Host: 127.0.0.1
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_15"><a class="link" href="#_response_15">🟢 RESPONSE</a></h4>
+<h4 id="_response_13"><a class="link" href="#_response_13">🟢 RESPONSE</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
@@ -2588,7 +2322,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 772
+Content-Length: 747
 
 {
   "code" : "0001",
@@ -2611,6 +2345,430 @@ Content-Length: 772
     "category" : {
       "category_id" : 1,
       "name" : "과일",
+      "created_at" : "2023-07-04T10:21:03.961557",
+      "modified_at" : "2023-07-04T10:21:03.961557"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_field_13"><a class="link" href="#_response_field_13">🟢 RESPONSE FIELD</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드명</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메세지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">등록 상품 id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.main_title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메인 타이틀</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.main_explanation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메인 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.product_main_explanation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 메인 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.product_sub_explanation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 서브 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.origin_price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 원가</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 실제 판매 가격</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.purchase_inquiry</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">취급 방법</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.origin</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">원산지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.producer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">공급자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.main_image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메인 이미지 url</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.image1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.image2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.image3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.category.category_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.category.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.category.created_at</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 생성일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.category.modified_at</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 수정일</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_카테고리_리스트"><a class="link" href="#_카테고리_리스트">📗 카테고리 리스트</a></h3>
+<div class="sect3">
+<h4 id="_request_14"><a class="link" href="#_request_14">🔵 REQUEST</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/product/category HTTP/1.1
+Host: 127.0.0.1</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_14"><a class="link" href="#_response_14">🟢 RESPONSE</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+Content-Length: 563
+
+{
+  "code" : "0000",
+  "message" : "success",
+  "data" : {
+    "list" : [ {
+      "category_id" : 1,
+      "name" : "과일",
+      "created_at" : "2023-07-04T10:21:03.961557",
+      "modified_at" : "2023-07-04T10:21:03.961557"
+    }, {
+      "category_id" : 2,
+      "name" : "채소",
+      "created_at" : "2023-07-04T10:21:03.961557",
+      "modified_at" : "2023-07-04T10:21:03.961557"
+    }, {
+      "category_id" : 3,
+      "name" : "육류",
+      "created_at" : "2023-07-04T10:21:03.961557",
+      "modified_at" : "2023-07-04T10:21:03.961557"
+    } ]
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_field_14"><a class="link" href="#_response_field_14">🟢 RESPONSE FIELD</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드명</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메세지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].category_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].created_at</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 생성일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].modified_at</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 수정일</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_상품_수정"><a class="link" href="#_상품_수정">📗 상품 수정</a></h3>
+<div class="sect3">
+<h4 id="_request_15"><a class="link" href="#_request_15">🔵 REQUEST</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/seller/product HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg4ODA0MjU0fQ.zIAWUJjx0zu_IQhq3TfzC69kP0Nq1JygECouXIi-KMjtIzx8HE6ThAPoDm7vJ8IetY0-AvAzRA6eKo0U81ceog
+Content-Length: 495
+Host: 127.0.0.1
+
+{
+  "id" : 74,
+  "price" : 10000,
+  "origin" : "원산지",
+  "producer" : "생산자",
+  "image1" : "https://image1",
+  "image2" : "https://image2",
+  "image3" : "https://image3",
+  "category_id" : 2,
+  "main_title" : "수정된 제목",
+  "main_explanation" : "수정된 설명",
+  "product_main_explanation" : "상품 메인 설명",
+  "product_sub_explanation" : "상품 서브 설명",
+  "origin_price" : 12000,
+  "purchase_inquiry" : "보관 방법",
+  "main_image" : "https://mainImage"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_request_header_11"><a class="link" href="#_request_header_11">🔵 REQUEST HEADER</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">header</th>
+<th class="tableblock halign-left valign-top">필수여부</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">access token (SELLER 권한 유저)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_request_field_7"><a class="link" href="#_request_field_7">🔵 REQUEST FIELD</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드명</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">필수여부</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>category_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>main_title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>main_explanation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메인 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>product_main_explanation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 메인 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>product_sub_explanation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 보조 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>origin_price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">원가</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">실제 판매가</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>purchase_inquiry</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">취급방법</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>origin</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">원산지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>producer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">공급자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>main_image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메인 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지3</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_response_15"><a class="link" href="#_response_15">🟢 RESPONSE</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+Content-Length: 741
+
+{
+  "code" : "0000",
+  "message" : "success",
+  "data" : {
+    "id" : 74,
+    "main_title" : "수정된 제목",
+    "main_explanation" : "수정된 설명",
+    "product_main_explanation" : "상품 메인 설명",
+    "product_sub_explanation" : "상품 서브 설명",
+    "origin_price" : 12000,
+    "price" : 10000,
+    "purchase_inquiry" : "보관 방법",
+    "origin" : "원산지",
+    "producer" : "생산자",
+    "main_image" : "https://mainImage",
+    "image1" : "https://image1",
+    "image2" : "https://image2",
+    "image3" : "https://image3",
+    "category" : {
+      "category_id" : 2,
+      "name" : "채소",
       "created_at" : "2023-07-04T10:21:03.961557",
       "modified_at" : "2023-07-04T10:21:03.961557"
     }
@@ -2740,433 +2898,9 @@ Content-Length: 772
 </div>
 </div>
 <div class="sect2">
-<h3 id="_카테고리_리스트"><a class="link" href="#_카테고리_리스트">📗 카테고리 리스트</a></h3>
-<div class="sect3">
-<h4 id="_request_16"><a class="link" href="#_request_16">🔵 REQUEST</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/product/category HTTP/1.1
-Host: 127.0.0.1</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_16"><a class="link" href="#_response_16">🟢 RESPONSE</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json;charset=UTF-8
-Content-Length: 584
-
-{
-  "code" : "0000",
-  "message" : "success",
-  "data" : {
-    "list" : [ {
-      "category_id" : 1,
-      "name" : "과일",
-      "created_at" : "2023-07-04T10:21:03.961557",
-      "modified_at" : "2023-07-04T10:21:03.961557"
-    }, {
-      "category_id" : 2,
-      "name" : "채소",
-      "created_at" : "2023-07-04T10:21:03.961557",
-      "modified_at" : "2023-07-04T10:21:03.961557"
-    }, {
-      "category_id" : 3,
-      "name" : "육류",
-      "created_at" : "2023-07-04T10:21:03.961557",
-      "modified_at" : "2023-07-04T10:21:03.961557"
-    } ]
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_field_16"><a class="link" href="#_response_field_16">🟢 RESPONSE FIELD</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">필드명</th>
-<th class="tableblock halign-left valign-top">타입</th>
-<th class="tableblock halign-left valign-top">설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메세지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].category_id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 명</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].created_at</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 생성일</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.list[].modified_at</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 수정일</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_상품_수정"><a class="link" href="#_상품_수정">📗 상품 수정</a></h3>
-<div class="sect3">
-<h4 id="_request_17"><a class="link" href="#_request_17">🔵 REQUEST</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/seller/product HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg4NTQ2MDE3fQ.OeIDQFeGX304eESLNYTYKDby2A6eDtHu9IBJvXkwjAhps-KRkbDAstLWtNPTj0J64xj_QGMwNBoizQ9cpGznCQ
-Content-Length: 511
-Host: 127.0.0.1
-
-{
-  "id" : 74,
-  "price" : 10000,
-  "origin" : "원산지",
-  "producer" : "생산자",
-  "image1" : "https://image1",
-  "image2" : "https://image2",
-  "image3" : "https://image3",
-  "category_id" : 2,
-  "main_title" : "수정된 제목",
-  "main_explanation" : "수정된 설명",
-  "product_main_explanation" : "상품 메인 설명",
-  "product_sub_explanation" : "상품 서브 설명",
-  "origin_price" : 12000,
-  "purchase_inquiry" : "보관 방법",
-  "main_image" : "https://mainImage"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_request_header_13"><a class="link" href="#_request_header_13">🔵 REQUEST HEADER</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">header</th>
-<th class="tableblock halign-left valign-top">필수여부</th>
-<th class="tableblock halign-left valign-top">설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">access token (SELLER 권한 유저)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_request_field_9"><a class="link" href="#_request_field_9">🔵 REQUEST FIELD</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">필드명</th>
-<th class="tableblock halign-left valign-top">타입</th>
-<th class="tableblock halign-left valign-top">필수여부</th>
-<th class="tableblock halign-left valign-top">설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>category_id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>main_title</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">제목</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>main_explanation</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">메인 설명</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>product_main_explanation</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 메인 설명</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>product_sub_explanation</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 보조 설명</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>origin_price</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">원가</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>price</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">실제 판매가</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>purchase_inquiry</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">취급방법</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>origin</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">원산지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>producer</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">공급자</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>main_image</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">메인 이미지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image1</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이미지1</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image2</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이미지2</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image3</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이미지3</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_response_17"><a class="link" href="#_response_17">🟢 RESPONSE</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json;charset=UTF-8
-Content-Length: 766
-
-{
-  "code" : "0000",
-  "message" : "success",
-  "data" : {
-    "id" : 74,
-    "main_title" : "수정된 제목",
-    "main_explanation" : "수정된 설명",
-    "product_main_explanation" : "상품 메인 설명",
-    "product_sub_explanation" : "상품 서브 설명",
-    "origin_price" : 12000,
-    "price" : 10000,
-    "purchase_inquiry" : "보관 방법",
-    "origin" : "원산지",
-    "producer" : "생산자",
-    "main_image" : "https://mainImage",
-    "image1" : "https://image1",
-    "image2" : "https://image2",
-    "image3" : "https://image3",
-    "category" : {
-      "category_id" : 2,
-      "name" : "채소",
-      "created_at" : "2023-07-04T10:21:03.961557",
-      "modified_at" : "2023-07-04T10:21:03.961557"
-    }
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_field_17"><a class="link" href="#_response_field_17">🟢 RESPONSE FIELD</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">필드명</th>
-<th class="tableblock halign-left valign-top">타입</th>
-<th class="tableblock halign-left valign-top">설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메세지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">등록 상품 id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.main_title</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">메인 타이틀</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.main_explanation</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">메인 설명</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.product_main_explanation</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 메인 설명</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.product_sub_explanation</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 서브 설명</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.origin_price</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 원가</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.price</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 실제 판매 가격</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.purchase_inquiry</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">취급 방법</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.origin</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">원산지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.producer</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">공급자</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.main_image</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">메인 이미지 url</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.image1</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이미지1</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.image2</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이미지2</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.image3</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이미지3</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.category.category_id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.category.name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 명</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.category.created_at</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 생성일</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.category.modified_at</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 수정일</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect2">
 <h3 id="_상품_검색"><a class="link" href="#_상품_검색">📗 상품 검색</a></h3>
 <div class="sect3">
-<h4 id="_request_18"><a class="link" href="#_request_18">🔵 REQUEST</a></h4>
+<h4 id="_request_16"><a class="link" href="#_request_16">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/product?search=%EA%B2%80%EC%83%89&amp;page=0&amp;size=5 HTTP/1.1
@@ -3175,7 +2909,7 @@ Host: 127.0.0.1</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_request_field_10"><a class="link" href="#_request_field_10">🔵 REQUEST FIELD</a></h4>
+<h4 id="_request_field_8"><a class="link" href="#_request_field_8">🔵 REQUEST FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -3209,7 +2943,7 @@ Host: 127.0.0.1</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_18"><a class="link" href="#_response_18">🟢 RESPONSE</a></h4>
+<h4 id="_response_16"><a class="link" href="#_response_16">🟢 RESPONSE</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -3217,7 +2951,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 5226
+Content-Length: 5070
 
 {
   "code" : "0000",
@@ -3243,8 +2977,8 @@ Content-Length: 5226
       "image1" : "https://image1",
       "image2" : "https://image2",
       "image3" : "https://image3",
-      "create_at" : "2023-07-05T17:03:36.801793",
-      "modified_at" : "2023-07-05T17:03:36.801793",
+      "create_at" : "2023-07-08T16:47:33.748135",
+      "modified_at" : "2023-07-08T16:47:33.748135",
       "seller" : {
         "member_id" : 2,
         "email" : "seller@appling.com",
@@ -3272,8 +3006,8 @@ Content-Length: 5226
       "image1" : "https://image1",
       "image2" : "https://image2",
       "image3" : "https://image3",
-      "create_at" : "2023-07-05T17:03:36.795804",
-      "modified_at" : "2023-07-05T17:03:36.795804",
+      "create_at" : "2023-07-08T16:47:33.747713",
+      "modified_at" : "2023-07-08T16:47:33.747713",
       "seller" : {
         "member_id" : 2,
         "email" : "seller@appling.com",
@@ -3301,8 +3035,8 @@ Content-Length: 5226
       "image1" : "https://image1",
       "image2" : "https://image2",
       "image3" : "https://image3",
-      "create_at" : "2023-07-05T17:03:36.793787",
-      "modified_at" : "2023-07-05T17:03:36.793787",
+      "create_at" : "2023-07-08T16:47:33.747234",
+      "modified_at" : "2023-07-08T16:47:33.747234",
       "seller" : {
         "member_id" : 2,
         "email" : "seller@appling.com",
@@ -3330,8 +3064,8 @@ Content-Length: 5226
       "image1" : "https://image1",
       "image2" : "https://image2",
       "image3" : "https://image3",
-      "create_at" : "2023-07-05T17:03:36.790796",
-      "modified_at" : "2023-07-05T17:03:36.790796",
+      "create_at" : "2023-07-08T16:47:33.746621",
+      "modified_at" : "2023-07-08T16:47:33.746621",
       "seller" : {
         "member_id" : 2,
         "email" : "seller@appling.com",
@@ -3359,8 +3093,8 @@ Content-Length: 5226
       "image1" : "https://image1",
       "image2" : "https://image2",
       "image3" : "https://image3",
-      "create_at" : "2023-07-05T17:03:36.786791",
-      "modified_at" : "2023-07-05T17:03:36.786791",
+      "create_at" : "2023-07-08T16:47:33.746188",
+      "modified_at" : "2023-07-08T16:47:33.746188",
       "seller" : {
         "member_id" : 2,
         "email" : "seller@appling.com",
@@ -3380,7 +3114,7 @@ Content-Length: 5226
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_field_18"><a class="link" href="#_response_field_18">🟢 RESPONSE FIELD</a></h4>
+<h4 id="_response_field_16"><a class="link" href="#_response_field_16">🟢 RESPONSE FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -3562,17 +3296,17 @@ Content-Length: 5226
 <div class="sect2">
 <h3 id="_상품_검색_seller_전용"><a class="link" href="#_상품_검색_seller_전용">📗 상품 검색 (Seller 전용)</a></h3>
 <div class="sect3">
-<h4 id="_request_19"><a class="link" href="#_request_19">🔵 REQUEST</a></h4>
+<h4 id="_request_17"><a class="link" href="#_request_17">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/seller/product?search=&amp;page=0&amp;size=5 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg4NTQ2MDE3fQ.OeIDQFeGX304eESLNYTYKDby2A6eDtHu9IBJvXkwjAhps-KRkbDAstLWtNPTj0J64xj_QGMwNBoizQ9cpGznCQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfTUVNQkVSLFJPTEVfU0VMTEVSIiwiZXhwIjoxNjg4ODA0MjUzfQ.kIcLt_l8dq1PWKVv8sGpqN9FIQFk_kdqujEfe1tL42FGCNf0KZRgcJHkO5Y_Poiyx0lCSG31PxAPscJfn2p2ww
 Host: 127.0.0.1</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_request_header_14"><a class="link" href="#_request_header_14">🔵 REQUEST HEADER</a></h4>
+<h4 id="_request_header_12"><a class="link" href="#_request_header_12">🔵 REQUEST HEADER</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -3596,7 +3330,7 @@ Host: 127.0.0.1</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_request_field_11"><a class="link" href="#_request_field_11">🔵 REQUEST FIELD</a></h4>
+<h4 id="_request_field_9"><a class="link" href="#_request_field_9">🔵 REQUEST FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -3630,7 +3364,7 @@ Host: 127.0.0.1</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_19"><a class="link" href="#_response_19">🟢 RESPONSE</a></h4>
+<h4 id="_response_17"><a class="link" href="#_response_17">🟢 RESPONSE</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -3638,7 +3372,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 5262
+Content-Length: 5102
 
 {
   "code" : "0000",
@@ -3664,8 +3398,8 @@ Content-Length: 5262
       "image1" : "https://image1",
       "image2" : "https://image2",
       "image3" : "https://image3",
-      "create_at" : "2023-07-05T17:03:37.075484",
-      "modified_at" : "2023-07-05T17:03:37.075484",
+      "create_at" : "2023-07-08T16:47:33.916264",
+      "modified_at" : "2023-07-08T16:47:33.916264",
       "seller" : {
         "member_id" : 2,
         "email" : "seller@appling.com",
@@ -3693,37 +3427,8 @@ Content-Length: 5262
       "image1" : "https://image1",
       "image2" : "https://image2",
       "image3" : "https://image3",
-      "create_at" : "2023-07-05T17:03:37.074483",
-      "modified_at" : "2023-07-05T17:03:37.074483",
-      "seller" : {
-        "member_id" : 2,
-        "email" : "seller@appling.com",
-        "nickname" : "셀러",
-        "name" : "김셀러"
-      },
-      "category" : {
-        "category_id" : 1,
-        "name" : "과일",
-        "created_at" : "2023-07-04T10:21:03.961557",
-        "modified_at" : "2023-07-04T10:21:03.961557"
-      }
-    }, {
-      "id" : 70,
-      "main_title" : "셀러 유저 상품",
-      "main_explanation" : "메인 설명",
-      "product_main_explanation" : "상품 메인 설명",
-      "product_sub_explanation" : "상품 서브 설명",
-      "origin_price" : 10000,
-      "price" : 8000,
-      "purchase_inquiry" : "보관 방법",
-      "origin" : "원산지",
-      "producer" : "생산자",
-      "main_image" : "https://mainImage",
-      "image1" : "https://image1",
-      "image2" : "https://image2",
-      "image3" : "https://image3",
-      "create_at" : "2023-07-05T17:03:37.073484",
-      "modified_at" : "2023-07-05T17:03:37.073484",
+      "create_at" : "2023-07-08T16:47:33.9158",
+      "modified_at" : "2023-07-08T16:47:33.9158",
       "seller" : {
         "member_id" : 2,
         "email" : "seller@appling.com",
@@ -3751,8 +3456,37 @@ Content-Length: 5262
       "image1" : "https://image1",
       "image2" : "https://image2",
       "image3" : "https://image3",
-      "create_at" : "2023-07-05T17:03:37.073484",
-      "modified_at" : "2023-07-05T17:03:37.073484",
+      "create_at" : "2023-07-08T16:47:33.915344",
+      "modified_at" : "2023-07-08T16:47:33.915344",
+      "seller" : {
+        "member_id" : 2,
+        "email" : "seller@appling.com",
+        "nickname" : "셀러",
+        "name" : "김셀러"
+      },
+      "category" : {
+        "category_id" : 1,
+        "name" : "과일",
+        "created_at" : "2023-07-04T10:21:03.961557",
+        "modified_at" : "2023-07-04T10:21:03.961557"
+      }
+    }, {
+      "id" : 70,
+      "main_title" : "셀러 유저 상품",
+      "main_explanation" : "메인 설명",
+      "product_main_explanation" : "상품 메인 설명",
+      "product_sub_explanation" : "상품 서브 설명",
+      "origin_price" : 10000,
+      "price" : 8000,
+      "purchase_inquiry" : "보관 방법",
+      "origin" : "원산지",
+      "producer" : "생산자",
+      "main_image" : "https://mainImage",
+      "image1" : "https://image1",
+      "image2" : "https://image2",
+      "image3" : "https://image3",
+      "create_at" : "2023-07-08T16:47:33.914929",
+      "modified_at" : "2023-07-08T16:47:33.914929",
       "seller" : {
         "member_id" : 2,
         "email" : "seller@appling.com",
@@ -3780,8 +3514,8 @@ Content-Length: 5262
       "image1" : "https://image1",
       "image2" : "https://image2",
       "image3" : "https://image3",
-      "create_at" : "2023-07-05T17:03:37.072484",
-      "modified_at" : "2023-07-05T17:03:37.072484",
+      "create_at" : "2023-07-08T16:47:33.914499",
+      "modified_at" : "2023-07-08T16:47:33.914499",
       "seller" : {
         "member_id" : 2,
         "email" : "seller@appling.com",
@@ -3801,7 +3535,7 @@ Content-Length: 5262
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_field_19"><a class="link" href="#_response_field_19">🟢 RESPONSE FIELD</a></h4>
+<h4 id="_response_field_17"><a class="link" href="#_response_field_17">🟢 RESPONSE FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -3983,7 +3717,7 @@ Content-Length: 5262
 <div class="sect2">
 <h3 id="_상품_상세"><a class="link" href="#_상품_상세">📗 상품 상세</a></h3>
 <div class="sect3">
-<h4 id="_request_20"><a class="link" href="#_request_20">🔵 REQUEST</a></h4>
+<h4 id="_request_18"><a class="link" href="#_request_18">🔵 REQUEST</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/product/37 HTTP/1.1
@@ -3992,7 +3726,7 @@ Host: 127.0.0.1</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_request_field_12"><a class="link" href="#_request_field_12">🔵 REQUEST FIELD</a></h4>
+<h4 id="_request_field_10"><a class="link" href="#_request_field_10">🔵 REQUEST FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -4016,7 +3750,7 @@ Host: 127.0.0.1</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_20"><a class="link" href="#_response_20">🟢 RESPONSE</a></h4>
+<h4 id="_response_18"><a class="link" href="#_response_18">🟢 RESPONSE</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -4024,7 +3758,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 1018
+Content-Length: 985
 
 {
   "code" : "0000",
@@ -4044,8 +3778,8 @@ Content-Length: 1018
     "image1" : "https://image1",
     "image2" : "https://image2",
     "image3" : "https://image3",
-    "create_at" : "2023-07-05T17:03:36.907789",
-    "modified_at" : "2023-07-05T17:03:36.907789",
+    "create_at" : "2023-07-08T16:47:33.791299",
+    "modified_at" : "2023-07-08T16:47:33.791299",
     "seller" : {
       "member_id" : 2,
       "email" : "seller@appling.com",
@@ -4064,7 +3798,7 @@ Content-Length: 1018
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_field_20"><a class="link" href="#_response_field_20">🟢 RESPONSE FIELD</a></h4>
+<h4 id="_response_field_18"><a class="link" href="#_response_field_18">🟢 RESPONSE FIELD</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -4218,7 +3952,7 @@ Content-Length: 1018
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-03 13:18:08 +0900
+Last updated 2023-07-08 16:35:00 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
