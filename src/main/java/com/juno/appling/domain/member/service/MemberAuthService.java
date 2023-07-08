@@ -8,9 +8,9 @@ import com.juno.appling.domain.member.dto.kakao.KakaoMemberResponseDto;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.enums.Role;
 import com.juno.appling.domain.member.enums.SnsJoinType;
+import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.member.vo.JoinVo;
 import com.juno.appling.domain.member.vo.LoginVo;
-import com.juno.appling.domain.member.repository.MemberRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -31,7 +30,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.util.*;
 
@@ -137,20 +135,22 @@ public class MemberAuthService {
         map.add("redirect_url", env.getProperty("kakao.redirect-url"));
         map.add("code", code);
 
-        KakaoLoginResponseDto kakaoToken = kakaoClient.post().uri(("/oauth/token"))
-                .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
-                .body(
-                        BodyInserters.fromFormData(map)
-                )
-                .retrieve()
-                .onStatus(http -> http.isError(), response ->
-                    response.bodyToMono(String.class)
-                        .handle((error, sink) ->
-                            sink.error(new RuntimeException(error))
+        KakaoLoginResponseDto kakaoToken = Optional.ofNullable(
+                kakaoClient.post().uri(("/oauth/token"))
+                        .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
+                        .body(
+                                BodyInserters.fromFormData(map)
                         )
-                )
-                .bodyToMono(KakaoLoginResponseDto.class)
-                .block();
+                        .retrieve()
+                        .onStatus(http -> http.isError(), response ->
+                                response.bodyToMono(String.class)
+                                        .handle((error, sink) ->
+                                                sink.error(new RuntimeException(error))
+                                        )
+                        )
+                        .bodyToMono(KakaoLoginResponseDto.class)
+                        .block()
+        ).orElse(new KakaoLoginResponseDto("", "", 0L, 0L));
 
         return LoginVo.builder()
                 .type(TYPE)
