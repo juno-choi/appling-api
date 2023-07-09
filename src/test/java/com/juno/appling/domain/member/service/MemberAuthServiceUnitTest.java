@@ -6,9 +6,9 @@ import com.juno.appling.domain.member.dto.JoinDto;
 import com.juno.appling.domain.member.dto.kakao.KakaoLoginResponseDto;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.enums.SnsJoinType;
-import com.juno.appling.domain.member.service.MemberAuthService;
-import com.juno.appling.domain.member.vo.LoginVo;
 import com.juno.appling.domain.member.repository.MemberRepository;
+import com.juno.appling.domain.member.vo.LoginVo;
+import io.jsonwebtoken.Jwts;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.assertj.core.api.Assertions;
@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +29,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,6 +58,9 @@ class MemberAuthServiceUnitTest {
     private TokenProvider tokenProvider;
     @Mock
     private RedisTemplate redisTemplate;
+
+    @Mock
+    private ValueOperations<String, Object> valueOperations;
 
     private ObjectMapper objectMapper = new ObjectMapper();
     private static MockWebServer mockWebServer;
@@ -213,6 +219,11 @@ class MemberAuthServiceUnitTest {
         JoinDto joinDto = new JoinDto("kakao@email.com", snsId, "카카오회원", "카카오회원", null);
         given(memberRepository.save(any())).willReturn(Member.of(joinDto, snsId, SnsJoinType.KAKAO));
         given(authenticationManagerBuilder.getObject()).willReturn(mockAuthenticationManager());
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("exp", "1");
+        given(tokenProvider.parseClaims(anyString())).willReturn(Jwts.claims(claims));
+        given(redisTemplate.opsForValue()).willReturn(valueOperations);
 
         //when
         LoginVo loginVo = memberAuthService.loginKakao("kakao_access_token");

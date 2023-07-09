@@ -79,14 +79,7 @@ public class MemberAuthService {
         LoginVo loginVo = tokenProvider.generateTokenDto(authenticate);
 
         // token redis 저장
-        String accessToken = loginVo.getAccessToken();
-        String refreshToken = loginVo.getRefreshToken();
-        Claims claims = tokenProvider.parseClaims(refreshToken);
-        long refreshTokenExpired = Long.parseLong(claims.get("exp").toString());
-
-        ValueOperations<String, Object> ops = redisTemplate.opsForValue();
-        ops.set(refreshToken, accessToken);
-        redisTemplate.expireAt(refreshToken, new Date(refreshTokenExpired*1000L));
+        saveRedisToken(loginVo);
 
         return loginVo;
     }
@@ -202,6 +195,22 @@ public class MemberAuthService {
         // 토큰 인증 저장
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, snsId, grantedList);
         Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        return tokenProvider.generateTokenDto(authenticate);
+
+        LoginVo loginVo = tokenProvider.generateTokenDto(authenticate);
+
+        saveRedisToken(loginVo);
+
+        return loginVo;
+    }
+
+    private void saveRedisToken(LoginVo loginVo) {
+        String accessToken = loginVo.getAccessToken();
+        String refreshToken = loginVo.getRefreshToken();
+        Claims claims = tokenProvider.parseClaims(refreshToken);
+        long refreshTokenExpired = Long.parseLong(claims.get("exp").toString());
+
+        ValueOperations<String, Object> ops = redisTemplate.opsForValue();
+        ops.set(refreshToken, accessToken);
+        redisTemplate.expireAt(refreshToken, new Date(refreshTokenExpired * 1000L));
     }
 }
