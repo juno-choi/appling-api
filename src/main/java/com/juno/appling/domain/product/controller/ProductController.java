@@ -1,7 +1,9 @@
 package com.juno.appling.domain.product.controller;
 
 import com.juno.appling.config.base.Api;
+import com.juno.appling.config.base.MessageVo;
 import com.juno.appling.config.base.ResultCode;
+import com.juno.appling.domain.product.dto.AddViewCntDto;
 import com.juno.appling.domain.product.vo.CategoryListVo;
 import com.juno.appling.domain.product.vo.ProductListVo;
 import com.juno.appling.domain.product.vo.ProductVo;
@@ -10,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,6 +47,15 @@ public class ProductController {
                 .code(ResultCode.SUCCESS.code)
                 .message(ResultCode.SUCCESS.message)
                 .data(productService.getCategoryList())
+                .build());
+    }
+
+    @PatchMapping("/cnt")
+    public ResponseEntity<Api<MessageVo>> addViewCnt(@RequestBody @Validated AddViewCntDto addViewCntDto, BindingResult bindingResult){
+        return ResponseEntity.ok(Api.<MessageVo>builder()
+                .code(ResultCode.SUCCESS.code)
+                .message(ResultCode.SUCCESS.message)
+                .data(productService.addViewCnt(addViewCntDto))
                 .build());
     }
 }

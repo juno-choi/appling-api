@@ -6,6 +6,7 @@ import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.member.service.MemberAuthService;
 import com.juno.appling.domain.member.vo.LoginVo;
+import com.juno.appling.domain.product.dto.AddViewCntDto;
 import com.juno.appling.domain.product.dto.ProductDto;
 import com.juno.appling.domain.product.dto.PutProductDto;
 import com.juno.appling.domain.product.entity.Category;
@@ -153,7 +154,7 @@ class ProductServiceTest {
 
         Product product = productRepository.save(Product.of(member, category, productDto));
         //when
-        MessageVo messageVo = productService.addViewCnt(product.getId());
+        MessageVo messageVo = productService.addViewCnt(new AddViewCntDto(product.getId()));
 
         //then
         assertThat(messageVo.getMessage())

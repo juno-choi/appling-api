@@ -2,6 +2,7 @@ package com.juno.appling.domain.product.service;
 
 import com.juno.appling.config.base.MessageVo;
 import com.juno.appling.config.security.TokenProvider;
+import com.juno.appling.domain.product.dto.AddViewCntDto;
 import com.juno.appling.domain.product.dto.PutProductDto;
 import com.juno.appling.domain.product.dto.ProductDto;
 import com.juno.appling.domain.member.entity.Member;
@@ -154,8 +155,8 @@ public class ProductService {
     }
 
     @Transactional
-    public MessageVo addViewCnt(Long productId){
-        Product product = productRepository.findById(productId).orElseThrow(() ->
+    public MessageVo addViewCnt(AddViewCntDto addViewCntDto){
+        Product product = productRepository.findById(addViewCntDto.getProductId()).orElseThrow(() ->
                 new IllegalArgumentException("유효하지 않은 상품입니다.")
         );
         product.addViewCnt();

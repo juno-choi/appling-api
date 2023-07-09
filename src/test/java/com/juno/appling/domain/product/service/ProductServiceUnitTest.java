@@ -4,6 +4,7 @@ import com.juno.appling.config.security.TokenProvider;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.enums.Role;
 import com.juno.appling.domain.member.repository.MemberRepository;
+import com.juno.appling.domain.product.dto.AddViewCntDto;
 import com.juno.appling.domain.product.dto.ProductDto;
 import com.juno.appling.domain.product.dto.PutProductDto;
 import com.juno.appling.domain.product.entity.Category;
@@ -133,7 +134,7 @@ class ProductServiceUnitTest {
     void addViewCnt(){
         // given
         // when
-        Throwable throwable = catchThrowable(() -> productService.addViewCnt(1L));
+        Throwable throwable = catchThrowable(() -> productService.addViewCnt(new AddViewCntDto(1L)));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유효하지 않은 상품");
