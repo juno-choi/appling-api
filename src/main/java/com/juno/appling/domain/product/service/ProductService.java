@@ -71,36 +71,17 @@ public class ProductService {
             throw new IllegalArgumentException("유효하지 않은 상품번호 입니다.");
         });
 
-        return ProductVo.builder()
-                .id(product.getId())
-                .mainTitle(product.getMainTitle())
-                .mainExplanation(product.getMainExplanation())
-                .productMainExplanation(product.getProductMainExplanation())
-                .productSubExplanation(product.getProductSubExplanation())
-                .purchaseInquiry(product.getPurchaseInquiry())
-                .producer(product.getProducer())
-                .origin(product.getOrigin())
-                .originPrice(product.getOriginPrice())
-                .price(product.getPrice())
-                .mainImage(product.getMainImage())
-                .image1(product.getImage1())
-                .image2(product.getImage2())
-                .image3(product.getImage3())
-                .createAt(product.getCreateAt())
-                .modifiedAt(product.getModifiedAt())
-                .seller(SellerVo.builder()
+        ProductVo productVo = ProductVo.productReturnVo(product);
+        productVo.putSeller(
+                SellerVo.builder()
                         .name(product.getMember().getName())
                         .email(product.getMember().getEmail())
                         .nickname(product.getMember().getEmail())
                         .memberId(product.getMember().getId())
-                        .build())
-                .category(CategoryVo.builder()
-                        .categoryId(product.getCategory().getId())
-                        .name(product.getCategory().getName())
-                        .createdAt(product.getCategory().getCreatedAt())
-                        .modifiedAt(product.getCategory().getModifiedAt())
-                        .build())
-                .build();
+                        .build()
+        );
+
+        return productVo;
     }
 
     @Transactional
