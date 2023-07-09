@@ -1,19 +1,20 @@
 package com.juno.appling.domain.product.service;
 
+import com.juno.appling.config.base.MessageVo;
 import com.juno.appling.domain.member.dto.LoginDto;
-import com.juno.appling.domain.product.dto.PutProductDto;
-import com.juno.appling.domain.product.dto.ProductDto;
 import com.juno.appling.domain.member.entity.Member;
+import com.juno.appling.domain.member.repository.MemberRepository;
+import com.juno.appling.domain.member.service.MemberAuthService;
+import com.juno.appling.domain.member.vo.LoginVo;
+import com.juno.appling.domain.product.dto.AddViewCntDto;
+import com.juno.appling.domain.product.dto.ProductDto;
+import com.juno.appling.domain.product.dto.PutProductDto;
 import com.juno.appling.domain.product.entity.Category;
 import com.juno.appling.domain.product.entity.Product;
-import com.juno.appling.domain.product.service.ProductService;
-import com.juno.appling.domain.member.vo.LoginVo;
-import com.juno.appling.domain.product.vo.ProductListVo;
-import com.juno.appling.domain.product.vo.ProductVo;
-import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.product.repository.CategoryRepository;
 import com.juno.appling.domain.product.repository.ProductRepository;
-import com.juno.appling.domain.member.service.MemberAuthService;
+import com.juno.appling.domain.product.vo.ProductListVo;
+import com.juno.appling.domain.product.vo.ProductVo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,5 +142,24 @@ class ProductServiceTest {
         // then
         Product changeProduct = productRepository.findById(productId).get();
         assertThat(changeProduct.getMainTitle()).isNotEqualTo(originalProductMainTitle);
+    }
+
+    @Test
+    @DisplayName("상품 조회수 증가 성공")
+    void addViewCntSuccess() {
+        //given
+        Member member = memberRepository.findByEmail("seller@appling.com").get();
+        Category category = categoryRepository.findById(1L).get();
+        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+
+        Product product = productRepository.save(Product.of(member, category, productDto));
+        //when
+        MessageVo messageVo = productService.addViewCnt(new AddViewCntDto(product.getId()));
+
+        //then
+        assertThat(messageVo.getMessage())
+                .contains("조회수 증가 성공");
+        assertThat(product.getViewCnt())
+                .isEqualTo(1);
     }
 }

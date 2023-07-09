@@ -1,6 +1,7 @@
 package com.juno.appling.domain.product.controller;
 
 import com.juno.appling.BaseTest;
+import com.juno.appling.domain.product.dto.AddViewCntDto;
 import com.juno.appling.domain.product.dto.ProductDto;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.product.entity.Category;
@@ -13,13 +14,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -91,7 +93,8 @@ class ProductControllerDocs extends BaseTest {
                         fieldWithPath("data.list[].image1").type(JsonFieldType.STRING).description("이미지1"),
                         fieldWithPath("data.list[].image2").type(JsonFieldType.STRING).description("이미지2"),
                         fieldWithPath("data.list[].image3").type(JsonFieldType.STRING).description("이미지3"),
-                        fieldWithPath("data.list[].create_at").type(JsonFieldType.STRING).description("등록일"),
+                        fieldWithPath("data.list[].view_cnt").type(JsonFieldType.NUMBER).description("조회수"),
+                        fieldWithPath("data.list[].created_at").type(JsonFieldType.STRING).description("등록일"),
                         fieldWithPath("data.list[].modified_at").type(JsonFieldType.STRING).description("수정일"),
                         fieldWithPath("data.list[].seller.member_id").type(JsonFieldType.NUMBER).description("판매자 id"),
                         fieldWithPath("data.list[].seller.email").type(JsonFieldType.STRING).description("판매자 email"),
@@ -140,8 +143,9 @@ class ProductControllerDocs extends BaseTest {
                         fieldWithPath("data.image1").type(JsonFieldType.STRING).description("이미지1"),
                         fieldWithPath("data.image2").type(JsonFieldType.STRING).description("이미지2"),
                         fieldWithPath("data.image3").type(JsonFieldType.STRING).description("이미지3"),
-                        fieldWithPath("data.create_at").type(JsonFieldType.STRING).description("등록일"),
+                        fieldWithPath("data.created_at").type(JsonFieldType.STRING).description("등록일"),
                         fieldWithPath("data.modified_at").type(JsonFieldType.STRING).description("수정일"),
+                        fieldWithPath("data.view_cnt").type(JsonFieldType.NUMBER).description("조회수"),
                         fieldWithPath("data.seller.member_id").type(JsonFieldType.NUMBER).description("판매자 id"),
                         fieldWithPath("data.seller.email").type(JsonFieldType.STRING).description("판매자 email"),
                         fieldWithPath("data.seller.nickname").type(JsonFieldType.STRING).description("판매자 닉네임"),
@@ -173,6 +177,35 @@ class ProductControllerDocs extends BaseTest {
                         fieldWithPath("data.list[].name").type(JsonFieldType.STRING).description("카테고리 명"),
                         fieldWithPath("data.list[].created_at").type(JsonFieldType.STRING).description("카테고리 생성일"),
                         fieldWithPath("data.list[].modified_at").type(JsonFieldType.STRING).description("카테고리 수정일")
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName(PREFIX+"/cnt")
+    void addViewCnt() throws Exception{
+        //given
+        Member member = memberRepository.findByEmail("seller@appling.com").get();
+        Category category = categoryRepository.findById(1L).get();
+        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+
+        Product product = productRepository.save(Product.of(member, category, productDto));
+        //when
+        ResultActions perform = mock.perform(
+                patch(PREFIX + "/cnt")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(new AddViewCntDto(product.getId())))
+        );
+        //then
+        perform.andExpect(status().is2xxSuccessful());
+        perform.andDo(docs.document(
+                requestFields(
+                        fieldWithPath("product_id").type(JsonFieldType.NUMBER).description("상품 id")
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.message").type(JsonFieldType.STRING).description("조회수 등록 여부 메세지")
                 )
         ));
     }
