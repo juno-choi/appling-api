@@ -1,17 +1,16 @@
 package com.juno.appling.domain.product.service;
 
 import com.juno.appling.config.security.TokenProvider;
-import com.juno.appling.domain.product.dto.PutProductDto;
-import com.juno.appling.domain.product.dto.ProductDto;
 import com.juno.appling.domain.member.entity.Member;
+import com.juno.appling.domain.member.enums.Role;
+import com.juno.appling.domain.member.repository.MemberRepository;
+import com.juno.appling.domain.product.dto.ProductDto;
+import com.juno.appling.domain.product.dto.PutProductDto;
 import com.juno.appling.domain.product.entity.Category;
 import com.juno.appling.domain.product.entity.Product;
-import com.juno.appling.domain.member.enums.Role;
-import com.juno.appling.domain.product.service.ProductService;
-import com.juno.appling.domain.product.vo.ProductVo;
-import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.product.repository.CategoryRepository;
 import com.juno.appling.domain.product.repository.ProductRepository;
+import com.juno.appling.domain.product.vo.ProductVo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +23,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -124,6 +123,17 @@ class ProductServiceUnitTest {
 
         // when
         Throwable throwable = catchThrowable(() -> productService.putProduct(dto));
+        // then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 상품");
+    }
+
+    @Test
+    @DisplayName("존재하지 않은 상품은 조회수 증가에 실패")
+    void addViewCnt(){
+        // given
+        // when
+        Throwable throwable = catchThrowable(() -> productService.addViewCnt(1L));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유효하지 않은 상품");
