@@ -3,6 +3,7 @@ package com.juno.appling.domain.product.entity;
 import com.juno.appling.domain.product.dto.PutProductDto;
 import com.juno.appling.domain.product.dto.ProductDto;
 import com.juno.appling.domain.member.entity.Member;
+import com.juno.appling.domain.product.enums.Status;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -41,10 +42,11 @@ public class Product {
     private String image2;
     private String image3;
     private Long viewCnt;
+    private Status status;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
 
-    private Product(Member member, Category category, String mainTitle, String mainExplanation, String productMainExplanation, String productSubExplanation, int originPrice, int price, String purchaseInquiry, String origin, String producer, String mainImage, String image1, String image2, String image3, LocalDateTime createAt, LocalDateTime modifiedAt) {
+    private Product(Member member, Category category, String mainTitle, String mainExplanation, String productMainExplanation, String productSubExplanation, int originPrice, int price, String purchaseInquiry, String origin, String producer, String mainImage, String image1, String image2, String image3, Status status, LocalDateTime createAt, LocalDateTime modifiedAt) {
         this.member = member;
         this.category = category;
         this.mainTitle = mainTitle;
@@ -61,13 +63,15 @@ public class Product {
         this.image2 = image2;
         this.image3 = image3;
         this.viewCnt = 0L;
+        this.status = status;
         this.createAt = createAt;
         this.modifiedAt = modifiedAt;
     }
 
     public static Product of(Member member, Category category, ProductDto productDto){
         LocalDateTime now = LocalDateTime.now();
-        return new Product(member, category, productDto.getMainTitle(), productDto.getMainExplanation(), productDto.getProductMainExplanation(), productDto.getProductSubExplanation(), productDto.getOriginPrice(), productDto.getPrice(), productDto.getPurchaseInquiry(), productDto.getOrigin(), productDto.getProducer(), productDto.getMainImage(), productDto.getImage1(), productDto.getImage2(), productDto.getImage3(), now, now);
+        Status status = Status.valueOf(productDto.getStatus().toUpperCase());
+        return new Product(member, category, productDto.getMainTitle(), productDto.getMainExplanation(), productDto.getProductMainExplanation(), productDto.getProductSubExplanation(), productDto.getOriginPrice(), productDto.getPrice(), productDto.getPurchaseInquiry(), productDto.getOrigin(), productDto.getProducer(), productDto.getMainImage(), productDto.getImage1(), productDto.getImage2(), productDto.getImage3(), status, now, now);
     }
 
     public void put(PutProductDto putProductDto){

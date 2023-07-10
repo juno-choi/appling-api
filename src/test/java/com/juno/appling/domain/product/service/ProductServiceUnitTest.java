@@ -56,7 +56,7 @@ class ProductServiceUnitTest {
         request.addHeader(AUTHORIZATION, "Bearer token");
         String mainTitle = "메인 제목";
 
-        ProductDto productDto = new ProductDto(1L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2", "https://image3");
+        ProductDto productDto = new ProductDto(1L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2", "https://image3", "normal");
         Category category = new Category();
 
         given(tokenProvider.resolveToken(any())).willReturn("token");
@@ -79,7 +79,7 @@ class ProductServiceUnitTest {
         request.addHeader(AUTHORIZATION, "Bearer token");
         String mainTitle = "메인 제목";
 
-        ProductDto productDto = new ProductDto(0L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2", "https://image3");
+        ProductDto productDto = new ProductDto(0L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2", "https://image3", "normal");
         //when
         Throwable throwable = catchThrowable(() -> productService.postProduct(productDto, request));
 
