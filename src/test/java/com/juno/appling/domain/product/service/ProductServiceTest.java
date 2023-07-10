@@ -89,7 +89,7 @@ class ProductServiceTest {
         Pageable pageable = Pageable.ofSize(5);
         pageable = pageable.next();
         //when
-        ProductListVo searchList = productService.getProductList(pageable, "검색");
+        ProductListVo searchList = productService.getProductList(pageable, "검색", "normal");
         //then
         assertThat(searchList.getList().stream().findFirst().get().getMainTitle()).contains("검색");
     }
@@ -119,7 +119,7 @@ class ProductServiceTest {
         pageable = pageable.next();
         request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
         //when
-        ProductListVo searchList = productService.getProductListBySeller(pageable, "", request);
+        ProductListVo searchList = productService.getProductListBySeller(pageable, "", "normal", request);
         //then
         assertThat(searchList.getList().stream().findFirst().get().getSeller().getMemberId()).isEqualTo(seller.getId());
     }

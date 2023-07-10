@@ -24,11 +24,11 @@ public class SellerProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<Api<ProductListVo>> getProductList(@PageableDefault(size = 10, page = 0) Pageable pageable, @RequestParam(required = false, name = "search") String search, HttpServletRequest request){
+    public ResponseEntity<Api<ProductListVo>> getProductList(@PageableDefault(size = 10, page = 0) Pageable pageable, @RequestParam(required = false, name = "search") String search, @RequestParam(required = false, name = "status", defaultValue = "normal") String status, HttpServletRequest request){
         return ResponseEntity.ok(Api.<ProductListVo>builder()
                 .code(ResultCode.SUCCESS.code)
                 .message(ResultCode.SUCCESS.message)
-                .data(productService.getProductListBySeller(pageable, search, request))
+                .data(productService.getProductListBySeller(pageable, search, status, request))
                 .build());
     }
 
