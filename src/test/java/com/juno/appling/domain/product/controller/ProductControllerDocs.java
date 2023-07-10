@@ -46,8 +46,8 @@ class ProductControllerDocs extends BaseTest {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
-        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
-        ProductDto searchDto = new ProductDto(1L,"검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
+        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3", "normal");
+        ProductDto searchDto = new ProductDto(1L,"검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3", "normal");
         productRepository.save(Product.of(member, category, searchDto));
 
         for(int i=0; i<25; i++){
@@ -94,6 +94,7 @@ class ProductControllerDocs extends BaseTest {
                         fieldWithPath("data.list[].image2").type(JsonFieldType.STRING).description("이미지2"),
                         fieldWithPath("data.list[].image3").type(JsonFieldType.STRING).description("이미지3"),
                         fieldWithPath("data.list[].view_cnt").type(JsonFieldType.NUMBER).description("조회수"),
+                        fieldWithPath("data.list[].status").type(JsonFieldType.STRING).description("상품 상태값 (일반:normal, 숨김:hidden, 삭제:delete / 대소문자 구분 없음)"),
                         fieldWithPath("data.list[].created_at").type(JsonFieldType.STRING).description("등록일"),
                         fieldWithPath("data.list[].modified_at").type(JsonFieldType.STRING).description("수정일"),
                         fieldWithPath("data.list[].seller.member_id").type(JsonFieldType.NUMBER).description("판매자 id"),
@@ -114,7 +115,7 @@ class ProductControllerDocs extends BaseTest {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
-        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
+        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3", "normal");
         Product product = productRepository.save(Product.of(member, category, productDto));
         //when
         ResultActions perform = mock.perform(
@@ -146,6 +147,7 @@ class ProductControllerDocs extends BaseTest {
                         fieldWithPath("data.created_at").type(JsonFieldType.STRING).description("등록일"),
                         fieldWithPath("data.modified_at").type(JsonFieldType.STRING).description("수정일"),
                         fieldWithPath("data.view_cnt").type(JsonFieldType.NUMBER).description("조회수"),
+                        fieldWithPath("data.status").type(JsonFieldType.STRING).description("상품 상태값 (일반:normal, 숨김:hidden, 삭제:delete / 대소문자 구분 없음)"),
                         fieldWithPath("data.seller.member_id").type(JsonFieldType.NUMBER).description("판매자 id"),
                         fieldWithPath("data.seller.email").type(JsonFieldType.STRING).description("판매자 email"),
                         fieldWithPath("data.seller.nickname").type(JsonFieldType.STRING).description("판매자 닉네임"),
@@ -187,7 +189,7 @@ class ProductControllerDocs extends BaseTest {
         //given
         Member member = memberRepository.findByEmail("seller@appling.com").get();
         Category category = categoryRepository.findById(1L).get();
-        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null);
+        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
 
         Product product = productRepository.save(Product.of(member, category, productDto));
         //when

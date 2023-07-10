@@ -8,6 +8,7 @@ import com.juno.appling.domain.product.dto.ProductDto;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.product.entity.Category;
 import com.juno.appling.domain.product.entity.Product;
+import com.juno.appling.domain.product.enums.Status;
 import com.juno.appling.domain.product.vo.*;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.product.repository.CategoryRepository;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -53,8 +55,10 @@ public class ProductService {
         return member;
     }
 
-    public ProductListVo getProductList(Pageable pageable, String search){
-        Page<ProductVo> page = productCustomRepository.findAll(pageable, search, 0L);
+    public ProductListVo getProductList(Pageable pageable, String search, String status){
+        Status statusOfEnums = Status.valueOf(status.toUpperCase(Locale.ROOT));
+
+        Page<ProductVo> page = productCustomRepository.findAll(pageable, search, statusOfEnums, 0L);
 
         return ProductListVo.builder()
                 .totalPage(page.getTotalPages())
@@ -104,9 +108,10 @@ public class ProductService {
         return ProductVo.productReturnVo(product);
     }
 
-    public ProductListVo getProductListBySeller(Pageable pageable, String search, HttpServletRequest request) {
+    public ProductListVo getProductListBySeller(Pageable pageable, String search, String status, HttpServletRequest request) {
         Long memberId = tokenProvider.getMemberId(request);
-        Page<ProductVo> page = productCustomRepository.findAll(pageable, search, memberId);
+        Status statusOfEnums = Status.valueOf(status.toUpperCase(Locale.ROOT));
+        Page<ProductVo> page = productCustomRepository.findAll(pageable, search, statusOfEnums, memberId);
 
         return ProductListVo.builder()
                 .totalPage(page.getTotalPages())

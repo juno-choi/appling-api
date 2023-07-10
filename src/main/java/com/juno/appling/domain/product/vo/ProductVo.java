@@ -2,6 +2,7 @@ package com.juno.appling.domain.product.vo;
 
 import com.juno.appling.domain.product.entity.Product;
 import com.juno.appling.config.base.BaseVo;
+import com.juno.appling.domain.product.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class ProductVo extends BaseVo {
     private String image2;
     private String image3;
     private Long viewCnt;
+    private Status status;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private SellerVo seller;
@@ -49,6 +51,7 @@ public class ProductVo extends BaseVo {
                 .image2(product.getImage2())
                 .image3(product.getImage3())
                 .viewCnt(product.getViewCnt())
+                .status(product.getStatus())
                 .category(CategoryVo.builder()
                         .categoryId(product.getCategory().getId())
                         .name(product.getCategory().getName())
