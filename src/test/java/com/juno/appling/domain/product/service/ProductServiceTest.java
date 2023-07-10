@@ -136,7 +136,7 @@ class ProductServiceTest {
         String originalProductMainTitle = originalProduct.getMainTitle();
         Long productId = originalProduct.getId();
         Long categoryId = originalProduct.getCategory().getId();
-        PutProductDto putProductDto = new PutProductDto(productId, 2L, "수정된 제목", "수정된 설명", "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3");
+        PutProductDto putProductDto = new PutProductDto(productId, 2L, "수정된 제목", "수정된 설명", "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3", "normal");
         // when
         productService.putProduct(putProductDto);
         // then

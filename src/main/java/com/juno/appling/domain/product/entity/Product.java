@@ -76,7 +76,7 @@ public class Product {
 
     public void put(PutProductDto putProductDto){
         LocalDateTime now = LocalDateTime.now();
-
+        Status status = Status.valueOf(putProductDto.getStatus().toUpperCase());
         this.mainTitle = putProductDto.getMainTitle();
         this.mainExplanation = putProductDto.getMainExplanation();
         this.productMainExplanation = putProductDto.getProductMainExplanation();
@@ -91,6 +91,7 @@ public class Product {
         this.image2 = putProductDto.getImage2();
         this.image3 = putProductDto.getImage3();
         this.modifiedAt = now;
+        this.status = status;
     }
 
     public void putCategory(Category category){
