@@ -42,6 +42,7 @@ public class Product {
     private String image2;
     private String image3;
     private Long viewCnt;
+    @Enumerated(EnumType.STRING)
     private Status status;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
