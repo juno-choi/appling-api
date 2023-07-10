@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ServiceLogAspect {
 
-    @Around("execution(* com.juno.appling.service..*.*(..))")
+    @Around("execution(* com.juno.appling..*.service..*.*(..))")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
         log.info("[appling] method = [{}]", pjp.getSignature().toShortString());
 
