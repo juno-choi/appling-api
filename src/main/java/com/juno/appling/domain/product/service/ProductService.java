@@ -45,14 +45,13 @@ public class ProductService {
         Member member = getMember(request);
 
         Product product = productRepository.save(Product.of(member, category, productDto));
-        return ProductVo.productReturnVo(product);
+        return new ProductVo(product);
     }
 
     private Member getMember(HttpServletRequest request) {
         String token = tokenProvider.resolveToken(request);
         Long memberId = tokenProvider.getMemberId(token);
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
-        return member;
+        return memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
     }
 
     public ProductListVo getProductList(Pageable pageable, String search, String status){
@@ -68,7 +67,7 @@ public class ProductService {
             new IllegalArgumentException("유효하지 않은 상품번호 입니다.")
         );
 
-        return ProductVo.productReturnVo(product, new SellerVo(product.getMember().getId(), product.getMember().getEmail(), product.getMember().getNickname(), product.getMember().getName()));
+        return new ProductVo(product, new SellerVo(product.getMember().getId(), product.getMember().getEmail(), product.getMember().getNickname(), product.getMember().getName()));
     }
 
     @Transactional
@@ -88,7 +87,7 @@ public class ProductService {
         product.put(putProductDto);
         product.putCategory(category);
 
-        return ProductVo.productReturnVo(product);
+        return new ProductVo(product);
     }
 
     public ProductListVo getProductListBySeller(Pageable pageable, String search, String status, HttpServletRequest request) {

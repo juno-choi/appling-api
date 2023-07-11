@@ -13,5 +13,9 @@ import java.time.LocalDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record CategoryVo(@NotNull Long categoryId, @NotNull String name, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-}
+public record CategoryVo(
+        @NotNull Long categoryId,
+        @NotNull String name,
+        LocalDateTime createdAt,
+        LocalDateTime modifiedAt
+) {}

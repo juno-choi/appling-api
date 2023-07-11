@@ -13,5 +13,12 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record ProductListVo(int totalPage, Long totalElements, int numberOfElements, Boolean last, Boolean empty, List<ProductVo> list) {
-}
+public record ProductListVo(
+        int totalPage,
+        Long totalElements,
+        int numberOfElements,
+        Boolean last,
+        Boolean empty,
+        List<ProductVo> list
+)
+{}

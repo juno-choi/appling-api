@@ -11,5 +11,13 @@ import java.time.LocalDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record MemberVo(Long memberId, String email, String nickname, String name, Role role, SnsJoinType snsType, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-}
+public record MemberVo(
+        Long memberId,
+        String email,
+        String nickname,
+        String name,
+        Role role,
+        SnsJoinType snsType,
+        LocalDateTime createdAt,
+        LocalDateTime modifiedAt
+) {}

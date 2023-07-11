@@ -6,5 +6,9 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record LoginVo(String type, String accessToken, String refreshToken, Long accessTokenExpired, Long refreshTokenExpired) {
-}
+public record LoginVo(
+        String type, String accessToken,
+        String refreshToken,
+        Long accessTokenExpired,
+        Long refreshTokenExpired
+) {}

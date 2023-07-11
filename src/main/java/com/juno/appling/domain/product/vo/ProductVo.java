@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record ProductVo(Long id, String mainTitle, String mainExplanation, String productMainExplanation, String productSubExplanation, int originPrice, int price, String purchaseInquiry, String origin, String producer, String mainImage, String image1, String image2, String image3, Long viewCnt, Status status, LocalDateTime createdAt, LocalDateTime modifiedAt, SellerVo seller, CategoryVo category) {
 
-    public static ProductVo productReturnVo(Product product){
-        return new ProductVo(
+    public ProductVo(Product product){
+        this(
                 product.getId(),
                 product.getMainTitle(),
                 product.getMainExplanation(),
@@ -37,29 +37,28 @@ public record ProductVo(Long id, String mainTitle, String mainExplanation, Strin
         );
     }
 
-    public static ProductVo productReturnVo(Product product, SellerVo seller){
-        return new ProductVo(
-                product.getId(),
-                product.getMainTitle(),
-                product.getMainExplanation(),
-                product.getProductMainExplanation(),
-                product.getProductSubExplanation(),
-                product.getOriginPrice(),
-                product.getPrice(),
-                product.getPurchaseInquiry(),
-                product.getOrigin(),
-                product.getProducer(),
-                product.getMainImage(),
-                product.getImage1(),
-                product.getImage2(),
-                product.getImage3(),
-                product.getViewCnt(),
-                product.getStatus(),
-                product.getCreateAt(),
-                product.getModifiedAt(),
-                seller,
-                new CategoryVo(product.getCategory().getId(), product.getCategory().getName(), product.getCategory().getCreatedAt(), product.getCategory().getModifiedAt())
+    public ProductVo(Product product, SellerVo seller){
+        this(
+            product.getId(),
+            product.getMainTitle(),
+            product.getMainExplanation(),
+            product.getProductMainExplanation(),
+            product.getProductSubExplanation(),
+            product.getOriginPrice(),
+            product.getPrice(),
+            product.getPurchaseInquiry(),
+            product.getOrigin(),
+            product.getProducer(),
+            product.getMainImage(),
+            product.getImage1(),
+            product.getImage2(),
+            product.getImage3(),
+            product.getViewCnt(),
+            product.getStatus(),
+            product.getCreateAt(),
+            product.getModifiedAt(),
+            seller,
+            new CategoryVo(product.getCategory().getId(), product.getCategory().getName(), product.getCategory().getCreatedAt(), product.getCategory().getModifiedAt())
         );
     }
-
 }
