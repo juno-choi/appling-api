@@ -57,12 +57,7 @@ public class TokenProvider {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
-        return LoginVo.builder()
-                .type("Bearer ")
-                .accessToken(accessToken)
-                .accessTokenExpired(accessTokenExpiresIn.getTime())
-                .refreshToken(refreshToken)
-                .build();
+        return new LoginVo("Bearer ", accessToken, refreshToken, accessTokenExpiresIn.getTime(), null);
     }
 
     public String createAccessToken(String sub, String authorities, Date accessTokenExpiresIn) {

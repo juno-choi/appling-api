@@ -59,7 +59,7 @@ class CommonControllerDocs extends BaseTest {
         ResultActions perform = mock.perform(
                 multipart(PREFIX + "/image")
                         .file(new MockMultipartFile("image", "text1.txt", MediaType.APPLICATION_FORM_URLENCODED_VALUE, "123".getBytes(StandardCharsets.UTF_8)))
-                        .header(AUTHORIZATION, "Bearer "+login.getAccessToken())
+                        .header(AUTHORIZATION, "Bearer "+login.accessToken())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         );
 

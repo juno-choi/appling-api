@@ -62,18 +62,14 @@ public class MemberAuthService {
         }
 
         Member saveMember = memberRepository.save(Member.of(joinDto));
-        return JoinVo.builder()
-                .email(saveMember.getEmail())
-                .name(saveMember.getName())
-                .nickname(saveMember.getNickname())
-                .build();
+        return new JoinVo(saveMember.getName(), saveMember.getNickname(), saveMember.getEmail());
     }
 
     public LoginVo login(LoginDto loginDto) {
-        // id, pw 기반으로 UsernamePasswordAuthenticationToken 객체 생
+        // id, pw 기반으로 UsernamePasswordAuthenticationToken 객체 생성
         UsernamePasswordAuthenticationToken authenticationToken = loginDto.toAuthentication();
 
-        // security에 구현한 AuthService가 싫행됨
+        // security에 구현한 AuthService가 실행됨
         Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         LoginVo loginVo = tokenProvider.generateTokenDto(authenticate);
@@ -111,12 +107,7 @@ public class MemberAuthService {
         Authentication authentication = tokenProvider.getAuthentication(accessToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return LoginVo.builder()
-                .type(TYPE)
-                .accessToken(accessToken)
-                .accessTokenExpired(accessTokenExpired.getTime())
-                .refreshToken(refreshToken)
-                .build();
+        return new LoginVo(TYPE, accessToken, refreshToken, accessTokenExpired.getTime(), null);
     }
 
     public LoginVo authKakao(String code) {
@@ -145,13 +136,7 @@ public class MemberAuthService {
                         .block()
         ).orElse(new KakaoLoginResponseDto("", "", 0L, 0L));
 
-        return LoginVo.builder()
-                .type(TYPE)
-                .accessToken(kakaoToken.access_token)
-                .accessTokenExpired(kakaoToken.expires_in)
-                .refreshToken(kakaoToken.refresh_token)
-                .refreshTokenExpired(kakaoToken.refresh_token_expires_in)
-                .build();
+        return new LoginVo(TYPE, kakaoToken.access_token, kakaoToken.refresh_token, kakaoToken.expires_in, kakaoToken.refresh_token_expires_in);
     }
 
     @Transactional
@@ -204,8 +189,8 @@ public class MemberAuthService {
     }
 
     private void saveRedisToken(LoginVo loginVo) {
-        String accessToken = loginVo.getAccessToken();
-        String refreshToken = loginVo.getRefreshToken();
+        String accessToken = loginVo.accessToken();
+        String refreshToken = loginVo.refreshToken();
         Claims claims = tokenProvider.parseClaims(refreshToken);
         long refreshTokenExpired = Long.parseLong(claims.get("exp").toString());
 

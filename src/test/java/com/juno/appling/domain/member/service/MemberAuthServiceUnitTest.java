@@ -209,12 +209,8 @@ class MemberAuthServiceUnitTest {
 
         given(memberRepository.findByEmail(anyString())).willReturn(Optional.ofNullable(null));
         given(tokenProvider.generateTokenDto(any())).willReturn(
-                LoginVo.builder()
-                        .accessToken("access token")
-                        .accessTokenExpired(1L)
-                        .refreshToken("refresh token")
-                        .type(TYPE)
-                        .build());
+                new LoginVo(TYPE, "access token", "refresh token", 1L, null)
+        );
         String snsId = "snsId";
         JoinDto joinDto = new JoinDto("kakao@email.com", snsId, "카카오회원", "카카오회원", null);
         given(memberRepository.save(any())).willReturn(Member.of(joinDto, snsId, SnsJoinType.KAKAO));

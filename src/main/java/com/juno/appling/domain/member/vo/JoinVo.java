@@ -1,13 +1,9 @@
 package com.juno.appling.domain.member.vo;
 
-import com.juno.appling.config.base.BaseVo;
-import lombok.Builder;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-@Builder
-@Getter
-public class JoinVo extends BaseVo {
-    private String name;
-    private String nickname;
-    private String email;
-}
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public record JoinVo(String name, String nickname, String email) {}

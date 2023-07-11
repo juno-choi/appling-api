@@ -45,14 +45,13 @@ public class ProductService {
         Member member = getMember(request);
 
         Product product = productRepository.save(Product.of(member, category, productDto));
-        return ProductVo.productReturnVo(product);
+        return new ProductVo(product);
     }
 
     private Member getMember(HttpServletRequest request) {
         String token = tokenProvider.resolveToken(request);
         Long memberId = tokenProvider.getMemberId(token);
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
-        return member;
+        return memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
     }
 
     public ProductListVo getProductList(Pageable pageable, String search, String status){
@@ -60,32 +59,15 @@ public class ProductService {
 
         Page<ProductVo> page = productCustomRepository.findAll(pageable, search, statusOfEnums, 0L);
 
-        return ProductListVo.builder()
-                .totalPage(page.getTotalPages())
-                .totalElements(page.getTotalElements())
-                .numberOfElements(page.getNumberOfElements())
-                .last(page.isLast())
-                .empty(page.isLast())
-                .list(page.getContent())
-                .build();
+        return new ProductListVo(page.getTotalPages(), page.getTotalElements(), page.getNumberOfElements(), page.isLast(), page.isEmpty(), page.getContent());
     }
 
     public ProductVo getProduct(Long id){
-        Product product = productRepository.findById(id).orElseThrow(() -> {
-            throw new IllegalArgumentException("유효하지 않은 상품번호 입니다.");
-        });
-
-        ProductVo productVo = ProductVo.productReturnVo(product);
-        productVo.putSeller(
-                SellerVo.builder()
-                        .name(product.getMember().getName())
-                        .email(product.getMember().getEmail())
-                        .nickname(product.getMember().getEmail())
-                        .memberId(product.getMember().getId())
-                        .build()
+        Product product = productRepository.findById(id).orElseThrow(() ->
+            new IllegalArgumentException("유효하지 않은 상품번호 입니다.")
         );
 
-        return productVo;
+        return new ProductVo(product, new SellerVo(product.getMember().getId(), product.getMember().getEmail(), product.getMember().getNickname(), product.getMember().getName()));
     }
 
     @Transactional
@@ -105,7 +87,7 @@ public class ProductService {
         product.put(putProductDto);
         product.putCategory(category);
 
-        return ProductVo.productReturnVo(product);
+        return new ProductVo(product);
     }
 
     public ProductListVo getProductListBySeller(Pageable pageable, String search, String status, HttpServletRequest request) {
@@ -113,31 +95,17 @@ public class ProductService {
         Status statusOfEnums = Status.valueOf(status.toUpperCase(Locale.ROOT));
         Page<ProductVo> page = productCustomRepository.findAll(pageable, search, statusOfEnums, memberId);
 
-        return ProductListVo.builder()
-                .totalPage(page.getTotalPages())
-                .totalElements(page.getTotalElements())
-                .numberOfElements(page.getNumberOfElements())
-                .last(page.isLast())
-                .empty(page.isLast())
-                .list(page.getContent())
-                .build();
+        return new ProductListVo(page.getTotalPages(), page.getTotalElements(), page.getNumberOfElements(), page.isLast(), page.isEmpty(), page.getContent());
     }
 
     public CategoryListVo getCategoryList(){
         List<Category> categoryList = categoryRepository.findAll();
         List<CategoryVo> categoryVoList = new LinkedList<>();
         for(Category c : categoryList){
-            categoryVoList.add(CategoryVo.builder()
-                    .categoryId(c.getId())
-                    .name(c.getName())
-                    .createdAt(c.getCreatedAt())
-                    .modifiedAt(c.getModifiedAt())
-                    .build());
+            categoryVoList.add(new CategoryVo(c.getId(), c.getName(), c.getCreatedAt(), c.getModifiedAt()));
         }
 
-        return CategoryListVo.builder()
-                .list(categoryVoList)
-                .build();
+        return new CategoryListVo(categoryVoList);
     }
 
     @Transactional

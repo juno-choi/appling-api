@@ -60,7 +60,7 @@ class MemberControllerDocs extends BaseTest {
         //when
         ResultActions resultActions = mock.perform(
                 get(PREFIX)
-                .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
+                .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
         ).andDo(print());
 
         //then
@@ -96,7 +96,7 @@ class MemberControllerDocs extends BaseTest {
         //when
         ResultActions resultActions = mock.perform(
                 post(PREFIX+"/seller")
-                        .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
+                        .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
         ).andDo(print());
 
         //then
@@ -136,7 +136,7 @@ class MemberControllerDocs extends BaseTest {
         //when
         ResultActions resultActions = mock.perform(
                 patch(PREFIX)
-                        .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
+                        .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(patchMemberDto))
         ).andDo(print());
@@ -177,7 +177,7 @@ class MemberControllerDocs extends BaseTest {
                 post(PREFIX+"/recipient")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postRecipientDto))
-                        .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
+                        .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
         );
 
         //then
@@ -220,7 +220,7 @@ class MemberControllerDocs extends BaseTest {
         //when
         ResultActions resultActions = mock.perform(
                 get(PREFIX+"/recipient")
-                        .header(AUTHORIZATION, "Bearer "+loginVo.getAccessToken())
+                        .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
         );
 
         //then

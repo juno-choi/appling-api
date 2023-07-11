@@ -69,7 +69,7 @@ class ProductServiceUnitTest {
         ProductVo productVo = productService.postProduct(productDto, request);
 
         //then
-        assertThat(productVo.getMainTitle()).isEqualTo(mainTitle);
+        assertThat(productVo.mainTitle()).isEqualTo(mainTitle);
     }
 
     @Test

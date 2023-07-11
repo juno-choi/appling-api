@@ -115,7 +115,7 @@ class AuthControllerDocs extends BaseTest {
 
         //when
         ResultActions resultActions = mock.perform(
-                RestDocumentationRequestBuilders.get(PREFIX+"/refresh/{refresh_token}", loginVo.getRefreshToken())
+                RestDocumentationRequestBuilders.get(PREFIX+"/refresh/{refresh_token}", loginVo.refreshToken())
         ).andDo(print());
 
         //then

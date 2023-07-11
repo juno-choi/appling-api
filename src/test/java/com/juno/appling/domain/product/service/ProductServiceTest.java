@@ -50,7 +50,7 @@ class ProductServiceTest {
         //given
         LoginDto loginDto = new LoginDto("seller@appling.com", "password");
         LoginVo login = memberAuthService.login(loginDto);
-        request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
+        request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
 
         ProductDto productDto = new ProductDto(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2", "https://image3", "normal");
 
@@ -58,7 +58,7 @@ class ProductServiceTest {
         ProductVo productVo = productService.postProduct(productDto, request);
 
         //then
-        Optional<Product> byId = productRepository.findById(productVo.getId());
+        Optional<Product> byId = productRepository.findById(productVo.id());
         Product product = byId.get();
         String email = product.getMember().getEmail();
 
@@ -91,7 +91,7 @@ class ProductServiceTest {
         //when
         ProductListVo searchList = productService.getProductList(pageable, "검색", "normal");
         //then
-        assertThat(searchList.getList().stream().findFirst().get().getMainTitle()).contains("검색");
+        assertThat(searchList.list().stream().findFirst().get().mainTitle()).contains("검색");
     }
 
     @Test
@@ -117,11 +117,11 @@ class ProductServiceTest {
 
         Pageable pageable = Pageable.ofSize(5);
         pageable = pageable.next();
-        request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
+        request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
         //when
         ProductListVo searchList = productService.getProductListBySeller(pageable, "", "normal", request);
         //then
-        assertThat(searchList.getList().stream().findFirst().get().getSeller().getMemberId()).isEqualTo(seller.getId());
+        assertThat(searchList.list().stream().findFirst().get().seller().memberId()).isEqualTo(seller.getId());
     }
 
     @Test

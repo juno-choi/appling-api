@@ -1,6 +1,5 @@
 package com.juno.appling.domain.common.service;
 
-import com.juno.appling.domain.common.service.CommonS3Service;
 import com.juno.appling.domain.member.dto.LoginDto;
 import com.juno.appling.domain.common.vo.UploadVo;
 import com.juno.appling.domain.member.vo.LoginVo;
@@ -42,7 +41,7 @@ class CommonS3ServiceTest {
         //given
         LoginDto loginDto = new LoginDto("seller@appling.com", "password");
         LoginVo login = memberAuthService.login(loginDto);
-        request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
+        request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
         List<MultipartFile> files = new LinkedList<>();
         String fileName1 = "test1.txt";
         String fileName2 = "test2.txt";
@@ -56,6 +55,6 @@ class CommonS3ServiceTest {
         UploadVo uploadVo = commonS3Service.uploadImage(files, request);
 
         //then
-        Assertions.assertThat(uploadVo.getImageUrl()).contains(env.getProperty("cloud.s3.url"));
+        Assertions.assertThat(uploadVo.imageUrl()).contains(env.getProperty("cloud.s3.url"));
     }
 }

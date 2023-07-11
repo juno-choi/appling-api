@@ -50,7 +50,7 @@ public class MemberServiceTest {
         memberRepository.save(Member.of(joinDto));
         LoginDto loginDto = new LoginDto(email, password);
         LoginVo login = memberAuthService.login(loginDto);
-        request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
+        request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
 
         PatchMemberDto patchMemberDto = new PatchMemberDto(changeBirth, changeName, changePassword, "수정되버림", null);
         // when
@@ -74,13 +74,13 @@ public class MemberServiceTest {
         member.getRecipientList().add(recipient1);
         member.getRecipientList().add(recipient2);
 
-        request.addHeader(AUTHORIZATION, "Bearer "+login.getAccessToken());
+        request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
         // when
         RecipientListVo recipient = memberService.getRecipient(request);
         // then
-        assertThat(recipient.getList()
+        assertThat(recipient.list()
                 .get(0)
-                .getName()
+                .name()
         ).isEqualTo(recipient2.getName());
 
     }

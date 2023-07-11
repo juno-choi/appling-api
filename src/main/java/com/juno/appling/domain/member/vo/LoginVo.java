@@ -1,15 +1,14 @@
 package com.juno.appling.domain.member.vo;
 
-import com.juno.appling.config.base.BaseVo;
-import lombok.Builder;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-@Builder
-@Getter
-public class LoginVo extends BaseVo {
-    private String type;
-    private String accessToken;
-    private String refreshToken;
-    private Long accessTokenExpired;
-    private Long refreshTokenExpired;
-}
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public record LoginVo(
+        String type, String accessToken,
+        String refreshToken,
+        Long accessTokenExpired,
+        Long refreshTokenExpired
+) {}

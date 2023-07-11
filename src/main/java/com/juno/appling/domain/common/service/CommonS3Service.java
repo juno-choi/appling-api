@@ -33,9 +33,7 @@ public class CommonS3Service {
 
         List<String> fileUrlList = getFileUrlList(files, memberId);
 
-        return UploadVo.builder()
-                .imageUrl(String.format("%s/%s", s3Url, Optional.ofNullable(fileUrlList.get(0)).orElse("")))
-                .build();
+        return new UploadVo(String.format("%s/%s", s3Url, Optional.ofNullable(fileUrlList.get(0)).orElse("")));
     }
 
     private List<String> getFileUrlList(List<MultipartFile> files, Long memberId) {
@@ -45,7 +43,6 @@ public class CommonS3Service {
         String path = now.format(pathFormatter);
         String fileName = now.format(fileNameFormatter);
 
-        List<String> putFileUrlList = s3Service.putObject(String.format("image/%s/%s/", memberId, path), fileName, files);
-        return putFileUrlList;
+        return s3Service.putObject(String.format("image/%s/%s/", memberId, path), fileName, files);
     }
 }

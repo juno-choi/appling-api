@@ -1,16 +1,12 @@
 package com.juno.appling.domain.member.vo;
 
 
-import com.juno.appling.config.base.BaseVo;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.util.List;
 
-@Getter
-@Builder
-@AllArgsConstructor
-public class RecipientListVo extends BaseVo {
-    private List<RecipientVo> list;
-}
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public record RecipientListVo(List<RecipientVo> list) {}

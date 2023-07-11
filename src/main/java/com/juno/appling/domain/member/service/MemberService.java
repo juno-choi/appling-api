@@ -47,16 +47,7 @@ public class MemberService {
     public MemberVo member(HttpServletRequest request) {
         Member findMember = getMember(request);
 
-        return MemberVo.builder()
-                .memberId(findMember.getId())
-                .email(findMember.getEmail())
-                .role(findMember.getRole())
-                .createdAt(findMember.getCreatedAt())
-                .modifiedAt(findMember.getModifiedAt())
-                .name(findMember.getName())
-                .nickname(findMember.getNickname())
-                .snsType(findMember.getSnsType())
-                .build();
+        return new MemberVo(findMember.getId(), findMember.getEmail(), findMember.getNickname(), findMember.getName(), findMember.getRole(), findMember.getSnsType(), findMember.getCreatedAt(), findMember.getModifiedAt());
     }
 
     @Transactional
@@ -114,19 +105,9 @@ public class MemberService {
         List<RecipientVo> list = new LinkedList<>();
 
         for(Recipient r : recipientList){
-            list.add(RecipientVo.builder()
-                    .id(r.getId())
-                    .address(r.getAddress())
-                    .status(r.getStatus())
-                    .name(r.getName())
-                    .tel(r.getTel())
-                    .createdAt(r.getCreatedAt())
-                    .modifiedAt(r.getModifiedAt())
-                    .build());
+            list.add(new RecipientVo(r.getId(), r.getName(), r.getAddress(), r.getTel(), r.getStatus(), r.getCreatedAt(), r.getModifiedAt()));
         }
         Collections.reverse(list);
-        return RecipientListVo.builder()
-                .list(list)
-                .build();
+        return new RecipientListVo(list);
     }
 }

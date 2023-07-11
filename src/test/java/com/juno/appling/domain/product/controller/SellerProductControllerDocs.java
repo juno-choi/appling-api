@@ -72,7 +72,7 @@ class SellerProductControllerDocs extends BaseTest {
                         .param("page", "0")
                         .param("size", "5")
                         .param("status", "normal")
-                .header(AUTHORIZATION, "Bearer "+login.getAccessToken())
+                .header(AUTHORIZATION, "Bearer "+login.accessToken())
         );
         //then
         perform.andExpect(status().is2xxSuccessful());
@@ -136,7 +136,7 @@ class SellerProductControllerDocs extends BaseTest {
         // when
         ResultActions perform = mock.perform(
                 post(PREFIX)
-                        .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                        .header(AUTHORIZATION, "Bearer " + login.accessToken())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productDto))
         );
@@ -211,7 +211,7 @@ class SellerProductControllerDocs extends BaseTest {
         // when
         ResultActions perform = mock.perform(
                 put(PREFIX)
-                        .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                        .header(AUTHORIZATION, "Bearer " + login.accessToken())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(putProductDto))
         );
