@@ -1,8 +1,7 @@
 package com.juno.appling.domain.common.service;
 
-import com.juno.appling.domain.common.service.CommonS3Service;
 import com.juno.appling.domain.member.dto.LoginDto;
-import com.juno.appling.domain.common.vo.UploadVo;
+import com.juno.appling.domain.common.record.UploadRecord;
 import com.juno.appling.domain.member.vo.LoginVo;
 import com.juno.appling.domain.member.service.MemberAuthService;
 import org.assertj.core.api.Assertions;
@@ -53,9 +52,9 @@ class CommonS3ServiceTest {
         files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(), "3".getBytes(StandardCharsets.UTF_8)));
 
         //when
-        UploadVo uploadVo = commonS3Service.uploadImage(files, request);
+        UploadRecord uploadRecord = commonS3Service.uploadImage(files, request);
 
         //then
-        Assertions.assertThat(uploadVo.getImageUrl()).contains(env.getProperty("cloud.s3.url"));
+        Assertions.assertThat(uploadRecord.imageUrl()).contains(env.getProperty("cloud.s3.url"));
     }
 }

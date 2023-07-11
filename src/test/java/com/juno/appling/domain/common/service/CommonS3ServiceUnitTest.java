@@ -2,10 +2,9 @@ package com.juno.appling.domain.common.service;
 
 import com.juno.appling.config.s3.S3Service;
 import com.juno.appling.config.security.TokenProvider;
-import com.juno.appling.domain.common.service.CommonS3Service;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.enums.Role;
-import com.juno.appling.domain.common.vo.UploadVo;
+import com.juno.appling.domain.common.record.UploadRecord;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -71,8 +70,8 @@ class CommonS3ServiceUnitTest {
         given(s3Service.putObject(anyString(), anyString(), any())).willReturn(list);
 
         //when
-        UploadVo uploadVo = commonS3Service.uploadImage(files, request);
+        UploadRecord uploadRecord = commonS3Service.uploadImage(files, request);
         //then
-        Assertions.assertThat(uploadVo.getImageUrl()).contains(s3Url);
+        Assertions.assertThat(uploadRecord.imageUrl()).contains(s3Url);
     }
 }

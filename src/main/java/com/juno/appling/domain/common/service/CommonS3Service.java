@@ -2,7 +2,7 @@ package com.juno.appling.domain.common.service;
 
 import com.juno.appling.config.s3.S3Service;
 import com.juno.appling.config.security.TokenProvider;
-import com.juno.appling.domain.common.vo.UploadVo;
+import com.juno.appling.domain.common.record.UploadRecord;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class CommonS3Service {
     private final Environment env;
     private final MemberRepository memberRepository;
 
-    public UploadVo uploadImage(List<MultipartFile> files, HttpServletRequest request){
+    public UploadRecord uploadImage(List<MultipartFile> files, HttpServletRequest request){
         String token = tokenProvider.resolveToken(request);
         Long memberId = tokenProvider.getMemberId(token);
 
@@ -33,9 +33,7 @@ public class CommonS3Service {
 
         List<String> fileUrlList = getFileUrlList(files, memberId);
 
-        return UploadVo.builder()
-                .imageUrl(String.format("%s/%s", s3Url, Optional.ofNullable(fileUrlList.get(0)).orElse("")))
-                .build();
+        return new UploadRecord(String.format("%s/%s", s3Url, Optional.ofNullable(fileUrlList.get(0)).orElse("")));
     }
 
     private List<String> getFileUrlList(List<MultipartFile> files, Long memberId) {
@@ -45,7 +43,6 @@ public class CommonS3Service {
         String path = now.format(pathFormatter);
         String fileName = now.format(fileNameFormatter);
 
-        List<String> putFileUrlList = s3Service.putObject(String.format("image/%s/%s/", memberId, path), fileName, files);
-        return putFileUrlList;
+        return s3Service.putObject(String.format("image/%s/%s/", memberId, path), fileName, files);
     }
 }
