@@ -30,7 +30,7 @@
 
 `Tool` Intellij, git, gradle, jenkins, docker, testContainer, sonarqube
 
-`DB` JPA, Redis, H2
+`DB` JPA, Redis, H2, MySql
 
 `docs` restdocs
 
