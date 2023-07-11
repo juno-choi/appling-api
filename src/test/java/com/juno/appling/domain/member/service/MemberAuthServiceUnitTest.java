@@ -7,7 +7,7 @@ import com.juno.appling.domain.member.dto.kakao.KakaoLoginResponseDto;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.enums.SnsJoinType;
 import com.juno.appling.domain.member.repository.MemberRepository;
-import com.juno.appling.domain.member.record.LoginRecord;
+import com.juno.appling.domain.member.vo.LoginVo;
 import io.jsonwebtoken.Jwts;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -99,7 +99,7 @@ class MemberAuthServiceUnitTest {
                 .build();
         mockWebServer.enqueue(new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON).setBody(objectMapper.writeValueAsString(dto)));
         //when
-        LoginRecord kakaoLoginToken = memberAuthService.authKakao("kakao login code");
+        LoginVo kakaoLoginToken = memberAuthService.authKakao("kakao login code");
         //then
         Assertions.assertThat(kakaoLoginToken).isNotNull();
     }
@@ -209,7 +209,7 @@ class MemberAuthServiceUnitTest {
 
         given(memberRepository.findByEmail(anyString())).willReturn(Optional.ofNullable(null));
         given(tokenProvider.generateTokenDto(any())).willReturn(
-                new LoginRecord(TYPE, "access token", "refresh token", 1L, null)
+                new LoginVo(TYPE, "access token", "refresh token", 1L, null)
         );
         String snsId = "snsId";
         JoinDto joinDto = new JoinDto("kakao@email.com", snsId, "카카오회원", "카카오회원", null);
@@ -222,10 +222,10 @@ class MemberAuthServiceUnitTest {
         given(redisTemplate.opsForValue()).willReturn(valueOperations);
 
         //when
-        LoginRecord loginRecord = memberAuthService.loginKakao("kakao_access_token");
+        LoginVo loginVo = memberAuthService.loginKakao("kakao_access_token");
 
         //then
-        assertThat(loginRecord).isNotNull();
+        assertThat(loginVo).isNotNull();
     }
 
     private AuthenticationManager mockAuthenticationManager() {

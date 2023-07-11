@@ -7,7 +7,7 @@ import com.juno.appling.domain.member.entity.Recipient;
 import com.juno.appling.config.base.ResultCode;
 import com.juno.appling.domain.member.enums.RecipientInfoStatus;
 import com.juno.appling.domain.member.enums.Role;
-import com.juno.appling.domain.member.record.LoginRecord;
+import com.juno.appling.domain.member.vo.LoginVo;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.member.repository.RecipientRepository;
 import com.juno.appling.domain.member.service.MemberAuthService;
@@ -56,11 +56,11 @@ class MemberControllerDocs extends BaseTest {
     void member() throws Exception {
         //given
         LoginDto loginDto = new LoginDto(EMAIL, PASSWORD);
-        LoginRecord loginRecord = memberAuthService.login(loginDto);
+        LoginVo loginVo = memberAuthService.login(loginDto);
         //when
         ResultActions resultActions = mock.perform(
                 get(PREFIX)
-                .header(AUTHORIZATION, "Bearer "+ loginRecord.accessToken())
+                .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
         ).andDo(print());
 
         //then
@@ -92,11 +92,11 @@ class MemberControllerDocs extends BaseTest {
         JoinDto joinDto = new JoinDto(EMAIL, PASSWORD, "name", "nick", "19941030");
         memberAuthService.join(joinDto);
         LoginDto loginDto = new LoginDto(EMAIL, PASSWORD);
-        LoginRecord loginRecord = memberAuthService.login(loginDto);
+        LoginVo loginVo = memberAuthService.login(loginDto);
         //when
         ResultActions resultActions = mock.perform(
                 post(PREFIX+"/seller")
-                        .header(AUTHORIZATION, "Bearer "+ loginRecord.accessToken())
+                        .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
         ).andDo(print());
 
         //then
@@ -129,14 +129,14 @@ class MemberControllerDocs extends BaseTest {
         joinDto.passwordEncoder(passwordEncoder);
         memberRepository.save(Member.of(joinDto));
         LoginDto loginDto = new LoginDto(email, password);
-        LoginRecord loginRecord = memberAuthService.login(loginDto);
+        LoginVo loginVo = memberAuthService.login(loginDto);
 
         PatchMemberDto patchMemberDto = new PatchMemberDto(changeBirth, changeName, changePassword, "수정되버림", null);
 
         //when
         ResultActions resultActions = mock.perform(
                 patch(PREFIX)
-                        .header(AUTHORIZATION, "Bearer "+ loginRecord.accessToken())
+                        .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(patchMemberDto))
         ).andDo(print());
@@ -170,14 +170,14 @@ class MemberControllerDocs extends BaseTest {
     void postRecipient() throws Exception {
         //given
         LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
-        LoginRecord loginRecord = memberAuthService.login(loginDto);
+        LoginVo loginVo = memberAuthService.login(loginDto);
         PostRecipientDto postRecipientDto = new PostRecipientDto("수령인", "recipient@appling.com", "01012341234");
         //when
         ResultActions resultActions = mock.perform(
                 post(PREFIX+"/recipient")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postRecipientDto))
-                        .header(AUTHORIZATION, "Bearer "+ loginRecord.accessToken())
+                        .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
         );
 
         //then
@@ -206,7 +206,7 @@ class MemberControllerDocs extends BaseTest {
     void getRecipient() throws Exception {
         //given
         LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
-        LoginRecord loginRecord = memberAuthService.login(loginDto);
+        LoginVo loginVo = memberAuthService.login(loginDto);
         Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
 
         Recipient recipient1 = Recipient.of(member, "수령인1", "주소", "01012341234", RecipientInfoStatus.NORMAL);
@@ -220,7 +220,7 @@ class MemberControllerDocs extends BaseTest {
         //when
         ResultActions resultActions = mock.perform(
                 get(PREFIX+"/recipient")
-                        .header(AUTHORIZATION, "Bearer "+ loginRecord.accessToken())
+                        .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
         );
 
         //then

@@ -1,8 +1,8 @@
 package com.juno.appling.domain.common.service;
 
 import com.juno.appling.domain.member.dto.LoginDto;
-import com.juno.appling.domain.common.record.UploadRecord;
-import com.juno.appling.domain.member.record.LoginRecord;
+import com.juno.appling.domain.common.vo.UploadVo;
+import com.juno.appling.domain.member.vo.LoginVo;
 import com.juno.appling.domain.member.service.MemberAuthService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -40,7 +40,7 @@ class CommonS3ServiceTest {
     void uploadImage() {
         //given
         LoginDto loginDto = new LoginDto("seller@appling.com", "password");
-        LoginRecord login = memberAuthService.login(loginDto);
+        LoginVo login = memberAuthService.login(loginDto);
         request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
         List<MultipartFile> files = new LinkedList<>();
         String fileName1 = "test1.txt";
@@ -52,9 +52,9 @@ class CommonS3ServiceTest {
         files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(), "3".getBytes(StandardCharsets.UTF_8)));
 
         //when
-        UploadRecord uploadRecord = commonS3Service.uploadImage(files, request);
+        UploadVo uploadVo = commonS3Service.uploadImage(files, request);
 
         //then
-        Assertions.assertThat(uploadRecord.imageUrl()).contains(env.getProperty("cloud.s3.url"));
+        Assertions.assertThat(uploadVo.imageUrl()).contains(env.getProperty("cloud.s3.url"));
     }
 }

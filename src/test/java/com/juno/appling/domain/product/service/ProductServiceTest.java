@@ -5,7 +5,7 @@ import com.juno.appling.domain.member.dto.LoginDto;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.member.service.MemberAuthService;
-import com.juno.appling.domain.member.record.LoginRecord;
+import com.juno.appling.domain.member.vo.LoginVo;
 import com.juno.appling.domain.product.dto.AddViewCntDto;
 import com.juno.appling.domain.product.dto.ProductDto;
 import com.juno.appling.domain.product.dto.PutProductDto;
@@ -49,7 +49,7 @@ class ProductServiceTest {
     void postProductSuccess() {
         //given
         LoginDto loginDto = new LoginDto("seller@appling.com", "password");
-        LoginRecord login = memberAuthService.login(loginDto);
+        LoginVo login = memberAuthService.login(loginDto);
         request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
 
         ProductDto productDto = new ProductDto(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2", "https://image3", "normal");
@@ -101,7 +101,7 @@ class ProductServiceTest {
         Member seller = memberRepository.findByEmail("seller@appling.com").get();
         Member seller2 = memberRepository.findByEmail("seller2@appling.com").get();
         LoginDto loginDto = new LoginDto("seller@appling.com", "password");
-        LoginRecord login = memberAuthService.login(loginDto);
+        LoginVo login = memberAuthService.login(loginDto);
         Category category = categoryRepository.findById(1L).get();
 
         ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");

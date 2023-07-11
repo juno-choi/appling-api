@@ -4,8 +4,8 @@ import com.juno.appling.config.base.Api;
 import com.juno.appling.domain.member.dto.PatchMemberDto;
 import com.juno.appling.domain.member.dto.PostRecipientDto;
 import com.juno.appling.config.base.MessageVo;
-import com.juno.appling.domain.member.record.MemberRecord;
-import com.juno.appling.domain.member.record.RecipientListRecord;
+import com.juno.appling.domain.member.vo.MemberVo;
+import com.juno.appling.domain.member.vo.RecipientListVo;
 import com.juno.appling.domain.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +25,9 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("")
-    public ResponseEntity<Api<MemberRecord>> member(HttpServletRequest request){
+    public ResponseEntity<Api<MemberVo>> member(HttpServletRequest request){
         return ResponseEntity.ok(
-                Api.<MemberRecord>builder()
+                Api.<MemberVo>builder()
                         .code(SUCCESS.code)
                         .message(SUCCESS.message)
                         .data(memberService.member(request))
@@ -69,8 +69,8 @@ public class MemberController {
     }
 
     @GetMapping("/recipient")
-    public ResponseEntity<Api<RecipientListRecord>> getRecipientList(HttpServletRequest request){
-        return ResponseEntity.ok(Api.<RecipientListRecord>builder()
+    public ResponseEntity<Api<RecipientListVo>> getRecipientList(HttpServletRequest request){
+        return ResponseEntity.ok(Api.<RecipientListVo>builder()
                         .code(SUCCESS.code)
                         .message(SUCCESS.message)
                         .data(memberService.getRecipient(request))

@@ -4,7 +4,7 @@ import com.juno.appling.BaseTest;
 import com.juno.appling.domain.member.dto.JoinDto;
 import com.juno.appling.domain.member.dto.LoginDto;
 import com.juno.appling.config.base.ResultCode;
-import com.juno.appling.domain.member.record.LoginRecord;
+import com.juno.appling.domain.member.vo.LoginVo;
 import com.juno.appling.domain.member.service.MemberAuthService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -111,11 +111,11 @@ class AuthControllerDocs extends BaseTest {
         JoinDto joinDto = new JoinDto(email, password, "name", "nick", "19941030");
         memberAuthService.join(joinDto);
         LoginDto loginDto = new LoginDto(email, password);
-        LoginRecord loginRecord = memberAuthService.login(loginDto);
+        LoginVo loginVo = memberAuthService.login(loginDto);
 
         //when
         ResultActions resultActions = mock.perform(
-                RestDocumentationRequestBuilders.get(PREFIX+"/refresh/{refresh_token}", loginRecord.refreshToken())
+                RestDocumentationRequestBuilders.get(PREFIX+"/refresh/{refresh_token}", loginVo.refreshToken())
         ).andDo(print());
 
         //then

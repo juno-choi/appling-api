@@ -3,7 +3,7 @@ package com.juno.appling.domain.common.controller;
 import com.juno.appling.BaseTest;
 import com.juno.appling.config.s3.S3Service;
 import com.juno.appling.domain.member.dto.LoginDto;
-import com.juno.appling.domain.member.record.LoginRecord;
+import com.juno.appling.domain.member.vo.LoginVo;
 import com.juno.appling.domain.member.service.MemberAuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,7 +50,7 @@ class CommonControllerDocs extends BaseTest {
     void uploadImage() throws Exception{
         //given
         LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
-        LoginRecord login = memberAuthService.login(loginDto);
+        LoginVo login = memberAuthService.login(loginDto);
         List<String> list = new LinkedList<>();
         list.add("image/1/20230606/202101.txt");
         given(s3Service.putObject(anyString(), anyString(), any())).willReturn(list);

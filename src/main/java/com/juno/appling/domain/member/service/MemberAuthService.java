@@ -9,8 +9,8 @@ import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.enums.Role;
 import com.juno.appling.domain.member.enums.SnsJoinType;
 import com.juno.appling.domain.member.repository.MemberRepository;
-import com.juno.appling.domain.member.record.JoinRecord;
-import com.juno.appling.domain.member.record.LoginRecord;
+import com.juno.appling.domain.member.vo.JoinVo;
+import com.juno.appling.domain.member.vo.LoginVo;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +54,7 @@ public class MemberAuthService {
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 30;            // 30분
 
     @Transactional
-    public JoinRecord join(JoinDto joinDto){
+    public JoinVo join(JoinDto joinDto){
         joinDto.passwordEncoder(passwordEncoder);
         Optional<Member> findMember = memberRepository.findByEmail(joinDto.getEmail());
         if(findMember.isPresent()){
@@ -62,25 +62,25 @@ public class MemberAuthService {
         }
 
         Member saveMember = memberRepository.save(Member.of(joinDto));
-        return new JoinRecord(saveMember.getName(), saveMember.getNickname(), saveMember.getEmail());
+        return new JoinVo(saveMember.getName(), saveMember.getNickname(), saveMember.getEmail());
     }
 
-    public LoginRecord login(LoginDto loginDto) {
+    public LoginVo login(LoginDto loginDto) {
         // id, pw 기반으로 UsernamePasswordAuthenticationToken 객체 생성
         UsernamePasswordAuthenticationToken authenticationToken = loginDto.toAuthentication();
 
         // security에 구현한 AuthService가 실행됨
         Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-        LoginRecord loginRecord = tokenProvider.generateTokenDto(authenticate);
+        LoginVo loginVo = tokenProvider.generateTokenDto(authenticate);
 
         // token redis 저장
-        saveRedisToken(loginRecord);
+        saveRedisToken(loginVo);
 
-        return loginRecord;
+        return loginVo;
     }
 
-    public LoginRecord refresh(String refreshToken) {
+    public LoginVo refresh(String refreshToken) {
         if(!tokenProvider.validateToken(refreshToken)){
             throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
         }
@@ -107,10 +107,10 @@ public class MemberAuthService {
         Authentication authentication = tokenProvider.getAuthentication(accessToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return new LoginRecord(TYPE, accessToken, refreshToken, accessTokenExpired.getTime(), null);
+        return new LoginVo(TYPE, accessToken, refreshToken, accessTokenExpired.getTime(), null);
     }
 
-    public LoginRecord authKakao(String code) {
+    public LoginVo authKakao(String code) {
         log.info("code = {}", code);
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -136,11 +136,11 @@ public class MemberAuthService {
                         .block()
         ).orElse(new KakaoLoginResponseDto("", "", 0L, 0L));
 
-        return new LoginRecord(TYPE, kakaoToken.access_token, kakaoToken.refresh_token, kakaoToken.expires_in, kakaoToken.refresh_token_expires_in);
+        return new LoginVo(TYPE, kakaoToken.access_token, kakaoToken.refresh_token, kakaoToken.expires_in, kakaoToken.refresh_token_expires_in);
     }
 
     @Transactional
-    public LoginRecord loginKakao(String accessToken) {
+    public LoginVo loginKakao(String accessToken) {
         KakaoMemberResponseDto info = kakaoApiClient.post().uri(("/v2/user/me"))
                 .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
                 .header(AUTHORIZATION, TYPE + accessToken)
@@ -181,16 +181,16 @@ public class MemberAuthService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, snsId, grantedList);
         Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-        LoginRecord loginRecord = tokenProvider.generateTokenDto(authenticate);
+        LoginVo loginVo = tokenProvider.generateTokenDto(authenticate);
 
-        saveRedisToken(loginRecord);
+        saveRedisToken(loginVo);
 
-        return loginRecord;
+        return loginVo;
     }
 
-    private void saveRedisToken(LoginRecord loginRecord) {
-        String accessToken = loginRecord.accessToken();
-        String refreshToken = loginRecord.refreshToken();
+    private void saveRedisToken(LoginVo loginVo) {
+        String accessToken = loginVo.accessToken();
+        String refreshToken = loginVo.refreshToken();
         Claims claims = tokenProvider.parseClaims(refreshToken);
         long refreshTokenExpired = Long.parseLong(claims.get("exp").toString());
 
