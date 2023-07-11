@@ -10,9 +10,9 @@ import com.juno.appling.domain.member.enums.MemberApplySellerStatus;
 import com.juno.appling.domain.member.enums.RecipientInfoStatus;
 import com.juno.appling.domain.member.enums.Role;
 import com.juno.appling.config.base.MessageVo;
-import com.juno.appling.domain.member.vo.MemberVo;
-import com.juno.appling.domain.member.vo.RecipientListVo;
-import com.juno.appling.domain.member.vo.RecipientVo;
+import com.juno.appling.domain.member.record.MemberRecord;
+import com.juno.appling.domain.member.record.RecipientListRecord;
+import com.juno.appling.domain.member.record.RecipientRecord;
 import com.juno.appling.domain.member.repository.MemberApplySellerRepository;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.member.repository.RecipientRepository;
@@ -44,19 +44,10 @@ public class MemberService {
         );
     }
 
-    public MemberVo member(HttpServletRequest request) {
+    public MemberRecord member(HttpServletRequest request) {
         Member findMember = getMember(request);
 
-        return MemberVo.builder()
-                .memberId(findMember.getId())
-                .email(findMember.getEmail())
-                .role(findMember.getRole())
-                .createdAt(findMember.getCreatedAt())
-                .modifiedAt(findMember.getModifiedAt())
-                .name(findMember.getName())
-                .nickname(findMember.getNickname())
-                .snsType(findMember.getSnsType())
-                .build();
+        return new MemberRecord(findMember.getId(), findMember.getEmail(), findMember.getNickname(), findMember.getName(), findMember.getRole(), findMember.getSnsType(), findMember.getCreatedAt(), findMember.getModifiedAt());
     }
 
     @Transactional
@@ -107,26 +98,16 @@ public class MemberService {
                 .build();
     }
 
-    public RecipientListVo getRecipient(HttpServletRequest request){
+    public RecipientListRecord getRecipient(HttpServletRequest request){
         Member member = getMember(request);
 
         List<Recipient> recipientList = member.getRecipientList();
-        List<RecipientVo> list = new LinkedList<>();
+        List<RecipientRecord> list = new LinkedList<>();
 
         for(Recipient r : recipientList){
-            list.add(RecipientVo.builder()
-                    .id(r.getId())
-                    .address(r.getAddress())
-                    .status(r.getStatus())
-                    .name(r.getName())
-                    .tel(r.getTel())
-                    .createdAt(r.getCreatedAt())
-                    .modifiedAt(r.getModifiedAt())
-                    .build());
+            list.add(new RecipientRecord(r.getId(), r.getName(), r.getAddress(), r.getTel(), r.getStatus(), r.getCreatedAt(), r.getModifiedAt()));
         }
         Collections.reverse(list);
-        return RecipientListVo.builder()
-                .list(list)
-                .build();
+        return new RecipientListRecord(list);
     }
 }

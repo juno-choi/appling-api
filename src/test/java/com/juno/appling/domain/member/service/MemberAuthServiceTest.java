@@ -1,7 +1,6 @@
 package com.juno.appling.domain.member.service;
 
-import com.juno.appling.domain.member.service.MemberAuthService;
-import com.juno.appling.domain.member.vo.LoginVo;
+import com.juno.appling.domain.member.record.LoginRecord;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,7 @@ class MemberAuthServiceTest {
     void kakaoAuthSuccess() throws Exception {
         //given
         //when
-        LoginVo kakaoLoginToken = memberAuthService.authKakao("kakao login code");
+        LoginRecord kakaoLoginToken = memberAuthService.authKakao("kakao login code");
         //then
         assertThat(kakaoLoginToken).isNotNull();
     }
@@ -35,8 +34,8 @@ class MemberAuthServiceTest {
     void kakaoLoginSuccess() throws Exception {
         //given
         //when
-        LoginVo loginVo = memberAuthService.loginKakao("c5gOv5YdZbUEKY0EUGzC-nd-gIKN7kVvQ24qhGQiCinI2gAAAYi4Gfl3");
+        LoginRecord loginRecord = memberAuthService.loginKakao("c5gOv5YdZbUEKY0EUGzC-nd-gIKN7kVvQ24qhGQiCinI2gAAAYi4Gfl3");
         //then
-        assertThat(loginVo).isNotNull();
+        assertThat(loginRecord).isNotNull();
     }
 }

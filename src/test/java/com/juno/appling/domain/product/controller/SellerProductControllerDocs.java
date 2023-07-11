@@ -7,7 +7,7 @@ import com.juno.appling.domain.product.dto.PutProductDto;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.product.entity.Category;
 import com.juno.appling.domain.product.entity.Product;
-import com.juno.appling.domain.member.vo.LoginVo;
+import com.juno.appling.domain.member.record.LoginRecord;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.product.repository.CategoryRepository;
 import com.juno.appling.domain.product.repository.ProductRepository;
@@ -47,7 +47,7 @@ class SellerProductControllerDocs extends BaseTest {
     void getProductList() throws Exception{
         //given
         LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
-        LoginVo login = memberAuthService.login(loginDto);
+        LoginRecord login = memberAuthService.login(loginDto);
 
         Member seller = memberRepository.findByEmail(SELLER_EMAIL).get();
         Member seller2 = memberRepository.findByEmail(SELLER2_EMAIL).get();
@@ -72,7 +72,7 @@ class SellerProductControllerDocs extends BaseTest {
                         .param("page", "0")
                         .param("size", "5")
                         .param("status", "normal")
-                .header(AUTHORIZATION, "Bearer "+login.getAccessToken())
+                .header(AUTHORIZATION, "Bearer "+login.accessToken())
         );
         //then
         perform.andExpect(status().is2xxSuccessful());
@@ -130,13 +130,13 @@ class SellerProductControllerDocs extends BaseTest {
     void postProduct() throws Exception{
         // given
         LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
-        LoginVo login = memberAuthService.login(loginDto);
+        LoginRecord login = memberAuthService.login(loginDto);
         ProductDto productDto = new ProductDto(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2", "https://image3", "normal");
 
         // when
         ResultActions perform = mock.perform(
                 post(PREFIX)
-                        .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                        .header(AUTHORIZATION, "Bearer " + login.accessToken())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productDto))
         );
@@ -199,7 +199,7 @@ class SellerProductControllerDocs extends BaseTest {
     void putProduct() throws Exception{
         // given
         LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
-        LoginVo login = memberAuthService.login(loginDto);
+        LoginRecord login = memberAuthService.login(loginDto);
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
 
@@ -211,7 +211,7 @@ class SellerProductControllerDocs extends BaseTest {
         // when
         ResultActions perform = mock.perform(
                 put(PREFIX)
-                        .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                        .header(AUTHORIZATION, "Bearer " + login.accessToken())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(putProductDto))
         );

@@ -3,8 +3,8 @@ package com.juno.appling.domain.member.controller;
 import com.juno.appling.config.base.Api;
 import com.juno.appling.domain.member.dto.JoinDto;
 import com.juno.appling.domain.member.dto.LoginDto;
-import com.juno.appling.domain.member.vo.JoinVo;
-import com.juno.appling.domain.member.vo.LoginVo;
+import com.juno.appling.domain.member.record.JoinRecord;
+import com.juno.appling.domain.member.record.LoginRecord;
 import com.juno.appling.domain.member.service.MemberAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,8 +23,8 @@ public class AuthController {
     private final MemberAuthService memberAuthService;
 
     @PostMapping("/join")
-    public ResponseEntity<Api<JoinVo>> join(@RequestBody @Validated JoinDto joinDto, BindingResult bindingResult){
-        return ResponseEntity.status(HttpStatus.CREATED).body(Api.<JoinVo>builder()
+    public ResponseEntity<Api<JoinRecord>> join(@RequestBody @Validated JoinDto joinDto, BindingResult bindingResult){
+        return ResponseEntity.status(HttpStatus.CREATED).body(Api.<JoinRecord>builder()
                 .code(POST.code)
                 .message(POST.message)
                 .data(memberAuthService.join(joinDto))
@@ -32,9 +32,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Api<LoginVo>> login(@RequestBody @Validated LoginDto loginDto, BindingResult bindingResult){
+    public ResponseEntity<Api<LoginRecord>> login(@RequestBody @Validated LoginDto loginDto, BindingResult bindingResult){
         return ResponseEntity.ok(
-                Api.<LoginVo>builder()
+                Api.<LoginRecord>builder()
                         .code(SUCCESS.code)
                         .message(SUCCESS.message)
                         .data(memberAuthService.login(loginDto))
@@ -43,9 +43,9 @@ public class AuthController {
     }
 
     @GetMapping("/refresh/{refresh_token}")
-    public ResponseEntity<Api<LoginVo>> refresh(@PathVariable(value = "refresh_token") String refreshToken){
+    public ResponseEntity<Api<LoginRecord>> refresh(@PathVariable(value = "refresh_token") String refreshToken){
         return ResponseEntity.ok(
-                Api.<LoginVo>builder()
+                Api.<LoginRecord>builder()
                         .code(SUCCESS.code)
                         .message(SUCCESS.message)
                         .data(memberAuthService.refresh(refreshToken))

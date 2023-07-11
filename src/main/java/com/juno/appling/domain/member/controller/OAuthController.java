@@ -1,7 +1,7 @@
 package com.juno.appling.domain.member.controller;
 
 import com.juno.appling.config.base.Api;
-import com.juno.appling.domain.member.vo.LoginVo;
+import com.juno.appling.domain.member.record.LoginRecord;
 import com.juno.appling.domain.member.service.MemberAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +19,9 @@ public class OAuthController {
     private final MemberAuthService memberAuthService;
 
     @GetMapping("/kakao")
-    public ResponseEntity<Api<LoginVo>> authKakao(@RequestParam String code){
+    public ResponseEntity<Api<LoginRecord>> authKakao(@RequestParam String code){
         return ResponseEntity.ok(
-                Api.<LoginVo>builder()
+                Api.<LoginRecord>builder()
                         .code(SUCCESS.code)
                         .message(SUCCESS.message)
                         .data(memberAuthService.authKakao(code))
@@ -30,9 +30,9 @@ public class OAuthController {
     }
 
     @GetMapping("/kakao/login")
-    public ResponseEntity<Api<LoginVo>> login(@RequestParam(name = "access_token") String accessToken){
+    public ResponseEntity<Api<LoginRecord>> login(@RequestParam(name = "access_token") String accessToken){
         return ResponseEntity.ok(
-                Api.<LoginVo>builder()
+                Api.<LoginRecord>builder()
                         .code(SUCCESS.code)
                         .message(SUCCESS.message)
                         .data(memberAuthService.loginKakao(accessToken))

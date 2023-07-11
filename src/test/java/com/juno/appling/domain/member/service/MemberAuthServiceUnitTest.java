@@ -7,7 +7,7 @@ import com.juno.appling.domain.member.dto.kakao.KakaoLoginResponseDto;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.enums.SnsJoinType;
 import com.juno.appling.domain.member.repository.MemberRepository;
-import com.juno.appling.domain.member.vo.LoginVo;
+import com.juno.appling.domain.member.record.LoginRecord;
 import io.jsonwebtoken.Jwts;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -99,7 +99,7 @@ class MemberAuthServiceUnitTest {
                 .build();
         mockWebServer.enqueue(new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON).setBody(objectMapper.writeValueAsString(dto)));
         //when
-        LoginVo kakaoLoginToken = memberAuthService.authKakao("kakao login code");
+        LoginRecord kakaoLoginToken = memberAuthService.authKakao("kakao login code");
         //then
         Assertions.assertThat(kakaoLoginToken).isNotNull();
     }
@@ -209,12 +209,8 @@ class MemberAuthServiceUnitTest {
 
         given(memberRepository.findByEmail(anyString())).willReturn(Optional.ofNullable(null));
         given(tokenProvider.generateTokenDto(any())).willReturn(
-                LoginVo.builder()
-                        .accessToken("access token")
-                        .accessTokenExpired(1L)
-                        .refreshToken("refresh token")
-                        .type(TYPE)
-                        .build());
+                new LoginRecord(TYPE, "access token", "refresh token", 1L, null)
+        );
         String snsId = "snsId";
         JoinDto joinDto = new JoinDto("kakao@email.com", snsId, "카카오회원", "카카오회원", null);
         given(memberRepository.save(any())).willReturn(Member.of(joinDto, snsId, SnsJoinType.KAKAO));
@@ -226,10 +222,10 @@ class MemberAuthServiceUnitTest {
         given(redisTemplate.opsForValue()).willReturn(valueOperations);
 
         //when
-        LoginVo loginVo = memberAuthService.loginKakao("kakao_access_token");
+        LoginRecord loginRecord = memberAuthService.loginKakao("kakao_access_token");
 
         //then
-        assertThat(loginVo).isNotNull();
+        assertThat(loginRecord).isNotNull();
     }
 
     private AuthenticationManager mockAuthenticationManager() {

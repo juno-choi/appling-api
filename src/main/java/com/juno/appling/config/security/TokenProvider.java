@@ -1,7 +1,7 @@
 package com.juno.appling.config.security;
 
 import com.github.dockerjava.api.exception.UnauthorizedException;
-import com.juno.appling.domain.member.vo.LoginVo;
+import com.juno.appling.domain.member.record.LoginRecord;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -39,7 +39,7 @@ public class TokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public LoginVo generateTokenDto(Authentication authentication) {
+    public LoginRecord generateTokenDto(Authentication authentication) {
         // 권한들 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -57,12 +57,7 @@ public class TokenProvider {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
-        return LoginVo.builder()
-                .type("Bearer ")
-                .accessToken(accessToken)
-                .accessTokenExpired(accessTokenExpiresIn.getTime())
-                .refreshToken(refreshToken)
-                .build();
+        return new LoginRecord("Bearer ", accessToken, refreshToken, accessTokenExpiresIn.getTime(), null);
     }
 
     public String createAccessToken(String sub, String authorities, Date accessTokenExpiresIn) {
