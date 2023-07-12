@@ -54,10 +54,10 @@ public class ProductService {
         return memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
     }
 
-    public ProductListVo getProductList(Pageable pageable, String search, String status){
+    public ProductListVo getProductList(Pageable pageable, String search, String status, Long categoryId){
         Status statusOfEnums = Status.valueOf(status.toUpperCase(Locale.ROOT));
-
-        Page<ProductVo> page = productCustomRepository.findAll(pageable, search, statusOfEnums, 0L);
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+        Page<ProductVo> page = productCustomRepository.findAll(pageable, search, statusOfEnums, category, 0L);
 
         return new ProductListVo(page.getTotalPages(), page.getTotalElements(), page.getNumberOfElements(), page.isLast(), page.isEmpty(), page.getContent());
     }
@@ -90,10 +90,11 @@ public class ProductService {
         return new ProductVo(product);
     }
 
-    public ProductListVo getProductListBySeller(Pageable pageable, String search, String status, HttpServletRequest request) {
+    public ProductListVo getProductListBySeller(Pageable pageable, String search, String status, Long categoryId, HttpServletRequest request) {
         Long memberId = tokenProvider.getMemberId(request);
         Status statusOfEnums = Status.valueOf(status.toUpperCase(Locale.ROOT));
-        Page<ProductVo> page = productCustomRepository.findAll(pageable, search, statusOfEnums, memberId);
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+        Page<ProductVo> page = productCustomRepository.findAll(pageable, search, statusOfEnums, category, memberId);
 
         return new ProductListVo(page.getTotalPages(), page.getTotalElements(), page.getNumberOfElements(), page.isLast(), page.isEmpty(), page.getContent());
     }

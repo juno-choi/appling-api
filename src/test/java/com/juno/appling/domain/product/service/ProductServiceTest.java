@@ -71,10 +71,10 @@ class ProductServiceTest {
     void getProductListSuccess() {
         //given
         Member member = memberRepository.findByEmail("seller@appling.com").get();
-
-        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
-        ProductDto searchDto = new ProductDto(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
-        Category category = categoryRepository.findById(1L).get();
+        Long categoryId = 1L;
+        ProductDto productDto = new ProductDto(categoryId, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
+        ProductDto searchDto = new ProductDto(categoryId, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
+        Category category = categoryRepository.findById(categoryId).get();
 
         productRepository.save(Product.of(member, category, searchDto));
 
@@ -89,7 +89,7 @@ class ProductServiceTest {
         Pageable pageable = Pageable.ofSize(5);
         pageable = pageable.next();
         //when
-        ProductListVo searchList = productService.getProductList(pageable, "검색", "normal");
+        ProductListVo searchList = productService.getProductList(pageable, "검색", "normal", categoryId);
         //then
         assertThat(searchList.list().stream().findFirst().get().mainTitle()).contains("검색");
     }
@@ -102,10 +102,12 @@ class ProductServiceTest {
         Member seller2 = memberRepository.findByEmail("seller2@appling.com").get();
         LoginDto loginDto = new LoginDto("seller@appling.com", "password");
         LoginVo login = memberAuthService.login(loginDto);
-        Category category = categoryRepository.findById(1L).get();
+        Long categoryId = 1L;
 
-        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
-        ProductDto searchDto = new ProductDto(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
+        Category category = categoryRepository.findById(categoryId).get();
+
+        ProductDto productDto = new ProductDto(categoryId, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
+        ProductDto searchDto = new ProductDto(categoryId, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
         productRepository.save(Product.of(seller, category, searchDto));
 
         for(int i=0; i<10; i++){
@@ -119,7 +121,7 @@ class ProductServiceTest {
         pageable = pageable.next();
         request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
         //when
-        ProductListVo searchList = productService.getProductListBySeller(pageable, "", "normal", request);
+        ProductListVo searchList = productService.getProductListBySeller(pageable, "", "normal", categoryId, request);
         //then
         assertThat(searchList.list().stream().findFirst().get().seller().memberId()).isEqualTo(seller.getId());
     }
