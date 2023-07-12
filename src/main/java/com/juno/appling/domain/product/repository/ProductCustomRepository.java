@@ -1,6 +1,7 @@
 package com.juno.appling.domain.product.repository;
 
 import com.juno.appling.config.querydsl.QuerydslConfig;
+import com.juno.appling.domain.product.entity.Category;
 import com.juno.appling.domain.product.entity.QProduct;
 import com.juno.appling.domain.product.enums.Status;
 import com.juno.appling.domain.product.vo.CategoryVo;
@@ -23,12 +24,13 @@ public class ProductCustomRepository {
     private final QuerydslConfig q;
 
 
-    public Page<ProductVo> findAll(Pageable pageable, String search, Status status, Long memberId){
+    public Page<ProductVo> findAll(Pageable pageable, String search, Status status, Category category, Long memberId){
         QProduct product = QProduct.product;
         BooleanBuilder builder = new BooleanBuilder();
 
         search = Optional.ofNullable(search).orElse("").trim();
         memberId = Optional.ofNullable(memberId).orElse(0L);
+        Optional<Category> optionalCategory = Optional.ofNullable(category);
 
         if(!search.equals("")){
             builder.and(product.mainTitle.contains(search));
@@ -36,7 +38,9 @@ public class ProductCustomRepository {
         if(memberId != 0L){
             builder.and(product.member.id.eq(memberId));
         }
-
+        if(optionalCategory.isPresent()){
+            builder.and(product.category.eq(category));
+        }
         builder.and(product.status.eq(status));
 
         List<ProductVo> content = q.query().select(Projections.constructor(ProductVo.class,
