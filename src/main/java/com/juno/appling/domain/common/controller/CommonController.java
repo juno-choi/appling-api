@@ -28,7 +28,18 @@ public class CommonController {
                 .body(Api.<UploadVo>builder()
                         .code(ResultCode.SUCCESS.code)
                         .message(ResultCode.SUCCESS.message)
-                        .data(commonS3Service.uploadImage(image, request))
+                        .data(commonS3Service.s3UploadFile(image, "image/%s/%s/", request))
+                        .build());
+    }
+
+
+    @PostMapping("/html")
+    public ResponseEntity<Api<UploadVo>> uploadHtml(@RequestPart List<MultipartFile> html, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.SC_CREATED)
+                .body(Api.<UploadVo>builder()
+                        .code(ResultCode.SUCCESS.code)
+                        .message(ResultCode.SUCCESS.message)
+                        .data(commonS3Service.s3UploadFile(html, "html/%s/%s/", request))
                         .build());
     }
 }

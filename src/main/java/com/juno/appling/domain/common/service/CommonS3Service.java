@@ -23,26 +23,25 @@ public class CommonS3Service {
     private final Environment env;
     private final MemberRepository memberRepository;
 
-    public UploadVo uploadImage(List<MultipartFile> files, HttpServletRequest request){
-        String token = tokenProvider.resolveToken(request);
-        Long memberId = tokenProvider.getMemberId(token);
+    public UploadVo s3UploadFile(List<MultipartFile> files, String pathFormat, HttpServletRequest request){
+        Long memberId = tokenProvider.getMemberId(request);
 
         memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
 
         String s3Url = env.getProperty("cloud.s3.url");
 
-        List<String> fileUrlList = getFileUrlList(files, memberId);
+        List<String> fileUrlList = makeFileUrlList(files, memberId,pathFormat);
 
         return new UploadVo(String.format("%s/%s", s3Url, Optional.ofNullable(fileUrlList.get(0)).orElse("")));
     }
 
-    private List<String> getFileUrlList(List<MultipartFile> files, Long memberId) {
+    private List<String> makeFileUrlList(List<MultipartFile> files, Long memberId, String pathFormat) {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter pathFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         DateTimeFormatter fileNameFormatter = DateTimeFormatter.ofPattern("HHmmss");
         String path = now.format(pathFormatter);
         String fileName = now.format(fileNameFormatter);
 
-        return s3Service.putObject(String.format("image/%s/%s/", memberId, path), fileName, files);
+        return s3Service.putObject(String.format(pathFormat, memberId, path), fileName, files);
     }
 }
