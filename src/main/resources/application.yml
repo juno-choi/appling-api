@@ -128,7 +128,7 @@ logging:
       max-file-size: 500MB
       max-history: 90
   file:
-    name: /home/ubuntu/log/appling-api/appling.log
+    name: /log/appling.log
   level:
     root: info
     com.juno.appling: info
