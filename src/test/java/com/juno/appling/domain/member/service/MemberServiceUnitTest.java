@@ -3,6 +3,7 @@ package com.juno.appling.domain.member.service;
 import com.juno.appling.config.security.TokenProvider;
 import com.juno.appling.domain.member.dto.PatchMemberDto;
 import com.juno.appling.domain.member.dto.PostRecipientDto;
+import com.juno.appling.domain.member.dto.PostSellerDto;
 import com.juno.appling.domain.member.repository.MemberApplySellerRepository;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,7 +45,7 @@ class MemberServiceUnitTest {
         Throwable throwable = catchThrowable(() -> memberService.patchMember(patchMemberDto, request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("존재하지 않는 회원");
+                .hasMessageContaining("유효하지 않은 회원");
     }
 
     @Test
@@ -56,7 +57,7 @@ class MemberServiceUnitTest {
         Throwable throwable = catchThrowable(() -> memberService.postRecipient(recipient, request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("존재하지 않는 회원");
+                .hasMessageContaining("유효하지 않은 회원");
     }
 
     @Test
@@ -67,6 +68,18 @@ class MemberServiceUnitTest {
         Throwable throwable = catchThrowable(() -> memberService.getRecipient(request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("존재하지 않는 회원");
+                .hasMessageContaining("유효하지 않은 회원");
+    }
+
+    @Test
+    @DisplayName("회원이 존재하지 않을경우 판매자 정보 등록에 실패")
+    void postSellerFail1(){
+        // given
+        PostSellerDto sellerDto = new PostSellerDto();
+        // when
+        Throwable throwable = catchThrowable(() -> memberService.postSeller(sellerDto, request));
+        // then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 회원");
     }
 }

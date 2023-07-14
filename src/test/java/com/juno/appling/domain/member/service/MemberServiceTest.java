@@ -56,7 +56,7 @@ public class MemberServiceTest {
         // when
         MessageVo messageVo = memberService.patchMember(patchMemberDto, request);
         // then
-        assertThat(messageVo.getMessage()).contains("회원 정보 수정 성공");
+        assertThat(messageVo.message()).contains("회원 정보 수정 성공");
     }
 
     @Test

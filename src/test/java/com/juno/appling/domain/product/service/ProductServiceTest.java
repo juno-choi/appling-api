@@ -159,7 +159,7 @@ class ProductServiceTest {
         MessageVo messageVo = productService.addViewCnt(new AddViewCntDto(product.getId()));
 
         //then
-        assertThat(messageVo.getMessage())
+        assertThat(messageVo.message())
                 .contains("조회수 증가 성공");
         assertThat(product.getViewCnt())
                 .isEqualTo(1);

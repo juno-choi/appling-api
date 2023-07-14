@@ -93,19 +93,29 @@ class MemberControllerDocs extends BaseTest {
         memberAuthService.join(joinDto);
         LoginDto loginDto = new LoginDto(EMAIL, PASSWORD);
         LoginVo loginVo = memberAuthService.login(loginDto);
+
+        PostSellerDto postSellerDto = new PostSellerDto("회사명", "010-1234-4312", "강원도 평창군 대화면 장미산길", "mail@mail.com");
         //when
         ResultActions resultActions = mock.perform(
                 post(PREFIX+"/seller")
                         .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postSellerDto))
         ).andDo(print());
 
         //then
         String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.code);
+        Assertions.assertThat(contentAsString).contains(ResultCode.POST.code);
 
         resultActions.andDo(docs.document(
                 requestHeaders(
                         headerWithName(AUTHORIZATION).description("access token")
+                ),
+                requestFields(
+                        fieldWithPath("company").type(JsonFieldType.STRING).description("회사명"),
+                        fieldWithPath("tel").type(JsonFieldType.STRING).description("회사 연락처"),
+                        fieldWithPath("address").type(JsonFieldType.STRING).description("회사 주소"),
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("회사 이메일").optional()
                 ),
                 responseFields(
                         fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),

@@ -3,13 +3,16 @@ package com.juno.appling.domain.member.service;
 import com.juno.appling.config.security.TokenProvider;
 import com.juno.appling.domain.member.dto.PatchMemberDto;
 import com.juno.appling.domain.member.dto.PostRecipientDto;
+import com.juno.appling.domain.member.dto.PostSellerDto;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.entity.MemberApplySeller;
 import com.juno.appling.domain.member.entity.Recipient;
+import com.juno.appling.domain.member.entity.Seller;
 import com.juno.appling.domain.member.enums.MemberApplySellerStatus;
 import com.juno.appling.domain.member.enums.RecipientInfoStatus;
 import com.juno.appling.domain.member.enums.Role;
 import com.juno.appling.config.base.MessageVo;
+import com.juno.appling.domain.member.repository.SellerRepository;
 import com.juno.appling.domain.member.vo.MemberVo;
 import com.juno.appling.domain.member.vo.RecipientListVo;
 import com.juno.appling.domain.member.vo.RecipientVo;
@@ -36,11 +39,12 @@ public class MemberService {
     private final TokenProvider tokenProvider;
     private final BCryptPasswordEncoder passwordEncoder;
     private final RecipientRepository recipientRepository;
+    private final SellerRepository sellerRepository;
 
     private Member getMember(HttpServletRequest request) {
         Long memberId = tokenProvider.getMemberId(request);
         return memberRepository.findById(memberId).orElseThrow(() ->
-                new IllegalArgumentException("존재하지 않는 회원입니다.")
+                new IllegalArgumentException("유효하지 않은 회원입니다.")
         );
     }
 
@@ -50,24 +54,9 @@ public class MemberService {
         return new MemberVo(findMember.getId(), findMember.getEmail(), findMember.getNickname(), findMember.getName(), findMember.getRole(), findMember.getSnsType(), findMember.getCreatedAt(), findMember.getModifiedAt());
     }
 
-    @Transactional
-    public MessageVo applySeller(HttpServletRequest request) {
-        Long memberId = tokenProvider.getMemberId(request);
 
-        MemberApplySeller saveMemberApply = memberApplySellerRepository.save(MemberApplySeller.of(memberId));
-
-        permitSeller(memberId, saveMemberApply);
-
-        return MessageVo.builder()
-                .message("임시적으로 SELLER 즉시 승인")
-                .build();
-    }
-
-    private void permitSeller(Long memberId, MemberApplySeller saveMemberApply) {
-        saveMemberApply.patchApplyStatus(MemberApplySellerStatus.PERMIT);
-        Member member = memberRepository.findById(memberId).orElseThrow(() ->
-                new IllegalArgumentException("존재하지 않는 회원입니다.")
-        );
+    private void permitSeller(Member member, MemberApplySeller memberApplySeller) {
+        memberApplySeller.patchApplyStatus(MemberApplySellerStatus.PERMIT);
         member.patchMemberRole(Role.SELLER);
     }
 
@@ -84,18 +73,14 @@ public class MemberService {
         }
         member.patchMember(birth, name, nickname, password);
 
-        return MessageVo.builder()
-                .message("회원 정보 수정 성공")
-                .build();
+        return new MessageVo("회원 정보 수정 성공");
     }
 
     @Transactional
     public MessageVo postRecipient(PostRecipientDto postRecipientDtoInfo, HttpServletRequest request){
         Member member = getMember(request);
         recipientRepository.save(Recipient.of(member, postRecipientDtoInfo.getName(), postRecipientDtoInfo.getAddress(), postRecipientDtoInfo.getTel(), RecipientInfoStatus.NORMAL));
-        return MessageVo.builder()
-                .message("수령인 정보 등록 성공")
-                .build();
+        return new MessageVo("수령인 정보 등록 성공");
     }
 
     public RecipientListVo getRecipient(HttpServletRequest request){
@@ -109,5 +94,20 @@ public class MemberService {
         }
         Collections.reverse(list);
         return new RecipientListVo(list);
+    }
+
+    @Transactional
+    public MessageVo postSeller(PostSellerDto postSellerDto, HttpServletRequest request){
+        Long memberId = tokenProvider.getMemberId(request);
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
+
+        Seller seller = Seller.of(member, postSellerDto.getCompany(), postSellerDto.getTel(), postSellerDto.getAddress(), postSellerDto.getEmail());
+        sellerRepository.save(seller);
+
+        // 임시적 승인 절차
+        MemberApplySeller saveMemberApply = memberApplySellerRepository.save(MemberApplySeller.of(memberId));
+        permitSeller(member, saveMemberApply);
+
+        return new MessageVo("판매자 정보 등록 성공");
     }
 }
