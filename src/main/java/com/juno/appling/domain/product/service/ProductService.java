@@ -2,6 +2,8 @@ package com.juno.appling.domain.product.service;
 
 import com.juno.appling.config.base.MessageVo;
 import com.juno.appling.config.security.TokenProvider;
+import com.juno.appling.domain.member.entity.Seller;
+import com.juno.appling.domain.member.repository.SellerRepository;
 import com.juno.appling.domain.product.dto.AddViewCntDto;
 import com.juno.appling.domain.product.dto.PutProductDto;
 import com.juno.appling.domain.product.dto.ProductDto;
@@ -34,6 +36,7 @@ public class ProductService {
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
     private final CategoryRepository categoryRepository;
+    private final SellerRepository sellerRepository;
 
     @Transactional
     public ProductVo postProduct(ProductDto productDto, HttpServletRequest request){
@@ -43,8 +46,8 @@ public class ProductService {
         );
 
         Member member = getMember(request);
-
-        Product product = productRepository.save(Product.of(member, category, productDto));
+        Seller seller = sellerRepository.findByMember(member).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 판매자입니다."));
+        Product product = productRepository.save(Product.of(seller, category, productDto));
         return new ProductVo(product);
     }
 
@@ -67,7 +70,7 @@ public class ProductService {
             new IllegalArgumentException("유효하지 않은 상품번호 입니다.")
         );
 
-        return new ProductVo(product, new SellerVo(product.getMember().getId(), product.getMember().getEmail(), product.getMember().getNickname(), product.getMember().getName()));
+        return new ProductVo(product, new SellerVo(product.getSeller().getId(), product.getSeller().getEmail(), product.getSeller().getCompany(), product.getSeller().getAddress(), product.getSeller().getTel()));
     }
 
     @Transactional
