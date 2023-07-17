@@ -1,6 +1,8 @@
 package com.juno.appling.domain.product.controller;
 
 import com.juno.appling.BaseTest;
+import com.juno.appling.domain.member.entity.Seller;
+import com.juno.appling.domain.member.repository.SellerRepository;
 import com.juno.appling.domain.product.dto.AddViewCntDto;
 import com.juno.appling.domain.product.dto.ProductDto;
 import com.juno.appling.domain.member.entity.Member;
@@ -10,14 +12,18 @@ import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.product.repository.CategoryRepository;
 import com.juno.appling.domain.product.repository.ProductRepository;
 import com.juno.appling.domain.member.service.MemberAuthService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.Optional;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
@@ -26,6 +32,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProductControllerDocs extends BaseTest {
     @Autowired
     private MemberAuthService memberAuthService;
@@ -37,9 +44,20 @@ class ProductControllerDocs extends BaseTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private SellerRepository sellerRepository;
 
     private final static String PREFIX = "/api/product";
 
+
+    @BeforeAll
+    void setUp(){
+        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
+        Optional<Seller> optionalSeller = sellerRepository.findByMember(member);
+        if(optionalSeller.isEmpty()){
+            sellerRepository.save(Seller.of(member, "회사명", "01012344321", "회사 주소", "mail@mail.com"));    
+        }
+    }
     @Test
     @DisplayName(PREFIX)
     void getProductList() throws Exception{
@@ -48,14 +66,16 @@ class ProductControllerDocs extends BaseTest {
         Category category = categoryRepository.findById(1L).get();
         ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3", "normal");
         ProductDto searchDto = new ProductDto(1L,"검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3", "normal");
-        productRepository.save(Product.of(member, category, searchDto));
+
+        Seller seller = sellerRepository.findByMember(member).get();
+        productRepository.save(Product.of(seller, category, searchDto));
 
         for(int i=0; i<25; i++){
-            productRepository.save(Product.of(member, category, productDto));
+            productRepository.save(Product.of(seller, category, productDto));
         }
 
         for(int i=0; i<10; i++){
-            productRepository.save(Product.of(member, category, searchDto));
+            productRepository.save(Product.of(seller, category, searchDto));
         }
         //when
         ResultActions perform = mock.perform(
@@ -103,10 +123,11 @@ class ProductControllerDocs extends BaseTest {
                         fieldWithPath("data.list[].status").type(JsonFieldType.STRING).description("상품 상태값 (일반:normal, 숨김:hidden, 삭제:delete / 대소문자 구분 없음)"),
                         fieldWithPath("data.list[].created_at").type(JsonFieldType.STRING).description("등록일"),
                         fieldWithPath("data.list[].modified_at").type(JsonFieldType.STRING).description("수정일"),
-                        fieldWithPath("data.list[].seller.member_id").type(JsonFieldType.NUMBER).description("판매자 id"),
+                        fieldWithPath("data.list[].seller.seller_id").type(JsonFieldType.NUMBER).description("판매자 id"),
                         fieldWithPath("data.list[].seller.email").type(JsonFieldType.STRING).description("판매자 email"),
-                        fieldWithPath("data.list[].seller.nickname").type(JsonFieldType.STRING).description("판매자 닉네임"),
-                        fieldWithPath("data.list[].seller.name").type(JsonFieldType.STRING).description("판매자 이름"),
+                        fieldWithPath("data.list[].seller.company").type(JsonFieldType.STRING).description("판매자 회사명"),
+                        fieldWithPath("data.list[].seller.tel").type(JsonFieldType.STRING).description("판매자 연락처"),
+                        fieldWithPath("data.list[].seller.address").type(JsonFieldType.STRING).description("판매자 주소"),
                         fieldWithPath("data.list[].category.category_id").type(JsonFieldType.NUMBER).description("카테고리 id"),
                         fieldWithPath("data.list[].category.name").type(JsonFieldType.STRING).description("카테고리 명"),
                         fieldWithPath("data.list[].category.created_at").type(JsonFieldType.STRING).description("카테고리 생성일"),
@@ -122,7 +143,8 @@ class ProductControllerDocs extends BaseTest {
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
         ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2", "https://image3", "normal");
-        Product product = productRepository.save(Product.of(member, category, productDto));
+        Seller seller = sellerRepository.findByMember(member).get();
+        Product product = productRepository.save(Product.of(seller, category, productDto));
         //when
         ResultActions perform = mock.perform(
                 RestDocumentationRequestBuilders.get(PREFIX+"/{id}", product.getId())
@@ -154,10 +176,11 @@ class ProductControllerDocs extends BaseTest {
                         fieldWithPath("data.modified_at").type(JsonFieldType.STRING).description("수정일"),
                         fieldWithPath("data.view_cnt").type(JsonFieldType.NUMBER).description("조회수"),
                         fieldWithPath("data.status").type(JsonFieldType.STRING).description("상품 상태값 (일반:normal, 숨김:hidden, 삭제:delete / 대소문자 구분 없음)"),
-                        fieldWithPath("data.seller.member_id").type(JsonFieldType.NUMBER).description("판매자 id"),
+                        fieldWithPath("data.seller.seller_id").type(JsonFieldType.NUMBER).description("판매자 id"),
                         fieldWithPath("data.seller.email").type(JsonFieldType.STRING).description("판매자 email"),
-                        fieldWithPath("data.seller.nickname").type(JsonFieldType.STRING).description("판매자 닉네임"),
-                        fieldWithPath("data.seller.name").type(JsonFieldType.STRING).description("판매자 이름"),
+                        fieldWithPath("data.seller.company").type(JsonFieldType.STRING).description("판매자 회사명"),
+                        fieldWithPath("data.seller.address").type(JsonFieldType.STRING).description("판매자 회사 주소"),
+                        fieldWithPath("data.seller.tel").type(JsonFieldType.STRING).description("판매자 회사 연락처"),
                         fieldWithPath("data.category.category_id").type(JsonFieldType.NUMBER).description("카테고리 id"),
                         fieldWithPath("data.category.name").type(JsonFieldType.STRING).description("카테고리 명"),
                         fieldWithPath("data.category.created_at").type(JsonFieldType.STRING).description("카테고리 생성일"),
@@ -197,7 +220,8 @@ class ProductControllerDocs extends BaseTest {
         Category category = categoryRepository.findById(1L).get();
         ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
 
-        Product product = productRepository.save(Product.of(member, category, productDto));
+        Seller seller = sellerRepository.findByMember(member).get();
+        Product product = productRepository.save(Product.of(seller, category, productDto));
         //when
         ResultActions perform = mock.perform(
                 patch(PREFIX + "/cnt")

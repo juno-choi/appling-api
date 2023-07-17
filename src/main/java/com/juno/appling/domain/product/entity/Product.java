@@ -1,5 +1,6 @@
 package com.juno.appling.domain.product.entity;
 
+import com.juno.appling.domain.member.entity.Seller;
 import com.juno.appling.domain.product.dto.PutProductDto;
 import com.juno.appling.domain.product.dto.ProductDto;
 import com.juno.appling.domain.member.entity.Member;
@@ -21,8 +22,8 @@ public class Product {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "seller_id")
+    private Seller seller;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -47,8 +48,8 @@ public class Product {
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
 
-    private Product(Member member, Category category, String mainTitle, String mainExplanation, String productMainExplanation, String productSubExplanation, int originPrice, int price, String purchaseInquiry, String origin, String producer, String mainImage, String image1, String image2, String image3, Status status, LocalDateTime createAt, LocalDateTime modifiedAt) {
-        this.member = member;
+    private Product(Seller seller, Category category, String mainTitle, String mainExplanation, String productMainExplanation, String productSubExplanation, int originPrice, int price, String purchaseInquiry, String origin, String producer, String mainImage, String image1, String image2, String image3, Status status, LocalDateTime createAt, LocalDateTime modifiedAt) {
+        this.seller = seller;
         this.category = category;
         this.mainTitle = mainTitle;
         this.mainExplanation = mainExplanation;
@@ -69,7 +70,7 @@ public class Product {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Product of(Member member, Category category, ProductDto productDto){
+    public static Product of(Seller member, Category category, ProductDto productDto){
         LocalDateTime now = LocalDateTime.now();
         Status status = Status.valueOf(productDto.getStatus().toUpperCase());
         return new Product(member, category, productDto.getMainTitle(), productDto.getMainExplanation(), productDto.getProductMainExplanation(), productDto.getProductSubExplanation(), productDto.getOriginPrice(), productDto.getPrice(), productDto.getPurchaseInquiry(), productDto.getOrigin(), productDto.getProducer(), productDto.getMainImage(), productDto.getImage1(), productDto.getImage2(), productDto.getImage3(), status, now, now);

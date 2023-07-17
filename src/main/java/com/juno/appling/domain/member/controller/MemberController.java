@@ -4,6 +4,7 @@ import com.juno.appling.config.base.Api;
 import com.juno.appling.domain.member.dto.PatchMemberDto;
 import com.juno.appling.domain.member.dto.PostRecipientDto;
 import com.juno.appling.config.base.MessageVo;
+import com.juno.appling.domain.member.dto.PostSellerDto;
 import com.juno.appling.domain.member.vo.MemberVo;
 import com.juno.appling.domain.member.vo.RecipientListVo;
 import com.juno.appling.domain.member.service.MemberService;
@@ -36,12 +37,12 @@ public class MemberController {
     }
 
     @PostMapping("/seller")
-    public ResponseEntity<Api<MessageVo>> applySeller(HttpServletRequest request){
+    public ResponseEntity<Api<MessageVo>> applySeller(@RequestBody @Validated PostSellerDto postSellerDto, HttpServletRequest request, BindingResult bindingResult){
         return ResponseEntity.ok(
                 Api.<MessageVo>builder()
-                        .code(SUCCESS.code)
-                        .message(SUCCESS.message)
-                        .data(memberService.applySeller(request))
+                        .code(POST.code)
+                        .message(POST.message)
+                        .data(memberService.postSeller(postSellerDto, request))
                         .build()
         );
     }
