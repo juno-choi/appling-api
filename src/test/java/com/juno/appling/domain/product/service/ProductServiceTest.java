@@ -29,12 +29,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static com.juno.appling.CommonTest.SELLER2_EMAIL;
+import static com.juno.appling.CommonTest.SELLER_EMAIL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProductServiceTest {
     @Autowired
     private ProductService productService;
@@ -50,20 +51,6 @@ class ProductServiceTest {
     private SellerRepository sellerRepository;
 
     private MockHttpServletRequest request = new MockHttpServletRequest();
-
-    @BeforeAll
-    void setUp(){
-        Member member = memberRepository.findByEmail("seller@appling.com").get();
-        Optional<Seller> optionalSeller = sellerRepository.findByMember(member);
-        if(optionalSeller.isEmpty()){
-            sellerRepository.save(Seller.of(member, "회사명", "01012344321", "회사 주소", "mail@mail.com"));
-        }
-        Member member2 = memberRepository.findByEmail("seller2@appling.com").get();
-        Optional<Seller> optionalSeller2 = sellerRepository.findByMember(member2);
-        if(optionalSeller2.isEmpty()){
-            sellerRepository.save(Seller.of(member2, "회사명", "01012344321", "회사 주소", "mail@mail.com"));
-        }
-    }
     @Test
     @DisplayName("상품 등록 성공")
     void postProductSuccess() {

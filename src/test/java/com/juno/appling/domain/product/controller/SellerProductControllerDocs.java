@@ -36,7 +36,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SellerProductControllerDocs extends BaseTest {
     @Autowired
     private MemberAuthService memberAuthService;
@@ -50,21 +49,6 @@ class SellerProductControllerDocs extends BaseTest {
     private SellerRepository sellerRepository;
 
     private final static String PREFIX = "/api/seller/product";
-
-    @BeforeAll
-    void setUp(){
-
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Optional<Seller> optionalSeller = sellerRepository.findByMember(member);
-        if(optionalSeller.isEmpty()){
-            sellerRepository.save(Seller.of(member, "회사명", "01012344321", "회사 주소", "mail@mail.com"));
-        }
-        Member member2 = memberRepository.findByEmail(SELLER2_EMAIL).get();
-        Optional<Seller> optionalSeller2 = sellerRepository.findByMember(member2);
-        if(optionalSeller2.isEmpty()){
-            sellerRepository.save(Seller.of(member2, "회사명", "01012344321", "회사 주소", "mail@mail.com"));
-        }
-    }
     @Test
     @DisplayName(PREFIX + "(GET)")
     void getProductList() throws Exception{

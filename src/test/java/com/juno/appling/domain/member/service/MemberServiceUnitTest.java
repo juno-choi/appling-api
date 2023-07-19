@@ -1,10 +1,7 @@
 package com.juno.appling.domain.member.service;
 
 import com.juno.appling.config.security.TokenProvider;
-import com.juno.appling.domain.member.dto.JoinDto;
-import com.juno.appling.domain.member.dto.PatchMemberDto;
-import com.juno.appling.domain.member.dto.PostRecipientDto;
-import com.juno.appling.domain.member.dto.PostSellerDto;
+import com.juno.appling.domain.member.dto.*;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.entity.Seller;
 import com.juno.appling.domain.member.repository.MemberApplySellerRepository;
@@ -109,5 +106,33 @@ class MemberServiceUnitTest {
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("판매자 신청을 완료");
+    }
+
+    @Test
+    @DisplayName("회원이 존재하지 않을경우 판매자 정보 수정에 실패")
+    void putSellerFail1(){
+        // given
+        PutSellerDto sellerDto = new PutSellerDto();
+        // when
+        Throwable throwable = catchThrowable(() -> memberService.putSeller(sellerDto, request));
+        // then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 회원");
+    }
+
+    @Test
+    @DisplayName("회원이 존재하지 않을경우 판매자 정보 수정에 실패")
+    void putSellerFail2(){
+        // given
+        PutSellerDto sellerDto = new PutSellerDto();
+        given(tokenProvider.getMemberId(request)).willReturn(0L);
+        JoinDto joinDto = new JoinDto("join@mail.com", "password", "name", "nick", "19941030");
+        Member member = Member.of(joinDto);
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        // when
+        Throwable throwable = catchThrowable(() -> memberService.putSeller(sellerDto, request));
+        // then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 판매자");
     }
 }

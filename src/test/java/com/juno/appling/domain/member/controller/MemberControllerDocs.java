@@ -94,7 +94,7 @@ class MemberControllerDocs extends BaseTest {
         LoginDto loginDto = new LoginDto(EMAIL, PASSWORD);
         LoginVo loginVo = memberAuthService.login(loginDto);
 
-        PostSellerDto postSellerDto = new PostSellerDto("회사명", "010-1234-4312", "강원도 평창군 대화면 장미산길", "mail@mail.com");
+        PostSellerDto postSellerDto = new PostSellerDto("판매자 이름", "010-1234-4312", "강원도 평창군 대화면 장미산길", "mail@mail.com");
         //when
         ResultActions resultActions = mock.perform(
                 post(PREFIX+"/seller")

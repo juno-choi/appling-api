@@ -32,7 +32,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProductControllerDocs extends BaseTest {
     @Autowired
     private MemberAuthService memberAuthService;
@@ -49,15 +48,6 @@ class ProductControllerDocs extends BaseTest {
 
     private final static String PREFIX = "/api/product";
 
-
-    @BeforeAll
-    void setUp(){
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Optional<Seller> optionalSeller = sellerRepository.findByMember(member);
-        if(optionalSeller.isEmpty()){
-            sellerRepository.save(Seller.of(member, "회사명", "01012344321", "회사 주소", "mail@mail.com"));    
-        }
-    }
     @Test
     @DisplayName(PREFIX)
     void getProductList() throws Exception{

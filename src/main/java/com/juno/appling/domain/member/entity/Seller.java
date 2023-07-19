@@ -1,5 +1,6 @@
 package com.juno.appling.domain.member.entity;
 
+import com.juno.appling.domain.member.dto.PutSellerDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -23,6 +24,7 @@ public class Seller {
     private Member member;
 
     @NotNull(message = "company 비어있을 수 없습니다.")
+    @Column(unique = true)
     private String company;
     @NotNull(message = "tel 비어있을 수 없습니다.")
     @Column(length = 11)
@@ -50,5 +52,15 @@ public class Seller {
         LocalDateTime now = LocalDateTime.now();
         tel = tel.replaceAll("-", "");
         return new Seller(member, company, tel, address, email, now, now);
+    }
+
+    public void put(PutSellerDto dto){
+        LocalDateTime now = LocalDateTime.now();
+        String tel = dto.getTel().replaceAll("-","");
+        this.modifiedAt = now;
+        this.company = dto.getCompany();
+        this.tel = tel;
+        this.email = dto.getEmail();
+        this.address = dto.getAddress();
     }
 }
