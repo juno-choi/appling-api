@@ -28,7 +28,7 @@
 
 `framework` Spring Boot 3.1.0
 
-`Tool` Intellij, git, gradle, jenkins, docker, testContainer, sonarqube
+`Tool` Intellij, git, gradle, jenkins, docker, testContainer, jacoco, sonarqube
 
 `DB` JPA, Redis, H2, MySql
 
