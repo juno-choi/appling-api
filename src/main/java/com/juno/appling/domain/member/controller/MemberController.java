@@ -5,6 +5,7 @@ import com.juno.appling.domain.member.dto.PatchMemberDto;
 import com.juno.appling.domain.member.dto.PostRecipientDto;
 import com.juno.appling.config.base.MessageVo;
 import com.juno.appling.domain.member.dto.PostSellerDto;
+import com.juno.appling.domain.member.dto.PutSellerDto;
 import com.juno.appling.domain.member.vo.MemberVo;
 import com.juno.appling.domain.member.vo.RecipientListVo;
 import com.juno.appling.domain.member.service.MemberService;
@@ -47,6 +48,17 @@ public class MemberController {
         );
     }
 
+    @PutMapping("/seller")
+    public ResponseEntity<Api<MessageVo>> putSeller(@RequestBody @Validated PutSellerDto putSellerDto, HttpServletRequest request, BindingResult bindingResult){
+        return ResponseEntity.ok(
+                Api.<MessageVo>builder()
+                        .code(SUCCESS.code)
+                        .message(SUCCESS.message)
+                        .data(memberService.putSeller(putSellerDto, request))
+                        .build()
+        );
+    }
+
     @PatchMapping
     public ResponseEntity<Api<MessageVo>> patchMember(@RequestBody @Validated PatchMemberDto patchMemberDto, HttpServletRequest request, BindingResult bindingResult){
         return ResponseEntity.ok(
@@ -78,4 +90,5 @@ public class MemberController {
                         .build()
                 );
     }
+
 }

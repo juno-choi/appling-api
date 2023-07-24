@@ -61,6 +61,28 @@ include::{snippets}/member-controller-docs/apply-seller/http-response.adoc[]
 
 include::{snippets}/member-controller-docs/apply-seller/response-fields.adoc[]
 
+### 📗 Seller 정보 수정
+
+==== 🔵 REQUEST
+include::{snippets}/member-controller-docs/put-seller/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/member-controller-docs/put-seller/request-headers.adoc[]
+
+==== 🔵 REQUEST FIELD
+
+include::{snippets}/member-controller-docs/put-seller/request-fields.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/member-controller-docs/put-seller/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/member-controller-docs/put-seller/response-fields.adoc[]
+
+
 ### 📗 수령인 정보 등록
 
 ==== 🔵 REQUEST
