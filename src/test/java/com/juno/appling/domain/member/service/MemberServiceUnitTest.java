@@ -135,4 +135,30 @@ class MemberServiceUnitTest {
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유효하지 않은 판매자");
     }
+
+    @Test
+    @DisplayName("회원이 존재하지 않을경우 판매자 정보 조회에 실패")
+    void getSellerFail1(){
+        // given
+        // when
+        Throwable throwable = catchThrowable(() -> memberService.getSeller(request));
+        // then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 회원");
+    }
+
+    @Test
+    @DisplayName("회원이 존재하지 않을경우 판매자 정보 조회에 실패")
+    void getSellerFail2(){
+        // given
+        given(tokenProvider.getMemberId(request)).willReturn(0L);
+        JoinDto joinDto = new JoinDto("join@mail.com", "password", "name", "nick", "19941030");
+        Member member = Member.of(joinDto);
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        // when
+        Throwable throwable = catchThrowable(() -> memberService.getSeller(request));
+        // then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 판매자");
+    }
 }
