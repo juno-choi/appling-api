@@ -1,6 +1,6 @@
 package com.juno.appling.domain.member.controller;
 
-import com.juno.appling.BaseTest;
+import com.juno.appling.ControllerBaseTest;
 import com.juno.appling.domain.member.dto.kakao.KakaoLoginResponseDto;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
-class OAuthControllerDocs extends BaseTest {
+class OAuthControllerDocs extends ControllerBaseTest {
     private static MockWebServer mockWebServer;
 
     private final String PREFIX = "/api/oauth";

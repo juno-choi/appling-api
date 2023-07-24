@@ -66,9 +66,6 @@ spring:
       jdbc-url: jdbc:h2:mem:appling;mode=mysql
       username: sa
       password:
-  sql:
-    init:
-      data-locations: classpath:init.sql
 --- #dev
 spring:
   config:
