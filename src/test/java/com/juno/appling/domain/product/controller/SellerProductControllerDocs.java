@@ -1,30 +1,26 @@
 package com.juno.appling.domain.product.controller;
 
-import com.juno.appling.BaseTest;
+import com.juno.appling.ControllerBaseTest;
 import com.juno.appling.domain.member.dto.LoginDto;
+import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.entity.Seller;
+import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.member.repository.SellerRepository;
+import com.juno.appling.domain.member.service.MemberAuthService;
+import com.juno.appling.domain.member.vo.LoginVo;
 import com.juno.appling.domain.product.dto.ProductDto;
 import com.juno.appling.domain.product.dto.PutProductDto;
-import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.product.entity.Category;
 import com.juno.appling.domain.product.entity.Product;
-import com.juno.appling.domain.member.vo.LoginVo;
-import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.product.repository.CategoryRepository;
 import com.juno.appling.domain.product.repository.ProductRepository;
-import com.juno.appling.domain.member.service.MemberAuthService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
-
-import java.util.Optional;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -36,8 +32,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class SellerProductControllerDocs extends BaseTest {
+class SellerProductControllerDocs extends ControllerBaseTest {
     @Autowired
     private MemberAuthService memberAuthService;
     @Autowired
@@ -50,21 +45,6 @@ class SellerProductControllerDocs extends BaseTest {
     private SellerRepository sellerRepository;
 
     private final static String PREFIX = "/api/seller/product";
-
-    @BeforeAll
-    void setUp(){
-
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Optional<Seller> optionalSeller = sellerRepository.findByMember(member);
-        if(optionalSeller.isEmpty()){
-            sellerRepository.save(Seller.of(member, "회사명", "01012344321", "회사 주소", "mail@mail.com"));
-        }
-        Member member2 = memberRepository.findByEmail(SELLER2_EMAIL).get();
-        Optional<Seller> optionalSeller2 = sellerRepository.findByMember(member2);
-        if(optionalSeller2.isEmpty()){
-            sellerRepository.save(Seller.of(member2, "회사명", "01012344321", "회사 주소", "mail@mail.com"));
-        }
-    }
     @Test
     @DisplayName(PREFIX + "(GET)")
     void getProductList() throws Exception{

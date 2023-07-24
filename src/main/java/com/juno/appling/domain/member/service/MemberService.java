@@ -4,6 +4,7 @@ import com.juno.appling.config.security.TokenProvider;
 import com.juno.appling.domain.member.dto.PatchMemberDto;
 import com.juno.appling.domain.member.dto.PostRecipientDto;
 import com.juno.appling.domain.member.dto.PostSellerDto;
+import com.juno.appling.domain.member.dto.PutSellerDto;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.entity.MemberApplySeller;
 import com.juno.appling.domain.member.entity.Recipient;
@@ -21,6 +22,7 @@ import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.member.repository.RecipientRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 @Transactional(readOnly = true)
 public class MemberService {
     private final MemberRepository memberRepository;
@@ -115,5 +118,20 @@ public class MemberService {
         permitSeller(member, saveMemberApply);
 
         return new MessageVo("판매자 정보 등록 성공");
+    }
+
+    @Transactional
+    public MessageVo putSeller(PutSellerDto putSellerDto, HttpServletRequest request){
+        Long memberId = tokenProvider.getMemberId(request);
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
+
+        log.info("member = {}", member.getEmail());
+        Seller seller = sellerRepository.findByMember(member).orElseThrow(() ->
+                new IllegalArgumentException("유효하지 않은 판매자입니다. 판매자 신청을 먼저 해주세요.")
+        );
+
+        seller.put(putSellerDto);
+
+        return new MessageVo("판매자 정보 수정 성공");
     }
 }

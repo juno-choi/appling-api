@@ -1,17 +1,17 @@
 package com.juno.appling.domain.member.controller;
 
-import com.juno.appling.BaseTest;
+import com.juno.appling.ControllerBaseTest;
+import com.juno.appling.config.base.ResultCode;
 import com.juno.appling.domain.member.dto.*;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.entity.Recipient;
-import com.juno.appling.config.base.ResultCode;
 import com.juno.appling.domain.member.enums.RecipientInfoStatus;
 import com.juno.appling.domain.member.enums.Role;
-import com.juno.appling.domain.member.vo.LoginVo;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.member.repository.RecipientRepository;
 import com.juno.appling.domain.member.service.MemberAuthService;
 import com.juno.appling.domain.member.service.MemberService;
+import com.juno.appling.domain.member.vo.LoginVo;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MemberControllerDocs extends BaseTest {
+class MemberControllerDocs extends ControllerBaseTest {
     
     @Autowired
     private MemberAuthService memberAuthService;
@@ -94,7 +94,7 @@ class MemberControllerDocs extends BaseTest {
         LoginDto loginDto = new LoginDto(EMAIL, PASSWORD);
         LoginVo loginVo = memberAuthService.login(loginDto);
 
-        PostSellerDto postSellerDto = new PostSellerDto("회사명", "010-1234-4312", "강원도 평창군 대화면 장미산길", "mail@mail.com");
+        PostSellerDto postSellerDto = new PostSellerDto("판매자 이름", "010-1234-4312", "강원도 평창군 대화면 장미산길", "mail@mail.com");
         //when
         ResultActions resultActions = mock.perform(
                 post(PREFIX+"/seller")

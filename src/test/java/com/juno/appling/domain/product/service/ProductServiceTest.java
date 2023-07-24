@@ -1,5 +1,6 @@
 package com.juno.appling.domain.product.service;
 
+import com.juno.appling.BaseTest;
 import com.juno.appling.config.base.MessageVo;
 import com.juno.appling.domain.member.dto.LoginDto;
 import com.juno.appling.domain.member.entity.Member;
@@ -17,10 +18,8 @@ import com.juno.appling.domain.product.repository.CategoryRepository;
 import com.juno.appling.domain.product.repository.ProductRepository;
 import com.juno.appling.domain.product.vo.ProductListVo;
 import com.juno.appling.domain.product.vo.ProductVo;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
@@ -34,8 +33,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ProductServiceTest {
+class ProductServiceTest extends BaseTest {
     @Autowired
     private ProductService productService;
     @Autowired
@@ -50,26 +48,13 @@ class ProductServiceTest {
     private SellerRepository sellerRepository;
 
     private MockHttpServletRequest request = new MockHttpServletRequest();
-
-    @BeforeAll
-    void setUp(){
-        Member member = memberRepository.findByEmail("seller@appling.com").get();
-        Optional<Seller> optionalSeller = sellerRepository.findByMember(member);
-        if(optionalSeller.isEmpty()){
-            sellerRepository.save(Seller.of(member, "회사명", "01012344321", "회사 주소", "mail@mail.com"));
-        }
-        Member member2 = memberRepository.findByEmail("seller2@appling.com").get();
-        Optional<Seller> optionalSeller2 = sellerRepository.findByMember(member2);
-        if(optionalSeller2.isEmpty()){
-            sellerRepository.save(Seller.of(member2, "회사명", "01012344321", "회사 주소", "mail@mail.com"));
-        }
-    }
     @Test
     @DisplayName("상품 등록 성공")
     void postProductSuccess() {
         //given
         LoginDto loginDto = new LoginDto("seller@appling.com", "password");
         LoginVo login = memberAuthService.login(loginDto);
+        request.removeHeader(AUTHORIZATION);
         request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
 
         ProductDto productDto = new ProductDto(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2", "https://image3", "normal");
@@ -142,6 +127,7 @@ class ProductServiceTest {
 
         Pageable pageable = Pageable.ofSize(5);
         pageable = pageable.next();
+        request.removeHeader(AUTHORIZATION);
         request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
         //when
         ProductListVo searchList = productService.getProductListBySeller(pageable, "", "normal", categoryId, request);
