@@ -25,7 +25,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MemberAuthControllerDocs extends ControllerBaseTest {
+class AuthControllerDocs extends ControllerBaseTest {
     @Autowired
     private MemberAuthService memberAuthService;
 

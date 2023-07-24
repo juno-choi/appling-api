@@ -9,6 +9,7 @@ import com.juno.appling.domain.member.dto.PutSellerDto;
 import com.juno.appling.domain.member.vo.MemberVo;
 import com.juno.appling.domain.member.vo.RecipientListVo;
 import com.juno.appling.domain.member.service.MemberService;
+import com.juno.appling.domain.product.vo.SellerVo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,8 +38,19 @@ public class MemberController {
         );
     }
 
+    @GetMapping("/seller")
+    public ResponseEntity<Api<SellerVo>> getSeller(HttpServletRequest request){
+        return ResponseEntity.ok(
+                Api.<SellerVo>builder()
+                        .code(SUCCESS.code)
+                        .message(SUCCESS.message)
+                        .data(memberService.getSeller(request))
+                        .build()
+        );
+    }
+
     @PostMapping("/seller")
-    public ResponseEntity<Api<MessageVo>> applySeller(@RequestBody @Validated PostSellerDto postSellerDto, HttpServletRequest request, BindingResult bindingResult){
+    public ResponseEntity<Api<MessageVo>> postSeller(@RequestBody @Validated PostSellerDto postSellerDto, HttpServletRequest request, BindingResult bindingResult){
         return ResponseEntity.ok(
                 Api.<MessageVo>builder()
                         .code(POST.code)
