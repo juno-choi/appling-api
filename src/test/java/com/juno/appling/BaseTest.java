@@ -1,5 +1,7 @@
 package com.juno.appling;
 
+import com.juno.appling.domain.member.dto.JoinDto;
+import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
@@ -7,7 +9,11 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Optional;
 
 @Execution(ExecutionMode.SAME_THREAD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -22,9 +28,24 @@ public class BaseTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Transactional
     @BeforeAll
     void setUp(){
-        System.out.println("실행 전 테스트");
+        /**
+         * 초기 회원 세팅
+         */
+        String[] emailList = {MEMBER_EMAIL, SELLER_EMAIL, SELLER2_EMAIL};
+        for(String email : emailList){
+            Optional<Member> findMember = memberRepository.findByEmail(email);
+            if(findMember.isEmpty()){
+                JoinDto joinDto = new JoinDto(email, passwordEncoder.encode(PASSWORD), "name", "nick", "19941030");
+                memberRepository.save(Member.of(joinDto));
+                System.out.println(email+" 가입 완료");
+            }
+        }
     }
 
 }

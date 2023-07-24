@@ -1,5 +1,6 @@
 package com.juno.appling.domain.product.service;
 
+import com.juno.appling.BaseTest;
 import com.juno.appling.config.base.MessageVo;
 import com.juno.appling.domain.member.dto.LoginDto;
 import com.juno.appling.domain.member.entity.Member;
@@ -29,14 +30,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static com.juno.appling.CommonTest.SELLER2_EMAIL;
-import static com.juno.appling.CommonTest.SELLER_EMAIL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-class ProductServiceTest {
+class ProductServiceTest extends BaseTest {
     @Autowired
     private ProductService productService;
     @Autowired

@@ -1,5 +1,6 @@
 package com.juno.appling.domain.member.service;
 
+import com.juno.appling.BaseTest;
 import com.juno.appling.domain.member.dto.*;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.entity.Recipient;
@@ -22,13 +23,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static com.juno.appling.CommonTest.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-public class MemberServiceTest {
+public class MemberServiceTest extends BaseTest {
     @Autowired
     private MemberService memberService;
     @Autowired
@@ -71,9 +71,9 @@ public class MemberServiceTest {
     @DisplayName("수령인 정보 불러오기 성공")
     void getRecipientList(){
         // given
-        LoginDto loginDto = new LoginDto(MEMBER_EMAIL.getVal(), PASSWORD.getVal());
+        LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
         LoginVo login = memberAuthService.login(loginDto);
-        Member member = memberRepository.findByEmail(MEMBER_EMAIL.getVal()).get();
+        Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
 
         Recipient recipient1 = Recipient.of(member, "수령인1", "주소", "01012341234", RecipientInfoStatus.NORMAL);
         Recipient recipient2 = Recipient.of(member, "수령인2", "주소2", "01012341234", RecipientInfoStatus.NORMAL);
@@ -96,9 +96,9 @@ public class MemberServiceTest {
     @DisplayName("판매자 정보 수정 성공")
     void putSeller(){
         // given
-        LoginDto loginDto = new LoginDto(SELLER_EMAIL.getVal(), PASSWORD.getVal());
+        LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
         LoginVo login = memberAuthService.login(loginDto);
-        Member member = memberRepository.findByEmail(SELLER_EMAIL.getVal()).get();
+        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
 
         request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
 
