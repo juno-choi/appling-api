@@ -2,9 +2,9 @@ package com.juno.appling.domain.common.service;
 
 import com.juno.appling.config.s3.S3Service;
 import com.juno.appling.config.security.TokenProvider;
+import com.juno.appling.domain.common.vo.UploadVo;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.enums.Role;
-import com.juno.appling.domain.common.vo.UploadVo;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

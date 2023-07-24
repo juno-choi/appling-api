@@ -1,17 +1,17 @@
 package com.juno.appling.domain.member.controller;
 
 import com.juno.appling.ControllerBaseTest;
+import com.juno.appling.config.base.ResultCode;
 import com.juno.appling.domain.member.dto.*;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.entity.Recipient;
-import com.juno.appling.config.base.ResultCode;
 import com.juno.appling.domain.member.enums.RecipientInfoStatus;
 import com.juno.appling.domain.member.enums.Role;
-import com.juno.appling.domain.member.vo.LoginVo;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.member.repository.RecipientRepository;
 import com.juno.appling.domain.member.service.MemberAuthService;
 import com.juno.appling.domain.member.service.MemberService;
+import com.juno.appling.domain.member.vo.LoginVo;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

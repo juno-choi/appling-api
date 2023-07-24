@@ -18,10 +18,8 @@ import com.juno.appling.domain.product.repository.CategoryRepository;
 import com.juno.appling.domain.product.repository.ProductRepository;
 import com.juno.appling.domain.product.vo.ProductListVo;
 import com.juno.appling.domain.product.vo.ProductVo;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
@@ -56,6 +54,7 @@ class ProductServiceTest extends BaseTest {
         //given
         LoginDto loginDto = new LoginDto("seller@appling.com", "password");
         LoginVo login = memberAuthService.login(loginDto);
+        request.removeHeader(AUTHORIZATION);
         request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
 
         ProductDto productDto = new ProductDto(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2", "https://image3", "normal");
@@ -128,6 +127,7 @@ class ProductServiceTest extends BaseTest {
 
         Pageable pageable = Pageable.ofSize(5);
         pageable = pageable.next();
+        request.removeHeader(AUTHORIZATION);
         request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
         //when
         ProductListVo searchList = productService.getProductListBySeller(pageable, "", "normal", categoryId, request);

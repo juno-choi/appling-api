@@ -2,7 +2,13 @@ package com.juno.appling;
 
 import com.juno.appling.domain.member.dto.JoinDto;
 import com.juno.appling.domain.member.entity.Member;
+import com.juno.appling.domain.member.entity.Seller;
+import com.juno.appling.domain.member.enums.Role;
 import com.juno.appling.domain.member.repository.MemberRepository;
+import com.juno.appling.domain.member.repository.SellerRepository;
+import com.juno.appling.domain.product.entity.Category;
+import com.juno.appling.domain.product.enums.CategoryStatus;
+import com.juno.appling.domain.product.repository.CategoryRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.parallel.Execution;
@@ -25,8 +31,18 @@ public class BaseTest {
     protected String SELLER2_EMAIL = "seller2@appling.com";
     protected String PASSWORD = "password";
 
+    protected String MEAL_CATEGORY = "육류";
+    protected String FRUIT_CATEGORY = "과일";
+    protected String VEGETABLE_CATEGORY = "야채";
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+
+    @Autowired
+    private SellerRepository sellerRepository;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -42,8 +58,32 @@ public class BaseTest {
             Optional<Member> findMember = memberRepository.findByEmail(email);
             if(findMember.isEmpty()){
                 JoinDto joinDto = new JoinDto(email, passwordEncoder.encode(PASSWORD), "name", "nick", "19941030");
-                memberRepository.save(Member.of(joinDto));
-                System.out.println(email+" 가입 완료");
+                Member saveMember = memberRepository.save(Member.of(joinDto));
+                if(saveMember.getEmail().equals(SELLER_EMAIL) || saveMember.getEmail().equals(SELLER2_EMAIL)){
+                    /**
+                     * 판매자 세팅
+                     */
+                    if(saveMember.getEmail().equals(SELLER_EMAIL)){
+                        saveMember.patchMemberRole(Role.SELLER);
+                        sellerRepository.save(Seller.of(saveMember, "애플링", "01012344321", "강원도 평창군 장미산길 126", "email@mail.com"));
+                    }
+                    if(saveMember.getEmail().equals(SELLER2_EMAIL)){
+                        saveMember.patchMemberRole(Role.SELLER);
+                        sellerRepository.save(Seller.of(saveMember, "자연농원", "01012344321", "강원도 평창군 장미산길 126", "email@mail.com"));
+                    }
+                }
+            }
+        }
+
+        /**
+         * 카테고리 정보 세팅
+         */
+        String[] categoryList = {FRUIT_CATEGORY, MEAL_CATEGORY, VEGETABLE_CATEGORY};
+
+        for(String category : categoryList){
+            Optional<Category> findCategory = categoryRepository.findByName(category);
+            if(findCategory.isEmpty()){
+                categoryRepository.save(Category.of(category ,CategoryStatus.USE));
             }
         }
     }

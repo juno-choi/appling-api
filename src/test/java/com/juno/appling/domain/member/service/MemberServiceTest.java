@@ -1,29 +1,28 @@
 package com.juno.appling.domain.member.service;
 
 import com.juno.appling.BaseTest;
-import com.juno.appling.domain.member.dto.*;
+import com.juno.appling.config.base.MessageVo;
+import com.juno.appling.domain.member.dto.JoinDto;
+import com.juno.appling.domain.member.dto.LoginDto;
+import com.juno.appling.domain.member.dto.PatchMemberDto;
+import com.juno.appling.domain.member.dto.PutSellerDto;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.entity.Recipient;
 import com.juno.appling.domain.member.entity.Seller;
 import com.juno.appling.domain.member.enums.RecipientInfoStatus;
-import com.juno.appling.config.base.MessageVo;
+import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.member.repository.SellerRepository;
 import com.juno.appling.domain.member.vo.LoginVo;
 import com.juno.appling.domain.member.vo.RecipientListVo;
-import com.juno.appling.domain.member.repository.MemberRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -58,6 +57,7 @@ public class MemberServiceTest extends BaseTest {
         memberRepository.save(Member.of(joinDto));
         LoginDto loginDto = new LoginDto(email, password);
         LoginVo login = memberAuthService.login(loginDto);
+        request.removeHeader(AUTHORIZATION);
         request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
 
         PatchMemberDto patchMemberDto = new PatchMemberDto(changeBirth, changeName, changePassword, "수정되버림", null);
@@ -81,6 +81,7 @@ public class MemberServiceTest extends BaseTest {
         member.getRecipientList().add(recipient1);
         member.getRecipientList().add(recipient2);
 
+        request.removeHeader(AUTHORIZATION);
         request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
         // when
         RecipientListVo recipient = memberService.getRecipient(request);
@@ -98,8 +99,8 @@ public class MemberServiceTest extends BaseTest {
         // given
         LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
         LoginVo login = memberAuthService.login(loginDto);
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
 
+        request.removeHeader(AUTHORIZATION);
         request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
 
         String changeCompany = "변경 회사명";
@@ -108,6 +109,7 @@ public class MemberServiceTest extends BaseTest {
         MessageVo messageVo = memberService.putSeller(putSellerDto, request);
         // then
         assertThat(messageVo.message()).contains("수정 성공");
+        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Seller seller = sellerRepository.findByMember(member).get();
         assertThat(seller.getCompany()).isEqualTo(changeCompany);
 
