@@ -52,13 +52,13 @@ class CommonControllerDocs extends ControllerBaseTest {
         LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
         LoginVo login = memberAuthService.login(loginDto);
         List<String> list = new LinkedList<>();
-        list.add("image/1/20230606/202101.txt");
+        list.add("image/1/20230606/202101.png");
         given(s3Service.putObject(anyString(), anyString(), any())).willReturn(list);
 
         //when
         ResultActions perform = mock.perform(
                 multipart(PREFIX + "/image")
-                        .file(new MockMultipartFile("image", "text1.txt", MediaType.APPLICATION_FORM_URLENCODED_VALUE, "123".getBytes(StandardCharsets.UTF_8)))
+                        .file(new MockMultipartFile("image", "test1.png", MediaType.APPLICATION_FORM_URLENCODED_VALUE, "123".getBytes(StandardCharsets.UTF_8)))
                         .header(AUTHORIZATION, "Bearer "+login.accessToken())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         );
@@ -76,7 +76,43 @@ class CommonControllerDocs extends ControllerBaseTest {
                 responseFields(
                         fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
                         fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-                        fieldWithPath("data.image_url").type(JsonFieldType.STRING).description("업로드 된 이미지 url")
+                        fieldWithPath("data.url").type(JsonFieldType.STRING).description("업로드 된 이미지 url")
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName(PREFIX + "/html")
+    void uploadHtml() throws Exception{
+        //given
+        LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
+        LoginVo login = memberAuthService.login(loginDto);
+        List<String> list = new LinkedList<>();
+        list.add("html/1/20230606/202101.html");
+        given(s3Service.putObject(anyString(), anyString(), any())).willReturn(list);
+
+        //when
+        ResultActions perform = mock.perform(
+                multipart(PREFIX + "/html")
+                        .file(new MockMultipartFile("html", "test1.html", MediaType.APPLICATION_FORM_URLENCODED_VALUE, "123".getBytes(StandardCharsets.UTF_8)))
+                        .header(AUTHORIZATION, "Bearer "+login.accessToken())
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        );
+
+        //then
+        perform.andExpect(status().is2xxSuccessful());
+
+        perform.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token")
+                ),
+                requestParts(
+                        partWithName("html").description("업로드 html 파일")
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.url").type(JsonFieldType.STRING).description("업로드 된 html url")
                 )
         ));
     }

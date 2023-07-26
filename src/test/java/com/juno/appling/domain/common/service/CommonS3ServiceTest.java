@@ -53,9 +53,9 @@ class CommonS3ServiceTest {
         files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(), "3".getBytes(StandardCharsets.UTF_8)));
 
         //when
-        UploadVo uploadVo = commonS3Service.uploadImage(files, request);
+        UploadVo uploadVo = commonS3Service.s3UploadFile(files, "image/%s/%s/", request);
 
         //then
-        Assertions.assertThat(uploadVo.imageUrl()).contains(env.getProperty("cloud.s3.url"));
+        Assertions.assertThat(uploadVo.url()).contains(env.getProperty("cloud.s3.url"));
     }
 }
