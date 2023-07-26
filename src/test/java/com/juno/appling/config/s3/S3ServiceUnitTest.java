@@ -57,8 +57,6 @@ class S3ServiceUnitTest {
                         .build()
         );
 
-        given(env.getProperty(anyString())).willReturn("100000");
-
         Long userId = 1L;
         DateTimeFormatter pathFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDateTime now = LocalDateTime.now();
@@ -90,7 +88,6 @@ class S3ServiceUnitTest {
                         .sdkHttpResponse(SdkHttpResponse.builder().statusText("").build())
                         .build()
         );
-        given(env.getProperty(anyString())).willReturn("100000");
         //when
         Throwable throwable = catchThrowable(() -> s3Service.putObject("juno/test/", "", files));
 
@@ -99,23 +96,4 @@ class S3ServiceUnitTest {
 
     }
 
-    @Test
-    @DisplayName("이미지 사이즈가 크면 등록에 실패")
-    void putObjectFail2() {
-        //given
-        String eTag = "e-tag";
-
-        List<MultipartFile> files = new LinkedList<>();
-        files.add(new MockMultipartFile("test1", "test1.txt", StandardCharsets.UTF_8.name(), "123".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test2", "test2.txt", StandardCharsets.UTF_8.name(), "234".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test3", "test3.txt", StandardCharsets.UTF_8.name(), "323".getBytes(StandardCharsets.UTF_8)));
-
-        given(env.getProperty(anyString())).willReturn("1");
-        //when
-        Throwable throwable = catchThrowable(() -> s3Service.putObject("juno/test/", "", files));
-
-        //then
-        assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("file size가 너무 큽니다.");
-
-    }
 }

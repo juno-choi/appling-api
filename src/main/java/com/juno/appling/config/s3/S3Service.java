@@ -32,17 +32,12 @@ public class S3Service {
     public List<String> putObject(String path, String fileName, List<MultipartFile> files){
         List<String> list = new LinkedList<>();
         int count = 0;
-        Long size = Long.parseLong(env.getProperty("cloud.s3.size"));
 
         for(MultipartFile file : files){
             String originFileName = Optional.ofNullable(file.getOriginalFilename()).orElse("");
             String fileExtension = originFileName.substring(originFileName.indexOf('.'));
-            Long fileSize = file.getSize();
             String contentType = file.getContentType();
             String makeFileName = String.format("%s%s_%s%s", path, fileName, count, fileExtension);
-            if(fileSize > size){
-                throw new IllegalArgumentException(String.format("file size가 너무 큽니다. 최대 사이즈 : %s, %s번째 파일", size, count));
-            }
 
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)
