@@ -1,11 +1,11 @@
 package com.juno.appling.domain.member.controller;
 
-import com.juno.appling.BaseTest;
+import com.juno.appling.ControllerBaseTest;
+import com.juno.appling.config.base.ResultCode;
 import com.juno.appling.domain.member.dto.JoinDto;
 import com.juno.appling.domain.member.dto.LoginDto;
-import com.juno.appling.config.base.ResultCode;
-import com.juno.appling.domain.member.vo.LoginVo;
 import com.juno.appling.domain.member.service.MemberAuthService;
+import com.juno.appling.domain.member.vo.LoginVo;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AuthControllerDocs extends BaseTest {
+class AuthControllerDocs extends ControllerBaseTest {
     @Autowired
     private MemberAuthService memberAuthService;
 

@@ -2,8 +2,10 @@ package com.juno.appling.domain.product.service;
 
 import com.juno.appling.config.security.TokenProvider;
 import com.juno.appling.domain.member.entity.Member;
+import com.juno.appling.domain.member.entity.Seller;
 import com.juno.appling.domain.member.enums.Role;
 import com.juno.appling.domain.member.repository.MemberRepository;
+import com.juno.appling.domain.member.repository.SellerRepository;
 import com.juno.appling.domain.product.dto.AddViewCntDto;
 import com.juno.appling.domain.product.dto.ProductDto;
 import com.juno.appling.domain.product.dto.PutProductDto;
@@ -43,6 +45,8 @@ class ProductServiceUnitTest {
     private MemberRepository memberRepository;
     @Mock
     private CategoryRepository categoryRepository;
+    @Mock
+    private SellerRepository sellerRepository;
 
     @Mock
     private Environment env;
@@ -62,8 +66,10 @@ class ProductServiceUnitTest {
         given(tokenProvider.resolveToken(any())).willReturn("token");
         LocalDateTime now = LocalDateTime.now();
         Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030", Role.SELLER, null, null, now, now);
+        Seller seller = Seller.of(member, "회사명", "01012344321", "회사 주소", "mail@mail.com");
         given(memberRepository.findById(any())).willReturn(Optional.of(member));
-        given(productRepository.save(any())).willReturn(Product.of(member, category, productDto));
+        given(sellerRepository.findByMember(any())).willReturn(Optional.of(seller));
+        given(productRepository.save(any())).willReturn(Product.of(seller, category, productDto));
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(new Category()));
         //when
         ProductVo productVo = productService.postProduct(productDto, request);

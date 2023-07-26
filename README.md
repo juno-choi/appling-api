@@ -10,6 +10,8 @@
 
 `pw` qwer1234
 
+[dev 서버](http://3.34.1.129:5173/)
+
 ---
 
 # 🔴 사용법
@@ -28,7 +30,7 @@
 
 `framework` Spring Boot 3.1.0
 
-`Tool` Intellij, git, gradle, jenkins, docker, testContainer, sonarqube
+`Tool` Intellij, git, gradle, jenkins, docker, testContainer, jacoco, sonarqube
 
 `DB` JPA, Redis, H2, MySql
 

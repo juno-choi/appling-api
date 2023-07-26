@@ -1,9 +1,9 @@
 package com.juno.appling.domain.common.service;
 
-import com.juno.appling.domain.member.dto.LoginDto;
 import com.juno.appling.domain.common.vo.UploadVo;
-import com.juno.appling.domain.member.vo.LoginVo;
+import com.juno.appling.domain.member.dto.LoginDto;
 import com.juno.appling.domain.member.service.MemberAuthService;
+import com.juno.appling.domain.member.vo.LoginVo;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -41,6 +41,7 @@ class CommonS3ServiceTest {
         //given
         LoginDto loginDto = new LoginDto("seller@appling.com", "password");
         LoginVo login = memberAuthService.login(loginDto);
+        request.removeHeader(AUTHORIZATION);
         request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
         List<MultipartFile> files = new LinkedList<>();
         String fileName1 = "test1.txt";

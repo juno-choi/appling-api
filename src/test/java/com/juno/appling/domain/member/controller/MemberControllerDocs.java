@@ -1,17 +1,17 @@
 package com.juno.appling.domain.member.controller;
 
-import com.juno.appling.BaseTest;
+import com.juno.appling.ControllerBaseTest;
+import com.juno.appling.config.base.ResultCode;
 import com.juno.appling.domain.member.dto.*;
 import com.juno.appling.domain.member.entity.Member;
 import com.juno.appling.domain.member.entity.Recipient;
-import com.juno.appling.config.base.ResultCode;
 import com.juno.appling.domain.member.enums.RecipientInfoStatus;
 import com.juno.appling.domain.member.enums.Role;
-import com.juno.appling.domain.member.vo.LoginVo;
 import com.juno.appling.domain.member.repository.MemberRepository;
 import com.juno.appling.domain.member.repository.RecipientRepository;
 import com.juno.appling.domain.member.service.MemberAuthService;
 import com.juno.appling.domain.member.service.MemberService;
+import com.juno.appling.domain.member.vo.LoginVo;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MemberControllerDocs extends BaseTest {
+class MemberControllerDocs extends ControllerBaseTest {
     
     @Autowired
     private MemberAuthService memberAuthService;
@@ -52,10 +52,10 @@ class MemberControllerDocs extends BaseTest {
     private final static String PASSWORD = "password";
 
     @Test
-    @DisplayName(PREFIX)
+    @DisplayName(PREFIX+ " (GET)")
     void member() throws Exception {
         //given
-        LoginDto loginDto = new LoginDto(EMAIL, PASSWORD);
+        LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
         LoginVo loginVo = memberAuthService.login(loginDto);
         //when
         ResultActions resultActions = mock.perform(
@@ -86,16 +86,93 @@ class MemberControllerDocs extends BaseTest {
     }
 
     @Test
-    @DisplayName(PREFIX+"/seller")
-    void applySeller() throws Exception {
+    @DisplayName(PREFIX+"/seller (POST)")
+    void postSeller() throws Exception {
         //given
         JoinDto joinDto = new JoinDto(EMAIL, PASSWORD, "name", "nick", "19941030");
         memberAuthService.join(joinDto);
         LoginDto loginDto = new LoginDto(EMAIL, PASSWORD);
         LoginVo loginVo = memberAuthService.login(loginDto);
+
+        PostSellerDto postSellerDto = new PostSellerDto("판매자 이름", "010-1234-4312", "강원도 평창군 대화면 장미산길", "mail@mail.com");
         //when
         ResultActions resultActions = mock.perform(
                 post(PREFIX+"/seller")
+                        .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postSellerDto))
+        ).andDo(print());
+
+        //then
+        String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        Assertions.assertThat(contentAsString).contains(ResultCode.POST.code);
+
+        resultActions.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token")
+                ),
+                requestFields(
+                        fieldWithPath("company").type(JsonFieldType.STRING).description("회사명"),
+                        fieldWithPath("tel").type(JsonFieldType.STRING).description("회사 연락처"),
+                        fieldWithPath("address").type(JsonFieldType.STRING).description("회사 주소"),
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("회사 이메일").optional()
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.message").type(JsonFieldType.STRING).description("성공")
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName(PREFIX+"/seller (PUT)")
+    void putSeller() throws Exception {
+        //given
+        LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
+        LoginVo loginVo = memberAuthService.login(loginDto);
+
+        PutSellerDto putSellerDto = new PutSellerDto("변경된 판매자 이름", "010-1234-4312", "강원도 평창군 대화면 장미산길", "mail@mail.com");
+        //when
+        ResultActions resultActions = mock.perform(
+                put(PREFIX+"/seller")
+                        .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(putSellerDto))
+        ).andDo(print());
+
+        //then
+        String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.code);
+
+        resultActions.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token")
+                ),
+                requestFields(
+                        fieldWithPath("company").type(JsonFieldType.STRING).description("회사명"),
+                        fieldWithPath("tel").type(JsonFieldType.STRING).description("회사 연락처"),
+                        fieldWithPath("address").type(JsonFieldType.STRING).description("회사 주소"),
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("회사 이메일").optional()
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.message").type(JsonFieldType.STRING).description("성공")
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName(PREFIX+"/seller (GET)")
+    void getSeller() throws Exception {
+        //given
+        LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
+        LoginVo loginVo = memberAuthService.login(loginDto);
+
+        //when
+        ResultActions resultActions = mock.perform(
+                get(PREFIX+"/seller")
                         .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
         ).andDo(print());
 
@@ -110,13 +187,17 @@ class MemberControllerDocs extends BaseTest {
                 responseFields(
                         fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
                         fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-                        fieldWithPath("data.message").type(JsonFieldType.STRING).description("성공")
+                        fieldWithPath("data.seller_id").type(JsonFieldType.NUMBER).description("seller id"),
+                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("email"),
+                        fieldWithPath("data.company").type(JsonFieldType.STRING).description("회사명"),
+                        fieldWithPath("data.address").type(JsonFieldType.STRING).description("회사 주소"),
+                        fieldWithPath("data.tel").type(JsonFieldType.STRING).description("회사 연락처")
                 )
         ));
     }
 
     @Test
-    @DisplayName(PREFIX)
+    @DisplayName(PREFIX+ " (PATCH)")
     void patchMember() throws Exception {
         //given
         String email = "patch@appling.com";

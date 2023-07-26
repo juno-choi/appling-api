@@ -36,7 +36,7 @@ public class ProductCustomRepository {
             builder.and(product.mainTitle.contains(search));
         }
         if(memberId != 0L){
-            builder.and(product.member.id.eq(memberId));
+            builder.and(product.seller.member.id.eq(memberId));
         }
         if(optionalCategory.isPresent()){
             builder.and(product.category.eq(category));
@@ -63,10 +63,11 @@ public class ProductCustomRepository {
                     product.createAt,
                     product.modifiedAt,
                     Projections.constructor(SellerVo.class,
-                        product.member.id,
-                        product.member.email,
-                        product.member.nickname,
-                        product.member.name
+                        product.seller.id,
+                        product.seller.email,
+                        product.seller.company,
+                        product.seller.address,
+                        product.seller.tel
                     ),
                     Projections.constructor(CategoryVo.class,
                             product.category.id,

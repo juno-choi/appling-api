@@ -4,9 +4,12 @@ import com.juno.appling.config.base.Api;
 import com.juno.appling.domain.member.dto.PatchMemberDto;
 import com.juno.appling.domain.member.dto.PostRecipientDto;
 import com.juno.appling.config.base.MessageVo;
+import com.juno.appling.domain.member.dto.PostSellerDto;
+import com.juno.appling.domain.member.dto.PutSellerDto;
 import com.juno.appling.domain.member.vo.MemberVo;
 import com.juno.appling.domain.member.vo.RecipientListVo;
 import com.juno.appling.domain.member.service.MemberService;
+import com.juno.appling.domain.product.vo.SellerVo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,13 +38,35 @@ public class MemberController {
         );
     }
 
+    @GetMapping("/seller")
+    public ResponseEntity<Api<SellerVo>> getSeller(HttpServletRequest request){
+        return ResponseEntity.ok(
+                Api.<SellerVo>builder()
+                        .code(SUCCESS.code)
+                        .message(SUCCESS.message)
+                        .data(memberService.getSeller(request))
+                        .build()
+        );
+    }
+
     @PostMapping("/seller")
-    public ResponseEntity<Api<MessageVo>> applySeller(HttpServletRequest request){
+    public ResponseEntity<Api<MessageVo>> postSeller(@RequestBody @Validated PostSellerDto postSellerDto, HttpServletRequest request, BindingResult bindingResult){
+        return ResponseEntity.ok(
+                Api.<MessageVo>builder()
+                        .code(POST.code)
+                        .message(POST.message)
+                        .data(memberService.postSeller(postSellerDto, request))
+                        .build()
+        );
+    }
+
+    @PutMapping("/seller")
+    public ResponseEntity<Api<MessageVo>> putSeller(@RequestBody @Validated PutSellerDto putSellerDto, HttpServletRequest request, BindingResult bindingResult){
         return ResponseEntity.ok(
                 Api.<MessageVo>builder()
                         .code(SUCCESS.code)
                         .message(SUCCESS.message)
-                        .data(memberService.applySeller(request))
+                        .data(memberService.putSeller(putSellerDto, request))
                         .build()
         );
     }
@@ -77,4 +102,5 @@ public class MemberController {
                         .build()
                 );
     }
+
 }

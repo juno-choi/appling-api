@@ -1,10 +1,10 @@
 package com.juno.appling.domain.common.controller;
 
-import com.juno.appling.BaseTest;
+import com.juno.appling.ControllerBaseTest;
 import com.juno.appling.config.s3.S3Service;
 import com.juno.appling.domain.member.dto.LoginDto;
-import com.juno.appling.domain.member.vo.LoginVo;
 import com.juno.appling.domain.member.service.MemberAuthService;
+import com.juno.appling.domain.member.vo.LoginVo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
-class CommonControllerDocs extends BaseTest {
+class CommonControllerDocs extends ControllerBaseTest {
     @Autowired
     private MemberAuthService memberAuthService;
 
