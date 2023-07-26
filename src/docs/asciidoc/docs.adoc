@@ -10,18 +10,16 @@ endif::[]
 
 = 🍎 Appling API
 
-include::feature/newFeature.adoc[]
+include::feature/new-feature.adoc[]
 
-== 🍎 공통
+include::feature/fix-feature.adoc[]
 
-=== 📕 에러
-
-==== 🔴 400 BAD_REQUEST
-
-include::{snippets}/join/join-fail/http-response.adoc[]
+include::error/error.adoc[]
 
 include::common/common.adoc[]
+
 include::member/auth.adoc[]
+
 include::member/member.adoc[]
 
 include::product/product.adoc[]

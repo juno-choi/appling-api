@@ -94,7 +94,7 @@ class ProductServiceTest extends BaseTest {
         Pageable pageable = Pageable.ofSize(5);
         pageable = pageable.next();
         //when
-        ProductListVo searchList = productService.getProductList(pageable, "검색", "normal", categoryId);
+        ProductListVo searchList = productService.getProductList(pageable, "검색", "normal", categoryId, 0L);
         //then
         assertThat(searchList.list().stream().findFirst().get().mainTitle()).contains("검색");
     }
