@@ -14,6 +14,7 @@ import okhttp3.mockwebserver.MockWebServer;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
@@ -40,6 +41,7 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith({MockitoExtension.class})
 class MemberAuthServiceUnitTest {
+    @InjectMocks
     private MemberAuthService memberAuthService;
 
     @Mock
@@ -84,6 +86,47 @@ class MemberAuthServiceUnitTest {
         memberAuthService = new MemberAuthService(
                 memberRepository, passwordEncoder, authenticationManagerBuilder, tokenProvider, redisTemplate, webClient, webClient, env
         );
+    }
+
+    @Test
+    @DisplayName("이미 가입한 회원은 회원 가입 불가")
+    void joinFail1(){
+        //given
+        JoinDto joinDto = new JoinDto("join-1@mail.com", "password", "최준호", "닉네임", "1999-10-30");
+        given(memberRepository.findByEmail(anyString())).willReturn(Optional.of(Member.of(joinDto)));
+        //when
+        Throwable throwable = catchThrowable(() -> memberAuthService.join(joinDto));
+        //then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("이미 존재하는 회원");
+    }
+
+    @Test
+    @DisplayName("유효하지 않은 토큰은 refresh 실패")
+    void refreshFail1(){
+        //given
+        String refreshToken = "refresh";
+        given(tokenProvider.validateToken(anyString())).willReturn(false);
+        //when
+        Throwable throwable = catchThrowable(() -> memberAuthService.refresh(refreshToken));
+        //then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("유효하지 않은 토큰");
+    }
+
+    @Test
+    @DisplayName("유효하지 않은 회원은 refresh 실패")
+    void refreshFail2(){
+        //given
+        String refreshToken = "refresh";
+        given(tokenProvider.validateToken(anyString())).willReturn(true);
+        given(redisTemplate.opsForValue()).willReturn(valueOperations);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("sub", "1");
+        given(tokenProvider.parseClaims(anyString())).willReturn(Jwts.claims(claims));
+        given(memberRepository.findById(anyLong())).willReturn(Optional.ofNullable(null));
+        //when
+        Throwable throwable = catchThrowable(() -> memberAuthService.refresh(refreshToken));
+        //then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("유효하지 않은 회원");
     }
 
     @Test
