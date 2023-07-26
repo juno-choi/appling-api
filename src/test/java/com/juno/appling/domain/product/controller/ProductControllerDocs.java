@@ -71,6 +71,7 @@ class ProductControllerDocs extends ControllerBaseTest {
                         .param("size", "5")
                         .param("status", "normal")
                         .param("category_id", "0")
+                        .param("seller_id", "0")
         );
         //then
         perform.andExpect(status().is2xxSuccessful());
@@ -80,7 +81,8 @@ class ProductControllerDocs extends ControllerBaseTest {
                         parameterWithName("size").description("paging 시작 페이지 기준 개수 크기").optional(),
                         parameterWithName("search").description("검색어").optional(),
                         parameterWithName("status").description("상품 상태값 (일반:normal, 숨김:hidden, 삭제:delete / 대소문자 구분 없음)").optional(),
-                        parameterWithName("category_id").description("카테고리 검색 id (0:전체, 1:과일, 2:야채, 3:육류)").optional()
+                        parameterWithName("category_id").description("카테고리 검색 id (0:전체, 1:과일, 2:야채, 3:육류)").optional(),
+                        parameterWithName("seller_id").description("판매자 id (seller_id로 검색시 판매자가 등록한 상품만 반환됨)").optional()
                 ),
                 responseFields(
                         fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),

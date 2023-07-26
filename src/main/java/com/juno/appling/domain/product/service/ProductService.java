@@ -57,10 +57,10 @@ public class ProductService {
         return memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
     }
 
-    public ProductListVo getProductList(Pageable pageable, String search, String status, Long categoryId){
+    public ProductListVo getProductList(Pageable pageable, String search, String status, Long categoryId, Long sellerId){
         Status statusOfEnums = Status.valueOf(status.toUpperCase(Locale.ROOT));
         Category category = categoryRepository.findById(categoryId).orElse(null);
-        Page<ProductVo> page = productCustomRepository.findAll(pageable, search, statusOfEnums, category, 0L);
+        Page<ProductVo> page = productCustomRepository.findAll(pageable, search, statusOfEnums, category, sellerId);
 
         return new ProductListVo(page.getTotalPages(), page.getTotalElements(), page.getNumberOfElements(), page.isLast(), page.isEmpty(), page.getContent());
     }
