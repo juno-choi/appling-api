@@ -94,7 +94,7 @@ class CommonS3ServiceUnitTest {
         //when
         UploadVo uploadVo = commonS3Service.s3UploadFile(files, "image/%s/%s/", request);
         //then
-        Assertions.assertThat(uploadVo.imageUrl()).contains(s3Url);
+        Assertions.assertThat(uploadVo.url()).contains(s3Url);
     }
 
     @Test
@@ -145,6 +145,6 @@ class CommonS3ServiceUnitTest {
         //when
         UploadVo uploadVo = commonS3Service.s3UploadFile(files, "html/%s/%s/", request);
         //then
-        Assertions.assertThat(uploadVo.imageUrl()).contains(s3Url);
+        Assertions.assertThat(uploadVo.url()).contains(s3Url);
     }
 }
