@@ -55,7 +55,7 @@ public class MemberService {
     public MemberVo member(HttpServletRequest request) {
         Member findMember = getMember(request);
 
-        return new MemberVo(findMember.getId(), findMember.getEmail(), findMember.getNickname(), findMember.getName(), findMember.getRole(), findMember.getSnsType(), findMember.getCreatedAt(), findMember.getModifiedAt());
+        return new MemberVo(findMember.getId(), findMember.getEmail(), findMember.getNickname(), findMember.getName(), findMember.getRole(), findMember.getSnsType(), findMember.getStatus(), findMember.getCreatedAt(), findMember.getModifiedAt());
     }
 
 

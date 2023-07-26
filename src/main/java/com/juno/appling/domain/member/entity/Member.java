@@ -50,7 +50,7 @@ public class Member {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public Member(@NotNull String email, @NotNull String password, @NotNull String nickname, @NotNull String name, String birth, Role role, String snsId, SnsJoinType snsType, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public Member(@NotNull String email, @NotNull String password, @NotNull String nickname, @NotNull String name, String birth, Role role, String snsId, SnsJoinType snsType, Status status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -59,6 +59,7 @@ public class Member {
         this.role = role;
         this.snsId = snsId;
         this.snsType = snsType;
+        this.status = status;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
@@ -79,12 +80,12 @@ public class Member {
 
     public static Member of(JoinDto joinDto){
         LocalDateTime now = LocalDateTime.now();
-        return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(), joinDto.getName(), joinDto.getBirth(), Role.MEMBER, null, null, now, now);
+        return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(), joinDto.getName(), joinDto.getBirth(), Role.MEMBER, null, null, Status.NORMAL, now, now);
     }
 
     public static Member of(JoinDto joinDto, String snsId, SnsJoinType snsType){
         LocalDateTime now = LocalDateTime.now();
-        return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(), joinDto.getName(), joinDto.getBirth(), Role.MEMBER, snsId, snsType, now, now);
+        return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(), joinDto.getName(), joinDto.getBirth(), Role.MEMBER, snsId, snsType, Status.NORMAL, now, now);
     }
 
     public void patchMember(String birth, String name, String nickname, String password){

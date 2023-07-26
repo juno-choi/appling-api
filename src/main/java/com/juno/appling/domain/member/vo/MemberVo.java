@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.juno.appling.domain.member.enums.Role;
 import com.juno.appling.domain.member.enums.SnsJoinType;
+import com.juno.appling.domain.member.enums.Status;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +19,7 @@ public record MemberVo(
         String name,
         Role role,
         SnsJoinType snsType,
+        Status status,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt
 ) {}
