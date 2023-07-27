@@ -2,6 +2,7 @@ package com.juno.appling.domain.member.controller;
 
 import com.juno.appling.ControllerBaseTest;
 import com.juno.appling.config.base.ResultCode;
+import com.juno.appling.config.mail.MyMailSender;
 import com.juno.appling.domain.member.dto.JoinDto;
 import com.juno.appling.domain.member.dto.LoginDto;
 import com.juno.appling.domain.member.service.MemberAuthService;
@@ -9,8 +10,11 @@ import com.juno.appling.domain.member.vo.LoginVo;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -18,6 +22,9 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.StandardCharsets;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -25,9 +32,13 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ExtendWith(MockitoExtension.class)
 class AuthControllerDocs extends ControllerBaseTest {
     @Autowired
     private MemberAuthService memberAuthService;
+
+    @MockBean
+    private MyMailSender myMailSender;
 
     private final static String PREFIX = "/api/auth";
 
@@ -36,6 +47,7 @@ class AuthControllerDocs extends ControllerBaseTest {
     void join() throws Exception {
         //given
         JoinDto joinDto = new JoinDto("juno@auth.com", "password", "name", "nick", "19941030");
+        doNothing().when(myMailSender).send(anyString(), anyString(), anyString());
 
         //when
         ResultActions resultActions = mock.perform(
@@ -46,6 +58,7 @@ class AuthControllerDocs extends ControllerBaseTest {
         //then
         String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         Assertions.assertThat(contentAsString).contains(ResultCode.POST.code);
+        verify(myMailSender, times(1)).send(anyString(), anyString(), anyString());
 
         resultActions.andDo(docs.document(
                 requestFields(
