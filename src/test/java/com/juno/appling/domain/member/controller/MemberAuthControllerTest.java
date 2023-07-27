@@ -19,7 +19,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AuthControllerTest extends ControllerBaseTest {
+class MemberAuthControllerTest extends ControllerBaseTest {
     @Autowired
     private MemberRepository memberRepository;
 
