@@ -169,6 +169,7 @@ public class MemberAuthService {
             JoinDto joinDto = new JoinDto(email, snsId, info.kakao_account.profile.nickname, info.kakao_account.profile.nickname, null);
             joinDto.passwordEncoder(passwordEncoder);
             member = memberRepository.save(Member.of(joinDto, snsId, SnsJoinType.KAKAO));
+            myMailSender.send("애플링 가족이 되신걸 환영해요!", "<html><h1>애플링 회원 가입에 감사드립니다.</h1></html>", member.getEmail());
         }else{
             member = findMember.get();
         }

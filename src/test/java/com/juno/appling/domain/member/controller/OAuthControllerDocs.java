@@ -1,6 +1,7 @@
 package com.juno.appling.domain.member.controller;
 
 import com.juno.appling.ControllerBaseTest;
+import com.juno.appling.config.mail.MyMailSender;
 import com.juno.appling.domain.member.dto.kakao.KakaoLoginResponseDto;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -18,7 +19,9 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -39,6 +42,9 @@ class OAuthControllerDocs extends ControllerBaseTest {
 
     @MockBean(name = "kakaoApiClient")
     private WebClient kakaoApiClient;
+
+    @MockBean
+    private MyMailSender myMailSender;
 
     private static WebClient webClient;
 
@@ -97,9 +103,9 @@ class OAuthControllerDocs extends ControllerBaseTest {
     @Test
     @DisplayName(PREFIX+"/kakao/login")
     void oauthKakaoLogin() throws Exception {
-        given(kakaoApiClient.post()).willReturn(webClient.post());
-
         //given
+        given(kakaoApiClient.post()).willReturn(webClient.post());
+        doNothing().when(myMailSender).send(anyString(), anyString(), anyString());
         String kakaoReturnString = "{\n" +
                 "    \"id\": 2727704352,\n" +
                 "    \"connected_at\": \"2023-03-29T23:31:57Z\",\n" +
@@ -143,6 +149,7 @@ class OAuthControllerDocs extends ControllerBaseTest {
 
         //then
         resultActions.andExpect(status().is2xxSuccessful());
+        verify(myMailSender, times(1)).send(anyString(), anyString(), anyString());
 
         //docs
         resultActions.andDo(docs.document(
