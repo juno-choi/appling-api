@@ -1,6 +1,7 @@
 package com.juno.appling.domain.member.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.juno.appling.config.mail.MyMailSender;
 import com.juno.appling.config.security.TokenProvider;
 import com.juno.appling.domain.member.dto.JoinDto;
 import com.juno.appling.domain.member.dto.kakao.KakaoLoginResponseDto;
@@ -64,6 +65,10 @@ class MemberAuthServiceUnitTest {
     @Mock
     private ValueOperations<String, Object> valueOperations;
 
+    @Mock
+    private MyMailSender myMailSender;
+
+
     private ObjectMapper objectMapper = new ObjectMapper();
     private static MockWebServer mockWebServer;
     private final String TYPE = "Bearer";
@@ -84,7 +89,7 @@ class MemberAuthServiceUnitTest {
         String baseUrl = String.format("http://localhost:%s",mockWebServer.getPort());
         final WebClient webClient = WebClient.create(baseUrl);
         memberAuthService = new MemberAuthService(
-                memberRepository, passwordEncoder, authenticationManagerBuilder, tokenProvider, redisTemplate, webClient, webClient, env
+                memberRepository, passwordEncoder, authenticationManagerBuilder, tokenProvider, redisTemplate, webClient, webClient, env, myMailSender
         );
     }
 

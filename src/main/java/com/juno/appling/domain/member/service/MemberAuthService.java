@@ -1,5 +1,6 @@
 package com.juno.appling.domain.member.service;
 
+import com.juno.appling.config.mail.MyMailSender;
 import com.juno.appling.config.security.TokenProvider;
 import com.juno.appling.domain.member.dto.JoinDto;
 import com.juno.appling.domain.member.dto.LoginDto;
@@ -48,6 +49,7 @@ public class MemberAuthService {
     private final WebClient kakaoClient;
     private final WebClient kakaoApiClient;
     private final Environment env;
+    private final MyMailSender myMailSender;
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String TYPE = "Bearer ";
@@ -62,6 +64,7 @@ public class MemberAuthService {
         }
 
         Member saveMember = memberRepository.save(Member.of(joinDto));
+        myMailSender.send("애플링 가족이 되신걸 환영해요!", "<html><h1>애플링 회원 가입에 감사드립니다.</h1></html>", saveMember.getEmail());
         return new JoinVo(saveMember.getName(), saveMember.getNickname(), saveMember.getEmail());
     }
 
@@ -166,6 +169,7 @@ public class MemberAuthService {
             JoinDto joinDto = new JoinDto(email, snsId, info.kakao_account.profile.nickname, info.kakao_account.profile.nickname, null);
             joinDto.passwordEncoder(passwordEncoder);
             member = memberRepository.save(Member.of(joinDto, snsId, SnsJoinType.KAKAO));
+            myMailSender.send("애플링 가족이 되신걸 환영해요!", "<html><h1>애플링 회원 가입에 감사드립니다.</h1></html>", member.getEmail());
         }else{
             member = findMember.get();
         }

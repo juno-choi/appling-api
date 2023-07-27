@@ -12,6 +12,18 @@ spring:
     multipart:
       maxFileSize: 1MB
       maxRequestSize: 1MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ililil9412@gmail.com
+    password: ${google.key:password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 logging:
   pattern:
     console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
