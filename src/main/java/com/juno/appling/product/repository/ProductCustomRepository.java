@@ -2,7 +2,7 @@ package com.juno.appling.product.repository;
 
 import com.juno.appling.config.querydsl.QuerydslConfig;
 import com.juno.appling.product.domain.entity.Category;
-import com.juno.appling.domain.product.entity.QProduct;
+import com.juno.appling.product.domain.entity.QProduct;
 import com.juno.appling.product.domain.enums.Status;
 import com.juno.appling.product.domain.vo.CategoryVo;
 import com.juno.appling.product.domain.vo.ProductVo;

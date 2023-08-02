@@ -1,9 +1,9 @@
 package com.juno.appling.member.controller;
 
 import com.juno.appling.config.base.Api;
+import com.juno.appling.config.base.MessageVo;
 import com.juno.appling.member.domain.dto.PatchMemberDto;
 import com.juno.appling.member.domain.dto.PostRecipientDto;
-import com.juno.appling.config.base.MessageVo;
 import com.juno.appling.member.domain.dto.PostSellerDto;
 import com.juno.appling.member.domain.dto.PutSellerDto;
 import com.juno.appling.member.domain.vo.MemberVo;

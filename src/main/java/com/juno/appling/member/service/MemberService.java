@@ -1,5 +1,6 @@
 package com.juno.appling.member.service;
 
+import com.juno.appling.config.base.MessageVo;
 import com.juno.appling.config.security.TokenProvider;
 import com.juno.appling.member.domain.dto.PatchMemberDto;
 import com.juno.appling.member.domain.dto.PostRecipientDto;
@@ -12,14 +13,13 @@ import com.juno.appling.member.domain.entity.Seller;
 import com.juno.appling.member.domain.enums.MemberApplySellerStatus;
 import com.juno.appling.member.domain.enums.RecipientInfoStatus;
 import com.juno.appling.member.domain.enums.Role;
-import com.juno.appling.config.base.MessageVo;
-import com.juno.appling.member.repository.SellerRepository;
 import com.juno.appling.member.domain.vo.MemberVo;
 import com.juno.appling.member.domain.vo.RecipientListVo;
 import com.juno.appling.member.domain.vo.RecipientVo;
 import com.juno.appling.member.repository.MemberApplySellerRepository;
 import com.juno.appling.member.repository.MemberRepository;
 import com.juno.appling.member.repository.RecipientRepository;
+import com.juno.appling.member.repository.SellerRepository;
 import com.juno.appling.product.domain.vo.SellerVo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

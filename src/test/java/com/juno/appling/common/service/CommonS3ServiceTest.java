@@ -1,10 +1,9 @@
 package com.juno.appling.common.service;
 
 import com.juno.appling.common.domain.vo.UploadVo;
-import com.juno.appling.common.service.CommonS3Service;
 import com.juno.appling.member.domain.dto.LoginDto;
-import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.member.domain.vo.LoginVo;
+import com.juno.appling.member.service.MemberAuthService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;

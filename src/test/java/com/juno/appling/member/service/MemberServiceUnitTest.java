@@ -1,14 +1,12 @@
 package com.juno.appling.member.service;
 
 import com.juno.appling.config.security.TokenProvider;
-import com.juno.appling.domain.member.dto.*;
 import com.juno.appling.member.domain.dto.*;
 import com.juno.appling.member.domain.entity.Member;
 import com.juno.appling.member.domain.entity.Seller;
 import com.juno.appling.member.repository.MemberApplySellerRepository;
 import com.juno.appling.member.repository.MemberRepository;
 import com.juno.appling.member.repository.SellerRepository;
-import com.juno.appling.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

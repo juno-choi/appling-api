@@ -2,7 +2,6 @@ package com.juno.appling.member.service;
 
 import com.juno.appling.BaseTest;
 import com.juno.appling.member.domain.vo.LoginVo;
-import com.juno.appling.member.service.MemberAuthService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
