@@ -1,7 +1,7 @@
 package com.juno.appling.config.security;
 
 import com.github.dockerjava.api.exception.UnauthorizedException;
-import com.juno.appling.domain.member.vo.LoginVo;
+import com.juno.appling.member.domain.vo.LoginVo;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

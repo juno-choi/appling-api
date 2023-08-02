@@ -1,14 +1,14 @@
 package com.juno.appling;
 
-import com.juno.appling.domain.member.dto.JoinDto;
-import com.juno.appling.domain.member.entity.Member;
-import com.juno.appling.domain.member.entity.Seller;
-import com.juno.appling.domain.member.enums.Role;
-import com.juno.appling.domain.member.repository.MemberRepository;
-import com.juno.appling.domain.member.repository.SellerRepository;
-import com.juno.appling.domain.product.entity.Category;
-import com.juno.appling.domain.product.enums.CategoryStatus;
-import com.juno.appling.domain.product.repository.CategoryRepository;
+import com.juno.appling.member.domain.dto.JoinDto;
+import com.juno.appling.member.domain.entity.Member;
+import com.juno.appling.member.domain.entity.Seller;
+import com.juno.appling.member.domain.enums.Role;
+import com.juno.appling.member.repository.MemberRepository;
+import com.juno.appling.member.repository.SellerRepository;
+import com.juno.appling.product.domain.entity.Category;
+import com.juno.appling.product.domain.enums.CategoryStatus;
+import com.juno.appling.product.repository.CategoryRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.parallel.Execution;
