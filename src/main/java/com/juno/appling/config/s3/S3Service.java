@@ -35,6 +35,7 @@ public class S3Service {
 
         for(MultipartFile file : files){
             String originFileName = Optional.ofNullable(file.getOriginalFilename()).orElse("");
+            log.info("[putObject] file name = {}", originFileName);
             String fileExtension = originFileName.substring(originFileName.indexOf('.'));
             String contentType = file.getContentType();
             String makeFileName = String.format("%s%s_%s%s", path, fileName, count, fileExtension);
