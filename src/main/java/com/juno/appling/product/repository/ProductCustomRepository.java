@@ -44,37 +44,7 @@ public class ProductCustomRepository {
         builder.and(product.status.eq(status));
 
         List<ProductVo> content = q.query().select(Projections.constructor(ProductVo.class,
-                    product.id,
-                    product.mainTitle,
-                    product.mainExplanation,
-                    product.productMainExplanation,
-                    product.productSubExplanation,
-                    product.originPrice,
-                    product.price,
-                    product.purchaseInquiry,
-                    product.origin,
-                    product.producer,
-                    product.mainImage,
-                    product.image1,
-                    product.image2,
-                    product.image3,
-                    product.viewCnt,
-                    product.status,
-                    product.createAt,
-                    product.modifiedAt,
-                    Projections.constructor(SellerVo.class,
-                        product.seller.id,
-                        product.seller.email,
-                        product.seller.company,
-                        product.seller.address,
-                        product.seller.tel
-                    ),
-                    Projections.constructor(CategoryVo.class,
-                            product.category.id,
-                            product.category.name,
-                            product.category.createdAt,
-                            product.category.modifiedAt
-                    )
+                    product
                 ))
                 .from(product)
                 .where(builder)
