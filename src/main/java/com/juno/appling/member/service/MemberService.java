@@ -2,24 +2,17 @@ package com.juno.appling.member.service;
 
 import com.juno.appling.config.base.MessageVo;
 import com.juno.appling.config.security.TokenProvider;
-import com.juno.appling.member.domain.dto.PatchMemberDto;
-import com.juno.appling.member.domain.dto.PostRecipientDto;
-import com.juno.appling.member.domain.dto.PostSellerDto;
-import com.juno.appling.member.domain.dto.PutSellerDto;
-import com.juno.appling.member.domain.entity.Member;
-import com.juno.appling.member.domain.entity.MemberApplySeller;
-import com.juno.appling.member.domain.entity.Recipient;
-import com.juno.appling.member.domain.entity.Seller;
+import com.juno.appling.member.domain.dto.*;
+import com.juno.appling.member.domain.entity.*;
+import com.juno.appling.member.domain.enums.IntroduceStatus;
 import com.juno.appling.member.domain.enums.MemberApplySellerStatus;
 import com.juno.appling.member.domain.enums.RecipientInfoStatus;
 import com.juno.appling.member.domain.enums.Role;
+import com.juno.appling.member.domain.vo.IntroduceVo;
 import com.juno.appling.member.domain.vo.MemberVo;
 import com.juno.appling.member.domain.vo.RecipientListVo;
 import com.juno.appling.member.domain.vo.RecipientVo;
-import com.juno.appling.member.repository.MemberApplySellerRepository;
-import com.juno.appling.member.repository.MemberRepository;
-import com.juno.appling.member.repository.RecipientRepository;
-import com.juno.appling.member.repository.SellerRepository;
+import com.juno.appling.member.repository.*;
 import com.juno.appling.product.domain.vo.SellerVo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +37,7 @@ public class MemberService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final RecipientRepository recipientRepository;
     private final SellerRepository sellerRepository;
+    private final IntroduceRepository introduceRepository;
 
     private Member getMember(HttpServletRequest request) {
         Long memberId = tokenProvider.getMemberId(request);
@@ -121,28 +115,32 @@ public class MemberService {
         return new MessageVo("판매자 정보 등록 성공");
     }
 
-    @Transactional
-    public MessageVo putSeller(PutSellerDto putSellerDto, HttpServletRequest request){
+
+    private Seller getSellerByRequest(HttpServletRequest request){
         Long memberId = tokenProvider.getMemberId(request);
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
 
-        Seller seller = sellerRepository.findByMember(member).orElseThrow(() ->
+        return sellerRepository.findByMember(member).orElseThrow(() ->
                 new IllegalArgumentException("유효하지 않은 판매자입니다. 판매자 신청을 먼저 해주세요.")
         );
+    }
 
+    @Transactional
+    public MessageVo putSeller(PutSellerDto putSellerDto, HttpServletRequest request){
+        Seller seller = getSellerByRequest(request);
         seller.put(putSellerDto);
-
         return new MessageVo("판매자 정보 수정 성공");
     }
 
     public SellerVo getSeller(HttpServletRequest request){
-        Long memberId = tokenProvider.getMemberId(request);
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
-
-        Seller seller = sellerRepository.findByMember(member).orElseThrow(() ->
-                new IllegalArgumentException("유효하지 않은 판매자입니다. 판매자 신청을 먼저 해주세요.")
-        );
-
+        Seller seller = getSellerByRequest(request);
         return new SellerVo(seller.getId(), seller.getEmail(), seller.getCompany(), seller.getAddress(), seller.getTel());
+    }
+
+    @Transactional
+    public MessageVo postIntroduce(PostIntroduceDto postIntroduceDto, HttpServletRequest request){
+        Seller seller = getSellerByRequest(request);
+        introduceRepository.save(Introduce.of(seller, postIntroduceDto.getUrl(), IntroduceStatus.USE));
+        return new MessageVo("소개글 등록 성공");
     }
 }
