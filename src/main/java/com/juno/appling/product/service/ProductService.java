@@ -70,7 +70,7 @@ public class ProductService {
             new IllegalArgumentException("유효하지 않은 상품번호 입니다.")
         );
 
-        return new ProductVo(product, new SellerVo(product.getSeller().getId(), product.getSeller().getEmail(), product.getSeller().getCompany(), product.getSeller().getAddress(), product.getSeller().getTel()));
+        return new ProductVo(product);
     }
 
     @Transactional
