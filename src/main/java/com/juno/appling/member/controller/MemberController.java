@@ -2,10 +2,7 @@ package com.juno.appling.member.controller;
 
 import com.juno.appling.config.base.Api;
 import com.juno.appling.config.base.MessageVo;
-import com.juno.appling.member.domain.dto.PatchMemberDto;
-import com.juno.appling.member.domain.dto.PostRecipientDto;
-import com.juno.appling.member.domain.dto.PostSellerDto;
-import com.juno.appling.member.domain.dto.PutSellerDto;
+import com.juno.appling.member.domain.dto.*;
 import com.juno.appling.member.domain.vo.MemberVo;
 import com.juno.appling.member.domain.vo.RecipientListVo;
 import com.juno.appling.member.service.MemberService;
@@ -101,6 +98,16 @@ public class MemberController {
                         .data(memberService.getRecipient(request))
                         .build()
                 );
+    }
+
+    @PostMapping("/seller/introduce")
+    public ResponseEntity<Api<MessageVo>> postIntroduce(@RequestBody @Validated PostIntroduceDto postIntroduceDto, HttpServletRequest request, BindingResult bindingResult){
+        return ResponseEntity.ok(Api.<MessageVo>builder()
+                .code(SUCCESS.code)
+                .message(SUCCESS.message)
+                .data(memberService.postIntroduce(postIntroduceDto, request))
+                .build()
+        );
     }
 
 }
