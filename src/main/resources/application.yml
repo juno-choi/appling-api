@@ -44,10 +44,10 @@ kakao:
 # aws 설정
 cloud:
   s3:
-    bucket: appling-s3
+    bucket: appling-s3-bucket
     access-id: ${s3.id:id}
     secret-key: ${s3.key:key}
-    url: https://appling-s3.s3.ap-northeast-2.amazonaws.com
+    url: https://appling-s3-bucket.s3.ap-northeast-2.amazonaws.com
 
 # echo 'spring-boot-security-jwt-juno-spring-boot-security-jwt-juno-appling' | base64
 jwt:
