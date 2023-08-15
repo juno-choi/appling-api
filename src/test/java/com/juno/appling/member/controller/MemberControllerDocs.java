@@ -333,7 +333,7 @@ class MemberControllerDocs extends ControllerBaseTest {
         LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
         LoginVo loginVo = memberAuthService.login(loginDto);
 
-        PostIntroduceDto postIntroduceDto = new PostIntroduceDto("https://www.s3.com/test.html");
+        PostIntroduceDto postIntroduceDto = new PostIntroduceDto("제목", "https://www.s3.com/test.html");
         //when
         ResultActions resultActions = mock.perform(
                 post(PREFIX + "/seller/introduce")
@@ -347,6 +347,10 @@ class MemberControllerDocs extends ControllerBaseTest {
         resultActions.andDo(docs.document(
                 requestHeaders(
                         headerWithName(AUTHORIZATION).description("access token")
+                ),
+                requestFields(
+                        fieldWithPath("subject").type(JsonFieldType.STRING).description("제목"),
+                        fieldWithPath("url").type(JsonFieldType.STRING).description("url")
                 ),
                 responseFields(
                         fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),

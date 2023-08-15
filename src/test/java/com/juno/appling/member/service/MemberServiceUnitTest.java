@@ -166,7 +166,7 @@ class MemberServiceUnitTest {
     @DisplayName("회원이 존재하지 않을경우 소개 등록에 실패")
     void postIntroduceFail1(){
         // given
-        PostIntroduceDto postIntroduceDto = new PostIntroduceDto("https://s3.com/html/test1.html");
+        PostIntroduceDto postIntroduceDto = new PostIntroduceDto("제목", "https://s3.com/html/test1.html");
         // when
         Throwable throwable = catchThrowable(() -> memberService.postIntroduce(postIntroduceDto, request));
         // then
@@ -182,7 +182,7 @@ class MemberServiceUnitTest {
         JoinDto joinDto = new JoinDto("join@mail.com", "password", "name", "nick", "19941030");
         Member member = Member.of(joinDto);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
-        PostIntroduceDto postIntroduceDto = new PostIntroduceDto("https://s3.com/html/test1.html");
+        PostIntroduceDto postIntroduceDto = new PostIntroduceDto("제목", "https://s3.com/html/test1.html");
         // when
         Throwable throwable = catchThrowable(() -> memberService.postIntroduce(postIntroduceDto, request));
         // then

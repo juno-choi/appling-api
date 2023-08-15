@@ -8,7 +8,6 @@ import com.juno.appling.member.domain.enums.IntroduceStatus;
 import com.juno.appling.member.domain.enums.MemberApplySellerStatus;
 import com.juno.appling.member.domain.enums.RecipientInfoStatus;
 import com.juno.appling.member.domain.enums.Role;
-import com.juno.appling.member.domain.vo.IntroduceVo;
 import com.juno.appling.member.domain.vo.MemberVo;
 import com.juno.appling.member.domain.vo.RecipientListVo;
 import com.juno.appling.member.domain.vo.RecipientVo;
@@ -140,7 +139,7 @@ public class MemberService {
     @Transactional
     public MessageVo postIntroduce(PostIntroduceDto postIntroduceDto, HttpServletRequest request){
         Seller seller = getSellerByRequest(request);
-        introduceRepository.save(Introduce.of(seller, postIntroduceDto.getUrl(), IntroduceStatus.USE));
+        introduceRepository.save(Introduce.of(seller, postIntroduceDto.getSubject(), postIntroduceDto.getUrl(), IntroduceStatus.USE));
         return new MessageVo("소개글 등록 성공");
     }
 }
