@@ -2,14 +2,17 @@ package com.juno.appling.member.controller;
 
 import com.juno.appling.ControllerBaseTest;
 import com.juno.appling.config.base.ResultCode;
+import com.juno.appling.config.s3.S3Service;
 import com.juno.appling.member.domain.dto.*;
 import com.juno.appling.member.domain.entity.Member;
 import com.juno.appling.member.domain.entity.Recipient;
 import com.juno.appling.member.domain.enums.RecipientInfoStatus;
 import com.juno.appling.member.domain.enums.Role;
 import com.juno.appling.member.domain.vo.LoginVo;
+import com.juno.appling.member.repository.IntroduceRepository;
 import com.juno.appling.member.repository.MemberRepository;
 import com.juno.appling.member.repository.RecipientRepository;
+import com.juno.appling.member.repository.SellerRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.member.service.MemberService;
 import org.assertj.core.api.Assertions;
@@ -17,6 +20,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -46,6 +52,13 @@ class MemberControllerDocs extends ControllerBaseTest {
     private MemberService memberService;
     @Autowired
     private RecipientRepository recipientRepository;
+
+    @Autowired
+    private IntroduceRepository introduceRepository;
+    @Autowired
+    private SellerRepository sellerRepository;
+    @MockBean
+    private S3Service s3Service;
 
     private final static String PREFIX = "/api/member";
     private final static String EMAIL = "juno@member.com";
@@ -356,6 +369,42 @@ class MemberControllerDocs extends ControllerBaseTest {
                         fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
                         fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
                         fieldWithPath("data.message").type(JsonFieldType.STRING).description("등록 결과 메세지")
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName(PREFIX+"/seller/introduce (GET)")
+    @Transactional
+    void getSellerIntroduce() throws Exception{
+        //given
+        LoginDto loginDto = new LoginDto(SELLER2_EMAIL, PASSWORD);
+        LoginVo loginVo = memberAuthService.login(loginDto);
+        given(s3Service.getObject(anyString(), anyString())).willReturn("<!doctype html>\n" +
+                "<html>\n" +
+                "\n" +
+                "<head>\n" +
+                "\t<title>appling</title>\n" +
+                "</head>\n" +
+                "\n" +
+                "<body>\n" +
+                "\t<H2>example 1-2</H2>\n" +
+                "\t<HR>\n" +
+                "\texample 1-2\n" +
+                "</body>\n" +
+                "\n" +
+                "</html>");
+        //when
+        ResultActions resultActions = mock.perform(
+                get(PREFIX + "/seller/introduce")
+                        .header(AUTHORIZATION, "Bearer "+ loginVo.accessToken())
+        );
+        //then
+        resultActions.andExpect(status().is2xxSuccessful());
+
+        resultActions.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token")
                 )
         ));
     }

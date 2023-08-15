@@ -152,9 +152,8 @@ public class MemberService {
         Introduce introduce = introduceRepository.findBySeller(seller).orElseThrow(() -> new IllegalArgumentException("소개 페이지를 먼저 등록해주세요."));
 
         String url = introduce.getUrl();
-        url = url.substring(url.indexOf("s3.ap-northeast-2.amazonaws.com") + "s3.ap-northeast-2.amazonaws.com".length());
+        url = url.substring(url.indexOf("s3.ap-northeast-2.amazonaws.com") + "s3.ap-northeast-2.amazonaws.com".length()+1);
         String bucket = env.getProperty("cloud.s3.bucket");
-
 
         return s3Service.getObject(url, bucket);
     }
