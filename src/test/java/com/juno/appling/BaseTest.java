@@ -1,9 +1,12 @@
 package com.juno.appling;
 
 import com.juno.appling.member.domain.dto.JoinDto;
+import com.juno.appling.member.domain.entity.Introduce;
 import com.juno.appling.member.domain.entity.Member;
 import com.juno.appling.member.domain.entity.Seller;
+import com.juno.appling.member.domain.enums.IntroduceStatus;
 import com.juno.appling.member.domain.enums.Role;
+import com.juno.appling.member.repository.IntroduceRepository;
 import com.juno.appling.member.repository.MemberRepository;
 import com.juno.appling.member.repository.SellerRepository;
 import com.juno.appling.product.domain.entity.Category;
@@ -47,6 +50,9 @@ public class BaseTest {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private IntroduceRepository introduceRepository;
+
     @Transactional
     @BeforeAll
     void setUp(){
@@ -65,11 +71,12 @@ public class BaseTest {
                      */
                     if(saveMember.getEmail().equals(SELLER_EMAIL)){
                         saveMember.patchMemberRole(Role.SELLER);
-                        sellerRepository.save(Seller.of(saveMember, "애플링", "01012344321", "강원도 평창군 장미산길 126", "email@mail.com"));
+                        Seller seller = sellerRepository.save(Seller.of(saveMember, "애플링", "01012344321", "강원도 평창군 장미산길 126", "email@mail.com"));
                     }
                     if(saveMember.getEmail().equals(SELLER2_EMAIL)){
                         saveMember.patchMemberRole(Role.SELLER);
-                        sellerRepository.save(Seller.of(saveMember, "자연농원", "01012344321", "강원도 평창군 장미산길 126", "email@mail.com"));
+                        Seller seller = sellerRepository.save(Seller.of(saveMember, "자연농원", "01012344321", "강원도 평창군 장미산길 126", "email@mail.com"));
+                        introduceRepository.save(Introduce.of(seller, "장미산길", "https://appling-s3-bucket.s3.ap-northeast-2.amazonaws.com/html/1/20230815/184934_0.html", IntroduceStatus.USE));
                     }
                 }
             }

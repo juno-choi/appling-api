@@ -20,6 +20,7 @@ public class Introduce {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
+    private String subject;
     private String url;
 
     @Enumerated(EnumType.STRING)
@@ -28,17 +29,18 @@ public class Introduce {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Introduce(Seller seller, String url, IntroduceStatus status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    private Introduce(Seller seller, String subject, String url, IntroduceStatus status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.seller = seller;
+        this.subject = subject;
         this.url = url;
         this.status = status;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
 
-    public static Introduce of(Seller seller, String url, IntroduceStatus status){
+    public static Introduce of(Seller seller, String subject, String url, IntroduceStatus status){
         LocalDateTime now = LocalDateTime.now();
-        return new Introduce(seller, url, status, now, now);
+        return new Introduce(seller, subject, url, status, now, now);
     }
 
 }

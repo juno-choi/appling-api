@@ -7,12 +7,13 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectResponse;
+import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -63,5 +64,25 @@ public class S3Service {
             count++;
         }
         return list;
+    }
+
+    public String getObject(String path, String bucketName) {
+        try {
+            GetObjectRequest objectRequest =
+                    GetObjectRequest.builder()
+                            .key(path)
+                            .bucket(bucketName)
+                            .build();
+            ResponseBytes<GetObjectResponse> response = s3Client.getObjectAsBytes(objectRequest);
+            // String text = new String(response.asByteArray(), StandardCharsets.UTF_8);
+            // log.debug("-------- 파일 내용 --------");
+            // log.debug(text);
+            // log.debug("-------- 파일 내용 --------");
+            return new String(response.asByteArray(), StandardCharsets.UTF_8);
+        }catch (S3Exception ae){
+            log.error("AWS와 통신에 문제가 발생했습니다.");
+            log.error(ae.getMessage());
+            throw new RuntimeException(ae.getMessage());
+        }
     }
 }

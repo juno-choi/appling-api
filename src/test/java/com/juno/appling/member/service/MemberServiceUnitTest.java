@@ -1,9 +1,13 @@
 package com.juno.appling.member.service;
 
+import com.juno.appling.config.s3.S3Service;
 import com.juno.appling.config.security.TokenProvider;
 import com.juno.appling.member.domain.dto.*;
+import com.juno.appling.member.domain.entity.Introduce;
 import com.juno.appling.member.domain.entity.Member;
 import com.juno.appling.member.domain.entity.Seller;
+import com.juno.appling.member.domain.enums.IntroduceStatus;
+import com.juno.appling.member.repository.IntroduceRepository;
 import com.juno.appling.member.repository.MemberApplySellerRepository;
 import com.juno.appling.member.repository.MemberRepository;
 import com.juno.appling.member.repository.SellerRepository;
@@ -14,14 +18,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.env.Environment;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
 
@@ -38,6 +42,13 @@ class MemberServiceUnitTest {
     private TokenProvider tokenProvider;
     @Mock
     private SellerRepository sellerRepository;
+
+    @Mock
+    private S3Service s3Service;
+    @Mock
+    private Environment env;
+    @Mock
+    private IntroduceRepository introduceRepository;
 
     HttpServletRequest request = new MockHttpServletRequest();
 
@@ -166,7 +177,7 @@ class MemberServiceUnitTest {
     @DisplayName("회원이 존재하지 않을경우 소개 등록에 실패")
     void postIntroduceFail1(){
         // given
-        PostIntroduceDto postIntroduceDto = new PostIntroduceDto("https://s3.com/html/test1.html");
+        PostIntroduceDto postIntroduceDto = new PostIntroduceDto("제목", "https://s3.com/html/test1.html");
         // when
         Throwable throwable = catchThrowable(() -> memberService.postIntroduce(postIntroduceDto, request));
         // then
@@ -182,12 +193,50 @@ class MemberServiceUnitTest {
         JoinDto joinDto = new JoinDto("join@mail.com", "password", "name", "nick", "19941030");
         Member member = Member.of(joinDto);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
-        PostIntroduceDto postIntroduceDto = new PostIntroduceDto("https://s3.com/html/test1.html");
+        PostIntroduceDto postIntroduceDto = new PostIntroduceDto("제목", "https://s3.com/html/test1.html");
         // when
         Throwable throwable = catchThrowable(() -> memberService.postIntroduce(postIntroduceDto, request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유효하지 않은 판매자");
+    }
+
+
+    @Test
+    @DisplayName("소개 페이지를 등록하지 않았을땐 소개글 불러오기 실패")
+    void getIntroduceFail1(){
+        // given
+        given(tokenProvider.getMemberId(request)).willReturn(0L);
+        JoinDto joinDto = new JoinDto("join@mail.com", "password", "name", "nick", "19941030");
+        Member member = Member.of(joinDto);
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        given(sellerRepository.findByMember(any())).willReturn(Optional.of(Seller.of(member, "", "", "", "")));
+        // when
+        Throwable throwable = catchThrowable(() -> memberService.getIntroduce(request));
+        // then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("소개 페이지를 먼저 등록");
+    }
+
+    @Test
+    @DisplayName("소개 페이지 불러오기 성공")
+    void getIntroduceFail2(){
+        // given
+        JoinDto joinDto = new JoinDto("join@mail.com", "password", "name", "nick", "19941030");
+        String html = "<html></html>";
+        Member member = Member.of(joinDto);
+        Seller seller = Seller.of(member, "", "", "", "");
+
+        given(tokenProvider.getMemberId(request)).willReturn(0L);
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        given(sellerRepository.findByMember(any())).willReturn(Optional.of(seller));
+        given(introduceRepository.findBySeller(any())).willReturn(Optional.of(Introduce.of(seller, "subject", "https://appling-s3-bucket.s3.ap-northeast-2.amazonaws.com/html/1/20230815/172623_0.html", IntroduceStatus.USE)));
+        given(env.getProperty(eq("cloud.s3.bucket"))).willReturn("s3-bucket");
+        given(s3Service.getObject(anyString(), anyString())).willReturn(html);
+        // when
+        String introduce = memberService.getIntroduce(request);
+        // then
+        assertThat(introduce).isEqualTo(html);
     }
 
 }
