@@ -1,6 +1,7 @@
 package com.juno.appling.member.service;
 
 import com.juno.appling.config.base.MessageVo;
+import com.juno.appling.config.s3.S3Service;
 import com.juno.appling.config.security.TokenProvider;
 import com.juno.appling.member.domain.dto.*;
 import com.juno.appling.member.domain.entity.*;
@@ -16,6 +17,7 @@ import com.juno.appling.product.domain.vo.SellerVo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +39,8 @@ public class MemberService {
     private final RecipientRepository recipientRepository;
     private final SellerRepository sellerRepository;
     private final IntroduceRepository introduceRepository;
+    private final Environment env;
+    private final S3Service s3Service;
 
     private Member getMember(HttpServletRequest request) {
         Long memberId = tokenProvider.getMemberId(request);
@@ -141,5 +145,17 @@ public class MemberService {
         Seller seller = getSellerByRequest(request);
         introduceRepository.save(Introduce.of(seller, postIntroduceDto.getSubject(), postIntroduceDto.getUrl(), IntroduceStatus.USE));
         return new MessageVo("소개글 등록 성공");
+    }
+
+    public String getIntroduce(HttpServletRequest request) {
+        Seller seller = getSellerByRequest(request);
+        Introduce introduce = introduceRepository.findBySeller(seller).orElseThrow(() -> new IllegalArgumentException("소개 페이지를 먼저 등록해주세요."));
+
+        String url = introduce.getUrl();
+        url = url.substring(url.indexOf("s3.ap-northeast-2.amazonaws.com") + "s3.ap-northeast-2.amazonaws.com".length());
+        String bucket = env.getProperty("cloud.s3.bucket");
+
+
+        return s3Service.getObject(url, bucket);
     }
 }

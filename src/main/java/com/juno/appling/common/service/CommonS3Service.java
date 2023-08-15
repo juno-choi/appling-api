@@ -44,4 +44,6 @@ public class CommonS3Service {
 
         return s3Service.putObject(String.format(pathFormat, memberId, path), fileName, files);
     }
+
+
 }
