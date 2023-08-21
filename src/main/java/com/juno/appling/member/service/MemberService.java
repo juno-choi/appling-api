@@ -118,7 +118,7 @@ public class MemberService {
         }
 
 
-        Seller seller = Seller.of(member, postSellerDto.getCompany(), postSellerDto.getTel(), postSellerDto.getAddress(), postSellerDto.getEmail());
+        Seller seller = Seller.of(member, postSellerDto.getCompany(), postSellerDto.getTel(), postSellerDto.getZonecode(), postSellerDto.getAddress(), postSellerDto.getEmail());
         sellerRepository.save(seller);
 
         // 임시적 승인 절차
@@ -147,7 +147,7 @@ public class MemberService {
 
     public SellerVo getSeller(HttpServletRequest request){
         Seller seller = getSellerByRequest(request);
-        return new SellerVo(seller.getId(), seller.getEmail(), seller.getCompany(), seller.getAddress(), seller.getTel());
+        return new SellerVo(seller.getId(), seller.getEmail(), seller.getCompany(), seller.getZonecode(), seller.getAddress(), seller.getTel());
     }
 
     @Transactional

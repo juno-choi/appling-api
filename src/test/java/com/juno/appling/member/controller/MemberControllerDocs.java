@@ -108,7 +108,7 @@ class MemberControllerDocs extends ControllerBaseTest {
         LoginDto loginDto = new LoginDto(EMAIL, PASSWORD);
         LoginVo loginVo = memberAuthService.login(loginDto);
 
-        PostSellerDto postSellerDto = new PostSellerDto("판매자 이름", "010-1234-4312", "강원도 평창군 대화면 장미산길", "mail@mail.com");
+        PostSellerDto postSellerDto = new PostSellerDto("판매자 이름", "010-1234-4312", "1234", "강원도 평창군 대화면 장미산길", "mail@mail.com");
         //when
         ResultActions resultActions = mock.perform(
                 post(PREFIX+"/seller")
@@ -128,6 +128,7 @@ class MemberControllerDocs extends ControllerBaseTest {
                 requestFields(
                         fieldWithPath("company").type(JsonFieldType.STRING).description("회사명"),
                         fieldWithPath("tel").type(JsonFieldType.STRING).description("회사 연락처"),
+                        fieldWithPath("zonecode").type(JsonFieldType.STRING).description("우편 주소"),
                         fieldWithPath("address").type(JsonFieldType.STRING).description("회사 주소"),
                         fieldWithPath("email").type(JsonFieldType.STRING).description("회사 이메일").optional()
                 ),
@@ -146,7 +147,7 @@ class MemberControllerDocs extends ControllerBaseTest {
         LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
         LoginVo loginVo = memberAuthService.login(loginDto);
 
-        PutSellerDto putSellerDto = new PutSellerDto("변경된 판매자 이름", "010-1234-4312", "강원도 평창군 대화면 장미산길", "mail@mail.com");
+        PutSellerDto putSellerDto = new PutSellerDto("변경된 판매자 이름", "010-1234-4312", "1234", "강원도 평창군 대화면 장미산길", "mail@mail.com");
         //when
         ResultActions resultActions = mock.perform(
                 put(PREFIX+"/seller")
@@ -166,6 +167,7 @@ class MemberControllerDocs extends ControllerBaseTest {
                 requestFields(
                         fieldWithPath("company").type(JsonFieldType.STRING).description("회사명"),
                         fieldWithPath("tel").type(JsonFieldType.STRING).description("회사 연락처"),
+                        fieldWithPath("zonecode").type(JsonFieldType.STRING).description("우편 주소"),
                         fieldWithPath("address").type(JsonFieldType.STRING).description("회사 주소"),
                         fieldWithPath("email").type(JsonFieldType.STRING).description("회사 이메일").optional()
                 ),
@@ -204,6 +206,7 @@ class MemberControllerDocs extends ControllerBaseTest {
                         fieldWithPath("data.seller_id").type(JsonFieldType.NUMBER).description("seller id"),
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("email"),
                         fieldWithPath("data.company").type(JsonFieldType.STRING).description("회사명"),
+                        fieldWithPath("data.zonecode").type(JsonFieldType.STRING).description("우편 주소"),
                         fieldWithPath("data.address").type(JsonFieldType.STRING).description("회사 주소"),
                         fieldWithPath("data.tel").type(JsonFieldType.STRING).description("회사 연락처")
                 )

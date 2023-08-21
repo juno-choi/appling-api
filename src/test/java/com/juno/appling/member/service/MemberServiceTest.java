@@ -105,7 +105,7 @@ public class MemberServiceTest extends BaseTest {
         request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
 
         String changeCompany = "변경 회사명";
-        PutSellerDto putSellerDto = new PutSellerDto(changeCompany, "01012341234", "변경된 주소", "mail@mail.com");
+        PutSellerDto putSellerDto = new PutSellerDto(changeCompany, "01012341234", "4321", "변경된 주소", "mail@mail.com");
         // when
         MessageVo messageVo = memberService.putSeller(putSellerDto, request);
         // then

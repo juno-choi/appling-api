@@ -105,13 +105,13 @@ class MemberServiceUnitTest {
     @DisplayName("이미 판매자 정보를 등록한 경우 등록에 실패")
     void postSellerFail2(){
         // given
-        PostSellerDto sellerDto = new PostSellerDto("회사명", "010-1234-4321", "회사 주소", "email@mail.com");
+        PostSellerDto sellerDto = new PostSellerDto("회사명", "010-1234-4321", "1234", "회사 주소", "email@mail.com");
         given(tokenProvider.getMemberId(request)).willReturn(0L);
         JoinDto joinDto = new JoinDto("join@mail.com", "password", "name", "nick", "19941030");
         Member member = Member.of(joinDto);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
 
-        given(sellerRepository.findByMember(any())).willReturn(Optional.of(Seller.of(member, "회사명", "010-1234-1233", "회사 주소", "email@mail.com")));
+        given(sellerRepository.findByMember(any())).willReturn(Optional.of(Seller.of(member, "회사명", "010-1234-1233",  "1234","회사 주소", "email@mail.com")));
         // when
         Throwable throwable = catchThrowable(() -> memberService.postSeller(sellerDto, request));
         // then
@@ -210,7 +210,7 @@ class MemberServiceUnitTest {
         JoinDto joinDto = new JoinDto("join@mail.com", "password", "name", "nick", "19941030");
         Member member = Member.of(joinDto);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
-        given(sellerRepository.findByMember(any())).willReturn(Optional.of(Seller.of(member, "", "", "", "")));
+        given(sellerRepository.findByMember(any())).willReturn(Optional.of(Seller.of(member, "", "", "", "", "")));
         // when
         Throwable throwable = catchThrowable(() -> memberService.getIntroduce(request));
         // then
@@ -225,7 +225,7 @@ class MemberServiceUnitTest {
         JoinDto joinDto = new JoinDto("join@mail.com", "password", "name", "nick", "19941030");
         String html = "<html></html>";
         Member member = Member.of(joinDto);
-        Seller seller = Seller.of(member, "", "", "", "");
+        Seller seller = Seller.of(member, "", "", "", "", "");
 
         given(tokenProvider.getMemberId(request)).willReturn(0L);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
