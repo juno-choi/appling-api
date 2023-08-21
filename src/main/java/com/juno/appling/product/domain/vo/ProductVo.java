@@ -33,7 +33,7 @@ public record ProductVo(Long id, String mainTitle, String mainExplanation, Strin
                 product.getStatus(),
                 product.getCreateAt(),
                 product.getModifiedAt(),
-                new SellerVo(product.getSeller().getId(), product.getSeller().getEmail(), product.getSeller().getCompany(), product.getSeller().getAddress(), product.getSeller().getTel()),
+                new SellerVo(product.getSeller().getId(), product.getSeller().getEmail(), product.getSeller().getCompany(), product.getSeller().getZonecode(), product.getSeller().getAddress(), product.getSeller().getTel()),
                 new CategoryVo(product.getCategory().getId(), product.getCategory().getName(), product.getCategory().getCreatedAt(), product.getCategory().getModifiedAt())
         );
     }

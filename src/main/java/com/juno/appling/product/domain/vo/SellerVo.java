@@ -11,6 +11,7 @@ public record SellerVo(
         @NotNull Long sellerId,
         @NotNull String email,
         @NotNull String company,
+        @NotNull String zonecode,
         @NotNull String address,
         @NotNull String tel
 ) {}

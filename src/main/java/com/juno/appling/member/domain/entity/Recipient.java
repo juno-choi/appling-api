@@ -1,5 +1,6 @@
 package com.juno.appling.member.domain.entity;
 
+import com.juno.appling.member.domain.dto.PostRecipientDto;
 import com.juno.appling.member.domain.enums.RecipientInfoStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -26,6 +27,8 @@ public class Recipient {
     @NotNull
     private String address;
     @NotNull
+    private String zonecode;
+    @NotNull
     private String tel;
 
     @Enumerated(EnumType.STRING)
@@ -34,9 +37,10 @@ public class Recipient {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Recipient(Member member, @NotNull String name, @NotNull String address, @NotNull String tel, RecipientInfoStatus status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    private Recipient(Member member, @NotNull String name, @NotNull String zonecode, @NotNull String address, @NotNull String tel, RecipientInfoStatus status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.member = member;
         this.name = name;
+        this.zonecode = zonecode;
         this.address = address;
         this.tel = tel;
         this.status = status;
@@ -44,9 +48,17 @@ public class Recipient {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Recipient of(Member member, @NotNull String name, @NotNull String address, @NotNull String tel, RecipientInfoStatus status){
+    public static Recipient of(Member member, @NotNull String name, @NotNull String zonecode, @NotNull String address, @NotNull String tel, RecipientInfoStatus status){
         tel = tel.replaceAll("-", "");
         LocalDateTime now = LocalDateTime.now();
-        return new Recipient(member, name, address, tel, status, now, now);
+        return new Recipient(member, name, zonecode, address, tel, status, now, now);
+    }
+
+    public void put(PostRecipientDto postRecipientDtoInfo) {
+        this.name = postRecipientDtoInfo.getName();
+        this.zonecode = postRecipientDtoInfo.getZonecode();
+        this.address = postRecipientDtoInfo.getAddress();
+        this.tel = postRecipientDtoInfo.getTel();
+        this.modifiedAt = LocalDateTime.now();
     }
 }

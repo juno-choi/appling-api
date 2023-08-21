@@ -29,6 +29,8 @@ public class Seller {
     @NotNull(message = "tel 비어있을 수 없습니다.")
     @Column(length = 11)
     private String tel;
+    @NotNull(message = "zonecode 비어있을 수 없습니다.")
+    private String zonecode;
     @NotNull(message = "address 비어있을 수 없습니다.")
     private String address;
     @Email(message = "email 형식을 맞춰주세요.")
@@ -38,20 +40,21 @@ public class Seller {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Seller(Member member, @NotNull(message = "company 비어있을 수 없습니다.") String company, @NotNull(message = "tel 비어있을 수 없습니다.") String tel, @NotNull(message = "address 비어있을 수 없습니다.") String address, @NotNull(message = "email 비어있을 수 없습니다.") String email, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    private Seller(Member member, @NotNull(message = "company 비어있을 수 없습니다.") String company, @NotNull(message = "tel 비어있을 수 없습니다.") String tel, @NotNull(message = "zonecode 비어있을 수 없습니다.") String zonecode, @NotNull(message = "address 비어있을 수 없습니다.") String address, @NotNull(message = "email 비어있을 수 없습니다.") String email, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.member = member;
         this.company = company;
         this.tel = tel;
+        this.zonecode = zonecode;
         this.address = address;
         this.email = email;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
 
-    public static Seller of(Member member, @NotNull(message = "company 비어있을 수 없습니다.") String company, @NotNull(message = "tel 비어있을 수 없습니다.") String tel, @NotNull(message = "address 비어있을 수 없습니다.") String address, @NotNull(message = "email 비어있을 수 없습니다.") String email){
+    public static Seller of(Member member, @NotNull(message = "company 비어있을 수 없습니다.") String company, @NotNull(message = "tel 비어있을 수 없습니다.") String tel, @NotNull(message = "zonecode 비어있을 수 없습니다.") String zonecode, @NotNull(message = "address 비어있을 수 없습니다.") String address, @NotNull(message = "email 비어있을 수 없습니다.") String email){
         LocalDateTime now = LocalDateTime.now();
         tel = tel.replaceAll("-", "");
-        return new Seller(member, company, tel, address, email, now, now);
+        return new Seller(member, company, tel, zonecode, address, email, now, now);
     }
 
     public void put(PutSellerDto dto){
@@ -61,6 +64,7 @@ public class Seller {
         this.company = dto.getCompany();
         this.tel = tel;
         this.email = dto.getEmail();
+        this.zonecode = dto.getZonecode();
         this.address = dto.getAddress();
     }
 }
