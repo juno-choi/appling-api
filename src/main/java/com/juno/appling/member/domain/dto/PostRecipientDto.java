@@ -13,6 +13,8 @@ import lombok.Setter;
 public class PostRecipientDto {
     @NotNull(message = "name 비어있을 수 없습니다.")
     private String name;
+    @NotNull(message = "zonecode 비어있을 수 없습니다.")
+    private String zonecode;
     @NotNull(message = "address 비어있을 수 없습니다.")
     private String address;
     @NotNull(message = "tel 비어있을 수 없습니다.")

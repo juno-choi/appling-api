@@ -80,7 +80,8 @@ public class MemberService {
     @Transactional
     public MessageVo postRecipient(PostRecipientDto postRecipientDtoInfo, HttpServletRequest request){
         Member member = getMember(request);
-        recipientRepository.save(Recipient.of(member, postRecipientDtoInfo.getName(), postRecipientDtoInfo.getAddress(), postRecipientDtoInfo.getTel(), RecipientInfoStatus.NORMAL));
+        recipientRepository.save(Recipient.of(member, postRecipientDtoInfo.getName(), postRecipientDtoInfo.getZonecode(), postRecipientDtoInfo.getAddress(), postRecipientDtoInfo.getTel(), RecipientInfoStatus.NORMAL));
+
         return new MessageVo("수령인 정보 등록 성공");
     }
 
@@ -90,10 +91,19 @@ public class MemberService {
         List<Recipient> recipientList = member.getRecipientList();
         List<RecipientVo> list = new LinkedList<>();
 
-        for(Recipient r : recipientList){
-            list.add(new RecipientVo(r.getId(), r.getName(), r.getAddress(), r.getTel(), r.getStatus(), r.getCreatedAt(), r.getModifiedAt()));
+        recipientList.sort((r1, r2) -> {
+            if(r1.getModifiedAt().isAfter(r2.getModifiedAt())){
+                return -1;
+            }
+            return 1;
+        });
+
+
+        if(!recipientList.isEmpty()){
+            Recipient r = recipientList.get(0);
+            list.add(new RecipientVo(r.getId(), r.getName(), r.getZonecode(), r.getAddress(), r.getTel(), r.getStatus(), r.getCreatedAt(), r.getModifiedAt()));
         }
-        Collections.reverse(list);
+
         return new RecipientListVo(list);
     }
 
