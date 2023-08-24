@@ -42,6 +42,7 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith({MockitoExtension.class})
 class MemberAuthServiceUnitTest {
+
     @InjectMocks
     private MemberAuthService memberAuthService;
 
@@ -74,7 +75,7 @@ class MemberAuthServiceUnitTest {
     private final String TYPE = "Bearer";
 
     @BeforeAll
-    static void setUp() throws Exception{
+    static void setUp() throws Exception {
         mockWebServer = new MockWebServer();
         mockWebServer.start();
     }
@@ -86,40 +87,44 @@ class MemberAuthServiceUnitTest {
 
     @BeforeEach
     void initialize() {
-        String baseUrl = String.format("http://localhost:%s",mockWebServer.getPort());
+        String baseUrl = String.format("http://localhost:%s", mockWebServer.getPort());
         final WebClient webClient = WebClient.create(baseUrl);
         memberAuthService = new MemberAuthService(
-                memberRepository, passwordEncoder, authenticationManagerBuilder, tokenProvider, redisTemplate, webClient, webClient, env, myMailSender
+            memberRepository, passwordEncoder, authenticationManagerBuilder, tokenProvider,
+            redisTemplate, webClient, webClient, env, myMailSender
         );
     }
 
     @Test
     @DisplayName("이미 가입한 회원은 회원 가입 불가")
-    void joinFail1(){
+    void joinFail1() {
         //given
         JoinDto joinDto = new JoinDto("join-1@mail.com", "password", "최준호", "닉네임", "1999-10-30");
-        given(memberRepository.findByEmail(anyString())).willReturn(Optional.of(Member.of(joinDto)));
+        given(memberRepository.findByEmail(anyString())).willReturn(
+            Optional.of(Member.of(joinDto)));
         //when
         Throwable throwable = catchThrowable(() -> memberAuthService.join(joinDto));
         //then
-        assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("이미 존재하는 회원");
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("이미 존재하는 회원");
     }
 
     @Test
     @DisplayName("유효하지 않은 토큰은 refresh 실패")
-    void refreshFail1(){
+    void refreshFail1() {
         //given
         String refreshToken = "refresh";
         given(tokenProvider.validateToken(anyString())).willReturn(false);
         //when
         Throwable throwable = catchThrowable(() -> memberAuthService.refresh(refreshToken));
         //then
-        assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("유효하지 않은 토큰");
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("유효하지 않은 토큰");
     }
 
     @Test
     @DisplayName("유효하지 않은 회원은 refresh 실패")
-    void refreshFail2(){
+    void refreshFail2() {
         //given
         String refreshToken = "refresh";
         given(tokenProvider.validateToken(anyString())).willReturn(true);
@@ -131,7 +136,8 @@ class MemberAuthServiceUnitTest {
         //when
         Throwable throwable = catchThrowable(() -> memberAuthService.refresh(refreshToken));
         //then
-        assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("유효하지 않은 회원");
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("유효하지 않은 회원");
     }
 
     @Test
@@ -140,12 +146,14 @@ class MemberAuthServiceUnitTest {
         //given
         given(env.getProperty(eq("kakao.client-id"))).willReturn("kakao client id");
         KakaoLoginResponseDto dto = KakaoLoginResponseDto.builder()
-                .access_token("access token")
-                .expires_in(1L)
-                .refresh_token("refresh token")
-                .refresh_token_expires_in(2L)
-                .build();
-        mockWebServer.enqueue(new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON).setBody(objectMapper.writeValueAsString(dto)));
+            .access_token("access token")
+            .expires_in(1L)
+            .refresh_token("refresh token")
+            .refresh_token_expires_in(2L)
+            .build();
+        mockWebServer.enqueue(
+            new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .setBody(objectMapper.writeValueAsString(dto)));
         //when
         LoginVo kakaoLoginToken = memberAuthService.authKakao("kakao login code");
         //then
@@ -158,46 +166,53 @@ class MemberAuthServiceUnitTest {
     void kakaoLoginFail1() throws Exception {
         //given
         String kakaoReturnString = "{\n" +
-                "    \"id\": 2727704352,\n" +
-                "    \"connected_at\": \"2023-03-29T23:31:57Z\",\n" +
-                "    \"properties\": {\n" +
-                "        \"nickname\": \"최준호\",\n" +
-                "        \"profile_image\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_640x640.jpg\",\n" +
-                "        \"thumbnail_image\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_110x110.jpg\"\n" +
-                "    },\n" +
-                "    \"kakao_account\": {\n" +
-                "        \"profile_nickname_needs_agreement\": false,\n" +
-                "        \"profile_image_needs_agreement\": false,\n" +
-                "        \"profile\": {\n" +
-                "            \"nickname\": \"최준호\",\n" +
-                "            \"thumbnail_image_url\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_110x110.jpg\",\n" +
-                "            \"profile_image_url\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_640x640.jpg\",\n" +
-                "            \"is_default_image\": false\n" +
-                "        },\n" +
-                "        \"has_email\": false,\n" +
-                "        \"email_needs_agreement\": false,\n" +
-                "        \"is_email_valid\": true,\n" +
-                "        \"is_email_verified\": true,\n" +
-                "        \"email\": \"ililil9482@naver.com\",\n" +
-                "        \"has_age_range\": true,\n" +
-                "        \"age_range_needs_agreement\": false,\n" +
-                "        \"age_range\": \"30~39\",\n" +
-                "        \"has_birthday\": true,\n" +
-                "        \"birthday_needs_agreement\": false,\n" +
-                "        \"birthday\": \"1030\",\n" +
-                "        \"birthday_type\": \"SOLAR\",\n" +
-                "        \"has_gender\": true,\n" +
-                "        \"gender_needs_agreement\": false,\n" +
-                "        \"gender\": \"male\"\n" +
-                "    }\n" +
-                "}";
-        mockWebServer.enqueue(new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON).setBody(kakaoReturnString));
+            "    \"id\": 2727704352,\n" +
+            "    \"connected_at\": \"2023-03-29T23:31:57Z\",\n" +
+            "    \"properties\": {\n" +
+            "        \"nickname\": \"최준호\",\n" +
+            "        \"profile_image\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_640x640.jpg\",\n"
+            +
+            "        \"thumbnail_image\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_110x110.jpg\"\n"
+            +
+            "    },\n" +
+            "    \"kakao_account\": {\n" +
+            "        \"profile_nickname_needs_agreement\": false,\n" +
+            "        \"profile_image_needs_agreement\": false,\n" +
+            "        \"profile\": {\n" +
+            "            \"nickname\": \"최준호\",\n" +
+            "            \"thumbnail_image_url\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_110x110.jpg\",\n"
+            +
+            "            \"profile_image_url\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_640x640.jpg\",\n"
+            +
+            "            \"is_default_image\": false\n" +
+            "        },\n" +
+            "        \"has_email\": false,\n" +
+            "        \"email_needs_agreement\": false,\n" +
+            "        \"is_email_valid\": true,\n" +
+            "        \"is_email_verified\": true,\n" +
+            "        \"email\": \"ililil9482@naver.com\",\n" +
+            "        \"has_age_range\": true,\n" +
+            "        \"age_range_needs_agreement\": false,\n" +
+            "        \"age_range\": \"30~39\",\n" +
+            "        \"has_birthday\": true,\n" +
+            "        \"birthday_needs_agreement\": false,\n" +
+            "        \"birthday\": \"1030\",\n" +
+            "        \"birthday_type\": \"SOLAR\",\n" +
+            "        \"has_gender\": true,\n" +
+            "        \"gender_needs_agreement\": false,\n" +
+            "        \"gender\": \"male\"\n" +
+            "    }\n" +
+            "}";
+        mockWebServer.enqueue(
+            new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .setBody(kakaoReturnString));
         //when
-        Throwable throwable = catchThrowable(() -> memberAuthService.loginKakao("kakao_access_token"));
+        Throwable throwable = catchThrowable(
+            () -> memberAuthService.loginKakao("kakao_access_token"));
 
         //then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("이메일이 존재하지 않는 회원입니다.");
+            .hasMessageContaining("이메일이 존재하지 않는 회원입니다.");
     }
 
     @Test
@@ -205,13 +220,16 @@ class MemberAuthServiceUnitTest {
     void kakaoLoginFail2() throws Exception {
         //given
         String kakaoReturnString = "";
-        mockWebServer.enqueue(new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON).setBody(kakaoReturnString));
+        mockWebServer.enqueue(
+            new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .setBody(kakaoReturnString));
         //when
-        Throwable throwable = catchThrowable(() -> memberAuthService.loginKakao("kakao_access_token"));
+        Throwable throwable = catchThrowable(
+            () -> memberAuthService.loginKakao("kakao_access_token"));
 
         //then
         assertThat(throwable).isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("카카오에서 반환 받은 값이 존재하지 않습니다.");
+            .hasMessageContaining("카카오에서 반환 받은 값이 존재하지 않습니다.");
     }
 
 
@@ -220,48 +238,55 @@ class MemberAuthServiceUnitTest {
     void kakaoLoginSuccess() throws Exception {
         //given
         String kakaoReturnString = "{\n" +
-                "    \"id\": 2727704352,\n" +
-                "    \"connected_at\": \"2023-03-29T23:31:57Z\",\n" +
-                "    \"properties\": {\n" +
-                "        \"nickname\": \"최준호\",\n" +
-                "        \"profile_image\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_640x640.jpg\",\n" +
-                "        \"thumbnail_image\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_110x110.jpg\"\n" +
-                "    },\n" +
-                "    \"kakao_account\": {\n" +
-                "        \"profile_nickname_needs_agreement\": false,\n" +
-                "        \"profile_image_needs_agreement\": false,\n" +
-                "        \"profile\": {\n" +
-                "            \"nickname\": \"최준호\",\n" +
-                "            \"thumbnail_image_url\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_110x110.jpg\",\n" +
-                "            \"profile_image_url\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_640x640.jpg\",\n" +
-                "            \"is_default_image\": false\n" +
-                "        },\n" +
-                "        \"has_email\": true,\n" +
-                "        \"email_needs_agreement\": false,\n" +
-                "        \"is_email_valid\": true,\n" +
-                "        \"is_email_verified\": true,\n" +
-                "        \"email\": \"ililil9482@naver.com\",\n" +
-                "        \"has_age_range\": true,\n" +
-                "        \"age_range_needs_agreement\": false,\n" +
-                "        \"age_range\": \"30~39\",\n" +
-                "        \"has_birthday\": true,\n" +
-                "        \"birthday_needs_agreement\": false,\n" +
-                "        \"birthday\": \"1030\",\n" +
-                "        \"birthday_type\": \"SOLAR\",\n" +
-                "        \"has_gender\": true,\n" +
-                "        \"gender_needs_agreement\": false,\n" +
-                "        \"gender\": \"male\"\n" +
-                "    }\n" +
-                "}";
-        mockWebServer.enqueue(new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON).setBody(kakaoReturnString));
+            "    \"id\": 2727704352,\n" +
+            "    \"connected_at\": \"2023-03-29T23:31:57Z\",\n" +
+            "    \"properties\": {\n" +
+            "        \"nickname\": \"최준호\",\n" +
+            "        \"profile_image\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_640x640.jpg\",\n"
+            +
+            "        \"thumbnail_image\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_110x110.jpg\"\n"
+            +
+            "    },\n" +
+            "    \"kakao_account\": {\n" +
+            "        \"profile_nickname_needs_agreement\": false,\n" +
+            "        \"profile_image_needs_agreement\": false,\n" +
+            "        \"profile\": {\n" +
+            "            \"nickname\": \"최준호\",\n" +
+            "            \"thumbnail_image_url\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_110x110.jpg\",\n"
+            +
+            "            \"profile_image_url\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_640x640.jpg\",\n"
+            +
+            "            \"is_default_image\": false\n" +
+            "        },\n" +
+            "        \"has_email\": true,\n" +
+            "        \"email_needs_agreement\": false,\n" +
+            "        \"is_email_valid\": true,\n" +
+            "        \"is_email_verified\": true,\n" +
+            "        \"email\": \"ililil9482@naver.com\",\n" +
+            "        \"has_age_range\": true,\n" +
+            "        \"age_range_needs_agreement\": false,\n" +
+            "        \"age_range\": \"30~39\",\n" +
+            "        \"has_birthday\": true,\n" +
+            "        \"birthday_needs_agreement\": false,\n" +
+            "        \"birthday\": \"1030\",\n" +
+            "        \"birthday_type\": \"SOLAR\",\n" +
+            "        \"has_gender\": true,\n" +
+            "        \"gender_needs_agreement\": false,\n" +
+            "        \"gender\": \"male\"\n" +
+            "    }\n" +
+            "}";
+        mockWebServer.enqueue(
+            new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .setBody(kakaoReturnString));
 
         given(memberRepository.findByEmail(anyString())).willReturn(Optional.ofNullable(null));
         given(tokenProvider.generateTokenDto(any())).willReturn(
-                new LoginVo(TYPE, "access token", "refresh token", 1L, null)
+            new LoginVo(TYPE, "access token", "refresh token", 1L, null)
         );
         String snsId = "snsId";
         JoinDto joinDto = new JoinDto("kakao@email.com", snsId, "카카오회원", "카카오회원", null);
-        given(memberRepository.save(any())).willReturn(Member.of(joinDto, snsId, SnsJoinType.KAKAO));
+        given(memberRepository.save(any())).willReturn(
+            Member.of(joinDto, snsId, SnsJoinType.KAKAO));
         given(authenticationManagerBuilder.getObject()).willReturn(mockAuthenticationManager());
 
         Map<String, Object> claims = new HashMap<>();

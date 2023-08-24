@@ -10,12 +10,14 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record RecipientVo(
-        Long id,
-        String name,
-        String zonecode,
-        String address,
-        String tel,
-        RecipientInfoStatus status,
-        LocalDateTime createdAt,
-        LocalDateTime modifiedAt
-) {}
+    Long id,
+    String name,
+    String zonecode,
+    String address,
+    String tel,
+    RecipientInfoStatus status,
+    LocalDateTime createdAt,
+    LocalDateTime modifiedAt
+) {
+
+}

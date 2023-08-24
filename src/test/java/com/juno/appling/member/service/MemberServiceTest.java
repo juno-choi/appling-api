@@ -28,6 +28,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
 public class MemberServiceTest extends BaseTest {
+
     @Autowired
     private MemberService memberService;
     @Autowired
@@ -44,7 +45,7 @@ public class MemberServiceTest extends BaseTest {
 
     @Test
     @DisplayName("회원 정보 수정에 성공")
-    void patchMemberSuccess1(){
+    void patchMemberSuccess1() {
         // given
         String email = "patch@mail.com";
         String password = "password";
@@ -58,9 +59,10 @@ public class MemberServiceTest extends BaseTest {
         LoginDto loginDto = new LoginDto(email, password);
         LoginVo login = memberAuthService.login(loginDto);
         request.removeHeader(AUTHORIZATION);
-        request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
+        request.addHeader(AUTHORIZATION, "Bearer " + login.accessToken());
 
-        PatchMemberDto patchMemberDto = new PatchMemberDto(changeBirth, changeName, changePassword, "수정되버림", null);
+        PatchMemberDto patchMemberDto = new PatchMemberDto(changeBirth, changeName, changePassword,
+            "수정되버림", null);
         // when
         MessageVo messageVo = memberService.patchMember(patchMemberDto, request);
         // then
@@ -69,43 +71,46 @@ public class MemberServiceTest extends BaseTest {
 
     @Test
     @DisplayName("수령인 정보 불러오기 성공")
-    void getRecipientList() throws Exception{
+    void getRecipientList() throws Exception {
         // given
         LoginDto loginDto = new LoginDto(MEMBER_EMAIL, PASSWORD);
         LoginVo login = memberAuthService.login(loginDto);
         Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
 
-        Recipient recipient1 = Recipient.of(member, "수령인1", "1234", "주소", "01012341234", RecipientInfoStatus.NORMAL);
+        Recipient recipient1 = Recipient.of(member, "수령인1", "1234", "주소", "01012341234",
+            RecipientInfoStatus.NORMAL);
         Thread.sleep(10L);
-        Recipient recipient2 = Recipient.of(member, "수령인2", "1234", "주소2", "01012341234", RecipientInfoStatus.NORMAL);
+        Recipient recipient2 = Recipient.of(member, "수령인2", "1234", "주소2", "01012341234",
+            RecipientInfoStatus.NORMAL);
 
         member.getRecipientList().add(recipient1);
         member.getRecipientList().add(recipient2);
 
         request.removeHeader(AUTHORIZATION);
-        request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
+        request.addHeader(AUTHORIZATION, "Bearer " + login.accessToken());
         // when
         RecipientListVo recipient = memberService.getRecipient(request);
         // then
         assertThat(recipient.list()
-                .get(0)
-                .name()
+            .get(0)
+            .name()
         ).isEqualTo(recipient2.getName());
 
     }
 
     @Test
     @DisplayName("판매자 정보 수정 성공")
-    void putSeller(){
+    void putSeller() {
         // given
         LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
         LoginVo login = memberAuthService.login(loginDto);
 
         request.removeHeader(AUTHORIZATION);
-        request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
+        request.addHeader(AUTHORIZATION, "Bearer " + login.accessToken());
 
         String changeCompany = "변경 회사명";
-        PutSellerDto putSellerDto = new PutSellerDto(changeCompany, "01012341234", "4321", "변경된 주소", "mail@mail.com");
+        PutSellerDto putSellerDto = new PutSellerDto(changeCompany, "01012341234", "4321", "변경된 주소",
+            "mail@mail.com");
         // when
         MessageVo messageVo = memberService.putSeller(putSellerDto, request);
         // then

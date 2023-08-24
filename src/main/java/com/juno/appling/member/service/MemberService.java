@@ -32,6 +32,7 @@ import java.util.Optional;
 @Slf4j
 @Transactional(readOnly = true)
 public class MemberService {
+
     private final MemberRepository memberRepository;
     private final MemberApplySellerRepository memberApplySellerRepository;
     private final TokenProvider tokenProvider;
@@ -45,14 +46,16 @@ public class MemberService {
     private Member getMember(HttpServletRequest request) {
         Long memberId = tokenProvider.getMemberId(request);
         return memberRepository.findById(memberId).orElseThrow(() ->
-                new IllegalArgumentException("유효하지 않은 회원입니다.")
+            new IllegalArgumentException("유효하지 않은 회원입니다.")
         );
     }
 
     public MemberVo member(HttpServletRequest request) {
         Member findMember = getMember(request);
 
-        return new MemberVo(findMember.getId(), findMember.getEmail(), findMember.getNickname(), findMember.getName(), findMember.getRole(), findMember.getSnsType(), findMember.getStatus(), findMember.getCreatedAt(), findMember.getModifiedAt());
+        return new MemberVo(findMember.getId(), findMember.getEmail(), findMember.getNickname(),
+            findMember.getName(), findMember.getRole(), findMember.getSnsType(),
+            findMember.getStatus(), findMember.getCreatedAt(), findMember.getModifiedAt());
     }
 
 
@@ -62,14 +65,15 @@ public class MemberService {
     }
 
     @Transactional
-    public MessageVo patchMember(PatchMemberDto patchMemberDto, HttpServletRequest request){
+    public MessageVo patchMember(PatchMemberDto patchMemberDto, HttpServletRequest request) {
         Member member = getMember(request);
 
-        String birth = Optional.ofNullable(patchMemberDto.getBirth()).orElse("").replaceAll("-", "").trim();
+        String birth = Optional.ofNullable(patchMemberDto.getBirth()).orElse("").replaceAll("-", "")
+            .trim();
         String name = Optional.ofNullable(patchMemberDto.getName()).orElse("").trim();
         String nickname = Optional.ofNullable(patchMemberDto.getNickname()).orElse("").trim();
         String password = Optional.ofNullable(patchMemberDto.getPassword()).orElse("").trim();
-        if(!password.isEmpty()){
+        if (!password.isEmpty()) {
             password = passwordEncoder.encode(password);
         }
         member.patchMember(birth, name, nickname, password);
@@ -78,91 +82,104 @@ public class MemberService {
     }
 
     @Transactional
-    public MessageVo postRecipient(PostRecipientDto postRecipientDtoInfo, HttpServletRequest request){
+    public MessageVo postRecipient(PostRecipientDto postRecipientDtoInfo,
+        HttpServletRequest request) {
         Member member = getMember(request);
-        recipientRepository.save(Recipient.of(member, postRecipientDtoInfo.getName(), postRecipientDtoInfo.getZonecode(), postRecipientDtoInfo.getAddress(), postRecipientDtoInfo.getTel(), RecipientInfoStatus.NORMAL));
+        recipientRepository.save(
+            Recipient.of(member, postRecipientDtoInfo.getName(), postRecipientDtoInfo.getZonecode(),
+                postRecipientDtoInfo.getAddress(), postRecipientDtoInfo.getTel(),
+                RecipientInfoStatus.NORMAL));
 
         return new MessageVo("수령인 정보 등록 성공");
     }
 
-    public RecipientListVo getRecipient(HttpServletRequest request){
+    public RecipientListVo getRecipient(HttpServletRequest request) {
         Member member = getMember(request);
 
         List<Recipient> recipientList = member.getRecipientList();
         List<RecipientVo> list = new LinkedList<>();
 
         recipientList.sort((r1, r2) -> {
-            if(r1.getModifiedAt().isAfter(r2.getModifiedAt())){
+            if (r1.getModifiedAt().isAfter(r2.getModifiedAt())) {
                 return -1;
             }
             return 1;
         });
 
-
-        if(!recipientList.isEmpty()){
+        if (!recipientList.isEmpty()) {
             Recipient r = recipientList.get(0);
-            list.add(new RecipientVo(r.getId(), r.getName(), r.getZonecode(), r.getAddress(), r.getTel(), r.getStatus(), r.getCreatedAt(), r.getModifiedAt()));
+            list.add(
+                new RecipientVo(r.getId(), r.getName(), r.getZonecode(), r.getAddress(), r.getTel(),
+                    r.getStatus(), r.getCreatedAt(), r.getModifiedAt()));
         }
 
         return new RecipientListVo(list);
     }
 
     @Transactional
-    public MessageVo postSeller(PostSellerDto postSellerDto, HttpServletRequest request){
+    public MessageVo postSeller(PostSellerDto postSellerDto, HttpServletRequest request) {
         Long memberId = tokenProvider.getMemberId(request);
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
 
         Optional<Seller> optionalSeller = sellerRepository.findByMember(member);
-        if(optionalSeller.isPresent()){
+        if (optionalSeller.isPresent()) {
             throw new IllegalArgumentException("이미 판매자 신청을 완료했습니다.");
         }
 
-
-        Seller seller = Seller.of(member, postSellerDto.getCompany(), postSellerDto.getTel(), postSellerDto.getZonecode(), postSellerDto.getAddress(), postSellerDto.getEmail());
+        Seller seller = Seller.of(member, postSellerDto.getCompany(), postSellerDto.getTel(),
+            postSellerDto.getZonecode(), postSellerDto.getAddress(), postSellerDto.getEmail());
         sellerRepository.save(seller);
 
         // 임시적 승인 절차
-        MemberApplySeller saveMemberApply = memberApplySellerRepository.save(MemberApplySeller.of(memberId));
+        MemberApplySeller saveMemberApply = memberApplySellerRepository.save(
+            MemberApplySeller.of(memberId));
         permitSeller(member, saveMemberApply);
 
         return new MessageVo("판매자 정보 등록 성공");
     }
 
 
-    private Seller getSellerByRequest(HttpServletRequest request){
+    private Seller getSellerByRequest(HttpServletRequest request) {
         Long memberId = tokenProvider.getMemberId(request);
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
 
         return sellerRepository.findByMember(member).orElseThrow(() ->
-                new IllegalArgumentException("유효하지 않은 판매자입니다. 판매자 신청을 먼저 해주세요.")
+            new IllegalArgumentException("유효하지 않은 판매자입니다. 판매자 신청을 먼저 해주세요.")
         );
     }
 
     @Transactional
-    public MessageVo putSeller(PutSellerDto putSellerDto, HttpServletRequest request){
+    public MessageVo putSeller(PutSellerDto putSellerDto, HttpServletRequest request) {
         Seller seller = getSellerByRequest(request);
         seller.put(putSellerDto);
         return new MessageVo("판매자 정보 수정 성공");
     }
 
-    public SellerVo getSeller(HttpServletRequest request){
+    public SellerVo getSeller(HttpServletRequest request) {
         Seller seller = getSellerByRequest(request);
-        return new SellerVo(seller.getId(), seller.getEmail(), seller.getCompany(), seller.getZonecode(), seller.getAddress(), seller.getTel());
+        return new SellerVo(seller.getId(), seller.getEmail(), seller.getCompany(),
+            seller.getZonecode(), seller.getAddress(), seller.getTel());
     }
 
     @Transactional
-    public MessageVo postIntroduce(PostIntroduceDto postIntroduceDto, HttpServletRequest request){
+    public MessageVo postIntroduce(PostIntroduceDto postIntroduceDto, HttpServletRequest request) {
         Seller seller = getSellerByRequest(request);
-        introduceRepository.save(Introduce.of(seller, postIntroduceDto.getSubject(), postIntroduceDto.getUrl(), IntroduceStatus.USE));
+        introduceRepository.save(
+            Introduce.of(seller, postIntroduceDto.getSubject(), postIntroduceDto.getUrl(),
+                IntroduceStatus.USE));
         return new MessageVo("소개글 등록 성공");
     }
 
     public String getIntroduce(HttpServletRequest request) {
         Seller seller = getSellerByRequest(request);
-        Introduce introduce = introduceRepository.findBySeller(seller).orElseThrow(() -> new IllegalArgumentException("소개 페이지를 먼저 등록해주세요."));
+        Introduce introduce = introduceRepository.findBySeller(seller)
+            .orElseThrow(() -> new IllegalArgumentException("소개 페이지를 먼저 등록해주세요."));
 
         String url = introduce.getUrl();
-        url = url.substring(url.indexOf("s3.ap-northeast-2.amazonaws.com") + "s3.ap-northeast-2.amazonaws.com".length()+1);
+        url = url.substring(url.indexOf("s3.ap-northeast-2.amazonaws.com")
+            + "s3.ap-northeast-2.amazonaws.com".length() + 1);
         String bucket = env.getProperty("cloud.s3.bucket");
 
         return s3Service.getObject(url, bucket);

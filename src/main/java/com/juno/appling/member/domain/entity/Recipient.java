@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor()
 public class Recipient {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recipient_id")
@@ -37,7 +38,9 @@ public class Recipient {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Recipient(Member member, @NotNull String name, @NotNull String zonecode, @NotNull String address, @NotNull String tel, RecipientInfoStatus status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    private Recipient(Member member, @NotNull String name, @NotNull String zonecode,
+        @NotNull String address, @NotNull String tel, RecipientInfoStatus status,
+        LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.member = member;
         this.name = name;
         this.zonecode = zonecode;
@@ -48,7 +51,8 @@ public class Recipient {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Recipient of(Member member, @NotNull String name, @NotNull String zonecode, @NotNull String address, @NotNull String tel, RecipientInfoStatus status){
+    public static Recipient of(Member member, @NotNull String name, @NotNull String zonecode,
+        @NotNull String address, @NotNull String tel, RecipientInfoStatus status) {
         tel = tel.replaceAll("-", "");
         LocalDateTime now = LocalDateTime.now();
         return new Recipient(member, name, zonecode, address, tel, status, now, now);

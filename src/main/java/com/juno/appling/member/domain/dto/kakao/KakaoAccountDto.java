@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class KakaoAccountDto {
+
     public boolean has_email;
     public String email;
     public KakaoProfile profile;

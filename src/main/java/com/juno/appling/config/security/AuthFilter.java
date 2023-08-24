@@ -19,11 +19,13 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
+
     private final TokenProvider tokenProvider;
     private final static String BEARER_PREFIX = "Bearer ";
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+        FilterChain filterChain) throws ServletException, IOException {
         log.debug("인증처리 시작");
         String jwtToken = resolveToken(request);
         log.debug("토큰 권한 Security 저장");

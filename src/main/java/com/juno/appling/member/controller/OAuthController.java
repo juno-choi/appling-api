@@ -16,27 +16,29 @@ import static com.juno.appling.config.base.ResultCode.SUCCESS;
 @RequestMapping("${api-prefix}/oauth")
 @RequiredArgsConstructor
 public class OAuthController {
+
     private final MemberAuthService memberAuthService;
 
     @GetMapping("/kakao")
-    public ResponseEntity<Api<LoginVo>> authKakao(@RequestParam String code){
+    public ResponseEntity<Api<LoginVo>> authKakao(@RequestParam String code) {
         return ResponseEntity.ok(
-                Api.<LoginVo>builder()
-                        .code(SUCCESS.code)
-                        .message(SUCCESS.message)
-                        .data(memberAuthService.authKakao(code))
-                        .build()
+            Api.<LoginVo>builder()
+                .code(SUCCESS.code)
+                .message(SUCCESS.message)
+                .data(memberAuthService.authKakao(code))
+                .build()
         );
     }
 
     @GetMapping("/kakao/login")
-    public ResponseEntity<Api<LoginVo>> login(@RequestParam(name = "access_token") String accessToken){
+    public ResponseEntity<Api<LoginVo>> login(
+        @RequestParam(name = "access_token") String accessToken) {
         return ResponseEntity.ok(
-                Api.<LoginVo>builder()
-                        .code(SUCCESS.code)
-                        .message(SUCCESS.message)
-                        .data(memberAuthService.loginKakao(accessToken))
-                        .build()
+            Api.<LoginVo>builder()
+                .code(SUCCESS.code)
+                .message(SUCCESS.message)
+                .data(memberAuthService.loginKakao(accessToken))
+                .build()
         );
     }
 }

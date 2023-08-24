@@ -32,6 +32,7 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class CommonS3ServiceUnitTest {
+
     @InjectMocks
     private CommonS3Service commonS3Service;
     @Mock
@@ -55,16 +56,20 @@ class CommonS3ServiceUnitTest {
         String fileName3 = "test3.txt";
         String s3Url = "https://s3.aws.url";
 
-        files.add(new MockMultipartFile("test1", fileName1, StandardCharsets.UTF_8.name(), "abcd".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test2", fileName2, StandardCharsets.UTF_8.name(), "222".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(), "3".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test1", fileName1, StandardCharsets.UTF_8.name(),
+            "abcd".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test2", fileName2, StandardCharsets.UTF_8.name(),
+            "222".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(),
+            "3".getBytes(StandardCharsets.UTF_8)));
 
         //when
-        Throwable throwable = catchThrowable(() -> commonS3Service.s3UploadFile(files, "image/%s/%s/", request));
+        Throwable throwable = catchThrowable(
+            () -> commonS3Service.s3UploadFile(files, "image/%s/%s/", request));
 
         //then
         Assertions.assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("유효하지 않은 회원");
+            .hasMessageContaining("유효하지 않은 회원");
     }
 
     @Test
@@ -77,12 +82,16 @@ class CommonS3ServiceUnitTest {
         String fileName3 = "test3.txt";
         String s3Url = "https://s3.aws.url";
 
-        files.add(new MockMultipartFile("test1", fileName1, StandardCharsets.UTF_8.name(), "abcd".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test2", fileName2, StandardCharsets.UTF_8.name(), "222".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(), "3".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test1", fileName1, StandardCharsets.UTF_8.name(),
+            "abcd".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test2", fileName2, StandardCharsets.UTF_8.name(),
+            "222".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(),
+            "3".getBytes(StandardCharsets.UTF_8)));
 
         LocalDateTime now = LocalDateTime.now();
-        Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030", Role.SELLER, null, null, now, now);
+        Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030",
+            Role.SELLER, null, null, now, now);
         given(memberRepository.findById(any())).willReturn(Optional.of(member));
         given(env.getProperty(anyString())).willReturn(s3Url);
         List<String> list = new LinkedList<>();
@@ -107,17 +116,22 @@ class CommonS3ServiceUnitTest {
         String fileName3 = "test3.txt";
         String s3Url = "https://s3.aws.url";
 
-        files.add(new MockMultipartFile("test1", fileName1, StandardCharsets.UTF_8.name(), "abcd".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test2", fileName2, StandardCharsets.UTF_8.name(), "222".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(), "3".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test1", fileName1, StandardCharsets.UTF_8.name(),
+            "abcd".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test2", fileName2, StandardCharsets.UTF_8.name(),
+            "222".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(),
+            "3".getBytes(StandardCharsets.UTF_8)));
 
         //when
-        Throwable throwable = catchThrowable(() -> commonS3Service.s3UploadFile(files, "html/%s/%s/", request));
+        Throwable throwable = catchThrowable(
+            () -> commonS3Service.s3UploadFile(files, "html/%s/%s/", request));
 
         //then
         Assertions.assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("유효하지 않은 회원");
+            .hasMessageContaining("유효하지 않은 회원");
     }
+
     @Test
     @DisplayName("upload html 성공")
     void uploadHtmlSuccess1() {
@@ -128,12 +142,16 @@ class CommonS3ServiceUnitTest {
         String fileName3 = "test3.txt";
         String s3Url = "https://s3.aws.url";
 
-        files.add(new MockMultipartFile("test1", fileName1, StandardCharsets.UTF_8.name(), "abcd".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test2", fileName2, StandardCharsets.UTF_8.name(), "222".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(), "3".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test1", fileName1, StandardCharsets.UTF_8.name(),
+            "abcd".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test2", fileName2, StandardCharsets.UTF_8.name(),
+            "222".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(),
+            "3".getBytes(StandardCharsets.UTF_8)));
 
         LocalDateTime now = LocalDateTime.now();
-        Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030", Role.SELLER, null, null, now, now);
+        Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030",
+            Role.SELLER, null, null, now, now);
         given(memberRepository.findById(any())).willReturn(Optional.of(member));
         given(env.getProperty(anyString())).willReturn(s3Url);
         List<String> list = new LinkedList<>();

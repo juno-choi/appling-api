@@ -8,10 +8,12 @@ import jakarta.validation.constraints.NotNull;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record SellerVo(
-        @NotNull Long sellerId,
-        @NotNull String email,
-        @NotNull String company,
-        @NotNull String zonecode,
-        @NotNull String address,
-        @NotNull String tel
-) {}
+    @NotNull Long sellerId,
+    @NotNull String email,
+    @NotNull String company,
+    @NotNull String zonecode,
+    @NotNull String address,
+    @NotNull String tel
+) {
+
+}

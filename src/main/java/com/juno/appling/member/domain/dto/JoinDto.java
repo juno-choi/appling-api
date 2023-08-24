@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JoinDto {
+
     @NotNull(message = "email 비어있을 수 없습니다.")
     @Email(message = "email 형식을 맞춰주세요.", regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$")
     private String email;
@@ -24,7 +25,7 @@ public class JoinDto {
     private String nickname;
     private String birth;
 
-    public void passwordEncoder(BCryptPasswordEncoder encoder){
+    public void passwordEncoder(BCryptPasswordEncoder encoder) {
         this.password = encoder.encode(this.password);
     }
 }

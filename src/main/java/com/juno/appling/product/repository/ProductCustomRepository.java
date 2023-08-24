@@ -21,10 +21,12 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class ProductCustomRepository {
+
     private final QuerydslConfig q;
 
 
-    public Page<ProductVo> findAll(Pageable pageable, String search, Status status, Category category, Long memberId){
+    public Page<ProductVo> findAll(Pageable pageable, String search, Status status,
+        Category category, Long memberId) {
         QProduct product = QProduct.product;
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -32,26 +34,26 @@ public class ProductCustomRepository {
         memberId = Optional.ofNullable(memberId).orElse(0L);
         Optional<Category> optionalCategory = Optional.ofNullable(category);
 
-        if(!search.equals("")){
+        if (!search.equals("")) {
             builder.and(product.mainTitle.contains(search));
         }
-        if(memberId != 0L){
+        if (memberId != 0L) {
             builder.and(product.seller.member.id.eq(memberId));
         }
-        if(optionalCategory.isPresent()){
+        if (optionalCategory.isPresent()) {
             builder.and(product.category.eq(category));
         }
         builder.and(product.status.eq(status));
 
         List<ProductVo> content = q.query().select(Projections.constructor(ProductVo.class,
-                    product
-                ))
-                .from(product)
-                .where(builder)
-                .orderBy(product.createAt.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
+                product
+            ))
+            .from(product)
+            .where(builder)
+            .orderBy(product.createAt.desc())
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
         Long total = q.query().from(product).where(builder).stream().count();
         return new PageImpl<>(content, pageable, total);
     }

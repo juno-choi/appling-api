@@ -12,12 +12,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginDto {
+
     @NotNull(message = "email 비어있을 수 없습니다.")
     private String email;
     @NotNull(message = "password 비어있을 수 없습니다.")
     private String password;
 
-    public UsernamePasswordAuthenticationToken toAuthentication(){
+    public UsernamePasswordAuthenticationToken toAuthentication() {
         return new UsernamePasswordAuthenticationToken(email, password);
     }
 }

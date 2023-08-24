@@ -13,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostSellerDto {
+
     @NotNull(message = "company 비어있을 수 없습니다.")
     private String company;
     @NotNull(message = "tel 비어있을 수 없습니다.")

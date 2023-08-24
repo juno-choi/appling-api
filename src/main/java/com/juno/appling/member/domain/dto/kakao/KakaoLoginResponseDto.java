@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class KakaoLoginResponseDto {
+
     public String access_token;
     public String refresh_token;
     public Long expires_in;

@@ -35,6 +35,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceUnitTest {
+
     @InjectMocks
     private ProductService productService;
     @Mock
@@ -60,13 +61,16 @@ class ProductServiceUnitTest {
         request.addHeader(AUTHORIZATION, "Bearer token");
         String mainTitle = "메인 제목";
 
-        ProductDto productDto = new ProductDto(1L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2", "https://image3", "normal");
+        ProductDto productDto = new ProductDto(1L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
+            10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
+            "https://image3", "normal");
         Category category = new Category();
 
         given(tokenProvider.resolveToken(any())).willReturn("token");
         LocalDateTime now = LocalDateTime.now();
-        Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030", Role.SELLER, null, null, now, now);
-        Seller seller = Seller.of(member, "회사명", "01012344321", "1234","회사 주소", "mail@mail.com");
+        Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030",
+            Role.SELLER, null, null, now, now);
+        Seller seller = Seller.of(member, "회사명", "01012344321", "1234", "회사 주소", "mail@mail.com");
         given(memberRepository.findById(any())).willReturn(Optional.of(member));
         given(sellerRepository.findByMember(any())).willReturn(Optional.of(seller));
         given(productRepository.save(any())).willReturn(Product.of(seller, category, productDto));
@@ -85,13 +89,15 @@ class ProductServiceUnitTest {
         request.addHeader(AUTHORIZATION, "Bearer token");
         String mainTitle = "메인 제목";
 
-        ProductDto productDto = new ProductDto(0L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2", "https://image3", "normal");
+        ProductDto productDto = new ProductDto(0L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
+            10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
+            "https://image3", "normal");
         //when
         Throwable throwable = catchThrowable(() -> productService.postProduct(productDto, request));
 
         //then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("유효하지 않은 카테고리");
+            .hasMessageContaining("유효하지 않은 카테고리");
 
     }
 
@@ -104,27 +110,29 @@ class ProductServiceUnitTest {
 
         //then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("유효하지 않은 상품");
+            .hasMessageContaining("유효하지 않은 상품");
     }
 
     @Test
     @DisplayName("수정하려는 상품의 카테고리가 존재하지 않는 경우 실패")
-    void putProductFail1(){
+    void putProductFail1() {
         // given
-        PutProductDto dto = new PutProductDto(0L, 0L, null, null,null,null,0,0,null,null,null,null,null,null,null, "normal");
+        PutProductDto dto = new PutProductDto(0L, 0L, null, null, null, null, 0, 0, null, null,
+            null, null, null, null, null, "normal");
         // when
         Throwable throwable = catchThrowable(() -> productService.putProduct(dto));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("유효하지 않은 카테고리");
+            .hasMessageContaining("유효하지 않은 카테고리");
     }
 
 
     @Test
     @DisplayName("수정하려는 상품이 존재하지 않는 경우 실패")
-    void putProductFail2(){
+    void putProductFail2() {
         // given
-        PutProductDto dto = new PutProductDto(0L, 1L, null, null,null,null,0,0,null,null,null,null,null,null,null, "normal");
+        PutProductDto dto = new PutProductDto(0L, 1L, null, null, null, null, 0, 0, null, null,
+            null, null, null, null, null, "normal");
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(new Category()));
         given(productRepository.findById(any())).willReturn(Optional.ofNullable(null));
 
@@ -132,17 +140,18 @@ class ProductServiceUnitTest {
         Throwable throwable = catchThrowable(() -> productService.putProduct(dto));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("유효하지 않은 상품");
+            .hasMessageContaining("유효하지 않은 상품");
     }
 
     @Test
     @DisplayName("존재하지 않은 상품은 조회수 증가에 실패")
-    void addViewCnt(){
+    void addViewCnt() {
         // given
         // when
-        Throwable throwable = catchThrowable(() -> productService.addViewCnt(new AddViewCntDto(1L)));
+        Throwable throwable = catchThrowable(
+            () -> productService.addViewCnt(new AddViewCntDto(1L)));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("유효하지 않은 상품");
+            .hasMessageContaining("유효하지 않은 상품");
     }
 }

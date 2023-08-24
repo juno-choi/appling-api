@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
@@ -47,7 +48,11 @@ public class Product {
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
 
-    private Product(Seller seller, Category category, String mainTitle, String mainExplanation, String productMainExplanation, String productSubExplanation, int originPrice, int price, String purchaseInquiry, String origin, String producer, String mainImage, String image1, String image2, String image3, Status status, LocalDateTime createAt, LocalDateTime modifiedAt) {
+    private Product(Seller seller, Category category, String mainTitle, String mainExplanation,
+        String productMainExplanation, String productSubExplanation, int originPrice, int price,
+        String purchaseInquiry, String origin, String producer, String mainImage, String image1,
+        String image2, String image3, Status status, LocalDateTime createAt,
+        LocalDateTime modifiedAt) {
         this.seller = seller;
         this.category = category;
         this.mainTitle = mainTitle;
@@ -69,13 +74,18 @@ public class Product {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Product of(Seller member, Category category, ProductDto productDto){
+    public static Product of(Seller member, Category category, ProductDto productDto) {
         LocalDateTime now = LocalDateTime.now();
         Status status = Status.valueOf(productDto.getStatus().toUpperCase());
-        return new Product(member, category, productDto.getMainTitle(), productDto.getMainExplanation(), productDto.getProductMainExplanation(), productDto.getProductSubExplanation(), productDto.getOriginPrice(), productDto.getPrice(), productDto.getPurchaseInquiry(), productDto.getOrigin(), productDto.getProducer(), productDto.getMainImage(), productDto.getImage1(), productDto.getImage2(), productDto.getImage3(), status, now, now);
+        return new Product(member, category, productDto.getMainTitle(),
+            productDto.getMainExplanation(), productDto.getProductMainExplanation(),
+            productDto.getProductSubExplanation(), productDto.getOriginPrice(),
+            productDto.getPrice(), productDto.getPurchaseInquiry(), productDto.getOrigin(),
+            productDto.getProducer(), productDto.getMainImage(), productDto.getImage1(),
+            productDto.getImage2(), productDto.getImage3(), status, now, now);
     }
 
-    public void put(PutProductDto putProductDto){
+    public void put(PutProductDto putProductDto) {
         LocalDateTime now = LocalDateTime.now();
         Status status = Status.valueOf(putProductDto.getStatus().toUpperCase());
         this.mainTitle = putProductDto.getMainTitle();
@@ -95,11 +105,11 @@ public class Product {
         this.status = status;
     }
 
-    public void putCategory(Category category){
+    public void putCategory(Category category) {
         this.category = category;
     }
 
-    public void addViewCnt(){
+    public void addViewCnt() {
         this.viewCnt++;
     }
 }

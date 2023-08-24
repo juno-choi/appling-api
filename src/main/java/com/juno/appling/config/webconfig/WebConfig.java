@@ -8,22 +8,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
     @Value("${docs}")
     private String docs;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedHeaders("*")
-                .allowedMethods("*")
-                .allowCredentials(false)
+            .allowedOrigins("*")
+            .allowedHeaders("*")
+            .allowedMethods("*")
+            .allowCredentials(false)
         ;
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(docs)
-                .addResourceLocations("classpath:/static"+docs);
+            .addResourceLocations("classpath:/static" + docs);
     }
 }

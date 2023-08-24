@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record IntroduceVo(
-        String url,
-        LocalDateTime createdAt,
-        LocalDateTime modifiedAt
-) {}
+    String url,
+    LocalDateTime createdAt,
+    LocalDateTime modifiedAt
+) {
+
+}

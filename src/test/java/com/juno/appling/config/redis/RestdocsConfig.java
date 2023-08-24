@@ -9,15 +9,17 @@ import org.springframework.restdocs.snippet.Attributes.Attribute;
 
 @TestConfiguration
 public class RestdocsConfig {
+
     @Bean
-    public RestDocumentationResultHandler handler(){
+    public RestDocumentationResultHandler handler() {
         return MockMvcRestDocumentation.document(
-                "{class-name}/{method-name}",
-                Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
-                Preprocessors.preprocessResponse(Preprocessors.prettyPrint())
+            "{class-name}/{method-name}",
+            Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
+            Preprocessors.preprocessResponse(Preprocessors.prettyPrint())
         );
     }
-    public static final Attribute field(String key, String value){
-        return new Attribute(key,value);
+
+    public static final Attribute field(String key, String value) {
+        return new Attribute(key, value);
     }
 }

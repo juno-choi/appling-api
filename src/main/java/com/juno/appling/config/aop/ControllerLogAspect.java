@@ -25,6 +25,7 @@ import java.util.List;
 @Aspect
 @Slf4j
 public class ControllerLogAspect {
+
     @Value("${docs}")
     private String docs;
 
@@ -33,27 +34,33 @@ public class ControllerLogAspect {
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         String type = pjp.getSignature().getDeclaringTypeName();
         String method = pjp.getSignature().getName();
-        String requestURI = ((ServletRequestAttributes) requestAttributes).getRequest().getRequestURI();
+        String requestURI = ((ServletRequestAttributes) requestAttributes).getRequest()
+            .getRequestURI();
 
-        log.info("[appling] validation check... requestUri=[{}] package = [{}], method = [{}]", requestURI, type, method);
+        log.info("[appling] validation check... requestUri=[{}] package = [{}], method = [{}]",
+            requestURI, type, method);
 
         Object[] args = pjp.getArgs();
-        for(Object a : args){
+        for (Object a : args) {
             // 유효성 검사에 걸리는 에러가 존재한다면
-            if(a instanceof BindingResult bindingResult && bindingResult.hasErrors()){   // object type == BindingResult
+            if (a instanceof BindingResult bindingResult
+                && bindingResult.hasErrors()) {   // object type == BindingResult
                 List<ErrorDto> errors = new ArrayList<>();
-                for(FieldError error : bindingResult.getFieldErrors()){
-                    errors.add(ErrorDto.builder().point(error.getField()).detail(error.getDefaultMessage()).build());
+                for (FieldError error : bindingResult.getFieldErrors()) {
+                    errors.add(
+                        ErrorDto.builder().point(error.getField()).detail(error.getDefaultMessage())
+                            .build());
                 }
 
-                ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "잘못된 입력입니다.");
+                ProblemDetail pb = ProblemDetail.forStatusAndDetail(
+                    HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "잘못된 입력입니다.");
                 pb.setInstance(URI.create(requestURI));
                 pb.setType(URI.create(docs));
                 pb.setTitle(HttpStatus.BAD_REQUEST.name());
                 pb.setProperty("errors", errors);
 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(pb);
+                    .body(pb);
             }
         }
 

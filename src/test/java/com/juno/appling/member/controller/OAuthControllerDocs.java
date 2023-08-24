@@ -33,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
 class OAuthControllerDocs extends ControllerBaseTest {
+
     private static MockWebServer mockWebServer;
 
     private final String PREFIX = "/api/oauth";
@@ -49,10 +50,10 @@ class OAuthControllerDocs extends ControllerBaseTest {
     private static WebClient webClient;
 
     @BeforeAll
-    static void setUp() throws Exception{
+    static void setUp() throws Exception {
         mockWebServer = new MockWebServer();
         mockWebServer.start();
-        webClient = WebClient.create("http://localhost:"+mockWebServer.getPort());
+        webClient = WebClient.create("http://localhost:" + mockWebServer.getPort());
     }
 
     @AfterAll
@@ -62,22 +63,24 @@ class OAuthControllerDocs extends ControllerBaseTest {
 
 
     @Test
-    @DisplayName(PREFIX+"/kakao")
+    @DisplayName(PREFIX + "/kakao")
     void oauthKakao() throws Exception {
         //given
         given(kakaoClient.post()).willReturn(webClient.post());
 
         KakaoLoginResponseDto dto = KakaoLoginResponseDto.builder()
-                .access_token("access token")
-                .expires_in(1L)
-                .refresh_token("refresh token")
-                .refresh_token_expires_in(2L)
-                .build();
-        mockWebServer.enqueue(new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON).setBody(objectMapper.writeValueAsString(dto)));
+            .access_token("access token")
+            .expires_in(1L)
+            .refresh_token("refresh token")
+            .refresh_token_expires_in(2L)
+            .build();
+        mockWebServer.enqueue(
+            new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .setBody(objectMapper.writeValueAsString(dto)));
 
         //when
         ResultActions resultActions = mock.perform(
-                get(PREFIX + "/kakao").param("code", "kakao_code")
+            get(PREFIX + "/kakao").param("code", "kakao_code")
         ).andDo(print());
 
         //then
@@ -85,66 +88,76 @@ class OAuthControllerDocs extends ControllerBaseTest {
 
         //docs
         resultActions.andDo(docs.document(
-                queryParameters(
-                        parameterWithName("code").description("kakao login code")
-                ),
-                responseFields(
-                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-                        fieldWithPath("data.type").type(JsonFieldType.STRING).description("token type"),
-                        fieldWithPath("data.access_token").type(JsonFieldType.STRING).description("카카오에서 발급된 access token"),
-                        fieldWithPath("data.refresh_token").type(JsonFieldType.STRING).description("카카오에서 발급된 refresh token"),
-                        fieldWithPath("data.access_token_expired").type(JsonFieldType.NUMBER).description("access token expired"),
-                        fieldWithPath("data.refresh_token_expired").type(JsonFieldType.NUMBER).description("refresh token expired")
-                )
+            queryParameters(
+                parameterWithName("code").description("kakao login code")
+            ),
+            responseFields(
+                fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                fieldWithPath("data.type").type(JsonFieldType.STRING).description("token type"),
+                fieldWithPath("data.access_token").type(JsonFieldType.STRING)
+                    .description("카카오에서 발급된 access token"),
+                fieldWithPath("data.refresh_token").type(JsonFieldType.STRING)
+                    .description("카카오에서 발급된 refresh token"),
+                fieldWithPath("data.access_token_expired").type(JsonFieldType.NUMBER)
+                    .description("access token expired"),
+                fieldWithPath("data.refresh_token_expired").type(JsonFieldType.NUMBER)
+                    .description("refresh token expired")
+            )
         ));
     }
 
     @Test
-    @DisplayName(PREFIX+"/kakao/login")
+    @DisplayName(PREFIX + "/kakao/login")
     void oauthKakaoLogin() throws Exception {
         //given
         given(kakaoApiClient.post()).willReturn(webClient.post());
         doNothing().when(myMailSender).send(anyString(), anyString(), anyString());
         String kakaoReturnString = "{\n" +
-                "    \"id\": 2727704352,\n" +
-                "    \"connected_at\": \"2023-03-29T23:31:57Z\",\n" +
-                "    \"properties\": {\n" +
-                "        \"nickname\": \"최준호\",\n" +
-                "        \"profile_image\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_640x640.jpg\",\n" +
-                "        \"thumbnail_image\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_110x110.jpg\"\n" +
-                "    },\n" +
-                "    \"kakao_account\": {\n" +
-                "        \"profile_nickname_needs_agreement\": false,\n" +
-                "        \"profile_image_needs_agreement\": false,\n" +
-                "        \"profile\": {\n" +
-                "            \"nickname\": \"최준호\",\n" +
-                "            \"thumbnail_image_url\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_110x110.jpg\",\n" +
-                "            \"profile_image_url\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_640x640.jpg\",\n" +
-                "            \"is_default_image\": false\n" +
-                "        },\n" +
-                "        \"has_email\": true,\n" +
-                "        \"email_needs_agreement\": false,\n" +
-                "        \"is_email_valid\": true,\n" +
-                "        \"is_email_verified\": true,\n" +
-                "        \"email\": \"ililil9482@naver.com\",\n" +
-                "        \"has_age_range\": true,\n" +
-                "        \"age_range_needs_agreement\": false,\n" +
-                "        \"age_range\": \"30~39\",\n" +
-                "        \"has_birthday\": true,\n" +
-                "        \"birthday_needs_agreement\": false,\n" +
-                "        \"birthday\": \"1030\",\n" +
-                "        \"birthday_type\": \"SOLAR\",\n" +
-                "        \"has_gender\": true,\n" +
-                "        \"gender_needs_agreement\": false,\n" +
-                "        \"gender\": \"male\"\n" +
-                "    }\n" +
-                "}";
-        mockWebServer.enqueue(new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON).setBody(kakaoReturnString));
+            "    \"id\": 2727704352,\n" +
+            "    \"connected_at\": \"2023-03-29T23:31:57Z\",\n" +
+            "    \"properties\": {\n" +
+            "        \"nickname\": \"최준호\",\n" +
+            "        \"profile_image\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_640x640.jpg\",\n"
+            +
+            "        \"thumbnail_image\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_110x110.jpg\"\n"
+            +
+            "    },\n" +
+            "    \"kakao_account\": {\n" +
+            "        \"profile_nickname_needs_agreement\": false,\n" +
+            "        \"profile_image_needs_agreement\": false,\n" +
+            "        \"profile\": {\n" +
+            "            \"nickname\": \"최준호\",\n" +
+            "            \"thumbnail_image_url\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_110x110.jpg\",\n"
+            +
+            "            \"profile_image_url\": \"http://k.kakaocdn.net/dn/cpEwh1/btsfeggLuQz/AxpdbDgopjdSz6a36cjksK/img_640x640.jpg\",\n"
+            +
+            "            \"is_default_image\": false\n" +
+            "        },\n" +
+            "        \"has_email\": true,\n" +
+            "        \"email_needs_agreement\": false,\n" +
+            "        \"is_email_valid\": true,\n" +
+            "        \"is_email_verified\": true,\n" +
+            "        \"email\": \"ililil9482@naver.com\",\n" +
+            "        \"has_age_range\": true,\n" +
+            "        \"age_range_needs_agreement\": false,\n" +
+            "        \"age_range\": \"30~39\",\n" +
+            "        \"has_birthday\": true,\n" +
+            "        \"birthday_needs_agreement\": false,\n" +
+            "        \"birthday\": \"1030\",\n" +
+            "        \"birthday_type\": \"SOLAR\",\n" +
+            "        \"has_gender\": true,\n" +
+            "        \"gender_needs_agreement\": false,\n" +
+            "        \"gender\": \"male\"\n" +
+            "    }\n" +
+            "}";
+        mockWebServer.enqueue(
+            new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .setBody(kakaoReturnString));
 
         //when
         ResultActions resultActions = mock.perform(
-                get(PREFIX + "/kakao/login").param("access_token", "kakao_access_token")
+            get(PREFIX + "/kakao/login").param("access_token", "kakao_access_token")
         ).andDo(print());
 
         //then
@@ -153,17 +166,20 @@ class OAuthControllerDocs extends ControllerBaseTest {
 
         //docs
         resultActions.andDo(docs.document(
-                queryParameters(
-                        parameterWithName("access_token").description("kakao login access token")
-                ),
-                responseFields(
-                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-                        fieldWithPath("data.type").type(JsonFieldType.STRING).description("token type"),
-                        fieldWithPath("data.access_token").type(JsonFieldType.STRING).description("Appling에서 발급된 access token"),
-                        fieldWithPath("data.refresh_token").type(JsonFieldType.STRING).description("Appling에서 발급된 refresh token"),
-                        fieldWithPath("data.access_token_expired").type(JsonFieldType.NUMBER).description("access token expired")
-                )
+            queryParameters(
+                parameterWithName("access_token").description("kakao login access token")
+            ),
+            responseFields(
+                fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                fieldWithPath("data.type").type(JsonFieldType.STRING).description("token type"),
+                fieldWithPath("data.access_token").type(JsonFieldType.STRING)
+                    .description("Appling에서 발급된 access token"),
+                fieldWithPath("data.refresh_token").type(JsonFieldType.STRING)
+                    .description("Appling에서 발급된 refresh token"),
+                fieldWithPath("data.access_token_expired").type(JsonFieldType.NUMBER)
+                    .description("access token expired")
+            )
         ));
     }
 }

@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class S3ServiceTest {
+
     @Autowired
     private S3Service s3Service;
 
@@ -27,9 +28,12 @@ class S3ServiceTest {
     void putObjectSuccess() {
         //given
         List<MultipartFile> files = new LinkedList<>();
-        files.add(new MockMultipartFile("test1", "test1.txt", StandardCharsets.UTF_8.name(), "1".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test2", "test2.txt", StandardCharsets.UTF_8.name(), "2".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test3", "test3.txt", StandardCharsets.UTF_8.name(), "3".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test1", "test1.txt", StandardCharsets.UTF_8.name(),
+            "1".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test2", "test2.txt", StandardCharsets.UTF_8.name(),
+            "2".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test3", "test3.txt", StandardCharsets.UTF_8.name(),
+            "3".getBytes(StandardCharsets.UTF_8)));
         Long userId = 1L;
         DateTimeFormatter pathFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDateTime now = LocalDateTime.now();
@@ -39,7 +43,8 @@ class S3ServiceTest {
         String fileName = now.format(fileNameFormatter);
 
         //when
-        List<String> putObjectList = s3Service.putObject(String.format("product/%s/%s/", userId, pathDate), fileName, files);
+        List<String> putObjectList = s3Service.putObject(
+            String.format("product/%s/%s/", userId, pathDate), fileName, files);
         //then
         assertThat(putObjectList).isNotEmpty();
     }

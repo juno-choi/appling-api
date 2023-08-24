@@ -28,6 +28,7 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class S3ServiceUnitTest {
+
     @InjectMocks
     private S3Service s3Service;
 
@@ -44,16 +45,19 @@ class S3ServiceUnitTest {
         String eTag = "e-tag";
 
         List<MultipartFile> files = new LinkedList<>();
-        files.add(new MockMultipartFile("test1", "test1.txt", StandardCharsets.UTF_8.name(), "가나다라".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test2", "test2.txt", StandardCharsets.UTF_8.name(), "222".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test3", "test3.txt", StandardCharsets.UTF_8.name(), "3".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test1", "test1.txt", StandardCharsets.UTF_8.name(),
+            "가나다라".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test2", "test2.txt", StandardCharsets.UTF_8.name(),
+            "222".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test3", "test3.txt", StandardCharsets.UTF_8.name(),
+            "3".getBytes(StandardCharsets.UTF_8)));
 
         given(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class))).willReturn(
-                (PutObjectResponse) PutObjectResponse.builder()
-                        .eTag(eTag)
-                        .serverSideEncryption("AES-256")
-                        .sdkHttpResponse(SdkHttpResponse.builder().statusText("OK").build())
-                        .build()
+            (PutObjectResponse) PutObjectResponse.builder()
+                .eTag(eTag)
+                .serverSideEncryption("AES-256")
+                .sdkHttpResponse(SdkHttpResponse.builder().statusText("OK").build())
+                .build()
         );
 
         Long userId = 1L;
@@ -64,7 +68,8 @@ class S3ServiceUnitTest {
         DateTimeFormatter fileNameFormatter = DateTimeFormatter.ofPattern("HHmmss");
         String fileName = now.format(fileNameFormatter);
         //when
-        List<String> putObjectList = s3Service.putObject(String.format("product/%s/%s/", userId, pathDate), fileName, files);
+        List<String> putObjectList = s3Service.putObject(
+            String.format("product/%s/%s/", userId, pathDate), fileName, files);
         //then
         assertThat(putObjectList).isNotEmpty();
     }
@@ -76,22 +81,26 @@ class S3ServiceUnitTest {
         String eTag = "e-tag";
 
         List<MultipartFile> files = new LinkedList<>();
-        files.add(new MockMultipartFile("test1", "test1.txt", StandardCharsets.UTF_8.name(), "1".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test2", "test2.txt", StandardCharsets.UTF_8.name(), "2".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test3", "test3.txt", StandardCharsets.UTF_8.name(), "3".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test1", "test1.txt", StandardCharsets.UTF_8.name(),
+            "1".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test2", "test2.txt", StandardCharsets.UTF_8.name(),
+            "2".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test3", "test3.txt", StandardCharsets.UTF_8.name(),
+            "3".getBytes(StandardCharsets.UTF_8)));
 
         given(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class))).willReturn(
-                (PutObjectResponse) PutObjectResponse.builder()
-                        .eTag(eTag)
-                        .serverSideEncryption("AES-256")
-                        .sdkHttpResponse(SdkHttpResponse.builder().statusText("").build())
-                        .build()
+            (PutObjectResponse) PutObjectResponse.builder()
+                .eTag(eTag)
+                .serverSideEncryption("AES-256")
+                .sdkHttpResponse(SdkHttpResponse.builder().statusText("").build())
+                .build()
         );
         //when
         Throwable throwable = catchThrowable(() -> s3Service.putObject("juno/test/", "", files));
 
         //then
-        assertThat(throwable).isInstanceOf(RuntimeException.class).hasMessage("AWS에 파일을 올리는데 실패했습니다.");
+        assertThat(throwable).isInstanceOf(RuntimeException.class)
+            .hasMessage("AWS에 파일을 올리는데 실패했습니다.");
 
     }
 

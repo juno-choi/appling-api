@@ -41,6 +41,7 @@ import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.Http
 @Slf4j
 @Transactional(readOnly = true)
 public class MemberAuthService {
+
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -56,15 +57,16 @@ public class MemberAuthService {
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 30;            // 30분
 
     @Transactional
-    public JoinVo join(JoinDto joinDto){
+    public JoinVo join(JoinDto joinDto) {
         joinDto.passwordEncoder(passwordEncoder);
         Optional<Member> findMember = memberRepository.findByEmail(joinDto.getEmail());
-        if(findMember.isPresent()){
+        if (findMember.isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 회원입니다.");
         }
 
         Member saveMember = memberRepository.save(Member.of(joinDto));
-        myMailSender.send("애플링 가족이 되신걸 환영해요!", "<html><h1>애플링 회원 가입에 감사드립니다.</h1></html>", saveMember.getEmail());
+        myMailSender.send("애플링 가족이 되신걸 환영해요!", "<html><h1>애플링 회원 가입에 감사드립니다.</h1></html>",
+            saveMember.getEmail());
         return new JoinVo(saveMember.getName(), saveMember.getNickname(), saveMember.getEmail());
     }
 
@@ -73,7 +75,8 @@ public class MemberAuthService {
         UsernamePasswordAuthenticationToken authenticationToken = loginDto.toAuthentication();
 
         // security에 구현한 AuthService가 실행됨
-        Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        Authentication authenticate = authenticationManagerBuilder.getObject()
+            .authenticate(authenticationToken);
 
         LoginVo loginVo = tokenProvider.generateTokenDto(authenticate);
 
@@ -84,7 +87,7 @@ public class MemberAuthService {
     }
 
     public LoginVo refresh(String refreshToken) {
-        if(!tokenProvider.validateToken(refreshToken)){
+        if (!tokenProvider.validateToken(refreshToken)) {
             throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
         }
 
@@ -97,15 +100,18 @@ public class MemberAuthService {
         Date accessTokenExpired = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
 
         Member member = memberRepository.findById(Long.parseLong(sub)).orElseThrow(() ->
-                new IllegalArgumentException("유효하지 않은 회원입니다.")
+            new IllegalArgumentException("유효하지 않은 회원입니다.")
         );
 
         Role role = Role.valueOf(member.getRole().roleName);
         String[] roleSplitList = role.roleList.split(",");
-        List<String> trimRoleList = Arrays.stream(roleSplitList).map(r -> String.format("ROLE_%s", r.trim())).toList();
-        String roleList = trimRoleList.toString().replace("[", "").replace("]", "").replace(" ", "");
+        List<String> trimRoleList = Arrays.stream(roleSplitList)
+            .map(r -> String.format("ROLE_%s", r.trim())).toList();
+        String roleList = trimRoleList.toString().replace("[", "").replace("]", "")
+            .replace(" ", "");
 
-        String accessToken = tokenProvider.createAccessToken(String.valueOf(member.getId()), roleList, accessTokenExpired);
+        String accessToken = tokenProvider.createAccessToken(String.valueOf(member.getId()),
+            roleList, accessTokenExpired);
 
         Authentication authentication = tokenProvider.getAuthentication(accessToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -123,40 +129,40 @@ public class MemberAuthService {
         map.add("code", code);
 
         KakaoLoginResponseDto kakaoToken = Optional.ofNullable(
-                kakaoClient.post().uri(("/oauth/token"))
-                        .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
-                        .body(
-                                BodyInserters.fromFormData(map)
+            kakaoClient.post().uri(("/oauth/token"))
+                .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
+                .body(
+                    BodyInserters.fromFormData(map)
+                )
+                .retrieve()
+                .onStatus(http -> http.isError(), response ->
+                    response.bodyToMono(String.class)
+                        .handle((error, sink) ->
+                            sink.error(new RuntimeException(error))
                         )
-                        .retrieve()
-                        .onStatus(http -> http.isError(), response ->
-                                response.bodyToMono(String.class)
-                                        .handle((error, sink) ->
-                                                sink.error(new RuntimeException(error))
-                                        )
-                        )
-                        .bodyToMono(KakaoLoginResponseDto.class)
-                        .block()
+                )
+                .bodyToMono(KakaoLoginResponseDto.class)
+                .block()
         ).orElse(new KakaoLoginResponseDto("", "", 0L, 0L));
 
-        return new LoginVo(TYPE, kakaoToken.access_token, kakaoToken.refresh_token, kakaoToken.expires_in, kakaoToken.refresh_token_expires_in);
+        return new LoginVo(TYPE, kakaoToken.access_token, kakaoToken.refresh_token,
+            kakaoToken.expires_in, kakaoToken.refresh_token_expires_in);
     }
 
     @Transactional
     public LoginVo loginKakao(String accessToken) {
         KakaoMemberResponseDto info = kakaoApiClient.post().uri(("/v2/user/me"))
-                .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
-                .header(AUTHORIZATION, TYPE + accessToken)
-                .retrieve()
-                .bodyToMono(KakaoMemberResponseDto.class)
-                .blockOptional()
-                .orElseThrow(() -> {
-                    throw new IllegalStateException("카카오에서 반환 받은 값이 존재하지 않습니다.");
-                });
-
+            .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
+            .header(AUTHORIZATION, TYPE + accessToken)
+            .retrieve()
+            .bodyToMono(KakaoMemberResponseDto.class)
+            .blockOptional()
+            .orElseThrow(() -> {
+                throw new IllegalStateException("카카오에서 반환 받은 값이 존재하지 않습니다.");
+            });
 
         boolean hasEmail = info.kakao_account.has_email;
-        if(!hasEmail){
+        if (!hasEmail) {
             throw new IllegalArgumentException("이메일이 존재하지 않는 회원입니다. SNS 인증 먼저 진행해주세요.");
         }
 
@@ -164,26 +170,30 @@ public class MemberAuthService {
         String snsId = String.valueOf(info.id);
         Optional<Member> findMember = memberRepository.findByEmail(email);
         Member member;
-        if(findMember.isEmpty()){
+        if (findMember.isEmpty()) {
             // 회원 가입 진행
-            JoinDto joinDto = new JoinDto(email, snsId, info.kakao_account.profile.nickname, info.kakao_account.profile.nickname, null);
+            JoinDto joinDto = new JoinDto(email, snsId, info.kakao_account.profile.nickname,
+                info.kakao_account.profile.nickname, null);
             joinDto.passwordEncoder(passwordEncoder);
             member = memberRepository.save(Member.of(joinDto, snsId, SnsJoinType.KAKAO));
-            myMailSender.send("애플링 가족이 되신걸 환영해요!", "<html><h1>애플링 회원 가입에 감사드립니다.</h1></html>", member.getEmail());
-        }else{
+            myMailSender.send("애플링 가족이 되신걸 환영해요!", "<html><h1>애플링 회원 가입에 감사드립니다.</h1></html>",
+                member.getEmail());
+        } else {
             member = findMember.get();
         }
 
         Role role = Role.valueOf(member.getRole().roleName);
         String[] roleSplitList = role.roleList.split(",");
         List<SimpleGrantedAuthority> grantedList = new LinkedList<>();
-        for(String r : roleSplitList){
+        for (String r : roleSplitList) {
             grantedList.add(new SimpleGrantedAuthority(r));
         }
 
         // 토큰 인증 저장
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, snsId, grantedList);
-        Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+            email, snsId, grantedList);
+        Authentication authenticate = authenticationManagerBuilder.getObject()
+            .authenticate(authenticationToken);
 
         LoginVo loginVo = tokenProvider.generateTokenDto(authenticate);
 

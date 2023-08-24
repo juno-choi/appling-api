@@ -22,12 +22,15 @@ import java.util.List;
 
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+    public void handle(HttpServletRequest request, HttpServletResponse response,
+        AccessDeniedException accessDeniedException) throws IOException, ServletException {
         List<ErrorDto> errors = new ArrayList<>();
         errors.add(ErrorDto.builder().point("UNAUTHORIZED").detail("unauthorized token").build());
 
-        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.SC_UNAUTHORIZED), "UNAUTHORIZED");
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(
+            HttpStatusCode.valueOf(HttpStatus.SC_UNAUTHORIZED), "UNAUTHORIZED");
         pb.setType(URI.create("/docs.html"));
         pb.setProperty("errors", errors);
         pb.setInstance(URI.create(request.getRequestURI()));

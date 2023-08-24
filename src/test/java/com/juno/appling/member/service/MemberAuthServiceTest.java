@@ -35,7 +35,8 @@ class MemberAuthServiceTest extends BaseTest {
     void kakaoLoginSuccess() throws Exception {
         //given
         //when
-        LoginVo loginVo = memberAuthService.loginKakao("c5gOv5YdZbUEKY0EUGzC-nd-gIKN7kVvQ24qhGQiCinI2gAAAYi4Gfl3");
+        LoginVo loginVo = memberAuthService.loginKakao(
+            "c5gOv5YdZbUEKY0EUGzC-nd-gIKN7kVvQ24qhGQiCinI2gAAAYi4Gfl3");
         //then
         assertThat(loginVo).isNotNull();
     }

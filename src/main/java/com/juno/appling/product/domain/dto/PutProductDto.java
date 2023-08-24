@@ -17,6 +17,7 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PutProductDto {
+
     @NotNull(message = "id 비어있을 수 없습니다.")
     private Long id;
     @NotNull(message = "category_id 비어있을 수 없습니다.")

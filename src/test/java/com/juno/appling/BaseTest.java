@@ -28,6 +28,7 @@ import java.util.Optional;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BaseTest {
+
     protected ObjectMapper objectMapper = new ObjectMapper();
     protected String MEMBER_EMAIL = "member@appling.com";
     protected String SELLER_EMAIL = "seller@appling.com";
@@ -55,28 +56,36 @@ public class BaseTest {
 
     @Transactional
     @BeforeAll
-    void setUp(){
+    void setUp() {
         /**
          * 초기 회원 세팅
          */
         String[] emailList = {MEMBER_EMAIL, SELLER_EMAIL, SELLER2_EMAIL};
-        for(String email : emailList){
+        for (String email : emailList) {
             Optional<Member> findMember = memberRepository.findByEmail(email);
-            if(findMember.isEmpty()){
-                JoinDto joinDto = new JoinDto(email, passwordEncoder.encode(PASSWORD), "name", "nick", "19941030");
+            if (findMember.isEmpty()) {
+                JoinDto joinDto = new JoinDto(email, passwordEncoder.encode(PASSWORD), "name",
+                    "nick", "19941030");
                 Member saveMember = memberRepository.save(Member.of(joinDto));
-                if(saveMember.getEmail().equals(SELLER_EMAIL) || saveMember.getEmail().equals(SELLER2_EMAIL)){
+                if (saveMember.getEmail().equals(SELLER_EMAIL) || saveMember.getEmail()
+                    .equals(SELLER2_EMAIL)) {
                     /**
                      * 판매자 세팅
                      */
-                    if(saveMember.getEmail().equals(SELLER_EMAIL)){
+                    if (saveMember.getEmail().equals(SELLER_EMAIL)) {
                         saveMember.patchMemberRole(Role.SELLER);
-                        Seller seller = sellerRepository.save(Seller.of(saveMember, "애플링", "01012344321", "1234","강원도 평창군 장미산길 126", "email@mail.com"));
+                        Seller seller = sellerRepository.save(
+                            Seller.of(saveMember, "애플링", "01012344321", "1234", "강원도 평창군 장미산길 126",
+                                "email@mail.com"));
                     }
-                    if(saveMember.getEmail().equals(SELLER2_EMAIL)){
+                    if (saveMember.getEmail().equals(SELLER2_EMAIL)) {
                         saveMember.patchMemberRole(Role.SELLER);
-                        Seller seller = sellerRepository.save(Seller.of(saveMember, "자연농원", "01012344321", "1234", "강원도 평창군 장미산길 126", "email@mail.com"));
-                        introduceRepository.save(Introduce.of(seller, "장미산길", "https://appling-s3-bucket.s3.ap-northeast-2.amazonaws.com/html/1/20230815/184934_0.html", IntroduceStatus.USE));
+                        Seller seller = sellerRepository.save(
+                            Seller.of(saveMember, "자연농원", "01012344321", "1234", "강원도 평창군 장미산길 126",
+                                "email@mail.com"));
+                        introduceRepository.save(Introduce.of(seller, "장미산길",
+                            "https://appling-s3-bucket.s3.ap-northeast-2.amazonaws.com/html/1/20230815/184934_0.html",
+                            IntroduceStatus.USE));
                     }
                 }
             }
@@ -87,10 +96,10 @@ public class BaseTest {
          */
         String[] categoryList = {FRUIT_CATEGORY, MEAL_CATEGORY, VEGETABLE_CATEGORY};
 
-        for(String category : categoryList){
+        for (String category : categoryList) {
             Optional<Category> findCategory = categoryRepository.findByName(category);
-            if(findCategory.isEmpty()){
-                categoryRepository.save(Category.of(category ,CategoryStatus.USE));
+            if (findCategory.isEmpty()) {
+                categoryRepository.save(Category.of(category, CategoryStatus.USE));
             }
         }
     }

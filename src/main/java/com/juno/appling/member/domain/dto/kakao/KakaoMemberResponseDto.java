@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class KakaoMemberResponseDto {
+
     public Long id;
     public KakaoAccountDto kakao_account;
 }

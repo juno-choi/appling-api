@@ -8,13 +8,14 @@ import org.testcontainers.utility.DockerImageName;
 @Profile("local")
 @Configuration
 public class TestContainerConfig {
+
     private static final String REDIS_DOCKER_IMAGE = "redis:5.0.3-alpine";
 
     static {
         GenericContainer<?> REDIS_CONTAINER =
-                new GenericContainer<>(DockerImageName.parse(REDIS_DOCKER_IMAGE))
-                        .withExposedPorts(6379)
-                        .withReuse(true);
+            new GenericContainer<>(DockerImageName.parse(REDIS_DOCKER_IMAGE))
+                .withExposedPorts(6379)
+                .withReuse(true);
 
         REDIS_CONTAINER.start();
 

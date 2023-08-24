@@ -20,13 +20,14 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthService implements UserDetailsService {
+
     private final MemberRepository memberRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.debug("회원 인증 처리");
         Member member = memberRepository.findByEmail(username).orElseThrow(() ->
-                new UsernameNotFoundException("유효하지 않은 회원입니다.")
+            new UsernameNotFoundException("유효하지 않은 회원입니다.")
         );
 
         Role role = member.getRole();
@@ -34,16 +35,16 @@ public class AuthService implements UserDetailsService {
         String roleListToString = Role.valueOf(role.roleName).roleList;
         String[] roleList = roleListToString.split(",");
 
-        for(String r : roleList){
+        for (String r : roleList) {
             roleSet.add(r.trim());
         }
 
         String[] roles = Arrays.copyOf(roleSet.toArray(), roleSet.size(), String[].class);
 
         return User.builder()
-                .username(String.valueOf(member.getId()))
-                .password(member.getPassword())
-                .roles(roles)
-                .build();
+            .username(String.valueOf(member.getId()))
+            .password(member.getPassword())
+            .roles(roles)
+            .build();
     }
 }

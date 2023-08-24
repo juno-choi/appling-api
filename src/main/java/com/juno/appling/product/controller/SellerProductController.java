@@ -21,33 +21,42 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("${api-prefix}/seller/product")
 @RequiredArgsConstructor
 public class SellerProductController {
+
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<Api<ProductListVo>> getProductList(@PageableDefault(size = 10, page = 0) Pageable pageable, @RequestParam(required = false, name = "search") String search, @RequestParam(required = false, name = "status", defaultValue = "normal") String status, @RequestParam(required = false, name = "category_id", defaultValue = "0") Long categoryId, HttpServletRequest request){
+    public ResponseEntity<Api<ProductListVo>> getProductList(
+        @PageableDefault(size = 10, page = 0) Pageable pageable,
+        @RequestParam(required = false, name = "search") String search,
+        @RequestParam(required = false, name = "status", defaultValue = "normal") String status,
+        @RequestParam(required = false, name = "category_id", defaultValue = "0") Long categoryId,
+        HttpServletRequest request) {
         return ResponseEntity.ok(Api.<ProductListVo>builder()
-                .code(ResultCode.SUCCESS.code)
-                .message(ResultCode.SUCCESS.message)
-                .data(productService.getProductListBySeller(pageable, search, status, categoryId, request))
-                .build());
+            .code(ResultCode.SUCCESS.code)
+            .message(ResultCode.SUCCESS.message)
+            .data(productService.getProductListBySeller(pageable, search, status, categoryId,
+                request))
+            .build());
     }
 
     @PostMapping
-    public ResponseEntity<Api<ProductVo>> postProduct(@RequestBody @Validated ProductDto productDto, HttpServletRequest request, BindingResult bindingResult){
+    public ResponseEntity<Api<ProductVo>> postProduct(@RequestBody @Validated ProductDto productDto,
+        HttpServletRequest request, BindingResult bindingResult) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Api.<ProductVo>builder()
-                        .code(ResultCode.POST.code)
-                        .message(ResultCode.POST.message)
-                        .data(productService.postProduct(productDto, request))
-                        .build());
+            .body(Api.<ProductVo>builder()
+                .code(ResultCode.POST.code)
+                .message(ResultCode.POST.message)
+                .data(productService.postProduct(productDto, request))
+                .build());
     }
 
     @PutMapping
-    public ResponseEntity<Api<ProductVo>> putProduct(@RequestBody @Validated PutProductDto putProductDto, BindingResult bindingResult){
+    public ResponseEntity<Api<ProductVo>> putProduct(
+        @RequestBody @Validated PutProductDto putProductDto, BindingResult bindingResult) {
         return ResponseEntity.ok(Api.<ProductVo>builder()
-                        .code(ResultCode.SUCCESS.code)
-                        .message(ResultCode.SUCCESS.message)
-                        .data(productService.putProduct(putProductDto))
-                        .build());
+            .code(ResultCode.SUCCESS.code)
+            .message(ResultCode.SUCCESS.message)
+            .data(productService.putProduct(putProductDto))
+            .build());
     }
 }

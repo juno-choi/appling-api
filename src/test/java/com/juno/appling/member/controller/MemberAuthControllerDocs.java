@@ -33,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
 class MemberAuthControllerDocs extends ControllerBaseTest {
+
     @Autowired
     private MemberAuthService memberAuthService;
 
@@ -42,7 +43,7 @@ class MemberAuthControllerDocs extends ControllerBaseTest {
     private final static String PREFIX = "/api/auth";
 
     @Test
-    @DisplayName(PREFIX+"/join")
+    @DisplayName(PREFIX + "/join")
     void join() throws Exception {
         //given
         JoinDto joinDto = new JoinDto("juno@auth.com", "password", "name", "nick", "19941030");
@@ -50,36 +51,38 @@ class MemberAuthControllerDocs extends ControllerBaseTest {
 
         //when
         ResultActions resultActions = mock.perform(
-                post(PREFIX+"/join").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(joinDto))
+            post(PREFIX + "/join").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(joinDto))
         ).andDo(print());
 
         //then
-        String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        String contentAsString = resultActions.andReturn().getResponse()
+            .getContentAsString(StandardCharsets.UTF_8);
         Assertions.assertThat(contentAsString).contains(ResultCode.POST.code);
         verify(myMailSender, times(1)).send(anyString(), anyString(), anyString());
 
         resultActions.andDo(docs.document(
-                requestFields(
-                        fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-                        fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
-                        fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
-                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
-                        fieldWithPath("birth").type(JsonFieldType.STRING).description("생년월일 ex) 19941030").optional()
-                ),
-                responseFields(
-                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-                        fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
-                        fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("닉네임"),
-                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일")
-                )
+            requestFields(
+                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
+                fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+                fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
+                fieldWithPath("birth").type(JsonFieldType.STRING).description("생년월일 ex) 19941030")
+                    .optional()
+            ),
+            responseFields(
+                fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
+                fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("닉네임"),
+                fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일")
+            )
         ));
     }
 
     @Test
-    @DisplayName(PREFIX+"/login")
-    void login() throws Exception{
+    @DisplayName(PREFIX + "/login")
+    void login() throws Exception {
         //given
         String email = "juno2@auth.com";
         String password = "password";
@@ -90,33 +93,37 @@ class MemberAuthControllerDocs extends ControllerBaseTest {
 
         //when
         ResultActions resultActions = mock.perform(
-                post(PREFIX+"/login").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(loginDto))
+            post(PREFIX + "/login").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(loginDto))
         ).andDo(print());
 
         //then
-        String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        String contentAsString = resultActions.andReturn().getResponse()
+            .getContentAsString(StandardCharsets.UTF_8);
         Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.code);
 
         resultActions.andDo(docs.document(
-                requestFields(
-                        fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-                        fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호")
-                ),
-                responseFields(
-                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-                        fieldWithPath("data.type").type(JsonFieldType.STRING).description("token type"),
-                        fieldWithPath("data.access_token").type(JsonFieldType.STRING).description("access token"),
-                        fieldWithPath("data.refresh_token").type(JsonFieldType.STRING).description("refresh token (기한 : 발급일로 부터 7일)"),
-                        fieldWithPath("data.access_token_expired").type(JsonFieldType.NUMBER).description("access token expired")
-                )
+            requestFields(
+                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호")
+            ),
+            responseFields(
+                fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                fieldWithPath("data.type").type(JsonFieldType.STRING).description("token type"),
+                fieldWithPath("data.access_token").type(JsonFieldType.STRING)
+                    .description("access token"),
+                fieldWithPath("data.refresh_token").type(JsonFieldType.STRING)
+                    .description("refresh token (기한 : 발급일로 부터 7일)"),
+                fieldWithPath("data.access_token_expired").type(JsonFieldType.NUMBER)
+                    .description("access token expired")
+            )
         ));
     }
 
     @Test
-    @DisplayName(PREFIX+"/refresh/{refresh_token}")
-    void refresh() throws Exception{
+    @DisplayName(PREFIX + "/refresh/{refresh_token}")
+    void refresh() throws Exception {
         //given
         String email = "juno3@auth.com";
         String password = "password";
@@ -127,25 +134,30 @@ class MemberAuthControllerDocs extends ControllerBaseTest {
 
         //when
         ResultActions resultActions = mock.perform(
-                RestDocumentationRequestBuilders.get(PREFIX+"/refresh/{refresh_token}", loginVo.refreshToken())
+            RestDocumentationRequestBuilders.get(PREFIX + "/refresh/{refresh_token}",
+                loginVo.refreshToken())
         ).andDo(print());
 
         //then
-        String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        String contentAsString = resultActions.andReturn().getResponse()
+            .getContentAsString(StandardCharsets.UTF_8);
         Assertions.assertThat(contentAsString).contains(ResultCode.SUCCESS.code);
 
         resultActions.andDo(docs.document(
-                pathParameters(
-                        parameterWithName("refresh_token").description("refresh token")
-                ),
-                responseFields(
-                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-                        fieldWithPath("data.type").type(JsonFieldType.STRING).description("token type"),
-                        fieldWithPath("data.access_token").type(JsonFieldType.STRING).description("access token"),
-                        fieldWithPath("data.refresh_token").type(JsonFieldType.STRING).description("refresh token (기한 : 발급일로 부터 7일)"),
-                        fieldWithPath("data.access_token_expired").type(JsonFieldType.NUMBER).description("access token expired")
-                )
+            pathParameters(
+                parameterWithName("refresh_token").description("refresh token")
+            ),
+            responseFields(
+                fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                fieldWithPath("data.type").type(JsonFieldType.STRING).description("token type"),
+                fieldWithPath("data.access_token").type(JsonFieldType.STRING)
+                    .description("access token"),
+                fieldWithPath("data.refresh_token").type(JsonFieldType.STRING)
+                    .description("refresh token (기한 : 발급일로 부터 7일)"),
+                fieldWithPath("data.access_token_expired").type(JsonFieldType.NUMBER)
+                    .description("access token expired")
+            )
         ));
     }
 }

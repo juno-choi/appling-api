@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Api<T> {
+
     @NonNull
     private String code;
     @NonNull

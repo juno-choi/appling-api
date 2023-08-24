@@ -25,6 +25,7 @@ import java.util.Optional;
 
 @RestControllerAdvice
 public class CommonAdvice {
+
     @Value("${docs}")
     private String docs;
 
@@ -32,35 +33,40 @@ public class CommonAdvice {
 
 
     @ExceptionHandler
-    public ResponseEntity<ProblemDetail> illegalArgumentException(IllegalArgumentException e, HttpServletRequest request){
+    public ResponseEntity<ProblemDetail> illegalArgumentException(IllegalArgumentException e,
+        HttpServletRequest request) {
         List<ErrorDto> errors = new ArrayList<>();
         errors.add(ErrorDto.builder().point("").detail(e.getMessage()).build());
 
-        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "입력 값을 확인해주세요.");
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(
+            HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "입력 값을 확인해주세요.");
         pb.setInstance(URI.create(request.getRequestURI()));
         pb.setType(URI.create(docs));
         pb.setTitle(HttpStatus.BAD_REQUEST.name());
         pb.setProperty(ERRORS, errors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(pb);
+            .body(pb);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ProblemDetail> methodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request){
+    public ResponseEntity<ProblemDetail> methodArgumentNotValidException(
+        MethodArgumentNotValidException e, HttpServletRequest request) {
         List<ErrorDto> errors = new ArrayList<>();
-        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "입력 값을 확인해주세요.");
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(
+            HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "입력 값을 확인해주세요.");
         Optional<BindingResult> bindingResultOptional = Optional.ofNullable(e.getBindingResult());
 
-        if(bindingResultOptional.isPresent()){
+        if (bindingResultOptional.isPresent()) {
             BindingResult bindingResult = bindingResultOptional.get();
-            Optional<FieldError> fieldErrorOptional = Optional.ofNullable(bindingResult.getFieldError());
-            if(fieldErrorOptional.isPresent()){
+            Optional<FieldError> fieldErrorOptional = Optional.ofNullable(
+                bindingResult.getFieldError());
+            if (fieldErrorOptional.isPresent()) {
                 FieldError fieldError = fieldErrorOptional.get();
                 errors.add(ErrorDto.builder()
-                        .point(Optional.ofNullable(fieldError.getField()).orElse(""))
-                        .detail(Optional.ofNullable(fieldError.getDefaultMessage()).orElse(""))
-                        .build());
+                    .point(Optional.ofNullable(fieldError.getField()).orElse(""))
+                    .detail(Optional.ofNullable(fieldError.getDefaultMessage()).orElse(""))
+                    .build());
             }
         }
 
@@ -70,82 +76,98 @@ public class CommonAdvice {
         pb.setProperty(ERRORS, errors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(pb);
+            .body(pb);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ProblemDetail> httpMessageNotReadableException(HttpMessageNotReadableException e, HttpServletRequest request){
+    public ResponseEntity<ProblemDetail> httpMessageNotReadableException(
+        HttpMessageNotReadableException e, HttpServletRequest request) {
         List<ErrorDto> errors = new ArrayList<>();
 
         errors.add(ErrorDto.builder().point("").detail(e.getMessage()).build());
 
-        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "입력 값을 확인해주세요.");
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(
+            HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "입력 값을 확인해주세요.");
         pb.setInstance(URI.create(request.getRequestURI()));
         pb.setType(URI.create(docs));
         pb.setTitle(HttpStatus.BAD_REQUEST.name());
         pb.setProperty(ERRORS, errors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(pb);
+            .body(pb);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ProblemDetail> missingServletRequestParameterException(MissingServletRequestParameterException e, HttpServletRequest request){
+    public ResponseEntity<ProblemDetail> missingServletRequestParameterException(
+        MissingServletRequestParameterException e, HttpServletRequest request) {
         List<ErrorDto> errors = new ArrayList<>();
-        errors.add(ErrorDto.builder().point(e.getParameterName()).detail(String.format("please check parameter : %s (%s)", e.getParameterName(), e.getParameterType())).build());
+        errors.add(ErrorDto.builder().point(e.getParameterName()).detail(
+            String.format("please check parameter : %s (%s)", e.getParameterName(),
+                e.getParameterType())).build());
 
-        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "파라미터 값을 확인해주세요.");
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(
+            HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "파라미터 값을 확인해주세요.");
         pb.setInstance(URI.create(request.getRequestURI()));
         pb.setType(URI.create(docs));
         pb.setTitle(HttpStatus.BAD_REQUEST.name());
         pb.setProperty(ERRORS, errors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(pb);
+            .body(pb);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ProblemDetail> noHandlerFoundException(NoHandlerFoundException e, HttpServletRequest request){
+    public ResponseEntity<ProblemDetail> noHandlerFoundException(NoHandlerFoundException e,
+        HttpServletRequest request) {
         List<ErrorDto> errors = new ArrayList<>();
         errors.add(ErrorDto.builder().point("").detail("NOT FOUND").build());
 
-        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.NOT_FOUND.value()), "URL을 찾을 수 없습니다.");
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(
+            HttpStatusCode.valueOf(HttpStatus.NOT_FOUND.value()), "URL을 찾을 수 없습니다.");
         pb.setInstance(URI.create(request.getRequestURI()));
         pb.setType(URI.create(docs));
         pb.setTitle(HttpStatus.NOT_FOUND.name());
         pb.setProperty(ERRORS, errors);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(pb);
+            .body(pb);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ProblemDetail> sizeLimitExceededException(SizeLimitExceededException e, HttpServletRequest request){
+    public ResponseEntity<ProblemDetail> sizeLimitExceededException(SizeLimitExceededException e,
+        HttpServletRequest request) {
         List<ErrorDto> errors = new ArrayList<>();
-        errors.add(ErrorDto.builder().point("size limit").detail(String.format("max : %d, your request : %d", e.getPermittedSize(), e.getActualSize())).build());
+        errors.add(ErrorDto.builder().point("size limit").detail(
+                String.format("max : %d, your request : %d", e.getPermittedSize(), e.getActualSize()))
+            .build());
 
-        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "요청하신 파일의 크키가 너무 큽니다.");
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(
+            HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "요청하신 파일의 크키가 너무 큽니다.");
         pb.setInstance(URI.create(request.getRequestURI()));
         pb.setType(URI.create(docs));
         pb.setTitle(HttpStatus.BAD_REQUEST.name());
         pb.setProperty(ERRORS, errors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(pb);
+            .body(pb);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ProblemDetail> fileSizeLimitExceededException(FileSizeLimitExceededException e, HttpServletRequest request){
+    public ResponseEntity<ProblemDetail> fileSizeLimitExceededException(
+        FileSizeLimitExceededException e, HttpServletRequest request) {
         List<ErrorDto> errors = new ArrayList<>();
-        errors.add(ErrorDto.builder().point("file size limit").detail(String.format("max : %d, your request : %d", e.getPermittedSize(), e.getActualSize())).build());
+        errors.add(ErrorDto.builder().point("file size limit").detail(
+                String.format("max : %d, your request : %d", e.getPermittedSize(), e.getActualSize()))
+            .build());
 
-        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "요청하신 파일의 크키가 너무 큽니다.");
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(
+            HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "요청하신 파일의 크키가 너무 큽니다.");
         pb.setInstance(URI.create(request.getRequestURI()));
         pb.setType(URI.create(docs));
         pb.setTitle(HttpStatus.BAD_REQUEST.name());
         pb.setProperty(ERRORS, errors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(pb);
+            .body(pb);
     }
 }

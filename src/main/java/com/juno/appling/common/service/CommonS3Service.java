@@ -18,24 +18,29 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CommonS3Service {
+
     private final TokenProvider tokenProvider;
     private final S3Service s3Service;
     private final Environment env;
     private final MemberRepository memberRepository;
 
-    public UploadVo s3UploadFile(List<MultipartFile> files, String pathFormat, HttpServletRequest request){
+    public UploadVo s3UploadFile(List<MultipartFile> files, String pathFormat,
+        HttpServletRequest request) {
         Long memberId = tokenProvider.getMemberId(request);
 
-        memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
+        memberRepository.findById(memberId)
+            .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
 
         String s3Url = env.getProperty("cloud.s3.url");
 
-        List<String> fileUrlList = makeFileUrlList(files, memberId,pathFormat);
+        List<String> fileUrlList = makeFileUrlList(files, memberId, pathFormat);
 
-        return new UploadVo(String.format("%s/%s", s3Url, Optional.ofNullable(fileUrlList.get(0)).orElse("")));
+        return new UploadVo(
+            String.format("%s/%s", s3Url, Optional.ofNullable(fileUrlList.get(0)).orElse("")));
     }
 
-    private List<String> makeFileUrlList(List<MultipartFile> files, Long memberId, String pathFormat) {
+    private List<String> makeFileUrlList(List<MultipartFile> files, Long memberId,
+        String pathFormat) {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter pathFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         DateTimeFormatter fileNameFormatter = DateTimeFormatter.ofPattern("HHmmss");

@@ -17,6 +17,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class Member {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -37,7 +38,7 @@ public class Member {
     private Role role;
 
     private String snsId;
-    
+
     @Enumerated(EnumType.STRING)
     private SnsJoinType snsType;
 
@@ -50,7 +51,9 @@ public class Member {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public Member(@NotNull String email, @NotNull String password, @NotNull String nickname, @NotNull String name, String birth, Role role, String snsId, SnsJoinType snsType, Status status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public Member(@NotNull String email, @NotNull String password, @NotNull String nickname,
+        @NotNull String name, String birth, Role role, String snsId, SnsJoinType snsType,
+        Status status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -64,7 +67,9 @@ public class Member {
         this.modifiedAt = modifiedAt;
     }
 
-    public Member(Long id, @NotNull String email, @NotNull String password, @NotNull String nickname, @NotNull String name, String birth, Role role, String snsId, SnsJoinType snsType, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public Member(Long id, @NotNull String email, @NotNull String password,
+        @NotNull String nickname, @NotNull String name, String birth, Role role, String snsId,
+        SnsJoinType snsType, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -78,37 +83,41 @@ public class Member {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Member of(JoinDto joinDto){
+    public static Member of(JoinDto joinDto) {
         LocalDateTime now = LocalDateTime.now();
-        return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(), joinDto.getName(), joinDto.getBirth(), Role.MEMBER, null, null, Status.NORMAL, now, now);
+        return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(),
+            joinDto.getName(), joinDto.getBirth(), Role.MEMBER, null, null, Status.NORMAL, now,
+            now);
     }
 
-    public static Member of(JoinDto joinDto, String snsId, SnsJoinType snsType){
+    public static Member of(JoinDto joinDto, String snsId, SnsJoinType snsType) {
         LocalDateTime now = LocalDateTime.now();
-        return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(), joinDto.getName(), joinDto.getBirth(), Role.MEMBER, snsId, snsType, Status.NORMAL, now, now);
+        return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(),
+            joinDto.getName(), joinDto.getBirth(), Role.MEMBER, snsId, snsType, Status.NORMAL, now,
+            now);
     }
 
-    public void patchMember(String birth, String name, String nickname, String password){
+    public void patchMember(String birth, String name, String nickname, String password) {
         LocalDateTime now = LocalDateTime.now();
-        if(!birth.isEmpty()){
+        if (!birth.isEmpty()) {
             this.birth = birth;
             this.modifiedAt = now;
         }
-        if(!name.isEmpty()){
+        if (!name.isEmpty()) {
             this.name = name;
             this.modifiedAt = now;
         }
-        if(!nickname.isEmpty()){
+        if (!nickname.isEmpty()) {
             this.nickname = nickname;
             this.modifiedAt = now;
         }
-        if(!password.isEmpty()){
+        if (!password.isEmpty()) {
             this.password = password;
             this.modifiedAt = now;
         }
     }
 
-    public void patchMemberRole(Role role){
+    public void patchMemberRole(Role role) {
         this.role = role;
     }
 

@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Seller {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seller_id")
@@ -40,7 +41,12 @@ public class Seller {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Seller(Member member, @NotNull(message = "company 비어있을 수 없습니다.") String company, @NotNull(message = "tel 비어있을 수 없습니다.") String tel, @NotNull(message = "zonecode 비어있을 수 없습니다.") String zonecode, @NotNull(message = "address 비어있을 수 없습니다.") String address, @NotNull(message = "email 비어있을 수 없습니다.") String email, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    private Seller(Member member, @NotNull(message = "company 비어있을 수 없습니다.") String company,
+        @NotNull(message = "tel 비어있을 수 없습니다.") String tel,
+        @NotNull(message = "zonecode 비어있을 수 없습니다.") String zonecode,
+        @NotNull(message = "address 비어있을 수 없습니다.") String address,
+        @NotNull(message = "email 비어있을 수 없습니다.") String email, LocalDateTime createdAt,
+        LocalDateTime modifiedAt) {
         this.member = member;
         this.company = company;
         this.tel = tel;
@@ -51,15 +57,20 @@ public class Seller {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Seller of(Member member, @NotNull(message = "company 비어있을 수 없습니다.") String company, @NotNull(message = "tel 비어있을 수 없습니다.") String tel, @NotNull(message = "zonecode 비어있을 수 없습니다.") String zonecode, @NotNull(message = "address 비어있을 수 없습니다.") String address, @NotNull(message = "email 비어있을 수 없습니다.") String email){
+    public static Seller of(Member member,
+        @NotNull(message = "company 비어있을 수 없습니다.") String company,
+        @NotNull(message = "tel 비어있을 수 없습니다.") String tel,
+        @NotNull(message = "zonecode 비어있을 수 없습니다.") String zonecode,
+        @NotNull(message = "address 비어있을 수 없습니다.") String address,
+        @NotNull(message = "email 비어있을 수 없습니다.") String email) {
         LocalDateTime now = LocalDateTime.now();
         tel = tel.replaceAll("-", "");
         return new Seller(member, company, tel, zonecode, address, email, now, now);
     }
 
-    public void put(PutSellerDto dto){
+    public void put(PutSellerDto dto) {
         LocalDateTime now = LocalDateTime.now();
-        String tel = dto.getTel().replaceAll("-","");
+        String tel = dto.getTel().replaceAll("-", "");
         this.modifiedAt = now;
         this.company = dto.getCompany();
         this.tel = tel;

@@ -13,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PatchMemberDto {
+
     private String birth;
     private String name;
     private String password;

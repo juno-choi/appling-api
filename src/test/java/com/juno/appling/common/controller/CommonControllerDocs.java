@@ -37,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
 class CommonControllerDocs extends ControllerBaseTest {
+
     @Autowired
     private MemberAuthService memberAuthService;
 
@@ -47,7 +48,7 @@ class CommonControllerDocs extends ControllerBaseTest {
 
     @Test
     @DisplayName(PREFIX + "/image")
-    void uploadImage() throws Exception{
+    void uploadImage() throws Exception {
         //given
         LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
         LoginVo login = memberAuthService.login(loginDto);
@@ -57,9 +58,11 @@ class CommonControllerDocs extends ControllerBaseTest {
 
         //when
         ResultActions perform = mock.perform(
-                multipart(PREFIX + "/image")
-                        .file(new MockMultipartFile("image", "test1.png", MediaType.APPLICATION_FORM_URLENCODED_VALUE, "123".getBytes(StandardCharsets.UTF_8)))
-                        .header(AUTHORIZATION, "Bearer "+login.accessToken())
+            multipart(PREFIX + "/image")
+                .file(new MockMultipartFile("image", "test1.png",
+                    MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+                    "123".getBytes(StandardCharsets.UTF_8)))
+                .header(AUTHORIZATION, "Bearer " + login.accessToken())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         );
 
@@ -67,23 +70,23 @@ class CommonControllerDocs extends ControllerBaseTest {
         perform.andExpect(status().is2xxSuccessful());
 
         perform.andDo(docs.document(
-                requestHeaders(
-                        headerWithName(AUTHORIZATION).description("access token")
-                ),
-                requestParts(
-                        partWithName("image").description("업로드 이미지")
-                ),
-                responseFields(
-                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-                        fieldWithPath("data.url").type(JsonFieldType.STRING).description("업로드 된 이미지 url")
-                )
+            requestHeaders(
+                headerWithName(AUTHORIZATION).description("access token")
+            ),
+            requestParts(
+                partWithName("image").description("업로드 이미지")
+            ),
+            responseFields(
+                fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                fieldWithPath("data.url").type(JsonFieldType.STRING).description("업로드 된 이미지 url")
+            )
         ));
     }
 
     @Test
     @DisplayName(PREFIX + "/html")
-    void uploadHtml() throws Exception{
+    void uploadHtml() throws Exception {
         //given
         LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
         LoginVo login = memberAuthService.login(loginDto);
@@ -93,27 +96,29 @@ class CommonControllerDocs extends ControllerBaseTest {
 
         //when
         ResultActions perform = mock.perform(
-                multipart(PREFIX + "/html")
-                        .file(new MockMultipartFile("html", "test1.html", MediaType.APPLICATION_FORM_URLENCODED_VALUE, "123".getBytes(StandardCharsets.UTF_8)))
-                        .header(AUTHORIZATION, "Bearer "+login.accessToken())
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            multipart(PREFIX + "/html")
+                .file(new MockMultipartFile("html", "test1.html",
+                    MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+                    "123".getBytes(StandardCharsets.UTF_8)))
+                .header(AUTHORIZATION, "Bearer " + login.accessToken())
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         );
 
         //then
         perform.andExpect(status().is2xxSuccessful());
 
         perform.andDo(docs.document(
-                requestHeaders(
-                        headerWithName(AUTHORIZATION).description("access token")
-                ),
-                requestParts(
-                        partWithName("html").description("업로드 html 파일")
-                ),
-                responseFields(
-                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-                        fieldWithPath("data.url").type(JsonFieldType.STRING).description("업로드 된 html url")
-                )
+            requestHeaders(
+                headerWithName(AUTHORIZATION).description("access token")
+            ),
+            requestParts(
+                partWithName("html").description("업로드 html 파일")
+            ),
+            responseFields(
+                fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                fieldWithPath("data.url").type(JsonFieldType.STRING).description("업로드 된 html url")
+            )
         ));
     }
 }

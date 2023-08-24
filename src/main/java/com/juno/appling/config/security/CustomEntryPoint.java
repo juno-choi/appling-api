@@ -23,22 +23,26 @@ import java.util.List;
 
 @Component
 public class CustomEntryPoint implements AuthenticationEntryPoint {
+
     @Value("${docs}")
     private String docs;
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+        AuthenticationException authException) throws IOException, ServletException {
         List<ErrorDto> errors = new ArrayList<>();
         String requestURI = request.getRequestURI();
 
-        if(requestURI.contains("/login")){
-            errors.add(ErrorDto.builder().point("email / password").detail("please check email or password").build());
-        }else{
-            errors.add(ErrorDto.builder().point("access token").detail("please check access token").build());
+        if (requestURI.contains("/login")) {
+            errors.add(ErrorDto.builder().point("email / password")
+                .detail("please check email or password").build());
+        } else {
+            errors.add(ErrorDto.builder().point("access token").detail("please check access token")
+                .build());
         }
-        
 
-        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.SC_FORBIDDEN), "FORBIDDEN");
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(
+            HttpStatusCode.valueOf(HttpStatus.SC_FORBIDDEN), "FORBIDDEN");
         pb.setType(URI.create(docs));
         pb.setProperty("errors", errors);
         pb.setInstance(URI.create(requestURI));

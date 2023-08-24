@@ -6,4 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record JoinVo(String name, String nickname, String email) {}
+public record JoinVo(String name, String nickname, String email) {
+
+}

@@ -20,42 +20,49 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("${api-prefix}/product")
 @RequiredArgsConstructor
 public class ProductController {
+
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<Api<ProductListVo>> getProductList(@PageableDefault(size = 10, page = 0) Pageable pageable, @RequestParam(required = false, name = "search") String search, @RequestParam(required = false, name = "status", defaultValue = "normal") String status, @RequestParam(required = false, name = "category_id", defaultValue = "0") Long categoryId, @RequestParam(required = false, name = "seller_id", defaultValue = "0") Long sellerId){
+    public ResponseEntity<Api<ProductListVo>> getProductList(
+        @PageableDefault(size = 10, page = 0) Pageable pageable,
+        @RequestParam(required = false, name = "search") String search,
+        @RequestParam(required = false, name = "status", defaultValue = "normal") String status,
+        @RequestParam(required = false, name = "category_id", defaultValue = "0") Long categoryId,
+        @RequestParam(required = false, name = "seller_id", defaultValue = "0") Long sellerId) {
         return ResponseEntity.ok(Api.<ProductListVo>builder()
-                .code(ResultCode.SUCCESS.code)
-                .message(ResultCode.SUCCESS.message)
-                .data(productService.getProductList(pageable, search, status, categoryId, sellerId))
-                .build());
+            .code(ResultCode.SUCCESS.code)
+            .message(ResultCode.SUCCESS.message)
+            .data(productService.getProductList(pageable, search, status, categoryId, sellerId))
+            .build());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Api<ProductVo>> getProduct(@PathVariable(name = "id") Long id){
+    public ResponseEntity<Api<ProductVo>> getProduct(@PathVariable(name = "id") Long id) {
         return ResponseEntity.ok(Api.<ProductVo>builder()
-                .code(ResultCode.SUCCESS.code)
-                .message(ResultCode.SUCCESS.message)
-                .data(productService.getProduct(id))
-                .build());
+            .code(ResultCode.SUCCESS.code)
+            .message(ResultCode.SUCCESS.message)
+            .data(productService.getProduct(id))
+            .build());
     }
 
 
     @GetMapping("/category")
-    public ResponseEntity<Api<CategoryListVo>> getCategoryList(){
+    public ResponseEntity<Api<CategoryListVo>> getCategoryList() {
         return ResponseEntity.ok(Api.<CategoryListVo>builder()
-                .code(ResultCode.SUCCESS.code)
-                .message(ResultCode.SUCCESS.message)
-                .data(productService.getCategoryList())
-                .build());
+            .code(ResultCode.SUCCESS.code)
+            .message(ResultCode.SUCCESS.message)
+            .data(productService.getCategoryList())
+            .build());
     }
 
     @PatchMapping("/cnt")
-    public ResponseEntity<Api<MessageVo>> addViewCnt(@RequestBody @Validated AddViewCntDto addViewCntDto, BindingResult bindingResult){
+    public ResponseEntity<Api<MessageVo>> addViewCnt(
+        @RequestBody @Validated AddViewCntDto addViewCntDto, BindingResult bindingResult) {
         return ResponseEntity.ok(Api.<MessageVo>builder()
-                .code(ResultCode.SUCCESS.code)
-                .message(ResultCode.SUCCESS.message)
-                .data(productService.addViewCnt(addViewCntDto))
-                .build());
+            .code(ResultCode.SUCCESS.code)
+            .message(ResultCode.SUCCESS.message)
+            .data(productService.addViewCnt(addViewCntDto))
+            .build());
     }
 }

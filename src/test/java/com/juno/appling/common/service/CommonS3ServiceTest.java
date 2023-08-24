@@ -25,6 +25,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
 class CommonS3ServiceTest {
+
     @Autowired
     private CommonS3Service commonS3Service;
     @Autowired
@@ -42,15 +43,18 @@ class CommonS3ServiceTest {
         LoginDto loginDto = new LoginDto("seller@appling.com", "password");
         LoginVo login = memberAuthService.login(loginDto);
         request.removeHeader(AUTHORIZATION);
-        request.addHeader(AUTHORIZATION, "Bearer "+login.accessToken());
+        request.addHeader(AUTHORIZATION, "Bearer " + login.accessToken());
         List<MultipartFile> files = new LinkedList<>();
         String fileName1 = "test1.txt";
         String fileName2 = "test2.txt";
         String fileName3 = "test3.txt";
 
-        files.add(new MockMultipartFile("test1", fileName1, StandardCharsets.UTF_8.name(), "abcd".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test2", fileName2, StandardCharsets.UTF_8.name(), "222".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(), "3".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test1", fileName1, StandardCharsets.UTF_8.name(),
+            "abcd".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test2", fileName2, StandardCharsets.UTF_8.name(),
+            "222".getBytes(StandardCharsets.UTF_8)));
+        files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(),
+            "3".getBytes(StandardCharsets.UTF_8)));
 
         //when
         UploadVo uploadVo = commonS3Service.s3UploadFile(files, "image/%s/%s/", request);

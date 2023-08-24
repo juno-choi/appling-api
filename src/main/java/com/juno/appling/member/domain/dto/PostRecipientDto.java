@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostRecipientDto {
+
     @NotNull(message = "name 비어있을 수 없습니다.")
     private String name;
     @NotNull(message = "zonecode 비어있을 수 없습니다.")

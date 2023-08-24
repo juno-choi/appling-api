@@ -20,26 +20,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MemberAuthControllerTest extends ControllerBaseTest {
+
     @Autowired
     private MemberRepository memberRepository;
 
     private final static String PREFIX = "/api/auth";
 
     @Nested
-    class join{
+    class join {
+
         @Test
         @DisplayName("중복 회원 회원가입 실패")
-        void joinFail() throws Exception{
+        void joinFail() throws Exception {
             //given
             JoinDto joinDto = new JoinDto("join@mail.com", "password", "name", "nick", "19941030");
             memberRepository.save(Member.of(joinDto));
             //when
             ResultActions resultActions = mock.perform(
-                    post(PREFIX+"/join").contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(joinDto))
+                post(PREFIX + "/join").contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(joinDto))
             ).andDo(print());
             //then
-            String contentAsString = resultActions.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+            String contentAsString = resultActions.andReturn().getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
             Assertions.assertThat(contentAsString).contains("400");
         }
     }

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 public class MemberApplySeller {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "apply_id")
@@ -26,19 +27,20 @@ public class MemberApplySeller {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private MemberApplySeller(@NotNull Long memberId, MemberApplySellerStatus status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    private MemberApplySeller(@NotNull Long memberId, MemberApplySellerStatus status,
+        LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.memberId = memberId;
         this.status = status;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
 
-    public static MemberApplySeller of(Long memberId){
+    public static MemberApplySeller of(Long memberId) {
         LocalDateTime now = LocalDateTime.now();
         return new MemberApplySeller(memberId, MemberApplySellerStatus.APPLY, now, now);
     }
 
-    public void patchApplyStatus(MemberApplySellerStatus status){
+    public void patchApplyStatus(MemberApplySellerStatus status) {
         this.status = status;
     }
 }

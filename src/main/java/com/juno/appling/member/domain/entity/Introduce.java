@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class Introduce {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "introduce_id")
@@ -29,7 +30,8 @@ public class Introduce {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Introduce(Seller seller, String subject, String url, IntroduceStatus status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    private Introduce(Seller seller, String subject, String url, IntroduceStatus status,
+        LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.seller = seller;
         this.subject = subject;
         this.url = url;
@@ -38,7 +40,7 @@ public class Introduce {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Introduce of(Seller seller, String subject, String url, IntroduceStatus status){
+    public static Introduce of(Seller seller, String subject, String url, IntroduceStatus status) {
         LocalDateTime now = LocalDateTime.now();
         return new Introduce(seller, subject, url, status, now, now);
     }
