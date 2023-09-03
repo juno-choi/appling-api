@@ -10,8 +10,8 @@ import com.juno.appling.product.domain.vo.SellerVo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 import static com.juno.appling.config.base.ResultCode.POST;
 import static com.juno.appling.config.base.ResultCode.SUCCESS;
@@ -26,6 +27,7 @@ import static com.juno.appling.config.base.ResultCode.SUCCESS;
 @RestController
 @RequestMapping("${api-prefix}/member")
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
@@ -139,7 +141,11 @@ public class MemberController {
         } finally {
             writer.close();
         }
-        response.setContentType(MediaType.TEXT_HTML_VALUE);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentType("text/html; charset=UTF-8");
+
+        //TODO 지워야됨
+        log.info(introduce);
         response.setStatus(200);
     }
 }
