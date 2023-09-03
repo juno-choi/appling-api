@@ -1,5 +1,6 @@
 package com.juno.appling.member.service;
 
+import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.dto.*;
