@@ -1,5 +1,6 @@
 package com.juno.appling.member.service;
 
+import com.juno.appling.config.base.MessageVo;
 import com.juno.appling.config.s3.S3Service;
 import com.juno.appling.config.security.TokenProvider;
 import com.juno.appling.member.domain.dto.*;
@@ -62,10 +63,10 @@ class MemberServiceUnitTest {
         given(tokenProvider.getMemberId(request)).willReturn(0L);
         // when
         Throwable throwable = catchThrowable(
-            () -> memberService.patchMember(patchMemberDto, request));
+                () -> memberService.patchMember(patchMemberDto, request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("유효하지 않은 회원");
+                .hasMessageContaining("유효하지 않은 회원");
     }
 
     @Test
@@ -77,7 +78,7 @@ class MemberServiceUnitTest {
         Throwable throwable = catchThrowable(() -> memberService.postRecipient(recipient, request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("유효하지 않은 회원");
+                .hasMessageContaining("유효하지 않은 회원");
     }
 
     @Test
@@ -88,7 +89,7 @@ class MemberServiceUnitTest {
         Throwable throwable = catchThrowable(() -> memberService.getRecipient(request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("유효하지 않은 회원");
+                .hasMessageContaining("유효하지 않은 회원");
     }
 
     @Test
@@ -100,7 +101,7 @@ class MemberServiceUnitTest {
         Throwable throwable = catchThrowable(() -> memberService.postSeller(sellerDto, request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("유효하지 않은 회원");
+                .hasMessageContaining("유효하지 않은 회원");
     }
 
     @Test
@@ -108,19 +109,19 @@ class MemberServiceUnitTest {
     void postSellerFail2() {
         // given
         PostSellerDto sellerDto = new PostSellerDto("회사명", "010-1234-4321", "1234", "회사 주소",
-            "email@mail.com");
+                "email@mail.com");
         given(tokenProvider.getMemberId(request)).willReturn(0L);
         JoinDto joinDto = new JoinDto("join@mail.com", "password", "name", "nick", "19941030");
         Member member = Member.of(joinDto);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
 
         given(sellerRepository.findByMember(any())).willReturn(Optional.of(
-            Seller.of(member, "회사명", "010-1234-1233", "1234", "회사 주소", "email@mail.com")));
+                Seller.of(member, "회사명", "010-1234-1233", "1234", "회사 주소", "email@mail.com")));
         // when
         Throwable throwable = catchThrowable(() -> memberService.postSeller(sellerDto, request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("판매자 신청을 완료");
+                .hasMessageContaining("판매자 신청을 완료");
     }
 
     @Test
@@ -132,7 +133,7 @@ class MemberServiceUnitTest {
         Throwable throwable = catchThrowable(() -> memberService.putSeller(sellerDto, request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("유효하지 않은 회원");
+                .hasMessageContaining("유효하지 않은 회원");
     }
 
     @Test
@@ -148,7 +149,7 @@ class MemberServiceUnitTest {
         Throwable throwable = catchThrowable(() -> memberService.putSeller(sellerDto, request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("유효하지 않은 판매자");
+                .hasMessageContaining("유효하지 않은 판매자");
     }
 
     @Test
@@ -159,7 +160,7 @@ class MemberServiceUnitTest {
         Throwable throwable = catchThrowable(() -> memberService.getSeller(request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("유효하지 않은 회원");
+                .hasMessageContaining("유효하지 않은 회원");
     }
 
     @Test
@@ -174,7 +175,7 @@ class MemberServiceUnitTest {
         Throwable throwable = catchThrowable(() -> memberService.getSeller(request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("유효하지 않은 판매자");
+                .hasMessageContaining("유효하지 않은 판매자");
     }
 
     @Test
@@ -182,13 +183,13 @@ class MemberServiceUnitTest {
     void postIntroduceFail1() {
         // given
         PostIntroduceDto postIntroduceDto = new PostIntroduceDto("제목",
-            "https://s3.com/html/test1.html");
+                "https://s3.com/html/test1.html");
         // when
         Throwable throwable = catchThrowable(
-            () -> memberService.postIntroduce(postIntroduceDto, request));
+                () -> memberService.postIntroduce(postIntroduceDto, request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("유효하지 않은 회원");
+                .hasMessageContaining("유효하지 않은 회원");
     }
 
     @Test
@@ -200,15 +201,34 @@ class MemberServiceUnitTest {
         Member member = Member.of(joinDto);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         PostIntroduceDto postIntroduceDto = new PostIntroduceDto("제목",
-            "https://s3.com/html/test1.html");
+                "https://s3.com/html/test1.html");
         // when
         Throwable throwable = catchThrowable(
-            () -> memberService.postIntroduce(postIntroduceDto, request));
+                () -> memberService.postIntroduce(postIntroduceDto, request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("유효하지 않은 판매자");
+                .hasMessageContaining("유효하지 않은 판매자");
     }
 
+    @Test
+    @DisplayName("판매자 정보가 존재하는 경우 update로 수정")
+    void postIntroduceSuccess() {
+        // given
+        given(tokenProvider.getMemberId(request)).willReturn(0L);
+        JoinDto joinDto = new JoinDto("join@mail.com", "password", "name", "nick", "19941030");
+        Member member = Member.of(joinDto);
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        PostIntroduceDto postIntroduceDto = new PostIntroduceDto("제목",
+                "https://s3.com/html/test1.html");
+        Seller seller = Seller.of(member, "compnay", "01012341234", "123", "address", "mail@mail.com");
+        given(sellerRepository.findByMember(member)).willReturn(Optional.of(seller));
+        Introduce introduce = Introduce.of(seller, "subject", "url", IntroduceStatus.USE);
+        given(introduceRepository.findBySeller(any())).willReturn(Optional.of(introduce));
+        // when
+        MessageVo messageVo = memberService.postIntroduce(postIntroduceDto, request);
+        // then
+        assertThat(messageVo.message()).contains("성공");
+    }
 
     @Test
     @DisplayName("소개 페이지를 등록하지 않았을땐 소개글 불러오기 실패")
@@ -219,12 +239,12 @@ class MemberServiceUnitTest {
         Member member = Member.of(joinDto);
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(sellerRepository.findByMember(any())).willReturn(
-            Optional.of(Seller.of(member, "", "", "", "", "")));
+                Optional.of(Seller.of(member, "", "", "", "", "")));
         // when
         Throwable throwable = catchThrowable(() -> memberService.getIntroduce(request));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("소개 페이지를 먼저 등록");
+                .hasMessageContaining("소개 페이지를 먼저 등록");
     }
 
     @Test
@@ -240,9 +260,9 @@ class MemberServiceUnitTest {
         given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
         given(sellerRepository.findByMember(any())).willReturn(Optional.of(seller));
         given(introduceRepository.findBySeller(any())).willReturn(Optional.of(
-            Introduce.of(seller, "subject",
-                "https://appling-s3-bucket.s3.ap-northeast-2.amazonaws.com/html/1/20230815/172623_0.html",
-                IntroduceStatus.USE)));
+                Introduce.of(seller, "subject",
+                        "https://appling-s3-bucket.s3.ap-northeast-2.amazonaws.com/html/1/20230815/172623_0.html",
+                        IntroduceStatus.USE)));
         given(env.getProperty(eq("cloud.s3.bucket"))).willReturn("s3-bucket");
         given(s3Service.getObject(anyString(), anyString())).willReturn(html);
         // when
