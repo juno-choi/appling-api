@@ -1,8 +1,8 @@
 package com.juno.appling.member.service;
 
-import com.juno.appling.config.base.MessageVo;
-import com.juno.appling.config.s3.S3Service;
-import com.juno.appling.config.security.TokenProvider;
+import com.juno.appling.global.base.MessageVo;
+import com.juno.appling.global.s3.S3Service;
+import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.dto.*;
 import com.juno.appling.member.domain.entity.*;
 import com.juno.appling.member.domain.enums.IntroduceStatus;
@@ -22,7 +22,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;

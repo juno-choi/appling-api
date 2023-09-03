@@ -1,8 +1,8 @@
 package com.juno.appling.member.controller;
 
 import com.juno.appling.ControllerBaseTest;
-import com.juno.appling.config.base.ResultCode;
-import com.juno.appling.config.s3.S3Service;
+import com.juno.appling.global.base.ResultCode;
+import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.member.domain.dto.*;
 import com.juno.appling.member.domain.entity.Member;
 import com.juno.appling.member.domain.entity.Recipient;

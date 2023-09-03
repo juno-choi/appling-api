@@ -15,6 +15,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExtensions
 }
 
 repositories {
@@ -110,7 +111,7 @@ jacocoTestReport {
                             '**/vo/**',
                             '**/enums/**',
                             '**/api/**',
-                            '**/config/**',
+                            '**/global/**',
                             // ...
                     ])
                 })
@@ -134,7 +135,7 @@ jacocoTestCoverageVerification {
                     '*.vo.*',
                     '*.enums.*',
                     '*.api.*',
-                    '*.config.*',
+                    '*.global.*',
                     '*.security.*',
                     '*.entity.*',
                     '*.entity.*.Q*',
@@ -160,7 +161,7 @@ jacocoTestCoverageVerification {
                     '*.vo.*',
                     '*.enums.*',
                     '*.api.*',
-                    '*.config.*',
+                    '*.global.*',
                     '*.security.*',
                     '*.entity.*',
                     '*.entity.*.Q*',
@@ -189,4 +190,26 @@ sonarqube {
         property "sonar.exclusions", "**/resources/static/**, **/Q*.class, **/test/**, **/security/**, **/webconfig/**"
         property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/jacoco/index.xml"
     }
+}
+
+asciidoctor {
+    configurations 'asciidoctorExtensions'
+    baseDirFollowsSourceFile()
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+
+    from "${asciidoctor.outputDir}"
+    into file("src/main/resources/static/docs")
+}
+
+bootJar {
+    dependsOn copyDocument
 }

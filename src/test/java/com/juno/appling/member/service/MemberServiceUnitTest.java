@@ -1,7 +1,7 @@
 package com.juno.appling.member.service;
 
-import com.juno.appling.config.s3.S3Service;
-import com.juno.appling.config.security.TokenProvider;
+import com.juno.appling.global.s3.S3Service;
+import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.dto.*;
 import com.juno.appling.member.domain.entity.Introduce;
 import com.juno.appling.member.domain.entity.Member;

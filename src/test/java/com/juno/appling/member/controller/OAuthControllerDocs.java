@@ -1,7 +1,7 @@
 package com.juno.appling.member.controller;
 
 import com.juno.appling.ControllerBaseTest;
-import com.juno.appling.config.mail.MyMailSender;
+import com.juno.appling.global.mail.MyMailSender;
 import com.juno.appling.member.domain.dto.kakao.KakaoLoginResponseDto;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;

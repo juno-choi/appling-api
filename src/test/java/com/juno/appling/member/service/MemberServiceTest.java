@@ -1,7 +1,7 @@
 package com.juno.appling.member.service;
 
 import com.juno.appling.BaseTest;
-import com.juno.appling.config.base.MessageVo;
+import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.member.domain.dto.JoinDto;
 import com.juno.appling.member.domain.dto.LoginDto;
 import com.juno.appling.member.domain.dto.PatchMemberDto;

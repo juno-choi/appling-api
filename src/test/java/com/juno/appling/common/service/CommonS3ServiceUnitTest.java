@@ -1,8 +1,8 @@
 package com.juno.appling.common.service;
 
 import com.juno.appling.common.domain.vo.UploadVo;
-import com.juno.appling.config.s3.S3Service;
-import com.juno.appling.config.security.TokenProvider;
+import com.juno.appling.global.s3.S3Service;
+import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.entity.Member;
 import com.juno.appling.member.domain.enums.Role;
 import com.juno.appling.member.repository.MemberRepository;
