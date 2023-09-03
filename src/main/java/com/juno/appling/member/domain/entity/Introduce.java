@@ -45,4 +45,8 @@ public class Introduce {
         return new Introduce(seller, subject, url, status, now, now);
     }
 
+    public void changeUrl(String url){
+        this.url = url;
+    }
+
 }
