@@ -1,8 +1,8 @@
 package com.juno.appling.member.controller;
 
 import com.juno.appling.ControllerBaseTest;
-import com.juno.appling.config.base.ResultCode;
-import com.juno.appling.config.mail.MyMailSender;
+import com.juno.appling.global.base.ResultCode;
+import com.juno.appling.global.mail.MyMailSender;
 import com.juno.appling.member.domain.dto.JoinDto;
 import com.juno.appling.member.domain.dto.LoginDto;
 import com.juno.appling.member.domain.vo.LoginVo;

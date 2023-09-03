@@ -1,7 +1,7 @@
 package com.juno.appling.product.service;
 
 import com.juno.appling.BaseTest;
-import com.juno.appling.config.base.MessageVo;
+import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.member.domain.dto.LoginDto;
 import com.juno.appling.member.domain.entity.Member;
 import com.juno.appling.member.domain.entity.Seller;

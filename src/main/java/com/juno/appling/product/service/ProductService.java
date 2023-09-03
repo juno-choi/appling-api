@@ -1,7 +1,7 @@
 package com.juno.appling.product.service;
 
-import com.juno.appling.config.base.MessageVo;
-import com.juno.appling.config.security.TokenProvider;
+import com.juno.appling.global.base.MessageVo;
+import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.entity.Member;
 import com.juno.appling.member.domain.entity.Seller;
 import com.juno.appling.member.repository.MemberRepository;
