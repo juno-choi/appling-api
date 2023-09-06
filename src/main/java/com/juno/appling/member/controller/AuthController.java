@@ -1,6 +1,6 @@
 package com.juno.appling.member.controller;
 
-import com.juno.appling.config.base.Api;
+import com.juno.appling.global.base.Api;
 import com.juno.appling.member.domain.dto.JoinDto;
 import com.juno.appling.member.domain.dto.LoginDto;
 import com.juno.appling.member.domain.vo.JoinVo;
@@ -13,8 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.juno.appling.config.base.ResultCode.POST;
-import static com.juno.appling.config.base.ResultCode.SUCCESS;
+import static com.juno.appling.global.base.ResultCode.POST;
+import static com.juno.appling.global.base.ResultCode.SUCCESS;
 
 @RestController
 @RequestMapping("${api-prefix}/auth")

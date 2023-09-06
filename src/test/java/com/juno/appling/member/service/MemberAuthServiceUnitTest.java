@@ -1,8 +1,8 @@
 package com.juno.appling.member.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.juno.appling.config.mail.MyMailSender;
-import com.juno.appling.config.security.TokenProvider;
+import com.juno.appling.global.mail.MyMailSender;
+import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.dto.JoinDto;
 import com.juno.appling.member.domain.dto.kakao.KakaoLoginResponseDto;
 import com.juno.appling.member.domain.entity.Member;

@@ -1,7 +1,7 @@
 package com.juno.appling.member.controller;
 
-import com.juno.appling.config.base.Api;
-import com.juno.appling.config.base.MessageVo;
+import com.juno.appling.global.base.Api;
+import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.member.domain.dto.*;
 import com.juno.appling.member.domain.vo.MemberVo;
 import com.juno.appling.member.domain.vo.RecipientListVo;
@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-import static com.juno.appling.config.base.ResultCode.POST;
-import static com.juno.appling.config.base.ResultCode.SUCCESS;
+import static com.juno.appling.global.base.ResultCode.POST;
+import static com.juno.appling.global.base.ResultCode.SUCCESS;
 
 @RestController
 @RequestMapping("${api-prefix}/member")

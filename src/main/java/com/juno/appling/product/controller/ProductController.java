@@ -1,8 +1,8 @@
 package com.juno.appling.product.controller;
 
-import com.juno.appling.config.base.Api;
-import com.juno.appling.config.base.MessageVo;
-import com.juno.appling.config.base.ResultCode;
+import com.juno.appling.global.base.Api;
+import com.juno.appling.global.base.MessageVo;
+import com.juno.appling.global.base.ResultCode;
 import com.juno.appling.product.domain.dto.AddViewCntDto;
 import com.juno.appling.product.domain.vo.CategoryListVo;
 import com.juno.appling.product.domain.vo.ProductListVo;

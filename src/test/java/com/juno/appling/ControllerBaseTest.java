@@ -1,6 +1,6 @@
 package com.juno.appling;
 
-import com.juno.appling.config.redis.RestdocsConfig;
+import com.juno.appling.global.redis.RestdocsConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
