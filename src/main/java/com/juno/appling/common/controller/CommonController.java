@@ -5,15 +5,17 @@ import com.juno.appling.common.domain.vo.UploadVo;
 import com.juno.appling.common.service.CommonS3Service;
 import com.juno.appling.global.base.Api;
 import com.juno.appling.global.base.ResultCode;
+import com.juno.appling.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -22,6 +24,7 @@ import java.util.List;
 public class CommonController {
 
     private final CommonS3Service commonS3Service;
+    private final MemberService memberService;
 
     @PostMapping("/image")
     public ResponseEntity<Api<UploadVo>> uploadImage(@RequestPart List<MultipartFile> image,
@@ -44,5 +47,24 @@ public class CommonController {
                 .message(ResultCode.SUCCESS.message)
                 .data(commonS3Service.s3UploadFile(html, "html/%s/%s/", request))
                 .build());
+    }
+
+    @GetMapping("/introduce/{seller_id}")
+    public void introduceBySellerId(@PathVariable(name = "seller_id") Long sellerId, HttpServletResponse response){
+        String introduce = memberService.getIntroduce(sellerId);
+        PrintWriter writer = null;
+        try {
+            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+            response.setContentType("text/html; charset=UTF-8");
+            writer = response.getWriter();
+            writer.print(introduce);
+            writer.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            writer.close();
+        }
+
+        response.setStatus(200);
     }
 }
