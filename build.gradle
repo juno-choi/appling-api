@@ -23,7 +23,7 @@ repositories {
 }
 
 ext {
-    set('snippetsDir', file("build/generated-snippets"))
+    snippetsDir = file('build/generated-snippets')
 }
 
 dependencies {
@@ -70,6 +70,8 @@ dependencies {
     annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
 }
 
@@ -207,8 +209,7 @@ task copyDocument(type: Copy) {
     dependsOn asciidoctor
 
     from "${asciidoctor.outputDir}"
-//    into file("src/main/resources/static/docs")
-    into file("build/resources/main/static/docs")
+    into file("src/main/resources/static/docs")
 }
 
 bootJar {
