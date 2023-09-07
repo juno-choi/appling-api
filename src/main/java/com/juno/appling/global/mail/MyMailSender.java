@@ -25,7 +25,7 @@ public class MyMailSender {
             mimeMessageHelper.setTo(toEmail);
             mimeMessageHelper.setFrom("appling@gmail.com", "애플링");
             mimeMessageHelper.setText(text, true);
-            javaMailSender.send(mimeMessage);
+//            javaMailSender.send(mimeMessage);
         } catch (Exception e) {
             log.error("email = {} 전송 실패", toEmail);
             log.error(e.getMessage());
