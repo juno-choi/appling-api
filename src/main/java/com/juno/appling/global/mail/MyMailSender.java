@@ -1,5 +1,6 @@
 package com.juno.appling.global.mail;
 
+import com.juno.appling.global.advice.exception.DuringProcessException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class MyMailSender {
         } catch (Exception e) {
             log.error("email = {} 전송 실패", toEmail);
             log.error(e.getMessage());
-            throw new RuntimeException(e);
+            throw new DuringProcessException("email 전송 실패");
         }
         log.info("[{}] send complete!", toEmail);
     }

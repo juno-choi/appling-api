@@ -1,5 +1,6 @@
 package com.juno.appling.member.service;
 
+import com.juno.appling.global.advice.exception.DuringProcessException;
 import com.juno.appling.global.mail.MyMailSender;
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.dto.JoinDto;
@@ -138,7 +139,7 @@ public class MemberAuthService {
                 .onStatus(http -> http.isError(), response ->
                     response.bodyToMono(String.class)
                         .handle((error, sink) ->
-                            sink.error(new RuntimeException(error))
+                            sink.error(new DuringProcessException(error))
                         )
                 )
                 .bodyToMono(KakaoLoginResponseDto.class)

@@ -1,5 +1,6 @@
 package com.juno.appling.member.controller;
 
+import com.juno.appling.global.advice.exception.DuringProcessException;
 import com.juno.appling.global.base.Api;
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.member.domain.dto.*;
@@ -139,7 +140,7 @@ public class MemberController {
             writer.print(introduce);
             writer.flush();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new DuringProcessException("소개 페이지 반환 실패");
         } finally {
             if(writer != null){
                 writer.close();

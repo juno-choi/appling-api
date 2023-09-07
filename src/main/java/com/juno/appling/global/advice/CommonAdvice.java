@@ -1,5 +1,6 @@
 package com.juno.appling.global.advice;
 
+import com.juno.appling.global.advice.exception.DuringProcessException;
 import com.juno.appling.global.base.ErrorDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
@@ -162,6 +163,26 @@ public class CommonAdvice {
 
         ProblemDetail pb = ProblemDetail.forStatusAndDetail(
             HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "요청하신 파일의 크키가 너무 큽니다.");
+        pb.setInstance(URI.create(request.getRequestURI()));
+        pb.setType(URI.create(docs));
+        pb.setTitle(HttpStatus.BAD_REQUEST.name());
+        pb.setProperty(ERRORS, errors);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(pb);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ProblemDetail> duringProcessException(DuringProcessException e,
+        HttpServletRequest request) {
+        List<ErrorDto> errors = new ArrayList<>();
+        errors.add(ErrorDto.builder().point("").detail(
+                String.format("%s", e.getMessage()))
+            .build());
+
+        ProblemDetail pb = ProblemDetail.forStatusAndDetail(
+            HttpStatusCode.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),
+            "서버 측 에러 발생. 관리자에게 문의해주세요!");
         pb.setInstance(URI.create(request.getRequestURI()));
         pb.setType(URI.create(docs));
         pb.setTitle(HttpStatus.BAD_REQUEST.name());

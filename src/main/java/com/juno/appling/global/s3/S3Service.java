@@ -1,5 +1,6 @@
 package com.juno.appling.global.s3;
 
+import com.juno.appling.global.advice.exception.DuringProcessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -84,7 +85,7 @@ public class S3Service {
         } catch (S3Exception ae) {
             log.error("AWS와 통신에 문제가 발생했습니다.");
             log.error(ae.getMessage());
-            throw new RuntimeException(ae.getMessage());
+            throw new DuringProcessException("AWS와 통신에 문제가 발생했습니다.");
         }
     }
 }
