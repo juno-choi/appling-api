@@ -1,6 +1,6 @@
-package com.juno.appling.common.service;
+package com.juno.appling.common.application;
 
-import com.juno.appling.common.domain.vo.UploadVo;
+import com.juno.appling.common.dto.response.UploadVo;
 import com.juno.appling.member.domain.dto.LoginDto;
 import com.juno.appling.member.domain.vo.LoginVo;
 import com.juno.appling.member.service.MemberAuthService;
@@ -60,6 +60,6 @@ class CommonS3ServiceTest {
         UploadVo uploadVo = commonS3Service.s3UploadFile(files, "image/%s/%s/", request);
 
         //then
-        Assertions.assertThat(uploadVo.url()).contains(env.getProperty("cloud.s3.url"));
+        Assertions.assertThat(uploadVo.getUrl()).contains(env.getProperty("cloud.s3.url"));
     }
 }

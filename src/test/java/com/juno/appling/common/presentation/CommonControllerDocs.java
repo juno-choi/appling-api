@@ -1,4 +1,4 @@
-package com.juno.appling.common.controller;
+package com.juno.appling.common.presentation;
 
 import com.juno.appling.ControllerBaseTest;
 import com.juno.appling.global.s3.S3Service;

@@ -1,6 +1,6 @@
-package com.juno.appling.common.service;
+package com.juno.appling.common.application;
 
-import com.juno.appling.common.domain.vo.UploadVo;
+import com.juno.appling.common.dto.response.UploadVo;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.repository.MemberRepository;

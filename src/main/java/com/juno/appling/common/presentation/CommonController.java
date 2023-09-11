@@ -1,8 +1,8 @@
-package com.juno.appling.common.controller;
+package com.juno.appling.common.presentation;
 
 import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpStatus;
-import com.juno.appling.common.domain.vo.UploadVo;
-import com.juno.appling.common.service.CommonS3Service;
+import com.juno.appling.common.dto.response.UploadVo;
+import com.juno.appling.common.application.CommonS3Service;
 import com.juno.appling.global.advice.exception.DuringProcessException;
 import com.juno.appling.global.base.Api;
 import com.juno.appling.global.base.ResultCode;

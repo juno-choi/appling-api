@@ -1,6 +1,6 @@
-package com.juno.appling.common.service;
+package com.juno.appling.common.application;
 
-import com.juno.appling.common.domain.vo.UploadVo;
+import com.juno.appling.common.dto.response.UploadVo;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.entity.Member;
@@ -103,7 +103,7 @@ class CommonS3ServiceUnitTest {
         //when
         UploadVo uploadVo = commonS3Service.s3UploadFile(files, "image/%s/%s/", request);
         //then
-        Assertions.assertThat(uploadVo.url()).contains(s3Url);
+        Assertions.assertThat(uploadVo.getUrl()).contains(s3Url);
     }
 
     @Test
@@ -163,6 +163,6 @@ class CommonS3ServiceUnitTest {
         //when
         UploadVo uploadVo = commonS3Service.s3UploadFile(files, "html/%s/%s/", request);
         //then
-        Assertions.assertThat(uploadVo.url()).contains(s3Url);
+        Assertions.assertThat(uploadVo.getUrl()).contains(s3Url);
     }
 }
