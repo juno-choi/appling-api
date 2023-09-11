@@ -1,6 +1,6 @@
 package com.juno.appling.product.domain.entity;
 
-import com.juno.appling.member.domain.entity.Seller;
+import com.juno.appling.member.domain.Seller;
 import com.juno.appling.product.domain.dto.ProductDto;
 import com.juno.appling.product.domain.dto.PutProductDto;
 import com.juno.appling.product.domain.enums.Status;

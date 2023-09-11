@@ -1,9 +1,9 @@
 package com.juno.appling.common.application;
 
-import com.juno.appling.common.dto.response.UploadVo;
+import com.juno.appling.common.dto.response.UploadResponse;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.global.security.TokenProvider;
-import com.juno.appling.member.repository.MemberRepository;
+import com.juno.appling.member.domain.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
@@ -24,8 +24,8 @@ public class CommonS3Service {
     private final Environment env;
     private final MemberRepository memberRepository;
 
-    public UploadVo s3UploadFile(List<MultipartFile> files, String pathFormat,
-        HttpServletRequest request) {
+    public UploadResponse s3UploadFile(List<MultipartFile> files, String pathFormat,
+                                       HttpServletRequest request) {
         Long memberId = tokenProvider.getMemberId(request);
 
         memberRepository.findById(memberId)
@@ -35,7 +35,7 @@ public class CommonS3Service {
 
         List<String> fileUrlList = makeFileUrlList(files, memberId, pathFormat);
 
-        return new UploadVo(
+        return new UploadResponse(
             String.format("%s/%s", s3Url, Optional.ofNullable(fileUrlList.get(0)).orElse("")));
     }
 

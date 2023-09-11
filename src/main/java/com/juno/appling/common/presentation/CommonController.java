@@ -1,12 +1,12 @@
 package com.juno.appling.common.presentation;
 
 import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpStatus;
-import com.juno.appling.common.dto.response.UploadVo;
+import com.juno.appling.common.dto.response.UploadResponse;
 import com.juno.appling.common.application.CommonS3Service;
 import com.juno.appling.global.advice.exception.DuringProcessException;
 import com.juno.appling.global.base.Api;
 import com.juno.appling.global.base.ResultCode;
-import com.juno.appling.member.service.MemberService;
+import com.juno.appling.member.application.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -30,10 +30,10 @@ public class CommonController {
     private final MemberService memberService;
 
     @PostMapping("/image")
-    public ResponseEntity<Api<UploadVo>> uploadImage(@RequestPart List<MultipartFile> image,
-        HttpServletRequest request) {
+    public ResponseEntity<Api<UploadResponse>> uploadImage(@RequestPart List<MultipartFile> image,
+                                                           HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.SC_CREATED)
-            .body(Api.<UploadVo>builder()
+            .body(Api.<UploadResponse>builder()
                 .code(ResultCode.SUCCESS.code)
                 .message(ResultCode.SUCCESS.message)
                 .data(commonS3Service.s3UploadFile(image, "image/%s/%s/", request))
@@ -42,10 +42,10 @@ public class CommonController {
 
 
     @PostMapping("/html")
-    public ResponseEntity<Api<UploadVo>> uploadHtml(@RequestPart List<MultipartFile> html,
-        HttpServletRequest request) {
+    public ResponseEntity<Api<UploadResponse>> uploadHtml(@RequestPart List<MultipartFile> html,
+                                                          HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.SC_CREATED)
-            .body(Api.<UploadVo>builder()
+            .body(Api.<UploadResponse>builder()
                 .code(ResultCode.SUCCESS.code)
                 .message(ResultCode.SUCCESS.message)
                 .data(commonS3Service.s3UploadFile(html, "html/%s/%s/", request))

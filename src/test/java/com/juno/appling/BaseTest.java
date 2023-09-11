@@ -1,14 +1,14 @@
 package com.juno.appling;
 
-import com.juno.appling.member.domain.dto.JoinDto;
-import com.juno.appling.member.domain.entity.Introduce;
-import com.juno.appling.member.domain.entity.Member;
-import com.juno.appling.member.domain.entity.Seller;
-import com.juno.appling.member.domain.enums.IntroduceStatus;
-import com.juno.appling.member.domain.enums.Role;
-import com.juno.appling.member.repository.IntroduceRepository;
-import com.juno.appling.member.repository.MemberRepository;
-import com.juno.appling.member.repository.SellerRepository;
+import com.juno.appling.member.dto.request.JoinRequest;
+import com.juno.appling.member.domain.Introduce;
+import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.enums.IntroduceStatus;
+import com.juno.appling.member.enums.Role;
+import com.juno.appling.member.domain.IntroduceRepository;
+import com.juno.appling.member.domain.MemberRepository;
+import com.juno.appling.member.domain.SellerRepository;
 import com.juno.appling.product.domain.entity.Category;
 import com.juno.appling.product.domain.enums.CategoryStatus;
 import com.juno.appling.product.repository.CategoryRepository;
@@ -64,9 +64,9 @@ public class BaseTest {
         for (String email : emailList) {
             Optional<Member> findMember = memberRepository.findByEmail(email);
             if (findMember.isEmpty()) {
-                JoinDto joinDto = new JoinDto(email, passwordEncoder.encode(PASSWORD), "name",
+                JoinRequest joinRequest = new JoinRequest(email, passwordEncoder.encode(PASSWORD), "name",
                     "nick", "19941030");
-                Member saveMember = memberRepository.save(Member.of(joinDto));
+                Member saveMember = memberRepository.save(Member.of(joinRequest));
                 if (saveMember.getEmail().equals(SELLER_EMAIL) || saveMember.getEmail()
                     .equals(SELLER2_EMAIL)) {
                     /**

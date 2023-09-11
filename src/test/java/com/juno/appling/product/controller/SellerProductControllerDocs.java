@@ -1,13 +1,13 @@
 package com.juno.appling.product.controller;
 
 import com.juno.appling.ControllerBaseTest;
-import com.juno.appling.member.domain.dto.LoginDto;
-import com.juno.appling.member.domain.entity.Member;
-import com.juno.appling.member.domain.entity.Seller;
-import com.juno.appling.member.domain.vo.LoginVo;
-import com.juno.appling.member.repository.MemberRepository;
-import com.juno.appling.member.repository.SellerRepository;
-import com.juno.appling.member.service.MemberAuthService;
+import com.juno.appling.member.dto.request.LoginRequest;
+import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.dto.response.LoginResponse;
+import com.juno.appling.member.domain.MemberRepository;
+import com.juno.appling.member.domain.SellerRepository;
+import com.juno.appling.member.application.MemberAuthService;
 import com.juno.appling.product.domain.dto.ProductDto;
 import com.juno.appling.product.domain.dto.PutProductDto;
 import com.juno.appling.product.domain.entity.Category;
@@ -51,8 +51,8 @@ class SellerProductControllerDocs extends ControllerBaseTest {
     @DisplayName(PREFIX + "(GET)")
     void getProductList() throws Exception {
         //given
-        LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
-        LoginVo login = memberAuthService.login(loginDto);
+        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
+        LoginResponse login = memberAuthService.login(loginRequest);
 
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Member member2 = memberRepository.findByEmail(SELLER2_EMAIL).get();
@@ -84,7 +84,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
                 .param("page", "0")
                 .param("size", "5")
                 .param("status", "normal")
-                .header(AUTHORIZATION, "Bearer " + login.accessToken())
+                .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
         );
         //then
         perform.andExpect(status().is2xxSuccessful());
@@ -171,8 +171,8 @@ class SellerProductControllerDocs extends ControllerBaseTest {
     @DisplayName(PREFIX + "(POST)")
     void postProduct() throws Exception {
         // given
-        LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
-        LoginVo login = memberAuthService.login(loginDto);
+        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
+        LoginResponse login = memberAuthService.login(loginRequest);
         ProductDto productDto = new ProductDto(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
             "https://image3", "normal");
@@ -180,7 +180,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
         // when
         ResultActions perform = mock.perform(
             post(PREFIX)
-                .header(AUTHORIZATION, "Bearer " + login.accessToken())
+                .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(productDto))
         );
@@ -268,8 +268,8 @@ class SellerProductControllerDocs extends ControllerBaseTest {
     @DisplayName(PREFIX + "(PUT)")
     void putProduct() throws Exception {
         // given
-        LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
-        LoginVo login = memberAuthService.login(loginDto);
+        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
+        LoginResponse login = memberAuthService.login(loginRequest);
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
 
@@ -285,7 +285,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
         // when
         ResultActions perform = mock.perform(
             put(PREFIX)
-                .header(AUTHORIZATION, "Bearer " + login.accessToken())
+                .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(putProductDto))
         );

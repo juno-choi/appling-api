@@ -3,7 +3,6 @@ package com.juno.appling.product.domain.vo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.member.domain.entity.Seller;
 import com.juno.appling.product.domain.entity.Product;
 import com.juno.appling.product.domain.enums.Status;
 

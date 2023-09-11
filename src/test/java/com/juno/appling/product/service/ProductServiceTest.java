@@ -2,13 +2,13 @@ package com.juno.appling.product.service;
 
 import com.juno.appling.BaseTest;
 import com.juno.appling.global.base.MessageVo;
-import com.juno.appling.member.domain.dto.LoginDto;
-import com.juno.appling.member.domain.entity.Member;
-import com.juno.appling.member.domain.entity.Seller;
-import com.juno.appling.member.domain.vo.LoginVo;
-import com.juno.appling.member.repository.MemberRepository;
-import com.juno.appling.member.repository.SellerRepository;
-import com.juno.appling.member.service.MemberAuthService;
+import com.juno.appling.member.dto.request.LoginRequest;
+import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.dto.response.LoginResponse;
+import com.juno.appling.member.domain.MemberRepository;
+import com.juno.appling.member.domain.SellerRepository;
+import com.juno.appling.member.application.MemberAuthService;
 import com.juno.appling.product.domain.dto.AddViewCntDto;
 import com.juno.appling.product.domain.dto.ProductDto;
 import com.juno.appling.product.domain.dto.PutProductDto;
@@ -54,10 +54,10 @@ class ProductServiceTest extends BaseTest {
     @DisplayName("상품 등록 성공")
     void postProductSuccess() {
         //given
-        LoginDto loginDto = new LoginDto("seller@appling.com", "password");
-        LoginVo login = memberAuthService.login(loginDto);
+        LoginRequest loginRequest = new LoginRequest("seller@appling.com", "password");
+        LoginResponse login = memberAuthService.login(loginRequest);
         request.removeHeader(AUTHORIZATION);
-        request.addHeader(AUTHORIZATION, "Bearer " + login.accessToken());
+        request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
 
         ProductDto productDto = new ProductDto(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
@@ -112,8 +112,8 @@ class ProductServiceTest extends BaseTest {
         //given
         Member member = memberRepository.findByEmail("seller@appling.com").get();
         Member member2 = memberRepository.findByEmail("seller2@appling.com").get();
-        LoginDto loginDto = new LoginDto("seller@appling.com", "password");
-        LoginVo login = memberAuthService.login(loginDto);
+        LoginRequest loginRequest = new LoginRequest("seller@appling.com", "password");
+        LoginResponse login = memberAuthService.login(loginRequest);
         Long categoryId = 1L;
 
         Category category = categoryRepository.findById(categoryId).get();
@@ -137,7 +137,7 @@ class ProductServiceTest extends BaseTest {
         Pageable pageable = Pageable.ofSize(5);
         pageable = pageable.next();
         request.removeHeader(AUTHORIZATION);
-        request.addHeader(AUTHORIZATION, "Bearer " + login.accessToken());
+        request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
         //when
         ProductListVo searchList = productService.getProductListBySeller(pageable, "", "normal",
             categoryId, request);

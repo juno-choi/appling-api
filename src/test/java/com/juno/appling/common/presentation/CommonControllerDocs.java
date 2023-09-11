@@ -2,16 +2,16 @@ package com.juno.appling.common.presentation;
 
 import com.juno.appling.ControllerBaseTest;
 import com.juno.appling.global.s3.S3Service;
-import com.juno.appling.member.domain.dto.LoginDto;
-import com.juno.appling.member.domain.entity.Introduce;
-import com.juno.appling.member.domain.entity.Member;
-import com.juno.appling.member.domain.entity.Seller;
-import com.juno.appling.member.domain.enums.IntroduceStatus;
-import com.juno.appling.member.domain.vo.LoginVo;
-import com.juno.appling.member.repository.IntroduceRepository;
-import com.juno.appling.member.repository.MemberRepository;
-import com.juno.appling.member.repository.SellerRepository;
-import com.juno.appling.member.service.MemberAuthService;
+import com.juno.appling.member.dto.request.LoginRequest;
+import com.juno.appling.member.domain.Introduce;
+import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.enums.IntroduceStatus;
+import com.juno.appling.member.dto.response.LoginResponse;
+import com.juno.appling.member.domain.IntroduceRepository;
+import com.juno.appling.member.domain.MemberRepository;
+import com.juno.appling.member.domain.SellerRepository;
+import com.juno.appling.member.application.MemberAuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -64,8 +64,8 @@ class CommonControllerDocs extends ControllerBaseTest {
     @DisplayName(PREFIX + "/image")
     void uploadImage() throws Exception {
         //given
-        LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
-        LoginVo login = memberAuthService.login(loginDto);
+        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
+        LoginResponse login = memberAuthService.login(loginRequest);
         List<String> list = new LinkedList<>();
         list.add("image/1/20230606/202101.png");
         given(s3Service.putObject(anyString(), anyString(), any())).willReturn(list);
@@ -76,7 +76,7 @@ class CommonControllerDocs extends ControllerBaseTest {
                 .file(new MockMultipartFile("image", "test1.png",
                     MediaType.APPLICATION_FORM_URLENCODED_VALUE,
                     "123".getBytes(StandardCharsets.UTF_8)))
-                .header(AUTHORIZATION, "Bearer " + login.accessToken())
+                .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         );
 
@@ -102,8 +102,8 @@ class CommonControllerDocs extends ControllerBaseTest {
     @DisplayName(PREFIX + "/html")
     void uploadHtml() throws Exception {
         //given
-        LoginDto loginDto = new LoginDto(SELLER_EMAIL, PASSWORD);
-        LoginVo login = memberAuthService.login(loginDto);
+        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
+        LoginResponse login = memberAuthService.login(loginRequest);
         List<String> list = new LinkedList<>();
         list.add("html/1/20230606/202101.html");
         given(s3Service.putObject(anyString(), anyString(), any())).willReturn(list);
@@ -114,7 +114,7 @@ class CommonControllerDocs extends ControllerBaseTest {
                 .file(new MockMultipartFile("html", "test1.html",
                     MediaType.APPLICATION_FORM_URLENCODED_VALUE,
                     "123".getBytes(StandardCharsets.UTF_8)))
-                .header(AUTHORIZATION, "Bearer " + login.accessToken())
+                .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         );
 

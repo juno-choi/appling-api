@@ -2,10 +2,10 @@ package com.juno.appling.product.service;
 
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.global.security.TokenProvider;
-import com.juno.appling.member.domain.entity.Member;
-import com.juno.appling.member.domain.entity.Seller;
-import com.juno.appling.member.repository.MemberRepository;
-import com.juno.appling.member.repository.SellerRepository;
+import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.domain.MemberRepository;
+import com.juno.appling.member.domain.SellerRepository;
 import com.juno.appling.product.domain.dto.AddViewCntDto;
 import com.juno.appling.product.domain.dto.ProductDto;
 import com.juno.appling.product.domain.dto.PutProductDto;

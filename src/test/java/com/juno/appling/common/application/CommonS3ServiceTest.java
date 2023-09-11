@@ -1,9 +1,9 @@
 package com.juno.appling.common.application;
 
-import com.juno.appling.common.dto.response.UploadVo;
-import com.juno.appling.member.domain.dto.LoginDto;
-import com.juno.appling.member.domain.vo.LoginVo;
-import com.juno.appling.member.service.MemberAuthService;
+import com.juno.appling.common.dto.response.UploadResponse;
+import com.juno.appling.member.dto.request.LoginRequest;
+import com.juno.appling.member.dto.response.LoginResponse;
+import com.juno.appling.member.application.MemberAuthService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -40,10 +40,10 @@ class CommonS3ServiceTest {
     @DisplayName("이미 등록 성공")
     void uploadImage() {
         //given
-        LoginDto loginDto = new LoginDto("seller@appling.com", "password");
-        LoginVo login = memberAuthService.login(loginDto);
+        LoginRequest loginRequest = new LoginRequest("seller@appling.com", "password");
+        LoginResponse login = memberAuthService.login(loginRequest);
         request.removeHeader(AUTHORIZATION);
-        request.addHeader(AUTHORIZATION, "Bearer " + login.accessToken());
+        request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
         List<MultipartFile> files = new LinkedList<>();
         String fileName1 = "test1.txt";
         String fileName2 = "test2.txt";
@@ -57,9 +57,9 @@ class CommonS3ServiceTest {
             "3".getBytes(StandardCharsets.UTF_8)));
 
         //when
-        UploadVo uploadVo = commonS3Service.s3UploadFile(files, "image/%s/%s/", request);
+        UploadResponse uploadResponse = commonS3Service.s3UploadFile(files, "image/%s/%s/", request);
 
         //then
-        Assertions.assertThat(uploadVo.getUrl()).contains(env.getProperty("cloud.s3.url"));
+        Assertions.assertThat(uploadResponse.getUrl()).contains(env.getProperty("cloud.s3.url"));
     }
 }

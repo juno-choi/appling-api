@@ -1,11 +1,11 @@
 package com.juno.appling.common.application;
 
-import com.juno.appling.common.dto.response.UploadVo;
+import com.juno.appling.common.dto.response.UploadResponse;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.global.security.TokenProvider;
-import com.juno.appling.member.domain.entity.Member;
-import com.juno.appling.member.domain.enums.Role;
-import com.juno.appling.member.repository.MemberRepository;
+import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.enums.Role;
+import com.juno.appling.member.domain.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -101,9 +101,9 @@ class CommonS3ServiceUnitTest {
         given(s3Service.putObject(anyString(), anyString(), any())).willReturn(list);
 
         //when
-        UploadVo uploadVo = commonS3Service.s3UploadFile(files, "image/%s/%s/", request);
+        UploadResponse uploadResponse = commonS3Service.s3UploadFile(files, "image/%s/%s/", request);
         //then
-        Assertions.assertThat(uploadVo.getUrl()).contains(s3Url);
+        Assertions.assertThat(uploadResponse.getUrl()).contains(s3Url);
     }
 
     @Test
@@ -161,8 +161,8 @@ class CommonS3ServiceUnitTest {
         given(s3Service.putObject(anyString(), anyString(), any())).willReturn(list);
 
         //when
-        UploadVo uploadVo = commonS3Service.s3UploadFile(files, "html/%s/%s/", request);
+        UploadResponse uploadResponse = commonS3Service.s3UploadFile(files, "html/%s/%s/", request);
         //then
-        Assertions.assertThat(uploadVo.getUrl()).contains(s3Url);
+        Assertions.assertThat(uploadResponse.getUrl()).contains(s3Url);
     }
 }
