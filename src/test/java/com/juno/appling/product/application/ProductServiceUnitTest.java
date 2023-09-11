@@ -1,4 +1,4 @@
-package com.juno.appling.product.service;
+package com.juno.appling.product.application;
 
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.Member;
@@ -6,14 +6,14 @@ import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.enums.Role;
 import com.juno.appling.member.domain.MemberRepository;
 import com.juno.appling.member.domain.SellerRepository;
-import com.juno.appling.product.domain.dto.AddViewCntDto;
-import com.juno.appling.product.domain.dto.ProductDto;
-import com.juno.appling.product.domain.dto.PutProductDto;
-import com.juno.appling.product.domain.entity.Category;
-import com.juno.appling.product.domain.entity.Product;
-import com.juno.appling.product.domain.vo.ProductVo;
-import com.juno.appling.product.repository.CategoryRepository;
-import com.juno.appling.product.repository.ProductRepository;
+import com.juno.appling.product.dto.request.AddViewCntRequest;
+import com.juno.appling.product.dto.request.ProductRequest;
+import com.juno.appling.product.dto.request.PutProductRequest;
+import com.juno.appling.product.domain.Category;
+import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.dto.response.ProductResponse;
+import com.juno.appling.product.domain.CategoryRepository;
+import com.juno.appling.product.domain.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -61,7 +61,7 @@ class ProductServiceUnitTest {
         request.addHeader(AUTHORIZATION, "Bearer token");
         String mainTitle = "메인 제목";
 
-        ProductDto productDto = new ProductDto(1L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
+        ProductRequest productRequest = new ProductRequest(1L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
             10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
             "https://image3", "normal");
         Category category = new Category();
@@ -73,13 +73,13 @@ class ProductServiceUnitTest {
         Seller seller = Seller.of(member, "회사명", "01012344321", "1234", "회사 주소", "mail@mail.com");
         given(memberRepository.findById(any())).willReturn(Optional.of(member));
         given(sellerRepository.findByMember(any())).willReturn(Optional.of(seller));
-        given(productRepository.save(any())).willReturn(Product.of(seller, category, productDto));
+        given(productRepository.save(any())).willReturn(Product.of(seller, category, productRequest));
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(new Category()));
         //when
-        ProductVo productVo = productService.postProduct(productDto, request);
+        ProductResponse productResponse = productService.postProduct(productRequest, request);
 
         //then
-        assertThat(productVo.mainTitle()).isEqualTo(mainTitle);
+        assertThat(productResponse.getMainTitle()).isEqualTo(mainTitle);
     }
 
     @Test
@@ -89,11 +89,11 @@ class ProductServiceUnitTest {
         request.addHeader(AUTHORIZATION, "Bearer token");
         String mainTitle = "메인 제목";
 
-        ProductDto productDto = new ProductDto(0L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
+        ProductRequest productRequest = new ProductRequest(0L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
             10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
             "https://image3", "normal");
         //when
-        Throwable throwable = catchThrowable(() -> productService.postProduct(productDto, request));
+        Throwable throwable = catchThrowable(() -> productService.postProduct(productRequest, request));
 
         //then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
@@ -117,7 +117,7 @@ class ProductServiceUnitTest {
     @DisplayName("수정하려는 상품의 카테고리가 존재하지 않는 경우 실패")
     void putProductFail1() {
         // given
-        PutProductDto dto = new PutProductDto(0L, 0L, null, null, null, null, 0, 0, null, null,
+        PutProductRequest dto = new PutProductRequest(0L, 0L, null, null, null, null, 0, 0, null, null,
             null, null, null, null, null, "normal");
         // when
         Throwable throwable = catchThrowable(() -> productService.putProduct(dto));
@@ -131,7 +131,7 @@ class ProductServiceUnitTest {
     @DisplayName("수정하려는 상품이 존재하지 않는 경우 실패")
     void putProductFail2() {
         // given
-        PutProductDto dto = new PutProductDto(0L, 1L, null, null, null, null, 0, 0, null, null,
+        PutProductRequest dto = new PutProductRequest(0L, 1L, null, null, null, null, 0, 0, null, null,
             null, null, null, null, null, "normal");
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(new Category()));
         given(productRepository.findById(any())).willReturn(Optional.ofNullable(null));
@@ -149,7 +149,7 @@ class ProductServiceUnitTest {
         // given
         // when
         Throwable throwable = catchThrowable(
-            () -> productService.addViewCnt(new AddViewCntDto(1L)));
+            () -> productService.addViewCnt(new AddViewCntRequest(1L)));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("유효하지 않은 상품");

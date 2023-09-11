@@ -1,6 +1,6 @@
-package com.juno.appling.product.domain.entity;
+package com.juno.appling.product.domain;
 
-import com.juno.appling.product.domain.enums.CategoryStatus;
+import com.juno.appling.product.enums.CategoryStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

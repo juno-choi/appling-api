@@ -1,4 +1,4 @@
-package com.juno.appling.product.domain.dto;
+package com.juno.appling.product.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class PutProductDto {
+public class PutProductRequest {
 
     @NotNull(message = "id 비어있을 수 없습니다.")
     private Long id;

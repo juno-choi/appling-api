@@ -1,4 +1,4 @@
-package com.juno.appling.product.controller;
+package com.juno.appling.product.presentation;
 
 import com.juno.appling.ControllerBaseTest;
 import com.juno.appling.member.dto.request.LoginRequest;
@@ -8,12 +8,12 @@ import com.juno.appling.member.dto.response.LoginResponse;
 import com.juno.appling.member.domain.MemberRepository;
 import com.juno.appling.member.domain.SellerRepository;
 import com.juno.appling.member.application.MemberAuthService;
-import com.juno.appling.product.domain.dto.ProductDto;
-import com.juno.appling.product.domain.dto.PutProductDto;
-import com.juno.appling.product.domain.entity.Category;
-import com.juno.appling.product.domain.entity.Product;
-import com.juno.appling.product.repository.CategoryRepository;
-import com.juno.appling.product.repository.ProductRepository;
+import com.juno.appling.product.dto.request.ProductRequest;
+import com.juno.appling.product.dto.request.PutProductRequest;
+import com.juno.appling.product.domain.Category;
+import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.domain.CategoryRepository;
+import com.juno.appling.product.domain.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,10 +57,10 @@ class SellerProductControllerDocs extends ControllerBaseTest {
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Member member2 = memberRepository.findByEmail(SELLER2_EMAIL).get();
 
-        ProductDto productDto = new ProductDto(1L, "다른 유저 상품", "메인 설명", "상품 메인 설명", "상품 서브 설명",
+        ProductRequest productRequest = new ProductRequest(1L, "다른 유저 상품", "메인 설명", "상품 메인 설명", "상품 서브 설명",
             10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1",
             "https://image2", "https://image3", "normal");
-        ProductDto searchDto = new ProductDto(1L, "셀러 유저 상품", "메인 설명", "상품 메인 설명", "상품 서브 설명",
+        ProductRequest searchDto = new ProductRequest(1L, "셀러 유저 상품", "메인 설명", "상품 메인 설명", "상품 서브 설명",
             10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1",
             "https://image2", "https://image3", "normal");
         Category category = categoryRepository.findById(1L).get();
@@ -71,7 +71,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
         productRepository.save(Product.of(seller, category, searchDto));
 
         for (int i = 0; i < 25; i++) {
-            productRepository.save(Product.of(seller2, category, productDto));
+            productRepository.save(Product.of(seller2, category, productRequest));
         }
 
         for (int i = 0; i < 10; i++) {
@@ -173,7 +173,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
         // given
         LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
         LoginResponse login = memberAuthService.login(loginRequest);
-        ProductDto productDto = new ProductDto(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+        ProductRequest productRequest = new ProductRequest(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
             "https://image3", "normal");
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
@@ -182,7 +182,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
             post(PREFIX)
                 .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(productDto))
+                .content(objectMapper.writeValueAsString(productRequest))
         );
         // then
         perform.andExpect(status().is2xxSuccessful());
@@ -273,12 +273,12 @@ class SellerProductControllerDocs extends ControllerBaseTest {
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
 
-        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+        ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
         Seller seller = sellerRepository.findByMember(member).get();
-        Product originalProduct = productRepository.save(Product.of(seller, category, productDto));
+        Product originalProduct = productRepository.save(Product.of(seller, category, productRequest));
         Long productId = originalProduct.getId();
-        PutProductDto putProductDto = new PutProductDto(productId, 2L, "수정된 제목", "수정된 설명",
+        PutProductRequest putProductRequest = new PutProductRequest(productId, 2L, "수정된 제목", "수정된 설명",
             "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage",
             "https://image1", "https://image2", "https://image3", "normal");
 
@@ -287,7 +287,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
             put(PREFIX)
                 .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(putProductDto))
+                .content(objectMapper.writeValueAsString(putProductRequest))
         );
         // then
         perform.andExpect(status().is2xxSuccessful());

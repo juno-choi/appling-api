@@ -1,23 +1,43 @@
-package com.juno.appling.product.domain.vo;
+package com.juno.appling.product.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.product.domain.entity.Product;
-import com.juno.appling.product.domain.enums.Status;
+import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.enums.Status;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record ProductVo(Long id, String mainTitle, String mainExplanation,
-                        String productMainExplanation, String productSubExplanation,
-                        int originPrice, int price, String purchaseInquiry, String origin,
-                        String producer, String mainImage, String image1, String image2,
-                        String image3, Long viewCnt, Status status, LocalDateTime createdAt,
-                        LocalDateTime modifiedAt, SellerVo seller, CategoryVo category) {
+@AllArgsConstructor
+@Getter
+public class ProductResponse {
 
-    public ProductVo(Product product) {
+    private Long id;
+    private String mainTitle;
+    private String mainExplanation;
+    private String productMainExplanation;
+    private String productSubExplanation;
+    private int originPrice;
+    private int price;
+    private String purchaseInquiry;
+    private String origin;
+    private String producer;
+    private String mainImage;
+    private String image1;
+    private String image2;
+    private String image3;
+    private Long viewCnt;
+    private Status status;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
+    private SellerResponse seller;
+    private CategoryResponse category;
+
+    public ProductResponse(Product product) {
         this(
             product.getId(),
             product.getMainTitle(),
@@ -37,10 +57,10 @@ public record ProductVo(Long id, String mainTitle, String mainExplanation,
             product.getStatus(),
             product.getCreateAt(),
             product.getModifiedAt(),
-            new SellerVo(product.getSeller().getId(), product.getSeller().getEmail(),
+            new SellerResponse(product.getSeller().getId(), product.getSeller().getEmail(),
                 product.getSeller().getCompany(), product.getSeller().getZonecode(),
                 product.getSeller().getAddress(), product.getSeller().getTel()),
-            new CategoryVo(product.getCategory().getId(), product.getCategory().getName(),
+            new CategoryResponse(product.getCategory().getId(), product.getCategory().getName(),
                 product.getCategory().getCreatedAt(), product.getCategory().getModifiedAt())
         );
     }

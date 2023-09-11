@@ -7,7 +7,7 @@ import com.juno.appling.member.dto.response.MemberResponse;
 import com.juno.appling.member.dto.response.RecipientListResponse;
 import com.juno.appling.member.application.MemberService;
 import com.juno.appling.member.dto.request.*;
-import com.juno.appling.product.domain.vo.SellerVo;
+import com.juno.appling.product.dto.response.SellerResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -45,9 +45,9 @@ public class MemberController {
     }
 
     @GetMapping("/seller")
-    public ResponseEntity<Api<SellerVo>> getSeller(HttpServletRequest request) {
+    public ResponseEntity<Api<SellerResponse>> getSeller(HttpServletRequest request) {
         return ResponseEntity.ok(
-            Api.<SellerVo>builder()
+            Api.<SellerResponse>builder()
                 .code(SUCCESS.code)
                 .message(SUCCESS.message)
                 .data(memberService.getSeller(request))

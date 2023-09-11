@@ -1,4 +1,4 @@
-package com.juno.appling.product.service;
+package com.juno.appling.product.application;
 
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.global.security.TokenProvider;
@@ -6,16 +6,19 @@ import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.domain.MemberRepository;
 import com.juno.appling.member.domain.SellerRepository;
-import com.juno.appling.product.domain.dto.AddViewCntDto;
-import com.juno.appling.product.domain.dto.ProductDto;
-import com.juno.appling.product.domain.dto.PutProductDto;
-import com.juno.appling.product.domain.entity.Category;
-import com.juno.appling.product.domain.entity.Product;
-import com.juno.appling.product.domain.enums.Status;
-import com.juno.appling.product.domain.vo.*;
-import com.juno.appling.product.repository.CategoryRepository;
-import com.juno.appling.product.repository.ProductCustomRepository;
-import com.juno.appling.product.repository.ProductRepository;
+import com.juno.appling.product.dto.request.AddViewCntRequest;
+import com.juno.appling.product.dto.request.ProductRequest;
+import com.juno.appling.product.dto.request.PutProductRequest;
+import com.juno.appling.product.domain.Category;
+import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.enums.Status;
+import com.juno.appling.product.domain.CategoryRepository;
+import com.juno.appling.product.domain.ProductCustomRepository;
+import com.juno.appling.product.domain.ProductRepository;
+import com.juno.appling.product.dto.response.CategoryListResponse;
+import com.juno.appling.product.dto.response.CategoryResponse;
+import com.juno.appling.product.dto.response.ProductListResponse;
+import com.juno.appling.product.dto.response.ProductResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,8 +43,8 @@ public class ProductService {
     private final SellerRepository sellerRepository;
 
     @Transactional
-    public ProductVo postProduct(ProductDto productDto, HttpServletRequest request) {
-        Long categoryId = productDto.getCategoryId();
+    public ProductResponse postProduct(ProductRequest productRequest, HttpServletRequest request) {
+        Long categoryId = productRequest.getCategoryId();
         Category category = categoryRepository.findById(categoryId).orElseThrow(() ->
             new IllegalArgumentException("유효하지 않은 카테고리입니다.")
         );
@@ -49,8 +52,8 @@ public class ProductService {
         Member member = getMember(request);
         Seller seller = sellerRepository.findByMember(member)
             .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 판매자입니다."));
-        Product product = productRepository.save(Product.of(seller, category, productDto));
-        return new ProductVo(product);
+        Product product = productRepository.save(Product.of(seller, category, productRequest));
+        return new ProductResponse(product);
     }
 
     private Member getMember(HttpServletRequest request) {
@@ -60,30 +63,30 @@ public class ProductService {
             .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
     }
 
-    public ProductListVo getProductList(Pageable pageable, String search, String status,
-        Long categoryId, Long sellerId) {
+    public ProductListResponse getProductList(Pageable pageable, String search, String status,
+                                              Long categoryId, Long sellerId) {
         Status statusOfEnums = Status.valueOf(status.toUpperCase(Locale.ROOT));
         Category category = categoryRepository.findById(categoryId).orElse(null);
-        Page<ProductVo> page = productCustomRepository.findAll(pageable, search, statusOfEnums,
+        Page<ProductResponse> page = productCustomRepository.findAll(pageable, search, statusOfEnums,
             category, sellerId);
 
-        return new ProductListVo(page.getTotalPages(), page.getTotalElements(),
+        return new ProductListResponse(page.getTotalPages(), page.getTotalElements(),
             page.getNumberOfElements(), page.isLast(), page.isEmpty(), page.getContent());
     }
 
-    public ProductVo getProduct(Long id) {
+    public ProductResponse getProduct(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() ->
             new IllegalArgumentException("유효하지 않은 상품번호 입니다.")
         );
 
-        return new ProductVo(product);
+        return new ProductResponse(product);
     }
 
     @Transactional
-    public ProductVo putProduct(PutProductDto putProductDto) {
-        Long targetProductId = putProductDto.getId();
+    public ProductResponse putProduct(PutProductRequest putProductRequest) {
+        Long targetProductId = putProductRequest.getId();
 
-        Long categoryId = putProductDto.getCategoryId();
+        Long categoryId = putProductRequest.getCategoryId();
 
         Category category = categoryRepository.findById(categoryId).orElseThrow(() ->
             new IllegalArgumentException("유효하지 않은 카테고리입니다.")
@@ -93,38 +96,38 @@ public class ProductService {
             new IllegalArgumentException("유효하지 않은 상품입니다.")
         );
 
-        product.put(putProductDto);
+        product.put(putProductRequest);
         product.putCategory(category);
 
-        return new ProductVo(product);
+        return new ProductResponse(product);
     }
 
-    public ProductListVo getProductListBySeller(Pageable pageable, String search, String status,
-        Long categoryId, HttpServletRequest request) {
+    public ProductListResponse getProductListBySeller(Pageable pageable, String search, String status,
+                                                      Long categoryId, HttpServletRequest request) {
         Long memberId = tokenProvider.getMemberId(request);
         Status statusOfEnums = Status.valueOf(status.toUpperCase(Locale.ROOT));
         Category category = categoryRepository.findById(categoryId).orElse(null);
-        Page<ProductVo> page = productCustomRepository.findAll(pageable, search, statusOfEnums,
+        Page<ProductResponse> page = productCustomRepository.findAll(pageable, search, statusOfEnums,
             category, memberId);
 
-        return new ProductListVo(page.getTotalPages(), page.getTotalElements(),
+        return new ProductListResponse(page.getTotalPages(), page.getTotalElements(),
             page.getNumberOfElements(), page.isLast(), page.isEmpty(), page.getContent());
     }
 
-    public CategoryListVo getCategoryList() {
+    public CategoryListResponse getCategoryList() {
         List<Category> categoryList = categoryRepository.findAll();
-        List<CategoryVo> categoryVoList = new LinkedList<>();
+        List<CategoryResponse> categoryResponseList = new LinkedList<>();
         for (Category c : categoryList) {
-            categoryVoList.add(
-                new CategoryVo(c.getId(), c.getName(), c.getCreatedAt(), c.getModifiedAt()));
+            categoryResponseList.add(
+                new CategoryResponse(c.getId(), c.getName(), c.getCreatedAt(), c.getModifiedAt()));
         }
 
-        return new CategoryListVo(categoryVoList);
+        return new CategoryListResponse(categoryResponseList);
     }
 
     @Transactional
-    public MessageVo addViewCnt(AddViewCntDto addViewCntDto) {
-        Product product = productRepository.findById(addViewCntDto.getProductId()).orElseThrow(() ->
+    public MessageVo addViewCnt(AddViewCntRequest addViewCntRequest) {
+        Product product = productRepository.findById(addViewCntRequest.getProductId()).orElseThrow(() ->
             new IllegalArgumentException("유효하지 않은 상품입니다.")
         );
         product.addViewCnt();

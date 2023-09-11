@@ -12,7 +12,7 @@ import com.juno.appling.member.dto.response.MemberResponse;
 import com.juno.appling.member.dto.response.RecipientListResponse;
 import com.juno.appling.member.dto.response.RecipientResponse;
 import com.juno.appling.member.dto.request.*;
-import com.juno.appling.product.domain.vo.SellerVo;
+import com.juno.appling.product.dto.response.SellerResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -155,9 +155,9 @@ public class MemberService {
         return new MessageVo("판매자 정보 수정 성공");
     }
 
-    public SellerVo getSeller(HttpServletRequest request) {
+    public SellerResponse getSeller(HttpServletRequest request) {
         Seller seller = getSellerByRequest(request);
-        return new SellerVo(seller.getId(), seller.getEmail(), seller.getCompany(),
+        return new SellerResponse(seller.getId(), seller.getEmail(), seller.getCompany(),
                 seller.getZonecode(), seller.getAddress(), seller.getTel());
     }
 

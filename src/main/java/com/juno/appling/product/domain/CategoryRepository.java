@@ -1,6 +1,6 @@
-package com.juno.appling.product.repository;
+package com.juno.appling.product.domain;
 
-import com.juno.appling.product.domain.entity.Category;
+import com.juno.appling.product.domain.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

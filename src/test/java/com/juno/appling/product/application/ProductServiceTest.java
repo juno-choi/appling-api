@@ -1,4 +1,4 @@
-package com.juno.appling.product.service;
+package com.juno.appling.product.application;
 
 import com.juno.appling.BaseTest;
 import com.juno.appling.global.base.MessageVo;
@@ -9,15 +9,15 @@ import com.juno.appling.member.dto.response.LoginResponse;
 import com.juno.appling.member.domain.MemberRepository;
 import com.juno.appling.member.domain.SellerRepository;
 import com.juno.appling.member.application.MemberAuthService;
-import com.juno.appling.product.domain.dto.AddViewCntDto;
-import com.juno.appling.product.domain.dto.ProductDto;
-import com.juno.appling.product.domain.dto.PutProductDto;
-import com.juno.appling.product.domain.entity.Category;
-import com.juno.appling.product.domain.entity.Product;
-import com.juno.appling.product.domain.vo.ProductListVo;
-import com.juno.appling.product.domain.vo.ProductVo;
-import com.juno.appling.product.repository.CategoryRepository;
-import com.juno.appling.product.repository.ProductRepository;
+import com.juno.appling.product.dto.request.AddViewCntRequest;
+import com.juno.appling.product.dto.request.ProductRequest;
+import com.juno.appling.product.dto.request.PutProductRequest;
+import com.juno.appling.product.domain.Category;
+import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.dto.response.ProductListResponse;
+import com.juno.appling.product.dto.response.ProductResponse;
+import com.juno.appling.product.domain.CategoryRepository;
+import com.juno.appling.product.domain.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,15 +59,15 @@ class ProductServiceTest extends BaseTest {
         request.removeHeader(AUTHORIZATION);
         request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
 
-        ProductDto productDto = new ProductDto(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+        ProductRequest productRequest = new ProductRequest(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
             "https://image3", "normal");
 
         //when
-        ProductVo productVo = productService.postProduct(productDto, request);
+        ProductResponse productResponse = productService.postProduct(productRequest, request);
 
         //then
-        Optional<Product> byId = productRepository.findById(productVo.id());
+        Optional<Product> byId = productRepository.findById(productResponse.getId());
         Product product = byId.get();
         String email = product.getSeller().getEmail();
 
@@ -80,9 +80,9 @@ class ProductServiceTest extends BaseTest {
         //given
         Member member = memberRepository.findByEmail("seller@appling.com").get();
         Long categoryId = 1L;
-        ProductDto productDto = new ProductDto(categoryId, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
+        ProductRequest productRequest = new ProductRequest(categoryId, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
             10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
-        ProductDto searchDto = new ProductDto(categoryId, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
+        ProductRequest searchDto = new ProductRequest(categoryId, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
             10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
         Category category = categoryRepository.findById(categoryId).get();
 
@@ -90,7 +90,7 @@ class ProductServiceTest extends BaseTest {
         productRepository.save(Product.of(seller, category, searchDto));
 
         for (int i = 0; i < 25; i++) {
-            productRepository.save(Product.of(seller, category, productDto));
+            productRepository.save(Product.of(seller, category, productRequest));
         }
 
         for (int i = 0; i < 10; i++) {
@@ -100,10 +100,10 @@ class ProductServiceTest extends BaseTest {
         Pageable pageable = Pageable.ofSize(5);
         pageable = pageable.next();
         //when
-        ProductListVo searchList = productService.getProductList(pageable, "검색", "normal",
+        ProductListResponse searchList = productService.getProductList(pageable, "검색", "normal",
             categoryId, 0L);
         //then
-        assertThat(searchList.list().stream().findFirst().get().mainTitle()).contains("검색");
+        assertThat(searchList.getList().stream().findFirst().get().getMainTitle()).contains("검색");
     }
 
     @Test
@@ -118,9 +118,9 @@ class ProductServiceTest extends BaseTest {
 
         Category category = categoryRepository.findById(categoryId).get();
 
-        ProductDto productDto = new ProductDto(categoryId, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
+        ProductRequest productRequest = new ProductRequest(categoryId, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
             10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
-        ProductDto searchDto = new ProductDto(categoryId, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
+        ProductRequest searchDto = new ProductRequest(categoryId, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
             10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
 
         Seller seller = sellerRepository.findByMember(member).get();
@@ -131,7 +131,7 @@ class ProductServiceTest extends BaseTest {
             productRepository.save(Product.of(seller, category, searchDto));
         }
         for (int i = 0; i < 10; i++) {
-            productRepository.save(Product.of(seller2, category, productDto));
+            productRepository.save(Product.of(seller2, category, productRequest));
         }
 
         Pageable pageable = Pageable.ofSize(5);
@@ -139,10 +139,10 @@ class ProductServiceTest extends BaseTest {
         request.removeHeader(AUTHORIZATION);
         request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
         //when
-        ProductListVo searchList = productService.getProductListBySeller(pageable, "", "normal",
+        ProductListResponse searchList = productService.getProductListBySeller(pageable, "", "normal",
             categoryId, request);
         //then
-        assertThat(searchList.list().stream().findFirst().get().seller().sellerId()).isEqualTo(
+        assertThat(searchList.getList().stream().findFirst().get().getSeller().getSellerId()).isEqualTo(
             seller.getId());
     }
 
@@ -153,19 +153,19 @@ class ProductServiceTest extends BaseTest {
         Member member = memberRepository.findByEmail("seller@appling.com").get();
         Category category = categoryRepository.findById(1L).get();
 
-        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+        ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
         Seller seller = sellerRepository.findByMember(member).get();
 
-        Product originalProduct = productRepository.save(Product.of(seller, category, productDto));
+        Product originalProduct = productRepository.save(Product.of(seller, category, productRequest));
         String originalProductMainTitle = originalProduct.getMainTitle();
         Long productId = originalProduct.getId();
         Long categoryId = originalProduct.getCategory().getId();
-        PutProductDto putProductDto = new PutProductDto(productId, 2L, "수정된 제목", "수정된 설명",
+        PutProductRequest putProductRequest = new PutProductRequest(productId, 2L, "수정된 제목", "수정된 설명",
             "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage",
             "https://image1", "https://image2", "https://image3", "normal");
         // when
-        productService.putProduct(putProductDto);
+        productService.putProduct(putProductRequest);
         // then
         Product changeProduct = productRepository.findById(productId).get();
         assertThat(changeProduct.getMainTitle()).isNotEqualTo(originalProductMainTitle);
@@ -177,14 +177,14 @@ class ProductServiceTest extends BaseTest {
         //given
         Member member = memberRepository.findByEmail("seller@appling.com").get();
         Category category = categoryRepository.findById(1L).get();
-        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+        ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
 
         Seller seller = sellerRepository.findByMember(member).get();
 
-        Product product = productRepository.save(Product.of(seller, category, productDto));
+        Product product = productRepository.save(Product.of(seller, category, productRequest));
         //when
-        MessageVo messageVo = productService.addViewCnt(new AddViewCntDto(product.getId()));
+        MessageVo messageVo = productService.addViewCnt(new AddViewCntRequest(product.getId()));
 
         //then
         assertThat(messageVo.message())

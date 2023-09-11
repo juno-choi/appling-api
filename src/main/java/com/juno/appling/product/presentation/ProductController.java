@@ -1,13 +1,13 @@
-package com.juno.appling.product.controller;
+package com.juno.appling.product.presentation;
 
 import com.juno.appling.global.base.Api;
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.global.base.ResultCode;
-import com.juno.appling.product.domain.dto.AddViewCntDto;
-import com.juno.appling.product.domain.vo.CategoryListVo;
-import com.juno.appling.product.domain.vo.ProductListVo;
-import com.juno.appling.product.domain.vo.ProductVo;
-import com.juno.appling.product.service.ProductService;
+import com.juno.appling.product.dto.request.AddViewCntRequest;
+import com.juno.appling.product.dto.response.CategoryListResponse;
+import com.juno.appling.product.dto.response.ProductListResponse;
+import com.juno.appling.product.dto.response.ProductResponse;
+import com.juno.appling.product.application.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -24,13 +24,13 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<Api<ProductListVo>> getProductList(
+    public ResponseEntity<Api<ProductListResponse>> getProductList(
         @PageableDefault(size = 10, page = 0) Pageable pageable,
         @RequestParam(required = false, name = "search") String search,
         @RequestParam(required = false, name = "status", defaultValue = "normal") String status,
         @RequestParam(required = false, name = "category_id", defaultValue = "0") Long categoryId,
         @RequestParam(required = false, name = "seller_id", defaultValue = "0") Long sellerId) {
-        return ResponseEntity.ok(Api.<ProductListVo>builder()
+        return ResponseEntity.ok(Api.<ProductListResponse>builder()
             .code(ResultCode.SUCCESS.code)
             .message(ResultCode.SUCCESS.message)
             .data(productService.getProductList(pageable, search, status, categoryId, sellerId))
@@ -38,8 +38,8 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Api<ProductVo>> getProduct(@PathVariable(name = "id") Long id) {
-        return ResponseEntity.ok(Api.<ProductVo>builder()
+    public ResponseEntity<Api<ProductResponse>> getProduct(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.ok(Api.<ProductResponse>builder()
             .code(ResultCode.SUCCESS.code)
             .message(ResultCode.SUCCESS.message)
             .data(productService.getProduct(id))
@@ -48,8 +48,8 @@ public class ProductController {
 
 
     @GetMapping("/category")
-    public ResponseEntity<Api<CategoryListVo>> getCategoryList() {
-        return ResponseEntity.ok(Api.<CategoryListVo>builder()
+    public ResponseEntity<Api<CategoryListResponse>> getCategoryList() {
+        return ResponseEntity.ok(Api.<CategoryListResponse>builder()
             .code(ResultCode.SUCCESS.code)
             .message(ResultCode.SUCCESS.message)
             .data(productService.getCategoryList())
@@ -58,11 +58,11 @@ public class ProductController {
 
     @PatchMapping("/cnt")
     public ResponseEntity<Api<MessageVo>> addViewCnt(
-        @RequestBody @Validated AddViewCntDto addViewCntDto, BindingResult bindingResult) {
+            @RequestBody @Validated AddViewCntRequest addViewCntRequest, BindingResult bindingResult) {
         return ResponseEntity.ok(Api.<MessageVo>builder()
             .code(ResultCode.SUCCESS.code)
             .message(ResultCode.SUCCESS.message)
-            .data(productService.addViewCnt(addViewCntDto))
+            .data(productService.addViewCnt(addViewCntRequest))
             .build());
     }
 }

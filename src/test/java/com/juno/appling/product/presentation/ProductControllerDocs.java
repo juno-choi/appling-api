@@ -1,4 +1,4 @@
-package com.juno.appling.product.controller;
+package com.juno.appling.product.presentation;
 
 import com.juno.appling.ControllerBaseTest;
 import com.juno.appling.member.domain.Member;
@@ -6,12 +6,12 @@ import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.domain.MemberRepository;
 import com.juno.appling.member.domain.SellerRepository;
 import com.juno.appling.member.application.MemberAuthService;
-import com.juno.appling.product.domain.dto.AddViewCntDto;
-import com.juno.appling.product.domain.dto.ProductDto;
-import com.juno.appling.product.domain.entity.Category;
-import com.juno.appling.product.domain.entity.Product;
-import com.juno.appling.product.repository.CategoryRepository;
-import com.juno.appling.product.repository.ProductRepository;
+import com.juno.appling.product.dto.request.AddViewCntRequest;
+import com.juno.appling.product.dto.request.ProductRequest;
+import com.juno.appling.product.domain.Category;
+import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.domain.CategoryRepository;
+import com.juno.appling.product.domain.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +51,10 @@ class ProductControllerDocs extends ControllerBaseTest {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
-        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+        ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
             "https://image3", "normal");
-        ProductDto searchDto = new ProductDto(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+        ProductRequest searchDto = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
             "https://image3", "normal");
 
@@ -62,7 +62,7 @@ class ProductControllerDocs extends ControllerBaseTest {
         productRepository.save(Product.of(seller, category, searchDto));
 
         for (int i = 0; i < 25; i++) {
-            productRepository.save(Product.of(seller, category, productDto));
+            productRepository.save(Product.of(seller, category, productRequest));
         }
 
         for (int i = 0; i < 10; i++) {
@@ -164,11 +164,11 @@ class ProductControllerDocs extends ControllerBaseTest {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
-        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+        ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
             "https://image3", "normal");
         Seller seller = sellerRepository.findByMember(member).get();
-        Product product = productRepository.save(Product.of(seller, category, productDto));
+        Product product = productRepository.save(Product.of(seller, category, productRequest));
         //when
         ResultActions perform = mock.perform(
             RestDocumentationRequestBuilders.get(PREFIX + "/{id}", product.getId())
@@ -262,16 +262,16 @@ class ProductControllerDocs extends ControllerBaseTest {
         //given
         Member member = memberRepository.findByEmail("seller@appling.com").get();
         Category category = categoryRepository.findById(1L).get();
-        ProductDto productDto = new ProductDto(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+        ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
 
         Seller seller = sellerRepository.findByMember(member).get();
-        Product product = productRepository.save(Product.of(seller, category, productDto));
+        Product product = productRepository.save(Product.of(seller, category, productRequest));
         //when
         ResultActions perform = mock.perform(
             patch(PREFIX + "/cnt")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(new AddViewCntDto(product.getId())))
+                .content(objectMapper.writeValueAsString(new AddViewCntRequest(product.getId())))
         );
         //then
         perform.andExpect(status().is2xxSuccessful());

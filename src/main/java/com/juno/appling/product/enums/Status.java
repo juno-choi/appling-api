@@ -1,4 +1,4 @@
-package com.juno.appling.product.domain.enums;
+package com.juno.appling.product.enums;
 
 public enum Status {
     NORMAL,

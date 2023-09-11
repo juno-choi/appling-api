@@ -1,12 +1,12 @@
-package com.juno.appling.product.controller;
+package com.juno.appling.product.presentation;
 
 import com.juno.appling.global.base.Api;
 import com.juno.appling.global.base.ResultCode;
-import com.juno.appling.product.domain.dto.ProductDto;
-import com.juno.appling.product.domain.dto.PutProductDto;
-import com.juno.appling.product.domain.vo.ProductListVo;
-import com.juno.appling.product.domain.vo.ProductVo;
-import com.juno.appling.product.service.ProductService;
+import com.juno.appling.product.dto.request.ProductRequest;
+import com.juno.appling.product.dto.request.PutProductRequest;
+import com.juno.appling.product.dto.response.ProductListResponse;
+import com.juno.appling.product.dto.response.ProductResponse;
+import com.juno.appling.product.application.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -25,13 +25,13 @@ public class SellerProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<Api<ProductListVo>> getProductList(
+    public ResponseEntity<Api<ProductListResponse>> getProductList(
         @PageableDefault(size = 10, page = 0) Pageable pageable,
         @RequestParam(required = false, name = "search") String search,
         @RequestParam(required = false, name = "status", defaultValue = "normal") String status,
         @RequestParam(required = false, name = "category_id", defaultValue = "0") Long categoryId,
         HttpServletRequest request) {
-        return ResponseEntity.ok(Api.<ProductListVo>builder()
+        return ResponseEntity.ok(Api.<ProductListResponse>builder()
             .code(ResultCode.SUCCESS.code)
             .message(ResultCode.SUCCESS.message)
             .data(productService.getProductListBySeller(pageable, search, status, categoryId,
@@ -40,23 +40,23 @@ public class SellerProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Api<ProductVo>> postProduct(@RequestBody @Validated ProductDto productDto,
-        HttpServletRequest request, BindingResult bindingResult) {
+    public ResponseEntity<Api<ProductResponse>> postProduct(@RequestBody @Validated ProductRequest productRequest,
+                                                            HttpServletRequest request, BindingResult bindingResult) {
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(Api.<ProductVo>builder()
+            .body(Api.<ProductResponse>builder()
                 .code(ResultCode.POST.code)
                 .message(ResultCode.POST.message)
-                .data(productService.postProduct(productDto, request))
+                .data(productService.postProduct(productRequest, request))
                 .build());
     }
 
     @PutMapping
-    public ResponseEntity<Api<ProductVo>> putProduct(
-        @RequestBody @Validated PutProductDto putProductDto, BindingResult bindingResult) {
-        return ResponseEntity.ok(Api.<ProductVo>builder()
+    public ResponseEntity<Api<ProductResponse>> putProduct(
+            @RequestBody @Validated PutProductRequest putProductRequest, BindingResult bindingResult) {
+        return ResponseEntity.ok(Api.<ProductResponse>builder()
             .code(ResultCode.SUCCESS.code)
             .message(ResultCode.SUCCESS.message)
-            .data(productService.putProduct(putProductDto))
+            .data(productService.putProduct(putProductRequest))
             .build());
     }
 }

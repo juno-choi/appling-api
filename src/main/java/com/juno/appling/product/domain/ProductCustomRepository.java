@@ -1,10 +1,8 @@
-package com.juno.appling.product.repository;
+package com.juno.appling.product.domain;
 
 import com.juno.appling.global.querydsl.QuerydslConfig;
-import com.juno.appling.product.domain.entity.Category;
-import com.juno.appling.product.domain.entity.QProduct;
-import com.juno.appling.product.domain.enums.Status;
-import com.juno.appling.product.domain.vo.ProductVo;
+import com.juno.appling.product.dto.response.ProductResponse;
+import com.juno.appling.product.enums.Status;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +21,8 @@ public class ProductCustomRepository {
     private final QuerydslConfig q;
 
 
-    public Page<ProductVo> findAll(Pageable pageable, String search, Status status,
-        Category category, Long memberId) {
+    public Page<ProductResponse> findAll(Pageable pageable, String search, Status status,
+                                         Category category, Long memberId) {
         QProduct product = QProduct.product;
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -43,7 +41,7 @@ public class ProductCustomRepository {
         }
         builder.and(product.status.eq(status));
 
-        List<ProductVo> content = q.query().select(Projections.constructor(ProductVo.class,
+        List<ProductResponse> content = q.query().select(Projections.constructor(ProductResponse.class,
                 product
             ))
             .from(product)

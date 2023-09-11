@@ -1,9 +1,9 @@
-package com.juno.appling.product.domain.entity;
+package com.juno.appling.product.domain;
 
 import com.juno.appling.member.domain.Seller;
-import com.juno.appling.product.domain.dto.ProductDto;
-import com.juno.appling.product.domain.dto.PutProductDto;
-import com.juno.appling.product.domain.enums.Status;
+import com.juno.appling.product.dto.request.ProductRequest;
+import com.juno.appling.product.dto.request.PutProductRequest;
+import com.juno.appling.product.enums.Status;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -74,33 +74,33 @@ public class Product {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Product of(Seller member, Category category, ProductDto productDto) {
+    public static Product of(Seller member, Category category, ProductRequest productRequest) {
         LocalDateTime now = LocalDateTime.now();
-        Status status = Status.valueOf(productDto.getStatus().toUpperCase());
-        return new Product(member, category, productDto.getMainTitle(),
-            productDto.getMainExplanation(), productDto.getProductMainExplanation(),
-            productDto.getProductSubExplanation(), productDto.getOriginPrice(),
-            productDto.getPrice(), productDto.getPurchaseInquiry(), productDto.getOrigin(),
-            productDto.getProducer(), productDto.getMainImage(), productDto.getImage1(),
-            productDto.getImage2(), productDto.getImage3(), status, now, now);
+        Status status = Status.valueOf(productRequest.getStatus().toUpperCase());
+        return new Product(member, category, productRequest.getMainTitle(),
+            productRequest.getMainExplanation(), productRequest.getProductMainExplanation(),
+            productRequest.getProductSubExplanation(), productRequest.getOriginPrice(),
+            productRequest.getPrice(), productRequest.getPurchaseInquiry(), productRequest.getOrigin(),
+            productRequest.getProducer(), productRequest.getMainImage(), productRequest.getImage1(),
+            productRequest.getImage2(), productRequest.getImage3(), status, now, now);
     }
 
-    public void put(PutProductDto putProductDto) {
+    public void put(PutProductRequest putProductRequest) {
         LocalDateTime now = LocalDateTime.now();
-        Status status = Status.valueOf(putProductDto.getStatus().toUpperCase());
-        this.mainTitle = putProductDto.getMainTitle();
-        this.mainExplanation = putProductDto.getMainExplanation();
-        this.productMainExplanation = putProductDto.getProductMainExplanation();
-        this.productSubExplanation = putProductDto.getProductSubExplanation();
-        this.originPrice = putProductDto.getOriginPrice();
-        this.price = putProductDto.getPrice();
-        this.purchaseInquiry = putProductDto.getPurchaseInquiry();
-        this.origin = putProductDto.getOrigin();
-        this.producer = putProductDto.getProducer();
-        this.mainImage = putProductDto.getMainImage();
-        this.image1 = putProductDto.getImage1();
-        this.image2 = putProductDto.getImage2();
-        this.image3 = putProductDto.getImage3();
+        Status status = Status.valueOf(putProductRequest.getStatus().toUpperCase());
+        this.mainTitle = putProductRequest.getMainTitle();
+        this.mainExplanation = putProductRequest.getMainExplanation();
+        this.productMainExplanation = putProductRequest.getProductMainExplanation();
+        this.productSubExplanation = putProductRequest.getProductSubExplanation();
+        this.originPrice = putProductRequest.getOriginPrice();
+        this.price = putProductRequest.getPrice();
+        this.purchaseInquiry = putProductRequest.getPurchaseInquiry();
+        this.origin = putProductRequest.getOrigin();
+        this.producer = putProductRequest.getProducer();
+        this.mainImage = putProductRequest.getMainImage();
+        this.image1 = putProductRequest.getImage1();
+        this.image2 = putProductRequest.getImage2();
+        this.image3 = putProductRequest.getImage3();
         this.modifiedAt = now;
         this.status = status;
     }
