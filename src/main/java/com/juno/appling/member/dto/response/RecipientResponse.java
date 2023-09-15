@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 public class RecipientResponse {
-    private Long id;
+    private Long recipient_id;
     private String name;
     private String zonecode;
     private String address;
