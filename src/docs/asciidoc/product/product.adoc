@@ -140,3 +140,19 @@ include::{snippets}/product-controller-docs/add-view-cnt/http-response.adoc[]
 ==== 🟢 RESPONSE FIELD
 
 include::{snippets}/product-controller-docs/add-view-cnt/response-fields.adoc[]
+
+### 📗 상품 조회수 증가
+
+==== 🔵 REQUEST
+include::{snippets}/product-controller-docs/get-product-basket/http-request.adoc[]
+
+==== 🔵 REQUEST PARAM
+include::{snippets}/product-controller-docs/get-product-basket/query-parameters.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/product-controller-docs/get-product-basket/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/product-controller-docs/get-product-basket/response-fields.adoc[]

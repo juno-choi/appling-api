@@ -2,18 +2,15 @@ package com.juno.appling.product.application;
 
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.domain.Seller;
-import com.juno.appling.member.enums.Role;
 import com.juno.appling.member.domain.MemberRepository;
+import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.domain.SellerRepository;
+import com.juno.appling.member.enums.Role;
+import com.juno.appling.product.domain.*;
 import com.juno.appling.product.dto.request.AddViewCntRequest;
 import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.dto.request.PutProductRequest;
-import com.juno.appling.product.domain.Category;
-import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.dto.response.ProductResponse;
-import com.juno.appling.product.domain.CategoryRepository;
-import com.juno.appling.product.domain.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +21,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,6 +47,9 @@ class ProductServiceUnitTest {
     private CategoryRepository categoryRepository;
     @Mock
     private SellerRepository sellerRepository;
+
+    @Mock
+    private ProductCustomRepository productCustomRepository;
 
     @Mock
     private Environment env;
@@ -153,5 +155,17 @@ class ProductServiceUnitTest {
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("유효하지 않은 상품");
+    }
+
+    @Test
+    @DisplayName("")
+    void getProductBasketFail1() {
+        // given
+        List<Long> productIdList = new ArrayList<>();
+        productIdList.add(1L);
+        productIdList.add(2L);
+        // when
+        productService.getProductBasket(productIdList);
+        // then
     }
 }
