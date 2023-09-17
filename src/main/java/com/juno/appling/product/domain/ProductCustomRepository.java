@@ -21,8 +21,8 @@ public class ProductCustomRepository {
     private final QuerydslConfig q;
 
 
-    public Page<ProductResponse> findAll(Pageable pageable, String search, Status status,
-                                         Category category, Long memberId) {
+    public Page<ProductResponse> findAllByBasket(Pageable pageable, String search, Status status,
+                                                 Category category, Long memberId) {
         QProduct product = QProduct.product;
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -54,7 +54,7 @@ public class ProductCustomRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
-    public List<ProductResponse> findAll(List<Long> productIdList) {
+    public List<ProductResponse> findAllByBasket(List<Long> productIdList) {
         QProduct product = QProduct.product;
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -64,7 +64,6 @@ public class ProductCustomRepository {
                 ))
                 .from(product)
                 .where(builder)
-                .orderBy(product.createAt.desc())
                 .fetch();
         return content;
     }

@@ -25,6 +25,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -299,16 +300,20 @@ class ProductControllerDocs extends ControllerBaseTest {
                 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image.s3.com", "https://image.s3.com", "https://image.s3.com", "normal");
         ProductRequest productRequest2 = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
                 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image.s3.com", "https://image.s3.com", "https://image.s3.com", "normal");
+        ProductRequest productRequest3 = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+                8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image.s3.com", "https://image.s3.com", "https://image.s3.com", "normal");
 
         Seller seller = sellerRepository.findByMember(member).get();
         Product product1 = productRepository.save(Product.of(seller, category, productRequest));
         Product product2 = productRepository.save(Product.of(seller, category, productRequest2));
+        Product product3 = productRepository.save(Product.of(seller, category, productRequest3));
 
         //when
         ResultActions perform = mock.perform(
-                get(PREFIX + "/basket").param("product_id", product1.getId().toString())
+                get(PREFIX + "/basket").param("product_id", product3.getId().toString())
+                        .param("product_id", product1.getId().toString())
                         .param("product_id", product2.getId().toString())
-        );
+        ).andDo(print());
         //then
         perform.andExpect(status().is2xxSuccessful());
         perform.andDo(docs.document(
