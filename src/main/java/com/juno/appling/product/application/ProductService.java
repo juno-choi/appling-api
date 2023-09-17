@@ -3,22 +3,15 @@ package com.juno.appling.product.application;
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.domain.MemberRepository;
+import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.domain.SellerRepository;
+import com.juno.appling.product.domain.*;
 import com.juno.appling.product.dto.request.AddViewCntRequest;
 import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.dto.request.PutProductRequest;
-import com.juno.appling.product.domain.Category;
-import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.dto.response.*;
 import com.juno.appling.product.enums.Status;
-import com.juno.appling.product.domain.CategoryRepository;
-import com.juno.appling.product.domain.ProductCustomRepository;
-import com.juno.appling.product.domain.ProductRepository;
-import com.juno.appling.product.dto.response.CategoryListResponse;
-import com.juno.appling.product.dto.response.CategoryResponse;
-import com.juno.appling.product.dto.response.ProductListResponse;
-import com.juno.appling.product.dto.response.ProductResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -72,6 +65,11 @@ public class ProductService {
 
         return new ProductListResponse(page.getTotalPages(), page.getTotalElements(),
             page.getNumberOfElements(), page.isLast(), page.isEmpty(), page.getContent());
+    }
+
+    public ProductBasketListResponse getProductBasket(List<Long> productIdList) {
+        List<ProductResponse> productList = productCustomRepository.findAll(productIdList);
+        return new ProductBasketListResponse(productList);
     }
 
     public ProductResponse getProduct(Long id) {

@@ -53,4 +53,19 @@ public class ProductCustomRepository {
         Long total = q.query().from(product).where(builder).stream().count();
         return new PageImpl<>(content, pageable, total);
     }
+
+    public List<ProductResponse> findAll(List<Long> productIdList) {
+        QProduct product = QProduct.product;
+        BooleanBuilder builder = new BooleanBuilder();
+
+        builder.and(product.id.in(productIdList));
+        List<ProductResponse> content = q.query().select(Projections.constructor(ProductResponse.class,
+                        product
+                ))
+                .from(product)
+                .where(builder)
+                .orderBy(product.createAt.desc())
+                .fetch();
+        return content;
+    }
 }
