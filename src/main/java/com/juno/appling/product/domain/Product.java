@@ -5,7 +5,9 @@ import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.dto.request.PutProductRequest;
 import com.juno.appling.product.enums.Status;
 import jakarta.persistence.*;
+import java.util.Optional;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Product {
 
     @Id
@@ -76,7 +79,8 @@ public class Product {
 
     public static Product of(Seller member, Category category, ProductRequest productRequest) {
         LocalDateTime now = LocalDateTime.now();
-        Status status = Status.valueOf(productRequest.getStatus().toUpperCase());
+
+        Status status = Status.valueOf(Optional.ofNullable(productRequest.getStatus()).orElse("NORMAL").toUpperCase());
         return new Product(member, category, productRequest.getMainTitle(),
             productRequest.getMainExplanation(), productRequest.getProductMainExplanation(),
             productRequest.getProductSubExplanation(), productRequest.getOriginPrice(),

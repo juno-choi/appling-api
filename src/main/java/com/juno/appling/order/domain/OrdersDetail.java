@@ -23,6 +23,7 @@ import org.hibernate.envers.NotAudited;
 @NoArgsConstructor
 @Audited
 public class OrdersDetail {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_detail_id")
@@ -48,4 +49,23 @@ public class OrdersDetail {
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    private OrdersDetail(Orders order, Product product, OrdersDetailStatus status, int ea,
+        int productPrice, int productTotalPrice, LocalDateTime createdAt,
+        LocalDateTime modifiedAt) {
+        this.order = order;
+        this.product = product;
+        this.status = status;
+        this.ea = ea;
+        this.productPrice = productPrice;
+        this.productTotalPrice = productTotalPrice;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+    }
+
+    public static OrdersDetail of(Orders order, Product product, int ea) {
+        LocalDateTime now = LocalDateTime.now();
+        return new OrdersDetail(order, product, OrdersDetailStatus.TEMP, ea, product.getPrice(),
+            product.getPrice() * ea, now, now);
+    }
 }

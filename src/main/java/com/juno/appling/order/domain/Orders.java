@@ -49,4 +49,30 @@ public class Orders {
     private String etc;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    private Orders(Member member, OrdersStatus status, String orderName, String ordererName,
+        String ordererAddress, String ordererZonecode, String ordererTel, String recipientName,
+        String recipientAddress, String recipientZonecode, String recipientTel, int orderTotalPrice,
+        String etc, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        this.member = member;
+        this.status = status;
+        this.orderName = orderName;
+        this.ordererName = ordererName;
+        this.ordererAddress = ordererAddress;
+        this.ordererZonecode = ordererZonecode;
+        this.ordererTel = ordererTel;
+        this.recipientName = recipientName;
+        this.recipientAddress = recipientAddress;
+        this.recipientZonecode = recipientZonecode;
+        this.recipientTel = recipientTel;
+        this.orderTotalPrice = orderTotalPrice;
+        this.etc = etc;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+    }
+
+    public static Orders of(Member member){
+        LocalDateTime now = LocalDateTime.now();
+        return new Orders(member, OrdersStatus.TEMP, "", "", "", "", "", "", "", "", "", 0, "", now, now);
+    }
 }
