@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
@@ -22,7 +23,9 @@ import org.hibernate.envers.NotAudited;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Orders {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
@@ -36,7 +39,6 @@ public class Orders {
     @Enumerated(EnumType.STRING)
     private OrdersStatus status;
 
-    private String orderName;
     private String ordererName;
     private String ordererAddress;
     private String ordererZonecode;
@@ -50,13 +52,12 @@ public class Orders {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Orders(Member member, OrdersStatus status, String orderName, String ordererName,
+    private Orders(Member member, OrdersStatus status, String ordererName,
         String ordererAddress, String ordererZonecode, String ordererTel, String recipientName,
         String recipientAddress, String recipientZonecode, String recipientTel, int orderTotalPrice,
         String etc, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.member = member;
         this.status = status;
-        this.orderName = orderName;
         this.ordererName = ordererName;
         this.ordererAddress = ordererAddress;
         this.ordererZonecode = ordererZonecode;
@@ -71,8 +72,9 @@ public class Orders {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Orders of(Member member){
+    public static Orders of(Member member) {
         LocalDateTime now = LocalDateTime.now();
-        return new Orders(member, OrdersStatus.TEMP, "", "", "", "", "", "", "", "", "", 0, "", now, now);
+        return new Orders(member, OrdersStatus.TEMP, "", "", "", "", "", "", "", "", 0, "", now,
+            now);
     }
 }
