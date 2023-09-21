@@ -8,8 +8,10 @@
 
 include::feature/new-feature.adoc[]
 include::feature/fix-feature.adoc[]
+include::feature/pending-feature.adoc[]
 include::error/error.adoc[]
 include::common/common.adoc[]
 include::auth/auth.adoc[]
 include::member/member.adoc[]
 include::product/product.adoc[]
+include::order/order.adoc[]
