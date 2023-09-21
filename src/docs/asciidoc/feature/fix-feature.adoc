@@ -1,4 +1,17 @@
 == 🍏 수정된 기능
+### 📗 seller 상세 주소(address_detail) 추가된 내역 (23.09.21)
+- /api/member/seller (GET)
+- /api/member/seller (POST)
+- /api/member/seller (PUT)
+- /api/product
+- /api/product/{id}
+- /api/product/basket
+- /api/seller/product(GET)
+- /api/seller/product(POST)
+- /api/seller/product(PUT)
+
+
+
 ### 📗 판매자 검색 기능 (23.07.26)
 
 1. 상품 확인시 판매자의 상품 리스트 확인

@@ -34,6 +34,8 @@ public class Seller {
     private String zonecode;
     @NotNull(message = "address 비어있을 수 없습니다.")
     private String address;
+    @NotNull(message = "addressDetail 비어있을 수 없습니다.")
+    private String addressDetail;
     @Email(message = "email 형식을 맞춰주세요.")
     @NotNull(message = "email 비어있을 수 없습니다.")
     private String email;
@@ -45,6 +47,7 @@ public class Seller {
         @NotNull(message = "tel 비어있을 수 없습니다.") String tel,
         @NotNull(message = "zonecode 비어있을 수 없습니다.") String zonecode,
         @NotNull(message = "address 비어있을 수 없습니다.") String address,
+        @NotNull(message = "addressDeail 비어있을 수 없습니다.") String addressDetail,
         @NotNull(message = "email 비어있을 수 없습니다.") String email, LocalDateTime createdAt,
         LocalDateTime modifiedAt) {
         this.member = member;
@@ -52,6 +55,7 @@ public class Seller {
         this.tel = tel;
         this.zonecode = zonecode;
         this.address = address;
+        this.addressDetail = addressDetail;
         this.email = email;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
@@ -62,10 +66,11 @@ public class Seller {
         @NotNull(message = "tel 비어있을 수 없습니다.") String tel,
         @NotNull(message = "zonecode 비어있을 수 없습니다.") String zonecode,
         @NotNull(message = "address 비어있을 수 없습니다.") String address,
+        @NotNull(message = "addressDetail 비어있을 수 없습니다.") String addressDetail,
         @NotNull(message = "email 비어있을 수 없습니다.") String email) {
         LocalDateTime now = LocalDateTime.now();
         tel = tel.replaceAll("-", "");
-        return new Seller(member, company, tel, zonecode, address, email, now, now);
+        return new Seller(member, company, tel, zonecode, address, addressDetail, email, now, now);
     }
 
     public void put(PutSellerRequest dto) {
@@ -77,5 +82,6 @@ public class Seller {
         this.email = dto.getEmail();
         this.zonecode = dto.getZonecode();
         this.address = dto.getAddress();
+        this.addressDetail = dto.getAddressDetail();
     }
 }

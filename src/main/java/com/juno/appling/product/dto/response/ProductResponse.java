@@ -59,7 +59,7 @@ public class ProductResponse {
             product.getModifiedAt(),
             new SellerResponse(product.getSeller().getId(), product.getSeller().getEmail(),
                 product.getSeller().getCompany(), product.getSeller().getZonecode(),
-                product.getSeller().getAddress(), product.getSeller().getTel()),
+                product.getSeller().getAddress(), product.getSeller().getAddressDetail(), product.getSeller().getTel()),
             new CategoryResponse(product.getCategory().getId(), product.getCategory().getName(),
                 product.getCategory().getCreatedAt(), product.getCategory().getModifiedAt())
         );

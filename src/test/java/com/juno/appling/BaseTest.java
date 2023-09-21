@@ -75,13 +75,13 @@ public class BaseTest {
                     if (saveMember.getEmail().equals(SELLER_EMAIL)) {
                         saveMember.patchMemberRole(Role.SELLER);
                         Seller seller = sellerRepository.save(
-                            Seller.of(saveMember, "애플링", "01012344321", "1234", "강원도 평창군 장미산길 126",
+                            Seller.of(saveMember, "애플링", "01012344321", "1234", "강원도 평창군 장미산길 126", "상세주소",
                                 "email@mail.com"));
                     }
                     if (saveMember.getEmail().equals(SELLER2_EMAIL)) {
                         saveMember.patchMemberRole(Role.SELLER);
                         Seller seller = sellerRepository.save(
-                            Seller.of(saveMember, "자연농원", "01012344321", "1234", "강원도 평창군 장미산길 126",
+                            Seller.of(saveMember, "자연농원", "01012344321", "1234", "강원도 평창군 장미산길 126", "상세주소",
                                 "email@mail.com"));
                         introduceRepository.save(Introduce.of(seller, "장미산길",
                             "https://appling-s3-bucket.s3.ap-northeast-2.amazonaws.com/html/1/20230815/184934_0.html",
