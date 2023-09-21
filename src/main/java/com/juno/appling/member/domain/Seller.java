@@ -47,7 +47,7 @@ public class Seller {
         @NotNull(message = "tel 비어있을 수 없습니다.") String tel,
         @NotNull(message = "zonecode 비어있을 수 없습니다.") String zonecode,
         @NotNull(message = "address 비어있을 수 없습니다.") String address,
-        @NotNull(message = "addressDeail 비어있을 수 없습니다.") String addressDetail,
+        @NotNull(message = "addressDetail 비어있을 수 없습니다.") String addressDetail,
         @NotNull(message = "email 비어있을 수 없습니다.") String email, LocalDateTime createdAt,
         LocalDateTime modifiedAt) {
 
@@ -66,6 +66,7 @@ public class Seller {
         @NotNull(message = "tel 비어있을 수 없습니다.") String tel,
         @NotNull(message = "zonecode 비어있을 수 없습니다.") String zonecode,
         @NotNull(message = "address 비어있을 수 없습니다.") String address,
+        @NotNull(message = "addressDetail 비어있을 수 없습니다.") String addressDetail,
         @NotNull(message = "email 비어있을 수 없습니다.") String email) {
 
         LocalDateTime now = LocalDateTime.now();
@@ -75,6 +76,7 @@ public class Seller {
         this.tel = tel;
         this.zonecode = zonecode;
         this.address = address;
+        this.addressDetail = addressDetail;
         this.email = email;
         this.createdAt = now;
         this.modifiedAt = now;

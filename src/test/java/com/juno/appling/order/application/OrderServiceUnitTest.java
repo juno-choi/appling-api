@@ -1,9 +1,5 @@
 package com.juno.appling.order.application;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-
 import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.domain.Seller;
@@ -22,9 +18,6 @@ import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.domain.ProductRepository;
 import com.juno.appling.product.enums.CategoryStatus;
 import com.juno.appling.product.enums.Status;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +26,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith({MockitoExtension.class})
 class OrderServiceUnitTest {
@@ -86,7 +87,7 @@ class OrderServiceUnitTest {
             Role.SELLER, null, null, now, now);
         given(memberUtil.getMember(any())).willReturn(member);
         List<Product> productList = new ArrayList<>();
-        Seller seller = new Seller(1L, member, "company", "01012341234", "우편주소", "주소", "mail@mail.com");
+        Seller seller = new Seller(1L, member, "company", "01012341234", "우편주소", "주소",  "상세 주소","mail@mail.com");
         Category category = Category.of("카테고리", CategoryStatus.USE);
 
         Product product1 = new Product(1L, seller, category, "메인", "메인 설명", "상품 메인 설명", "상품 서브 설명",
@@ -123,7 +124,7 @@ class OrderServiceUnitTest {
         JoinRequest joinRequest = new JoinRequest("email@mail.com", "passowrd", "tester",
             "nickname", "19991030");
         Member member = Member.of(joinRequest);
-        Seller seller = new Seller(1L, member, "company", "01012341234", "우편주소", "주소", "mail@mail.com");
+        Seller seller = new Seller(1L, member, "company", "01012341234", "우편주소", "주소", "상세 주소", "mail@mail.com");
         Category category = Category.of("카테고리", CategoryStatus.USE);
         LocalDateTime now = LocalDateTime.now();
         Product product1 = new Product(1L, seller, category, "메인", "메인 설명", "상품 메인 설명", "상품 서브 설명",
