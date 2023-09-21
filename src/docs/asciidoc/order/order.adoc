@@ -1,0 +1,24 @@
+== 🍎 회원
+
+### 📗 임시 주문 등록 (주문전 등록 필수!)
+
+==== 🔵 REQUEST
+include::{snippets}/order-controller-docs/get-product-list/curl-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/order-controller-docs/get-product-list/request-headers.adoc[]
+
+==== 🔵 REQUEST FIELD
+
+include::{snippets}/order-controller-docs/get-product-list/request-body.adoc[]
+
+include::{snippets}/order-controller-docs/get-product-list/request-fields.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/order-controller-docs/get-product-list/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/order-controller-docs/get-product-list/response-fields.adoc[]

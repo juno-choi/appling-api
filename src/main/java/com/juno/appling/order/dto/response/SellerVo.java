@@ -24,10 +24,12 @@ public class SellerVo {
     @NotNull
     private String address;
     @NotNull
+    private String addressDetail;
+    @NotNull
     String tel;
 
     public static SellerVo of(Seller seller) {
         return new SellerVo(seller.getId(),seller.getEmail() , seller.getCompany(),
-            seller.getZonecode(), seller.getAddress(), seller.getTel());
+            seller.getZonecode(), seller.getAddress(), seller.getAddressDetail(), seller.getTel());
     }
 }
