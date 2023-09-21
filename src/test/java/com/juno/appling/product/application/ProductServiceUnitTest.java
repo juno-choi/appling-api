@@ -72,7 +72,7 @@ class ProductServiceUnitTest {
         LocalDateTime now = LocalDateTime.now();
         Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030",
             Role.SELLER, null, null, now, now);
-        Seller seller = Seller.of(member, "회사명", "01012344321", "1234", "회사 주소", "mail@mail.com");
+        Seller seller = Seller.of(member, "회사명", "01012344321", "1234", "회사 주소", "상세 주소", "mail@mail.com");
         given(memberRepository.findById(any())).willReturn(Optional.of(member));
         given(sellerRepository.findByMember(any())).willReturn(Optional.of(seller));
         given(productRepository.save(any())).willReturn(Product.of(seller, category, productRequest));

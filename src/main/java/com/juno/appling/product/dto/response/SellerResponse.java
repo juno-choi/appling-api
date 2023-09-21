@@ -23,5 +23,7 @@ public class SellerResponse {
     @NotNull
     private String address;
     @NotNull
+    private String addressDetail;
+    @NotNull
     String tel;
 }

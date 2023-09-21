@@ -51,7 +51,8 @@ public class MemberService {
     public MemberResponse member(HttpServletRequest request) {
         Member findMember = getMember(request);
 
-        return new MemberResponse(findMember.getId(), findMember.getEmail(), findMember.getNickname(),
+        return new MemberResponse(findMember.getId(), findMember.getEmail(),
+                findMember.getNickname(),
                 findMember.getName(), findMember.getRole(), findMember.getSnsType(),
                 findMember.getStatus(), findMember.getCreatedAt(), findMember.getModifiedAt());
     }
@@ -63,10 +64,12 @@ public class MemberService {
     }
 
     @Transactional
-    public MessageVo patchMember(PatchMemberRequest patchMemberRequest, HttpServletRequest request) {
+    public MessageVo patchMember(PatchMemberRequest patchMemberRequest,
+                                 HttpServletRequest request) {
         Member member = getMember(request);
 
-        String birth = Optional.ofNullable(patchMemberRequest.getBirth()).orElse("").replaceAll("-", "")
+        String birth = Optional.ofNullable(patchMemberRequest.getBirth()).orElse("")
+                .replaceAll("-", "")
                 .trim();
         String name = Optional.ofNullable(patchMemberRequest.getName()).orElse("").trim();
         String nickname = Optional.ofNullable(patchMemberRequest.getNickname()).orElse("").trim();
@@ -84,8 +87,10 @@ public class MemberService {
                                    HttpServletRequest request) {
         Member member = getMember(request);
         recipientRepository.save(
-                Recipient.of(member, postRecipientRequestInfo.getName(), postRecipientRequestInfo.getZonecode(),
-                        postRecipientRequestInfo.getAddress(), postRecipientRequestInfo.getTel(),
+                Recipient.of(member, postRecipientRequestInfo.getName(),
+                        postRecipientRequestInfo.getZonecode(),
+                        postRecipientRequestInfo.getAddress(), postRecipientRequestInfo.getAddressDetail(),
+                        postRecipientRequestInfo.getTel(),
                         RecipientInfoStatus.NORMAL));
 
         return new MessageVo("수령인 정보 등록 성공");
@@ -107,8 +112,9 @@ public class MemberService {
         if (!recipientList.isEmpty()) {
             Recipient r = recipientList.get(0);
             list.add(
-                    new RecipientResponse(r.getId(), r.getName(), r.getZonecode(), r.getAddress(), r.getTel(),
-                            r.getStatus(), r.getCreatedAt(), r.getModifiedAt()));
+                    new RecipientResponse(r.getId(), r.getName(), r.getZonecode(), r.getAddress(),
+                            r.getAddressDetail(), r.getTel(), r.getStatus(), r.getCreatedAt(),
+                            r.getModifiedAt()));
         }
 
         return new RecipientListResponse(list);
@@ -125,8 +131,10 @@ public class MemberService {
             throw new IllegalArgumentException("이미 판매자 신청을 완료했습니다.");
         }
 
-        Seller seller = Seller.of(member, postSellerRequest.getCompany(), postSellerRequest.getTel(),
-                postSellerRequest.getZonecode(), postSellerRequest.getAddress(), postSellerRequest.getEmail());
+        Seller seller = Seller.of(member, postSellerRequest.getCompany(),
+                postSellerRequest.getTel(),
+                postSellerRequest.getZonecode(), postSellerRequest.getAddress(), postSellerRequest.getAddressDetail(),
+                postSellerRequest.getEmail());
         sellerRepository.save(seller);
 
         // 임시적 승인 절차
@@ -158,17 +166,19 @@ public class MemberService {
     public SellerResponse getSeller(HttpServletRequest request) {
         Seller seller = getSellerByRequest(request);
         return new SellerResponse(seller.getId(), seller.getEmail(), seller.getCompany(),
-                seller.getZonecode(), seller.getAddress(), seller.getTel());
+                seller.getZonecode(), seller.getAddress(), seller.getAddressDetail(), seller.getTel());
     }
 
     @Transactional
-    public MessageVo postIntroduce(PostIntroduceRequest postIntroduceRequest, HttpServletRequest request) {
+    public MessageVo postIntroduce(PostIntroduceRequest postIntroduceRequest,
+                                   HttpServletRequest request) {
         Seller seller = getSellerByRequest(request);
         Optional<Introduce> introduceFindBySeller = introduceRepository.findBySeller(seller);
 
         if (introduceFindBySeller.isEmpty()) {
             introduceRepository.save(
-                    Introduce.of(seller, postIntroduceRequest.getSubject(), postIntroduceRequest.getUrl(),
+                    Introduce.of(seller, postIntroduceRequest.getSubject(),
+                            postIntroduceRequest.getUrl(),
                             IntroduceStatus.USE));
         } else {
             Introduce introduce = introduceFindBySeller.get();
@@ -184,7 +194,8 @@ public class MemberService {
     }
 
     public String getIntroduce(Long sellerId) {
-        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 판매자입니다."));
+        Seller seller = sellerRepository.findById(sellerId)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 판매자입니다."));
         return getSellerIntroduceHtml(seller);
     }
 
