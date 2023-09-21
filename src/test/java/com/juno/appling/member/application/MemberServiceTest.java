@@ -77,10 +77,10 @@ public class MemberServiceTest extends BaseTest {
         LoginResponse login = memberAuthService.login(loginRequest);
         Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
 
-        Recipient recipient1 = Recipient.of(member, "수령인1", "1234", "주소", "01012341234",
+        Recipient recipient1 = Recipient.of(member, "수령인1", "1234", "주소", "상세주소", "01012341234",
             RecipientInfoStatus.NORMAL);
         Thread.sleep(10L);
-        Recipient recipient2 = Recipient.of(member, "수령인2", "1234", "주소2", "01012341234",
+        Recipient recipient2 = Recipient.of(member, "수령인2", "1234", "주소2", "상세주소", "01012341234",
             RecipientInfoStatus.NORMAL);
 
         member.getRecipientList().add(recipient1);

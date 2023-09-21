@@ -18,6 +18,7 @@ public class RecipientResponse {
     private String name;
     private String zonecode;
     private String address;
+    private String addressDetail;
     private String tel;
     private RecipientInfoStatus status;
     private LocalDateTime createdAt;

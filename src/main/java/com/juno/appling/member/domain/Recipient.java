@@ -28,6 +28,8 @@ public class Recipient {
     @NotNull
     private String address;
     @NotNull
+    private String addressDetail;
+    @NotNull
     private String zonecode;
     @NotNull
     private String tel;
@@ -39,12 +41,13 @@ public class Recipient {
     private LocalDateTime modifiedAt;
 
     private Recipient(Member member, @NotNull String name, @NotNull String zonecode,
-        @NotNull String address, @NotNull String tel, RecipientInfoStatus status,
+        @NotNull String address, @NotNull String addressDetail, @NotNull String tel, RecipientInfoStatus status,
         LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.member = member;
         this.name = name;
         this.zonecode = zonecode;
         this.address = address;
+        this.addressDetail = addressDetail;
         this.tel = tel;
         this.status = status;
         this.createdAt = createdAt;
@@ -52,10 +55,10 @@ public class Recipient {
     }
 
     public static Recipient of(Member member, @NotNull String name, @NotNull String zonecode,
-        @NotNull String address, @NotNull String tel, RecipientInfoStatus status) {
+        @NotNull String address, @NotNull String addressDetail, @NotNull String tel, RecipientInfoStatus status) {
         tel = tel.replaceAll("-", "");
         LocalDateTime now = LocalDateTime.now();
-        return new Recipient(member, name, zonecode, address, tel, status, now, now);
+        return new Recipient(member, name, zonecode, address, addressDetail, tel, status, now, now);
     }
 
     public void put(PostRecipientRequest postRecipientRequestInfo) {
