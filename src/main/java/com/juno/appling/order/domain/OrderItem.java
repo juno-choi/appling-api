@@ -55,9 +55,9 @@ public class OrderItem {
         this.modifiedAt = modifiedAt;
     }
 
-    public static OrderItem of(Order order, Product product, int ea) {
+    public static OrderItem of(Order order, Product product, int amount) {
         LocalDateTime now = LocalDateTime.now();
-        return new OrderItem(order, product, OrderItemStatus.TEMP, ea, product.getPrice(),
-            product.getPrice() * ea, now, now);
+        return new OrderItem(order, product, OrderItemStatus.TEMP, amount, product.getPrice(),
+            product.getPrice() * amount, now, now);
     }
 }

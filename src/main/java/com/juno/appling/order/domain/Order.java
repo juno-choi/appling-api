@@ -41,7 +41,7 @@ public class Order {
 
     @NotAudited
     @OneToMany(mappedBy = "order")
-    private List<OrderList> sellerList = new ArrayList<>();
+    private List<OrderSellerList> sellerList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
@@ -50,5 +50,18 @@ public class Order {
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    private Order(Member member, OrderStatus status, String orderName, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        this.member = member;
+        this.status = status;
+        this.orderName = orderName;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+    }
+
+    public static Order of(Member member, String orderName){
+        LocalDateTime now = LocalDateTime.now();
+        return new Order(member, OrderStatus.TEMP, orderName, now, now);
+    }
 
 }
