@@ -2,29 +2,22 @@ package com.juno.appling.order.domain;
 
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.order.enums.OrdersStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
+import java.time.LocalDateTime;
+
 @Audited
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Orders {
+@Table(name = "ORDERS")
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,10 +45,10 @@ public class Orders {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Orders(Member member, OrdersStatus status, String ordererName,
-        String ordererAddress, String ordererZonecode, String ordererTel, String recipientName,
-        String recipientAddress, String recipientZonecode, String recipientTel, int orderTotalPrice,
-        String etc, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    private Order(Member member, OrdersStatus status, String ordererName,
+                  String ordererAddress, String ordererZonecode, String ordererTel, String recipientName,
+                  String recipientAddress, String recipientZonecode, String recipientTel, int orderTotalPrice,
+                  String etc, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.member = member;
         this.status = status;
         this.ordererName = ordererName;
@@ -72,9 +65,9 @@ public class Orders {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Orders of(Member member) {
+    public static Order of(Member member) {
         LocalDateTime now = LocalDateTime.now();
-        return new Orders(member, OrdersStatus.TEMP, "", "", "", "", "", "", "", "", 0, "", now,
+        return new Order(member, OrdersStatus.TEMP, "", "", "", "", "", "", "", "", 0, "", now,
             now);
     }
 }

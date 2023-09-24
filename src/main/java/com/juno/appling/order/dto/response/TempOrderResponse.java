@@ -13,7 +13,4 @@ import lombok.Getter;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TempOrderResponse {
     private Long orderId;
-    private int totalPrice;
-    private List<ReceiptVo> receiptList;
-    private List<TempOrderVo> orderList;
 }

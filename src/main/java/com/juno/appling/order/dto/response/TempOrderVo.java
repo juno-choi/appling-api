@@ -3,8 +3,7 @@ package com.juno.appling.order.dto.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.order.domain.OrdersDetail;
-import com.juno.appling.product.domain.Product;
+import com.juno.appling.order.domain.OrderItem;
 import com.juno.appling.product.enums.Status;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -64,20 +63,20 @@ public class TempOrderVo {
         this.category = category;
     }
 
-    public static TempOrderVo of(OrdersDetail ordersDetail) {
-        return new TempOrderVo(ordersDetail.getProduct().getId(), ordersDetail.getEa(),
-            ordersDetail.getProduct().getMainTitle(),
-            ordersDetail.getProduct().getMainExplanation(),
-            ordersDetail.getProduct().getProductMainExplanation(),
-            ordersDetail.getProduct().getProductSubExplanation(),
-            ordersDetail.getProduct().getOriginPrice(), ordersDetail.getProduct().getPrice(),
-            ordersDetail.getProduct().getPurchaseInquiry(),
-            ordersDetail.getProduct().getOrigin(), ordersDetail.getProduct().getProducer(),
-            ordersDetail.getProduct().getMainImage(), ordersDetail.getProduct().getImage1(),
-            ordersDetail.getProduct().getImage2(), ordersDetail.getProduct().getImage3(),
-            ordersDetail.getProduct().getViewCnt(), ordersDetail.getProduct().getStatus(),
-            ordersDetail.getProduct().getCreateAt(), ordersDetail.getModifiedAt(),
-            SellerVo.of(ordersDetail.getProduct().getSeller()),
-            CategoryVo.of(ordersDetail.getProduct().getCategory()));
+    public static TempOrderVo of(OrderItem orderItem) {
+        return new TempOrderVo(orderItem.getProduct().getId(), orderItem.getEa(),
+            orderItem.getProduct().getMainTitle(),
+            orderItem.getProduct().getMainExplanation(),
+            orderItem.getProduct().getProductMainExplanation(),
+            orderItem.getProduct().getProductSubExplanation(),
+            orderItem.getProduct().getOriginPrice(), orderItem.getProduct().getPrice(),
+            orderItem.getProduct().getPurchaseInquiry(),
+            orderItem.getProduct().getOrigin(), orderItem.getProduct().getProducer(),
+            orderItem.getProduct().getMainImage(), orderItem.getProduct().getImage1(),
+            orderItem.getProduct().getImage2(), orderItem.getProduct().getImage3(),
+            orderItem.getProduct().getViewCnt(), orderItem.getProduct().getStatus(),
+            orderItem.getProduct().getCreateAt(), orderItem.getModifiedAt(),
+            SellerVo.of(orderItem.getProduct().getSeller()),
+            CategoryVo.of(orderItem.getProduct().getCategory()));
     }
 }
