@@ -72,15 +72,17 @@ spring:
       path: /h2-console
   jpa:
     hibernate:
-      ddl-auto: create-drop  #절대 수정 금지
+      ddl-auto: update  #절대 수정 금지
     show-sql: true
     defer-datasource-initialization: true
   datasource:
     hikari:
       driver-class-name: org.h2.Driver
-      jdbc-url: jdbc:h2:mem:appling;mode=mysql
+#      jdbc-url: jdbc:h2:mem:appling;mode=mysql
+      jdbc-url: jdbc:h2:tcp://localhost/~/appling
       username: sa
       password:
+
 --- #dev
 spring:
   config:
