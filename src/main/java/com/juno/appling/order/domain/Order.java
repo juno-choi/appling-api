@@ -1,7 +1,7 @@
 package com.juno.appling.order.domain;
 
 import com.juno.appling.member.domain.Member;
-import com.juno.appling.order.enums.OrdersStatus;
+import com.juno.appling.order.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +10,8 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Audited
 @Entity
@@ -29,45 +31,24 @@ public class Order {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Enumerated(EnumType.STRING)
-    private OrdersStatus status;
+    @NotAudited
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItemList = new ArrayList<>();
 
-    private String ordererName;
-    private String ordererAddress;
-    private String ordererZonecode;
-    private String ordererTel;
-    private String recipientName;
-    private String recipientAddress;
-    private String recipientZonecode;
-    private String recipientTel;
-    private int orderTotalPrice;
-    private String etc;
+    @NotAudited
+    @OneToMany(mappedBy = "order")
+    private List<Delivery> deliveryList = new ArrayList<>();
+
+    @NotAudited
+    @OneToMany(mappedBy = "order")
+    private List<OrderList> sellerList = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
+    private String orderName;   // server에서 자동으로 생성
+
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Order(Member member, OrdersStatus status, String ordererName,
-                  String ordererAddress, String ordererZonecode, String ordererTel, String recipientName,
-                  String recipientAddress, String recipientZonecode, String recipientTel, int orderTotalPrice,
-                  String etc, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.member = member;
-        this.status = status;
-        this.ordererName = ordererName;
-        this.ordererAddress = ordererAddress;
-        this.ordererZonecode = ordererZonecode;
-        this.ordererTel = ordererTel;
-        this.recipientName = recipientName;
-        this.recipientAddress = recipientAddress;
-        this.recipientZonecode = recipientZonecode;
-        this.recipientTel = recipientTel;
-        this.orderTotalPrice = orderTotalPrice;
-        this.etc = etc;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-    }
-
-    public static Order of(Member member) {
-        LocalDateTime now = LocalDateTime.now();
-        return new Order(member, OrdersStatus.TEMP, "", "", "", "", "", "", "", "", 0, "", now,
-            now);
-    }
 }

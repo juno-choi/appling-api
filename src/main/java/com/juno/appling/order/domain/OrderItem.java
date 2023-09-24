@@ -1,6 +1,6 @@
 package com.juno.appling.order.domain;
 
-import com.juno.appling.order.enums.OrdersDetailStatus;
+import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.product.domain.Product;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public class OrderItem {
     private Product product;
 
     @Enumerated(EnumType.STRING)
-    private OrdersDetailStatus status;
+    private OrderItemStatus status;
 
     private int ea;
 
@@ -42,7 +42,7 @@ public class OrderItem {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private OrderItem(Order order, Product product, OrdersDetailStatus status, int ea,
+    private OrderItem(Order order, Product product, OrderItemStatus status, int ea,
                       int productPrice, int productTotalPrice, LocalDateTime createdAt,
                       LocalDateTime modifiedAt) {
         this.order = order;
@@ -57,7 +57,7 @@ public class OrderItem {
 
     public static OrderItem of(Order order, Product product, int ea) {
         LocalDateTime now = LocalDateTime.now();
-        return new OrderItem(order, product, OrdersDetailStatus.TEMP, ea, product.getPrice(),
+        return new OrderItem(order, product, OrderItemStatus.TEMP, ea, product.getPrice(),
             product.getPrice() * ea, now, now);
     }
 }
