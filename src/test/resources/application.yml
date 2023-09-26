@@ -1,0 +1,83 @@
+
+spring:
+  #profile 설정
+  profiles:
+    active: ${server.profile:local}
+  web:
+    resources:
+      add-mappings: false
+  mvc:
+    throw-exception-if-no-handler-found: true
+  servlet:
+    multipart:
+      maxFileSize: 1MB
+      maxRequestSize: 1MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ililil9412@gmail.com
+    password: ${google.key:password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+logging:
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+  level:
+    root: info
+    com.juno.appling: info
+
+server:
+  port: 8000
+
+api-prefix: /api
+docs: /api/docs/index.html
+
+kakao:
+  client-id: ${kakao.id:kakao_client_id}
+  redirect-url: ${kakao.url:kakao_url}
+
+# aws 설정
+cloud:
+  s3:
+    bucket: appling-s3-bucket
+    access-id: ${s3.id:id}
+    secret-key: ${s3.key:key}
+    url: https://appling-s3-bucket.s3.ap-northeast-2.amazonaws.com
+
+# echo 'spring-boot-security-jwt-juno-spring-boot-security-jwt-juno-appling' | base64
+jwt:
+  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LWp1bm8tc3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LWp1bm8tYXBwbGluZwo=
+--- #local
+logging:
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+  level:
+    root: info
+    com.juno.appling: debug
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create-drop  #절대 수정 금지
+    show-sql: true
+    defer-datasource-initialization: true
+  datasource:
+    hikari:
+      driver-class-name: org.h2.Driver
+      jdbc-url: jdbc:h2:mem:appling;mode=mysql
+      username: sa
+      password:

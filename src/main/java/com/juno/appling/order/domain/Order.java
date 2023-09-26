@@ -39,10 +39,6 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<Delivery> deliveryList = new ArrayList<>();
 
-    @NotAudited
-    @OneToMany(mappedBy = "order")
-    private List<OrderSellerList> sellerList = new ArrayList<>();
-
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 

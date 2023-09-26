@@ -28,7 +28,6 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
-    private final OrderSellerListRepository orderSellerListRepository;
     private final MemberUtil memberUtil;
 
     @Transactional
@@ -76,9 +75,6 @@ public class OrderService {
             int ea = eaMap.get(p.getId());
             OrderItem orderItem = orderItemRepository.save(OrderItem.of(saveOrder, p, ea));
             saveOrder.getOrderItemList().add(orderItem);
-            // 판매자 리스트 등록
-            OrderSellerList orderSellerList = orderSellerListRepository.save(OrderSellerList.of(saveOrder, p.getSeller()));
-            saveOrder.getSellerList().add(orderSellerList);
         }
 
         return new TempOrderResponse(saveOrder.getId());

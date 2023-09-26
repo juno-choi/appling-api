@@ -41,8 +41,6 @@ class OrderServiceUnitTest {
     @Mock
     private OrderItemRepository orderItemRepository;
 
-    @Mock
-    private OrderSellerListRepository orderSellerListRepository;
 
     private MockHttpServletRequest request = new MockHttpServletRequest();
 
@@ -82,7 +80,7 @@ class OrderServiceUnitTest {
         productList.add(product2);
         given(productRepository.findAllById(any())).willReturn(productList);
 
-        given(orderRepository.save(any())).willReturn(new Order(1L, null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, null, null, null));
+        given(orderRepository.save(any())).willReturn(new Order(1L, null, new ArrayList<>(), new ArrayList<>(), null, null, null, null));
 
         //when
         //then
@@ -108,7 +106,7 @@ class OrderServiceUnitTest {
         productList.add(product2);
         given(productRepository.findAllById(any())).willReturn(productList);
 
-        given(orderRepository.save(any())).willReturn(new Order(1L, null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, null, null, null));
+        given(orderRepository.save(any())).willReturn(new Order(1L, null, new ArrayList<>(), new ArrayList<>(), null, null, null, null));
 
         //when
         TempOrderResponse tempOrderResponse = orderService.postTempOrder(tempOrderRequest, request);

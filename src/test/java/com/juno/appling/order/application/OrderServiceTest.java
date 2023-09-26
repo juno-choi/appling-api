@@ -7,7 +7,6 @@ import com.juno.appling.member.dto.response.LoginResponse;
 import com.juno.appling.order.domain.Order;
 import com.juno.appling.order.domain.OrderItem;
 import com.juno.appling.order.domain.OrderRepository;
-import com.juno.appling.order.domain.OrderSellerList;
 import com.juno.appling.order.dto.request.TempOrderDto;
 import com.juno.appling.order.dto.request.TempOrderRequest;
 import com.juno.appling.order.dto.response.TempOrderResponse;
@@ -61,8 +60,6 @@ class OrderServiceTest extends BaseTest {
         Long orderId = tempOrderResponse.getOrderId();
         Order order = orderRepository.findById(orderId).get();
         List<OrderItem> orderItemList = order.getOrderItemList();
-        List<OrderSellerList> sellerList = order.getSellerList();
         Assertions.assertThat(orderItemList).isNotEmpty();
-        Assertions.assertThat(sellerList).isNotEmpty();
     }
 }
