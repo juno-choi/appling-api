@@ -8,8 +8,8 @@ import com.juno.appling.order.domain.OrderItemRepository;
 import com.juno.appling.order.domain.OrderRepository;
 import com.juno.appling.order.dto.request.TempOrderDto;
 import com.juno.appling.order.dto.request.TempOrderRequest;
-import com.juno.appling.order.dto.response.OrderResponse;
 import com.juno.appling.order.dto.response.TempOrderResponse;
+import com.juno.appling.order.dto.response.PostTempOrderResponse;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.domain.ProductRepository;
@@ -36,7 +36,7 @@ public class OrderService {
     private final MemberUtil memberUtil;
 
     @Transactional
-    public TempOrderResponse postTempOrder(TempOrderRequest tempOrderRequest, HttpServletRequest request){
+    public PostTempOrderResponse postTempOrder(TempOrderRequest tempOrderRequest, HttpServletRequest request){
         Member member = memberUtil.getMember(request);
 
         /**
@@ -82,14 +82,13 @@ public class OrderService {
             saveOrder.getOrderItemList().add(orderItem);
         }
 
-        return new TempOrderResponse(saveOrder.getId());
+        return new PostTempOrderResponse(saveOrder.getId());
     }
 
-    public OrderResponse getTempOrder(Long orderId, HttpServletRequest request){
+    public TempOrderResponse getTempOrder(Long orderId, HttpServletRequest request){
         /**
          * order id와 member 정보로 임시 정보를 불러옴
          */
-
         Member member = memberUtil.getMember(request);
         Order order = orderRepository.findById(orderId).orElseThrow(() ->
                 new IllegalArgumentException("유효하지 않은 주문 번호입니다.")
@@ -104,6 +103,6 @@ public class OrderService {
             throw new IllegalArgumentException("유효하지 않은 주문입니다.");
         }
 
-        return OrderResponse.of(order);
+        return TempOrderResponse.of(order);
     }
 }

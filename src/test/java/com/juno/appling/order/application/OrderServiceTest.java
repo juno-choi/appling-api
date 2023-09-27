@@ -9,7 +9,7 @@ import com.juno.appling.order.domain.OrderItem;
 import com.juno.appling.order.domain.OrderRepository;
 import com.juno.appling.order.dto.request.TempOrderDto;
 import com.juno.appling.order.dto.request.TempOrderRequest;
-import com.juno.appling.order.dto.response.TempOrderResponse;
+import com.juno.appling.order.dto.response.PostTempOrderResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,10 +54,10 @@ class OrderServiceTest extends BaseTest {
         TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
 
         //when
-        TempOrderResponse tempOrderResponse = orderService.postTempOrder(tempOrderRequest, request);
+        PostTempOrderResponse postTempOrderResponse = orderService.postTempOrder(tempOrderRequest, request);
 
         //then
-        Long orderId = tempOrderResponse.getOrderId();
+        Long orderId = postTempOrderResponse.getOrderId();
         Order order = orderRepository.findById(orderId).get();
         List<OrderItem> orderItemList = order.getOrderItemList();
         Assertions.assertThat(orderItemList).isNotEmpty();

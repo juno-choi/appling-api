@@ -8,6 +8,10 @@ import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.domain.SellerRepository;
 import com.juno.appling.member.dto.request.LoginRequest;
 import com.juno.appling.member.dto.response.LoginResponse;
+import com.juno.appling.order.domain.Order;
+import com.juno.appling.order.domain.OrderItem;
+import com.juno.appling.order.domain.OrderItemRepository;
+import com.juno.appling.order.domain.OrderRepository;
 import com.juno.appling.order.dto.request.TempOrderDto;
 import com.juno.appling.order.dto.request.TempOrderRequest;
 import com.juno.appling.product.domain.Category;
@@ -32,8 +36,11 @@ import java.util.List;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -55,6 +62,12 @@ class OrderControllerDocs extends ControllerBaseTest {
     @Autowired
     private MemberAuthService memberAuthService;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
 
@@ -62,7 +75,7 @@ class OrderControllerDocs extends ControllerBaseTest {
 
     @Test
     @DisplayName(PREFIX + " (POST)")
-    void getProductList() throws Exception {
+    void postTempOrder() throws Exception {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
@@ -110,6 +123,87 @@ class OrderControllerDocs extends ControllerBaseTest {
                         fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
                         fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
                         fieldWithPath("data.order_id").type(JsonFieldType.NUMBER).description("주문 id")
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName(PREFIX + "/temp/{order_id} (GET)")
+    void getTempOrder() throws Exception {
+        //given
+        LoginRequest loginRequest = new LoginRequest(MEMBER_EMAIL, "password");
+        LoginResponse login = memberAuthService.login(loginRequest);
+        Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
+
+        Order order = orderRepository.save(Order.of(member, "테스트 상품"));
+
+        Member sellerMember = memberRepository.findByEmail(SELLER_EMAIL).get();
+        Category category = categoryRepository.findById(1L).get();
+
+        ProductRequest searchDto1 = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+                8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
+                "https://image3", "normal");
+        ProductRequest searchDto2 = new ProductRequest(1L, "검색 제목2", "메인 설명", "상품 메인 설명", "상품 서브 설명", 15000,
+                10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
+                "https://image3", "normal");
+        Seller seller = sellerRepository.findByMember(sellerMember).get();
+        Product saveProduct1 = productRepository.save(Product.of(seller, category, searchDto1));
+        Product saveProduct2 = productRepository.save(Product.of(seller, category, searchDto2));
+
+        orderItemRepository.save(OrderItem.of(order, saveProduct1, 3));
+        orderItemRepository.save(OrderItem.of(order, saveProduct2, 5));
+
+        //when
+        ResultActions perform = mock.perform(
+                get(PREFIX + "/temp/{order_id}", order.getId())
+                        .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+        );
+        //then
+        perform.andExpect(status().is2xxSuccessful());
+        perform.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token (MEMBER 권한 이상)")
+                ),
+                pathParameters(
+                        parameterWithName("order_id").description("주문 id")
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.order_id").type(JsonFieldType.NUMBER).description("주문 id"),
+                        fieldWithPath("data.order_item_list").type(JsonFieldType.ARRAY).description("주문 상품 리스트"),
+                        fieldWithPath("data.order_item_list[].product_id").type(JsonFieldType.NUMBER).description("상품 id"),
+                        fieldWithPath("data.order_item_list[].ea").type(JsonFieldType.NUMBER).description("상품 주문 개수"),
+                        fieldWithPath("data.order_item_list[].main_title").type(JsonFieldType.STRING).description("주문 상품명"),
+                        fieldWithPath("data.order_item_list[].main_explanation").type(JsonFieldType.STRING).description("주문 상품 메인 설명"),
+                        fieldWithPath("data.order_item_list[].product_main_explanation").type(JsonFieldType.STRING).description("주문 상품 상세 설명"),
+                        fieldWithPath("data.order_item_list[].product_sub_explanation").type(JsonFieldType.STRING).description("주문 상품 상세 서브 설명"),
+                        fieldWithPath("data.order_item_list[].origin_price").type(JsonFieldType.NUMBER).description("주문 상품 원가"),
+                        fieldWithPath("data.order_item_list[].price").type(JsonFieldType.NUMBER).description("주문 상품 판매가"),
+                        fieldWithPath("data.order_item_list[].purchase_inquiry").type(JsonFieldType.STRING).description("주문 상품 취급 주의 사항"),
+                        fieldWithPath("data.order_item_list[].origin").type(JsonFieldType.STRING).description("원산지"),
+                        fieldWithPath("data.order_item_list[].producer").type(JsonFieldType.STRING).description("공급자"),
+                        fieldWithPath("data.order_item_list[].main_image").type(JsonFieldType.STRING).description("메인 이미지"),
+                        fieldWithPath("data.order_item_list[].image1").type(JsonFieldType.STRING).description("이미지1"),
+                        fieldWithPath("data.order_item_list[].image2").type(JsonFieldType.STRING).description("이미지2"),
+                        fieldWithPath("data.order_item_list[].image3").type(JsonFieldType.STRING).description("이미지3"),
+                        fieldWithPath("data.order_item_list[].view_cnt").type(JsonFieldType.NUMBER).description("조회수"),
+                        fieldWithPath("data.order_item_list[].status").type(JsonFieldType.STRING).description("상품 상태"),
+                        fieldWithPath("data.order_item_list[].created_at").type(JsonFieldType.STRING).description("상품 생성일"),
+                        fieldWithPath("data.order_item_list[].modified_at").type(JsonFieldType.STRING).description("상품 수정일"),
+                        fieldWithPath("data.order_item_list[].seller").type(JsonFieldType.OBJECT).description("상품 판매자"),
+                        fieldWithPath("data.order_item_list[].seller.seller_id").type(JsonFieldType.NUMBER).description("상품 판매자 id"),
+                        fieldWithPath("data.order_item_list[].seller.email").type(JsonFieldType.STRING).description("상품 판매자 email"),
+                        fieldWithPath("data.order_item_list[].seller.company").type(JsonFieldType.STRING).description("상품 판매자 회사명"),
+                        fieldWithPath("data.order_item_list[].seller.zonecode").type(JsonFieldType.STRING).description("상품 판매자 우편 주소"),
+                        fieldWithPath("data.order_item_list[].seller.address").type(JsonFieldType.STRING).description("상품 판매자 주소"),
+                        fieldWithPath("data.order_item_list[].seller.address_detail").type(JsonFieldType.STRING).description("상품 판매자 상세 주소"),
+                        fieldWithPath("data.order_item_list[].seller.tel").type(JsonFieldType.STRING).description("상품 판매자 연락처"),
+                        fieldWithPath("data.order_item_list[].category").type(JsonFieldType.OBJECT).description("상품 카테고리"),
+                        fieldWithPath("data.order_item_list[].category.category_id").type(JsonFieldType.NUMBER).description("상품 카테고리 id"),
+                        fieldWithPath("data.order_item_list[].category.name").type(JsonFieldType.STRING).description("상품 카테고리명"),
+                        fieldWithPath("data.order_item_list[].category.created_at").type(JsonFieldType.STRING).description("상품 카테고리 생성일"),
+                        fieldWithPath("data.order_item_list[].category.modified_at").type(JsonFieldType.STRING).description("상품 카테고리 수정일")
                 )
         ));
     }

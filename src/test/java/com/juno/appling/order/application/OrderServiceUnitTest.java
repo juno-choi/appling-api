@@ -8,7 +8,7 @@ import com.juno.appling.order.domain.OrderItemRepository;
 import com.juno.appling.order.domain.OrderRepository;
 import com.juno.appling.order.dto.request.TempOrderDto;
 import com.juno.appling.order.dto.request.TempOrderRequest;
-import com.juno.appling.order.dto.response.TempOrderResponse;
+import com.juno.appling.order.dto.response.PostTempOrderResponse;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.domain.ProductRepository;
@@ -117,9 +117,9 @@ class OrderServiceUnitTest {
         given(orderRepository.save(any())).willReturn(new Order(1L, null, new ArrayList<>(), new ArrayList<>(), null, null, null, null));
 
         //when
-        TempOrderResponse tempOrderResponse = orderService.postTempOrder(tempOrderRequest, request);
+        PostTempOrderResponse postTempOrderResponse = orderService.postTempOrder(tempOrderRequest, request);
         //then
-        Assertions.assertThat(tempOrderResponse.getOrderId()).isNotNull();
+        Assertions.assertThat(postTempOrderResponse.getOrderId()).isNotNull();
     }
 
     @Test
