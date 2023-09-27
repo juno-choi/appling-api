@@ -5,13 +5,16 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.juno.appling.order.domain.OrderItem;
 import com.juno.appling.product.enums.Status;
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TempOrderVo {
+@AllArgsConstructor
+public class OrderItemVo {
 
     private Long productId;
     private int ea;
@@ -35,36 +38,8 @@ public class TempOrderVo {
     private SellerVo seller;
     private CategoryVo category;
 
-    private TempOrderVo(Long productId, int ea, String mainTitle, String mainExplanation,
-        String productMainExplanation, String productSubExplanation, int originPrice, int price,
-        String purchaseInquiry, String origin, String producer, String mainImage, String image1,
-        String image2, String image3, Long viewCnt, Status status, LocalDateTime createdAt,
-        LocalDateTime modifiedAt, SellerVo seller, CategoryVo category) {
-        this.productId = productId;
-        this.ea = ea;
-        this.mainTitle = mainTitle;
-        this.mainExplanation = mainExplanation;
-        this.productMainExplanation = productMainExplanation;
-        this.productSubExplanation = productSubExplanation;
-        this.originPrice = originPrice;
-        this.price = price;
-        this.purchaseInquiry = purchaseInquiry;
-        this.origin = origin;
-        this.producer = producer;
-        this.mainImage = mainImage;
-        this.image1 = image1;
-        this.image2 = image2;
-        this.image3 = image3;
-        this.viewCnt = viewCnt;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-        this.seller = seller;
-        this.category = category;
-    }
-
-    public static TempOrderVo of(OrderItem orderItem) {
-        return new TempOrderVo(orderItem.getProduct().getId(), orderItem.getEa(),
+    public static OrderItemVo of(OrderItem orderItem) {
+        return new OrderItemVo(orderItem.getProduct().getId(), orderItem.getEa(),
             orderItem.getProduct().getMainTitle(),
             orderItem.getProduct().getMainExplanation(),
             orderItem.getProduct().getProductMainExplanation(),

@@ -2,10 +2,15 @@ package com.juno.appling.order.application;
 
 import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.Member;
-import com.juno.appling.order.domain.*;
+import com.juno.appling.order.domain.Order;
+import com.juno.appling.order.domain.OrderItem;
+import com.juno.appling.order.domain.OrderItemRepository;
+import com.juno.appling.order.domain.OrderRepository;
 import com.juno.appling.order.dto.request.TempOrderDto;
 import com.juno.appling.order.dto.request.TempOrderRequest;
+import com.juno.appling.order.dto.response.OrderResponse;
 import com.juno.appling.order.dto.response.TempOrderResponse;
+import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.domain.ProductRepository;
 import com.juno.appling.product.enums.Status;
@@ -78,5 +83,27 @@ public class OrderService {
         }
 
         return new TempOrderResponse(saveOrder.getId());
+    }
+
+    public OrderResponse getTempOrder(Long orderId, HttpServletRequest request){
+        /**
+         * order id와 member 정보로 임시 정보를 불러옴
+         */
+
+        Member member = memberUtil.getMember(request);
+        Order order = orderRepository.findById(orderId).orElseThrow(() ->
+                new IllegalArgumentException("유효하지 않은 주문 번호입니다.")
+        );
+
+        if(member.getId() != order.getMember().getId()) {
+            log.info("[getOrder] 유저가 주문한 번호가 아님! 요청한 user_id = {} , order_id = {}", member.getId(), order.getId());
+            throw new IllegalArgumentException("유효하지 않은 주문입니다.");
+        }
+
+        if(order.getStatus() != OrderStatus.TEMP) {
+            throw new IllegalArgumentException("유효하지 않은 주문입니다.");
+        }
+
+        return OrderResponse.of(order);
     }
 }

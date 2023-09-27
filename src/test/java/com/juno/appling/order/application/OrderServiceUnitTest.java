@@ -1,10 +1,15 @@
 package com.juno.appling.order.application;
 
 import com.juno.appling.global.util.MemberUtil;
-import com.juno.appling.order.domain.*;
+import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.enums.Role;
+import com.juno.appling.order.domain.Order;
+import com.juno.appling.order.domain.OrderItemRepository;
+import com.juno.appling.order.domain.OrderRepository;
 import com.juno.appling.order.dto.request.TempOrderDto;
 import com.juno.appling.order.dto.request.TempOrderRequest;
 import com.juno.appling.order.dto.response.TempOrderResponse;
+import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.domain.ProductRepository;
 import com.juno.appling.product.enums.Status;
@@ -17,10 +22,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith({MockitoExtension.class})
@@ -112,5 +120,52 @@ class OrderServiceUnitTest {
         TempOrderResponse tempOrderResponse = orderService.postTempOrder(tempOrderRequest, request);
         //then
         Assertions.assertThat(tempOrderResponse.getOrderId()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("임시 주문 불러오기에 유효하지 않은 order id로 실패")
+    void getTempOrderFail1() {
+        //given
+        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(null));
+        //when
+        //then
+        Assertions.assertThatThrownBy(() -> orderService.getTempOrder(0L, request))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 주문 번호");
+    }
+
+    @Test
+    @DisplayName("임시 주문 불러오기에 주문을 요청한 member id가 아닌 경우 실패")
+    void getTempOrderFail2() {
+        //given
+        Long orderId = 1L;
+        Long memberId = 1L;
+        LocalDateTime now = LocalDateTime.now();
+        Member member1 = new Member(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        Member member2 = new Member(2L, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        given(memberUtil.getMember(any())).willReturn(member1);
+        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(new Order(orderId, member2, new ArrayList<>(), new ArrayList<>(), OrderStatus.TEMP, "", now, now)));
+        //when
+        //then
+        Assertions.assertThatThrownBy(() -> orderService.getTempOrder(orderId, request))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 주문");
+    }
+
+    @Test
+    @DisplayName("임시 주문 불러오기에 주문 status가 temp가 아닌 경우 실패")
+    void getTempOrderFail3() {
+        //given
+        Long orderId = 1L;
+        Long memberId = 1L;
+        LocalDateTime now = LocalDateTime.now();
+        Member member1 = new Member(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        given(memberUtil.getMember(any())).willReturn(member1);
+        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(new Order(orderId, member1, new ArrayList<>(), new ArrayList<>(), OrderStatus.ORDER, "", now, now)));
+        //when
+        //then
+        Assertions.assertThatThrownBy(() -> orderService.getTempOrder(orderId, request))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 주문");
     }
 }
