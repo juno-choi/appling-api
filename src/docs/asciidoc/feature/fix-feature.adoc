@@ -1,3 +1,4 @@
+
 == 🍏 수정된 기능
 ### 📗 seller 상세 주소(address_detail) 추가된 내역 (23.09.21)
 - /api/member/seller (GET)
