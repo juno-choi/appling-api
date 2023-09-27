@@ -2,28 +2,28 @@ package com.juno.appling.order.application;
 
 import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.Member;
-import com.juno.appling.order.domain.Orders;
-import com.juno.appling.order.domain.OrdersDetail;
-import com.juno.appling.order.domain.OrdersDetailRepository;
-import com.juno.appling.order.domain.OrdersRepository;
+import com.juno.appling.order.domain.Order;
+import com.juno.appling.order.domain.OrderItem;
+import com.juno.appling.order.domain.OrderItemRepository;
+import com.juno.appling.order.domain.OrderRepository;
 import com.juno.appling.order.dto.request.TempOrderDto;
 import com.juno.appling.order.dto.request.TempOrderRequest;
-import com.juno.appling.order.dto.response.ReceiptVo;
 import com.juno.appling.order.dto.response.TempOrderResponse;
-import com.juno.appling.order.dto.response.TempOrderVo;
+import com.juno.appling.order.dto.response.PostTempOrderResponse;
+import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.domain.ProductRepository;
 import com.juno.appling.product.enums.Status;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,69 +31,78 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class OrderService {
     private final ProductRepository productRepository;
-    private final OrdersRepository ordersRepository;
-    private final OrdersDetailRepository ordersDetailRepository;
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
     private final MemberUtil memberUtil;
 
     @Transactional
-    public TempOrderResponse postTempOrder(TempOrderRequest tempOrderRequest, HttpServletRequest request){
-        // TODO 유저 확인 먼저
+    public PostTempOrderResponse postTempOrder(TempOrderRequest tempOrderRequest, HttpServletRequest request){
         Member member = memberUtil.getMember(request);
 
-        List<TempOrderDto> requestOrderList = tempOrderRequest.getOrderList();
-        Map<Long, Integer> productEaMap = new HashMap<>();
-        // 개수 확인을 위해 요청 정보를 map에 넣어둠
-        for(TempOrderDto t : requestOrderList){
-            productEaMap.put(t.getProductId(), t.getEa());
-        }
-
-        List<Long> orderProudctIdList = requestOrderList.stream()
-            .map(o -> o.getProductId())
-            .collect(Collectors.toList());
-        List<Product> productList = productRepository.findAllById(orderProudctIdList);
-
-        if(requestOrderList.size() != productList.size()){
-            throw new IllegalArgumentException("유효하지 않은 상품 id가 존재합니다.");
-        }
-
         /**
-         * 주문 하기전 validation check
-         * 체크할 점
-         * 1. 주문 상품의 상태
+         * 1. 주문 발급
+         * 2. 주문 상품 등록
+         * 3. 판매자 리스트 등록
          */
-        List<Product> notNormalProductList = productList.stream()
-            .filter(p -> !p.getStatus().equals(Status.NORMAL)).collect(Collectors.toList());
 
-        if(!notNormalProductList.isEmpty()){
-            for(Product p : notNormalProductList){
-                log.error("[order][tempOrder][유효하지 않은 상품 주문 시도] member = {}, id = {}, name = {}", member.getId(), p.getId(), p.getMainTitle());
-            }
+        // 주문 발급
+        StringBuffer sb = new StringBuffer();
+        List<TempOrderDto> requestOrderProductList = tempOrderRequest.getOrderList();
+        List<Long> requestProductIdList = requestOrderProductList.stream().mapToLong(o -> o.getProductId())
+                .boxed().collect(Collectors.toList());
+
+        List<Product> productList = productRepository.findAllById(requestProductIdList);
+        productList = productList.stream().sorted((p1, p2) -> p2.getPrice() - p1.getPrice()).collect(Collectors.toList());
+
+        if((requestOrderProductList.size() != productList.size()) || productList.size() == 0){
             throw new IllegalArgumentException("유효하지 않은 상품이 존재합니다.");
         }
 
-        // 주문 생성 로직
-        List<ReceiptVo> receiptList = new ArrayList<>();
-        List<TempOrderVo> orderList = new ArrayList<>();
-        int totalPrice = 0;
-        // 주문 생성
-        Orders orders = Orders.of(member);
-        Orders saveOrder = ordersRepository.save(orders);
-
-        // 주문 detail 생성
-        for(Product p : productList){
-            int ea = productEaMap.get(p.getId());
-            OrdersDetail ordersDetail = OrdersDetail.of(orders, p, ea);
-            ordersDetailRepository.save(ordersDetail);
-
-            // 총 금액 계산
-            totalPrice += ordersDetail.getProductTotalPrice();
-
-            // 영수증 계산
-            receiptList.add(ReceiptVo.of(ordersDetail));
-
-            // 주문 상품 리스트
-            orderList.add(TempOrderVo.of(ordersDetail));
+        sb.append(productList.get(0).getMainTitle());
+        if(productList.size() > 1){
+            sb.append(" 외 ");
+            sb.append(productList.size() -1);
+            sb.append("개");
         }
-        return new TempOrderResponse(saveOrder.getId(), totalPrice, receiptList, orderList);
+        Order saveOrder = orderRepository.save(Order.of(member, sb.toString()));
+
+        // 주문 상품 등록
+        Map<Long, Integer> eaMap = new HashMap<>();
+        for(TempOrderDto o : requestOrderProductList){
+            eaMap.put(o.getProductId(), o.getEa());
+        }
+
+        for(Product p : productList){
+            if(p.getStatus() != Status.NORMAL){
+                throw new IllegalArgumentException("상품 상태가 유효하지 않습니다.");
+            }
+
+            int ea = eaMap.get(p.getId());
+            OrderItem orderItem = orderItemRepository.save(OrderItem.of(saveOrder, p, ea));
+            saveOrder.getOrderItemList().add(orderItem);
+        }
+
+        return new PostTempOrderResponse(saveOrder.getId());
+    }
+
+    public TempOrderResponse getTempOrder(Long orderId, HttpServletRequest request){
+        /**
+         * order id와 member 정보로 임시 정보를 불러옴
+         */
+        Member member = memberUtil.getMember(request);
+        Order order = orderRepository.findById(orderId).orElseThrow(() ->
+                new IllegalArgumentException("유효하지 않은 주문 번호입니다.")
+        );
+
+        if(member.getId() != order.getMember().getId()) {
+            log.info("[getOrder] 유저가 주문한 번호가 아님! 요청한 user_id = {} , order_id = {}", member.getId(), order.getId());
+            throw new IllegalArgumentException("유효하지 않은 주문입니다.");
+        }
+
+        if(order.getStatus() != OrderStatus.TEMP) {
+            throw new IllegalArgumentException("유효하지 않은 주문입니다.");
+        }
+
+        return TempOrderResponse.of(order);
     }
 }

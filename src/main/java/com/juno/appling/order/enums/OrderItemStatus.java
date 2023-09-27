@@ -1,6 +1,6 @@
 package com.juno.appling.order.enums;
 
-public enum OrdersDetailStatus {
+public enum OrderItemStatus {
     TEMP,
     ORDER,
     CANCEL,

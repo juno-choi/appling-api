@@ -72,77 +72,12 @@ spring:
       path: /h2-console
   jpa:
     hibernate:
-      ddl-auto: update  #절대 수정 금지
+      ddl-auto: create-drop  #절대 수정 금지
     show-sql: true
     defer-datasource-initialization: true
   datasource:
     hikari:
       driver-class-name: org.h2.Driver
       jdbc-url: jdbc:h2:mem:appling;mode=mysql
-#      jdbc-url: jdbc:h2:tcp://localhost/~/appling
       username: sa
       password:
-
---- #dev
-spring:
-  config:
-    activate:
-      on-profile: dev
-  h2:
-    console:
-      enabled: true
-      settings:
-        web-allow-others: true
-      path: /h2-console
-  jpa:
-    hibernate:
-      ddl-auto: update  #절대 수정 금지
-    show-sql: true
-  datasource:
-    hikari:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: ${db.url:jdbc:mysql://localhost/appling}
-      username: ${db.username:juno}
-      password: ${db.password:password}
-  redis:
-    host: localhost
-    port: 6379
-
---- #prod
-spring:
-  config:
-    activate:
-      on-profile: prod
-  h2:
-    console:
-      enabled: true
-      settings:
-        web-allow-others: true
-      path: /h2-console
-  jpa:
-    hibernate:
-      ddl-auto: none  #절대 수정 금지
-    show-sql: true
-  datasource:
-    hikari:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: ${db.url:jdbc:mysql://localhost/appling}
-      username: ${db.username:juno}
-      password: ${db.password:password}
-  redis:
-    host: redis
-    port: 6379
-logging:
-  pattern:
-    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
-    file: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
-  logback:
-    rollingpolicy:
-      file-name-pattern: "${LOG_FILE}.%d{yyyy-MM-dd}_%i.zip"
-      max-file-size: 500MB
-      max-history: 90
-  file:
-    name: /log/appling.log
-  level:
-    root: info
-    com.juno.appling: info

@@ -3,8 +3,7 @@ package com.juno.appling.order.dto.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.order.domain.OrdersDetail;
-import com.juno.appling.product.domain.Product;
+import com.juno.appling.order.domain.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -18,8 +17,8 @@ public class ReceiptVo {
     private int ea;
     private int totalPrice;
 
-    public static ReceiptVo of(OrdersDetail ordersDetail) {
-        return new ReceiptVo(SellerVo.of(ordersDetail.getProduct().getSeller()), ordersDetail.getProduct().getMainTitle(),
-            ordersDetail.getEa(), ordersDetail.getProductTotalPrice());
+    public static ReceiptVo of(OrderItem orderItem) {
+        return new ReceiptVo(SellerVo.of(orderItem.getProduct().getSeller()), orderItem.getProduct().getMainTitle(),
+            orderItem.getEa(), orderItem.getProductTotalPrice());
     }
 }
