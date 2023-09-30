@@ -6,8 +6,10 @@ import com.juno.appling.member.enums.Role;
 import com.juno.appling.order.domain.Order;
 import com.juno.appling.order.domain.OrderItemRepository;
 import com.juno.appling.order.domain.OrderRepository;
+import com.juno.appling.order.dto.request.CompleteOrderRequest;
 import com.juno.appling.order.dto.request.TempOrderDto;
 import com.juno.appling.order.dto.request.TempOrderRequest;
+import com.juno.appling.order.dto.response.CompleteOrderResponse;
 import com.juno.appling.order.dto.response.PostTempOrderResponse;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.Product;
@@ -88,7 +90,7 @@ class OrderServiceUnitTest {
         productList.add(product2);
         given(productRepository.findAllById(any())).willReturn(productList);
 
-        given(orderRepository.save(any())).willReturn(new Order(1L, null, new ArrayList<>(), new ArrayList<>(), null, null, null, null));
+        given(orderRepository.save(any())).willReturn(new Order(1L, null, null, new ArrayList<>(), null, null, null, null, null));
 
         //when
         //then
@@ -114,7 +116,7 @@ class OrderServiceUnitTest {
         productList.add(product2);
         given(productRepository.findAllById(any())).willReturn(productList);
 
-        given(orderRepository.save(any())).willReturn(new Order(1L, null, new ArrayList<>(), new ArrayList<>(), null, null, null, null));
+        given(orderRepository.save(any())).willReturn(new Order(1L, null, null, new ArrayList<>(), null, null, null, null, null));
 
         //when
         PostTempOrderResponse postTempOrderResponse = orderService.postTempOrder(tempOrderRequest, request);
@@ -144,7 +146,7 @@ class OrderServiceUnitTest {
         Member member1 = new Member(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
         Member member2 = new Member(2L, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
         given(memberUtil.getMember(any())).willReturn(member1);
-        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(new Order(orderId, member2, new ArrayList<>(), new ArrayList<>(), OrderStatus.TEMP, "", now, now)));
+        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(new Order(orderId, member2, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now)));
         //when
         //then
         Assertions.assertThatThrownBy(() -> orderService.getTempOrder(orderId, request))
@@ -161,11 +163,28 @@ class OrderServiceUnitTest {
         LocalDateTime now = LocalDateTime.now();
         Member member1 = new Member(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
         given(memberUtil.getMember(any())).willReturn(member1);
-        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(new Order(orderId, member1, new ArrayList<>(), new ArrayList<>(), OrderStatus.ORDER, "", now, now)));
+        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(new Order(orderId, member1, null, new ArrayList<>(), null, OrderStatus.ORDER, "", now, now)));
         //when
         //then
         Assertions.assertThatThrownBy(() -> orderService.getTempOrder(orderId, request))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유효하지 않은 주문");
     }
+
+    @Test
+    @DisplayName("주문 완료 성공")
+    void completeOrderSuccess() {
+        //given
+        Long orderId = 1L;
+        LocalDateTime now = LocalDateTime.now();
+        Member member = new Member(1L, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        CompleteOrderRequest completeOrderRequest = new CompleteOrderRequest(orderId, "주문자", "주문자 우편번호", "주문자 주소", "주문자 상세 주소", "주문자 연락처", "수령인", "수령인 우편번호", "수령인 주소", "수령인 상세 주소", "수령인 연락처");
+        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(new Order(orderId, member, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now)));
+        given(memberUtil.getMember(any())).willReturn(member);
+        //when
+        CompleteOrderResponse completeOrderResponse = orderService.completeOrder(completeOrderRequest, request);
+        //then
+        Assertions.assertThat(completeOrderResponse.getOrderNumber()).contains("ORDER-");
+    }
+
 }

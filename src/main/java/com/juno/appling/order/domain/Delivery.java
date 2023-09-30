@@ -1,5 +1,6 @@
 package com.juno.appling.order.domain;
 
+import com.juno.appling.order.dto.request.CompleteOrderRequest;
 import com.juno.appling.order.enums.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,10 @@ public class Delivery {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_item_id")
+    private OrderItem orderItem;
+
     private DeliveryStatus status;
 
     private String ownerName;
@@ -41,4 +46,27 @@ public class Delivery {
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    private Delivery(Order order, OrderItem orderItem, DeliveryStatus status, String ownerName, String ownerZonecode, String ownerAddress, String ownerAddressDetail, String ownerTel, String recipientName, String recipientZonecode, String recipientAddress, String recipientAddressDetail, String recipientTel, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        this.order = order;
+        this.orderItem = orderItem;
+        this.status = status;
+        this.ownerName = ownerName;
+        this.ownerZonecode = ownerZonecode;
+        this.ownerAddress = ownerAddress;
+        this.ownerAddressDetail = ownerAddressDetail;
+        this.ownerTel = ownerTel;
+        this.recipientName = recipientName;
+        this.recipientZonecode = recipientZonecode;
+        this.recipientAddress = recipientAddress;
+        this.recipientAddressDetail = recipientAddressDetail;
+        this.recipientTel = recipientTel;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+    }
+
+    public static Delivery of(Order order, OrderItem oi, CompleteOrderRequest completeOrderRequest) {
+        LocalDateTime now = LocalDateTime.now();
+        return new Delivery(order, oi, DeliveryStatus.TEMP, completeOrderRequest.getOwnerName(), completeOrderRequest.getOwnerZonecode(), completeOrderRequest.getOwnerAddress(), completeOrderRequest.getOwnerAddressDetail(), completeOrderRequest.getOwnerTel(), completeOrderRequest.getRecipientName(), completeOrderRequest.getRecipientZonecode(), completeOrderRequest.getRecipientAddress(), completeOrderRequest.getRecipientAddressDetail(), completeOrderRequest.getRecipientTel(), now, now);
+    }
 }

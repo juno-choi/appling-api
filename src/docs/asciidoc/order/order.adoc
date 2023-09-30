@@ -43,3 +43,27 @@ include::{snippets}/order-controller-docs/get-temp-order/http-response.adoc[]
 ==== 🟢 RESPONSE FIELD
 
 include::{snippets}/order-controller-docs/get-temp-order/response-fields.adoc[]
+
+
+### 📗 주문 완료
+
+==== 🔵 REQUEST
+include::{snippets}/order-controller-docs/complete/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/order-controller-docs/complete/request-headers.adoc[]
+
+==== 🔵 REQUEST FIELD
+
+include::{snippets}/order-controller-docs/complete/request-body.adoc[]
+
+include::{snippets}/order-controller-docs/complete/request-fields.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/order-controller-docs/complete/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/order-controller-docs/complete/response-fields.adoc[]

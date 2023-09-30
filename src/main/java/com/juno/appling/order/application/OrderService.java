@@ -2,14 +2,13 @@ package com.juno.appling.order.application;
 
 import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.Member;
-import com.juno.appling.order.domain.Order;
-import com.juno.appling.order.domain.OrderItem;
-import com.juno.appling.order.domain.OrderItemRepository;
-import com.juno.appling.order.domain.OrderRepository;
+import com.juno.appling.order.domain.*;
+import com.juno.appling.order.dto.request.CompleteOrderRequest;
 import com.juno.appling.order.dto.request.TempOrderDto;
 import com.juno.appling.order.dto.request.TempOrderRequest;
-import com.juno.appling.order.dto.response.TempOrderResponse;
+import com.juno.appling.order.dto.response.CompleteOrderResponse;
 import com.juno.appling.order.dto.response.PostTempOrderResponse;
+import com.juno.appling.order.dto.response.TempOrderResponse;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.domain.ProductRepository;
@@ -20,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
+    private final DeliveryRepository deliveryRepository;
     private final MemberUtil memberUtil;
 
     @Transactional
@@ -89,6 +91,38 @@ public class OrderService {
         /**
          * order id와 member 정보로 임시 정보를 불러옴
          */
+        Order order = checkOrder(request, orderId);
+
+        return TempOrderResponse.of(order);
+    }
+
+    @Transactional
+    public CompleteOrderResponse completeOrder(CompleteOrderRequest completeOrderRequest, HttpServletRequest request){
+        /**
+         * 주문 정보를 update 해야됨!
+         * 1. 주문 상태 변경
+         * 2. 주문자, 수령자 정보 등록
+         * 3. 주문 번호 만들기
+         */
+        Long orderId = completeOrderRequest.getOrderId();
+        Order order = checkOrder(request, orderId);
+
+        List<OrderItem> orderItemList = order.getOrderItemList();
+        for(OrderItem oi : orderItemList){
+            deliveryRepository.save(Delivery.of(order, oi, completeOrderRequest));
+        }
+
+        order.statusComplete();
+
+        LocalDateTime createdAt = order.getCreatedAt();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String orderNumber = String.format("ORDER-%s-%s", createdAt.format(formatter), orderId);
+        order.orderNumber(orderNumber);
+
+        return new CompleteOrderResponse(orderId, orderNumber);
+    }
+
+    private Order checkOrder(HttpServletRequest request, Long orderId) {
         Member member = memberUtil.getMember(request);
         Order order = orderRepository.findById(orderId).orElseThrow(() ->
                 new IllegalArgumentException("유효하지 않은 주문 번호입니다.")
@@ -103,6 +137,6 @@ public class OrderService {
             throw new IllegalArgumentException("유효하지 않은 주문입니다.");
         }
 
-        return TempOrderResponse.of(order);
+        return order;
     }
 }

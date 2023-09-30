@@ -12,6 +12,7 @@ import com.juno.appling.order.domain.Order;
 import com.juno.appling.order.domain.OrderItem;
 import com.juno.appling.order.domain.OrderItemRepository;
 import com.juno.appling.order.domain.OrderRepository;
+import com.juno.appling.order.dto.request.CompleteOrderRequest;
 import com.juno.appling.order.dto.request.TempOrderDto;
 import com.juno.appling.order.dto.request.TempOrderRequest;
 import com.juno.appling.product.domain.Category;
@@ -36,8 +37,7 @@ import java.util.List;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -207,4 +207,67 @@ class OrderControllerDocs extends ControllerBaseTest {
                 )
         ));
     }
+
+    @Test
+    @DisplayName(PREFIX + "/complete (PATCH)")
+    void complete() throws Exception {
+        //given
+        LoginRequest loginRequest = new LoginRequest(MEMBER_EMAIL, "password");
+        LoginResponse login = memberAuthService.login(loginRequest);
+        Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
+
+        Order order = orderRepository.save(Order.of(member, "테스트 상품"));
+        Long orderId = order.getId();
+
+        Member sellerMember = memberRepository.findByEmail(SELLER_EMAIL).get();
+        Category category = categoryRepository.findById(1L).get();
+
+        ProductRequest searchDto1 = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+                8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
+                "https://image3", "normal");
+        ProductRequest searchDto2 = new ProductRequest(1L, "검색 제목2", "메인 설명", "상품 메인 설명", "상품 서브 설명", 15000,
+                10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
+                "https://image3", "normal");
+        Seller seller = sellerRepository.findByMember(sellerMember).get();
+        Product saveProduct1 = productRepository.save(Product.of(seller, category, searchDto1));
+        Product saveProduct2 = productRepository.save(Product.of(seller, category, searchDto2));
+
+        orderItemRepository.save(OrderItem.of(order, saveProduct1, 3));
+        orderItemRepository.save(OrderItem.of(order, saveProduct2, 5));
+
+        CompleteOrderRequest completeOrderRequest = new CompleteOrderRequest(orderId, "주문자", "주문자 우편번호", "주문자 주소", "주문자 상세 주소", "주문자 연락처", "수령인", "수령인 우편번호", "수령인 주소", "수령인 상세 주소", "수령인 연락처");
+        //when
+        ResultActions perform = mock.perform(
+                patch(PREFIX + "/complete")
+                        .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(completeOrderRequest))
+        );
+        //then
+        perform.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token (MEMBER 권한 이상)")
+                ),
+                requestFields(
+                        fieldWithPath("order_id").description("주문 id"),
+                        fieldWithPath("owner_name").description("주문자"),
+                        fieldWithPath("owner_zonecode").description("주문자 우편번호"),
+                        fieldWithPath("owner_address").description("주문자 주소"),
+                        fieldWithPath("owner_address_detail").description("주문자 상세 주소"),
+                        fieldWithPath("owner_tel").description("주문자 연락처"),
+                        fieldWithPath("recipient_name").description("수령인"),
+                        fieldWithPath("recipient_zonecode").description("수령인 우편번호"),
+                        fieldWithPath("recipient_address").description("수령인 주소"),
+                        fieldWithPath("recipient_address_detail").description("수령인 상세 주소"),
+                        fieldWithPath("recipient_tel").description("수령인 연락처")
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.order_id").type(JsonFieldType.NUMBER).description("주문 id"),
+                        fieldWithPath("data.order_number").type(JsonFieldType.STRING).description("주문 번호")
+                )
+        ));
+    }
+
 }
