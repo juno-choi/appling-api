@@ -1,5 +1,6 @@
 package com.juno.appling.order.domain;
 
+import com.juno.appling.order.dto.request.CompleteOrderRequest;
 import com.juno.appling.order.enums.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,10 @@ public class Delivery {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_item_id")
+    private OrderItem orderItem;
+
     private DeliveryStatus status;
 
     private String ownerName;
@@ -41,4 +46,8 @@ public class Delivery {
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    public static Delivery of(Order order, OrderItem oi, CompleteOrderRequest completeOrderRequest) {
+        return null;
+    }
 }
