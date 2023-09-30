@@ -47,7 +47,26 @@ public class Delivery {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
+    private Delivery(Order order, OrderItem orderItem, DeliveryStatus status, String ownerName, String ownerZonecode, String ownerAddress, String ownerAddressDetail, String ownerTel, String recipientName, String recipientZonecode, String recipientAddress, String recipientAddressDetail, String recipientTel, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        this.order = order;
+        this.orderItem = orderItem;
+        this.status = status;
+        this.ownerName = ownerName;
+        this.ownerZonecode = ownerZonecode;
+        this.ownerAddress = ownerAddress;
+        this.ownerAddressDetail = ownerAddressDetail;
+        this.ownerTel = ownerTel;
+        this.recipientName = recipientName;
+        this.recipientZonecode = recipientZonecode;
+        this.recipientAddress = recipientAddress;
+        this.recipientAddressDetail = recipientAddressDetail;
+        this.recipientTel = recipientTel;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+    }
+
     public static Delivery of(Order order, OrderItem oi, CompleteOrderRequest completeOrderRequest) {
-        return null;
+        LocalDateTime now = LocalDateTime.now();
+        return new Delivery(order, oi, DeliveryStatus.TEMP, completeOrderRequest.getOwnerName(), completeOrderRequest.getOwnerZonecode(), completeOrderRequest.getOwnerAddress(), completeOrderRequest.getOwnerAddressDetail(), completeOrderRequest.getOwnerTel(), completeOrderRequest.getRecipientName(), completeOrderRequest.getRecipientZonecode(), completeOrderRequest.getRecipientAddress(), completeOrderRequest.getRecipientAddressDetail(), completeOrderRequest.getRecipientTel(), now, now);
     }
 }

@@ -3,7 +3,9 @@ package com.juno.appling.order.presentation;
 import com.juno.appling.global.base.Api;
 import com.juno.appling.global.base.ResultCode;
 import com.juno.appling.order.application.OrderService;
+import com.juno.appling.order.dto.request.CompleteOrderRequest;
 import com.juno.appling.order.dto.request.TempOrderRequest;
+import com.juno.appling.order.dto.response.CompleteOrderResponse;
 import com.juno.appling.order.dto.response.TempOrderResponse;
 import com.juno.appling.order.dto.response.PostTempOrderResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +23,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<Api<PostTempOrderResponse>> postOrder(@RequestBody @Validated TempOrderRequest tempOrderRequest, HttpServletRequest request, BindingResult bindingResult){
+    public ResponseEntity<Api<PostTempOrderResponse>> postOrder(@RequestBody @Validated TempOrderRequest tempOrderRequest, HttpServletRequest request, BindingResult bindingResult) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
                         Api.<PostTempOrderResponse>builder()
@@ -33,13 +35,22 @@ public class OrderController {
     }
 
     @GetMapping("/temp/{order_id}")
-    public ResponseEntity<Api<TempOrderResponse>> getTempOrder(@PathVariable(name = "order_id") Long orderId, HttpServletRequest request){
+    public ResponseEntity<Api<TempOrderResponse>> getTempOrder(@PathVariable(name = "order_id") Long orderId, HttpServletRequest request) {
         return ResponseEntity.ok(
-                        Api.<TempOrderResponse>builder()
-                                .code(ResultCode.SUCCESS.code)
-                                .message(ResultCode.SUCCESS.message)
-                                .data(orderService.getTempOrder(orderId, request))
-                                .build()
-                );
+                Api.<TempOrderResponse>builder()
+                        .code(ResultCode.SUCCESS.code)
+                        .message(ResultCode.SUCCESS.message)
+                        .data(orderService.getTempOrder(orderId, request))
+                        .build()
+        );
+    }
+
+    @PatchMapping("/complete")
+    public ResponseEntity<Api<CompleteOrderResponse>> completeOrder(@RequestBody @Validated CompleteOrderRequest completeOrderRequest, HttpServletRequest request, BindingResult bindingResult) {
+        return ResponseEntity.ok(Api.<CompleteOrderResponse>builder()
+                .code(ResultCode.SUCCESS.code)
+                .message(ResultCode.SUCCESS.message)
+                .data(orderService.completeOrder(completeOrderRequest, request))
+                .build());
     }
 }
