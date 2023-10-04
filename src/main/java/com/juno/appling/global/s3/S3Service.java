@@ -56,7 +56,7 @@ public class S3Service {
             } catch (IOException ie) {
                 log.error("파일을 읽어들이는데 에러가 발생했습니다.");
                 log.error(ie.getMessage());
-                throw new IllegalStateException(ie.getMessage());
+                throw new IllegalStateException(ie.getMessage(), ie);
             }
 
             if (response.sdkHttpResponse().statusText().orElse("FAIL").equals("OK")) {
@@ -85,7 +85,7 @@ public class S3Service {
         } catch (S3Exception ae) {
             log.error("AWS와 통신에 문제가 발생했습니다.");
             log.error(ae.getMessage());
-            throw new DuringProcessException("AWS와 통신에 문제가 발생했습니다.");
+            throw new DuringProcessException("AWS와 통신에 문제가 발생했습니다.", ae);
         }
     }
 }
