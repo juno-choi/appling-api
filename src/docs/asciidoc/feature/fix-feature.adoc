@@ -3,17 +3,17 @@
 ### 📗 ea 데이터 추가 및 id -> product_id 변경 (2023.10.05)
 
 ```
-ProductControllerDocs. /api/product/{id}
-ProductControllerDocs. /api/product/basket
-ProductControllerDocs. /api/product
-SellerProductControllerDocs. /api/seller/product(GET)
+/api/product/{id}
+/api/product/basket
+/api/product
+/api/seller/product(GET)
 ```
 - 반환 데이터 ea 추가
 - 반환 데이터 id -> product_id로 변경
 
 ```
-SellerProductControllerDocs. /api/seller/product(POST)
-SellerProductControllerDocs. /api/seller/product(PUT)
+/api/seller/product(POST)
+/api/seller/product(PUT)
 ```
 
 - 반환 데이터 ea 추가
