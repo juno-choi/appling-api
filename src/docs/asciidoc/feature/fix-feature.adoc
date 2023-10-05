@@ -1,16 +1,23 @@
 
 == 🍏 수정된 기능
 ### 📗 ea 데이터 추가 및 id -> product_id 변경 (2023.10.05)
-반환 데이터 ea 추가
-반환 데이터 id -> product_id로 변경
+
+```
 ProductControllerDocs. /api/product/{id}
 ProductControllerDocs. /api/product/basket
 ProductControllerDocs. /api/product
 SellerProductControllerDocs. /api/seller/product(GET)
+```
+- 반환 데이터 ea 추가
+- 반환 데이터 id -> product_id로 변경
 
-반환 데이터 ea 추가
-반환 데이터 id -> product_id로 변경
-요청 데이터 ea 추가
-요청 데이터 id -> product_id로 변경 (PUT만!)
+```
 SellerProductControllerDocs. /api/seller/product(POST)
 SellerProductControllerDocs. /api/seller/product(PUT)
+```
+
+- 반환 데이터 ea 추가
+- 반환 데이터 id -> product_id로 변경
+- 요청 데이터 ea 추가
+- 요청 데이터 id -> product_id로 변경 (PUT만!)
+
