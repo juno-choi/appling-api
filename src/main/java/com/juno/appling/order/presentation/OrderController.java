@@ -26,31 +26,21 @@ public class OrderController {
     public ResponseEntity<Api<PostTempOrderResponse>> postOrder(@RequestBody @Validated TempOrderRequest tempOrderRequest, HttpServletRequest request, BindingResult bindingResult) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
-                        Api.<PostTempOrderResponse>builder()
-                                .code(ResultCode.POST.code)
-                                .message(ResultCode.POST.message)
-                                .data(orderService.postTempOrder(tempOrderRequest, request))
-                                .build()
+                    new Api<>(ResultCode.POST.code, ResultCode.POST.message, orderService.postTempOrder(tempOrderRequest, request))
                 );
     }
 
     @GetMapping("/temp/{order_id}")
     public ResponseEntity<Api<TempOrderResponse>> getTempOrder(@PathVariable(name = "order_id") Long orderId, HttpServletRequest request) {
         return ResponseEntity.ok(
-                Api.<TempOrderResponse>builder()
-                        .code(ResultCode.SUCCESS.code)
-                        .message(ResultCode.SUCCESS.message)
-                        .data(orderService.getTempOrder(orderId, request))
-                        .build()
+            new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getTempOrder(orderId, request))
         );
     }
 
     @PatchMapping("/complete")
     public ResponseEntity<Api<CompleteOrderResponse>> completeOrder(@RequestBody @Validated CompleteOrderRequest completeOrderRequest, HttpServletRequest request, BindingResult bindingResult) {
-        return ResponseEntity.ok(Api.<CompleteOrderResponse>builder()
-                .code(ResultCode.SUCCESS.code)
-                .message(ResultCode.SUCCESS.message)
-                .data(orderService.completeOrder(completeOrderRequest, request))
-                .build());
+        return ResponseEntity.ok(
+            new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.completeOrder(completeOrderRequest, request))
+        );
     }
 }

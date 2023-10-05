@@ -31,32 +31,26 @@ public class SellerProductController {
         @RequestParam(required = false, name = "status", defaultValue = "normal") String status,
         @RequestParam(required = false, name = "category_id", defaultValue = "0") Long categoryId,
         HttpServletRequest request) {
-        return ResponseEntity.ok(Api.<ProductListResponse>builder()
-            .code(ResultCode.SUCCESS.code)
-            .message(ResultCode.SUCCESS.message)
-            .data(productService.getProductListBySeller(pageable, search, status, categoryId,
+        return ResponseEntity.ok(
+            new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, productService.getProductListBySeller(pageable, search, status, categoryId,
                 request))
-            .build());
+        );
     }
 
     @PostMapping
     public ResponseEntity<Api<ProductResponse>> postProduct(@RequestBody @Validated ProductRequest productRequest,
                                                             HttpServletRequest request, BindingResult bindingResult) {
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(Api.<ProductResponse>builder()
-                .code(ResultCode.POST.code)
-                .message(ResultCode.POST.message)
-                .data(productService.postProduct(productRequest, request))
-                .build());
+            .body(
+                new Api<>(ResultCode.POST.code, ResultCode.POST.message, productService.postProduct(productRequest, request))
+            );
     }
 
     @PutMapping
     public ResponseEntity<Api<ProductResponse>> putProduct(
             @RequestBody @Validated PutProductRequest putProductRequest, BindingResult bindingResult) {
-        return ResponseEntity.ok(Api.<ProductResponse>builder()
-            .code(ResultCode.SUCCESS.code)
-            .message(ResultCode.SUCCESS.message)
-            .data(productService.putProduct(putProductRequest))
-            .build());
+        return ResponseEntity.ok(
+            new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, productService.putProduct(putProductRequest))
+        );
     }
 }

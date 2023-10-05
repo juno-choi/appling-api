@@ -37,7 +37,7 @@ public class CommonAdvice {
     public ResponseEntity<ProblemDetail> illegalArgumentException(IllegalArgumentException e,
         HttpServletRequest request) {
         List<ErrorDto> errors = new ArrayList<>();
-        errors.add(ErrorDto.builder().point("").detail(e.getMessage()).build());
+        errors.add(new ErrorDto("", e.getMessage()));
 
         ProblemDetail pb = ProblemDetail.forStatusAndDetail(
             HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "입력 값을 확인해주세요.");
@@ -64,10 +64,10 @@ public class CommonAdvice {
                 bindingResult.getFieldError());
             if (fieldErrorOptional.isPresent()) {
                 FieldError fieldError = fieldErrorOptional.get();
-                errors.add(ErrorDto.builder()
-                    .point(Optional.ofNullable(fieldError.getField()).orElse(""))
-                    .detail(Optional.ofNullable(fieldError.getDefaultMessage()).orElse(""))
-                    .build());
+                errors.add(
+                    new ErrorDto(Optional.ofNullable(fieldError.getField()).orElse(""),
+                        Optional.ofNullable(fieldError.getDefaultMessage()).orElse(""))
+                );
             }
         }
 
@@ -85,7 +85,7 @@ public class CommonAdvice {
         HttpMessageNotReadableException e, HttpServletRequest request) {
         List<ErrorDto> errors = new ArrayList<>();
 
-        errors.add(ErrorDto.builder().point("").detail(e.getMessage()).build());
+        errors.add(new ErrorDto("", e.getMessage()));
 
         ProblemDetail pb = ProblemDetail.forStatusAndDetail(
             HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "입력 값을 확인해주세요.");
@@ -102,9 +102,9 @@ public class CommonAdvice {
     public ResponseEntity<ProblemDetail> missingServletRequestParameterException(
         MissingServletRequestParameterException e, HttpServletRequest request) {
         List<ErrorDto> errors = new ArrayList<>();
-        errors.add(ErrorDto.builder().point(e.getParameterName()).detail(
+        errors.add(new ErrorDto(e.getParameterName(),
             String.format("please check parameter : %s (%s)", e.getParameterName(),
-                e.getParameterType())).build());
+                e.getParameterType())));
 
         ProblemDetail pb = ProblemDetail.forStatusAndDetail(
             HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "파라미터 값을 확인해주세요.");
@@ -121,7 +121,7 @@ public class CommonAdvice {
     public ResponseEntity<ProblemDetail> noHandlerFoundException(NoHandlerFoundException e,
         HttpServletRequest request) {
         List<ErrorDto> errors = new ArrayList<>();
-        errors.add(ErrorDto.builder().point("").detail("NOT FOUND").build());
+        errors.add(new ErrorDto("", "NOT FOUND"));
 
         ProblemDetail pb = ProblemDetail.forStatusAndDetail(
             HttpStatusCode.valueOf(HttpStatus.NOT_FOUND.value()), "URL을 찾을 수 없습니다.");
@@ -138,9 +138,8 @@ public class CommonAdvice {
     public ResponseEntity<ProblemDetail> sizeLimitExceededException(SizeLimitExceededException e,
         HttpServletRequest request) {
         List<ErrorDto> errors = new ArrayList<>();
-        errors.add(ErrorDto.builder().point("size limit").detail(
-                String.format("max : %d, your request : %d", e.getPermittedSize(), e.getActualSize()))
-            .build());
+        errors.add(new ErrorDto("size limit",
+            String.format("max : %d, your request : %d", e.getPermittedSize(), e.getActualSize())));
 
         ProblemDetail pb = ProblemDetail.forStatusAndDetail(
             HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "요청하신 파일의 크키가 너무 큽니다.");
@@ -157,9 +156,8 @@ public class CommonAdvice {
     public ResponseEntity<ProblemDetail> fileSizeLimitExceededException(
         FileSizeLimitExceededException e, HttpServletRequest request) {
         List<ErrorDto> errors = new ArrayList<>();
-        errors.add(ErrorDto.builder().point("file size limit").detail(
-                String.format("max : %d, your request : %d", e.getPermittedSize(), e.getActualSize()))
-            .build());
+        errors.add(new ErrorDto("file size limit",
+            String.format("max : %d, your request : %d", e.getPermittedSize(), e.getActualSize())));
 
         ProblemDetail pb = ProblemDetail.forStatusAndDetail(
             HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()), "요청하신 파일의 크키가 너무 큽니다.");
@@ -176,9 +174,7 @@ public class CommonAdvice {
     public ResponseEntity<ProblemDetail> duringProcessException(DuringProcessException e,
         HttpServletRequest request) {
         List<ErrorDto> errors = new ArrayList<>();
-        errors.add(ErrorDto.builder().point("").detail(
-                String.format("%s", e.getMessage()))
-            .build());
+        errors.add(new ErrorDto("", String.format("%s", e.getMessage())));
 
         ProblemDetail pb = ProblemDetail.forStatusAndDetail(
             HttpStatusCode.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),

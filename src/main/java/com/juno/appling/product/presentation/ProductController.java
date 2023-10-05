@@ -33,48 +33,38 @@ public class ProductController {
             @RequestParam(required = false, name = "status", defaultValue = "normal") String status,
             @RequestParam(required = false, name = "category_id", defaultValue = "0") Long categoryId,
             @RequestParam(required = false, name = "seller_id", defaultValue = "0") Long sellerId) {
-        return ResponseEntity.ok(Api.<ProductListResponse>builder()
-                .code(ResultCode.SUCCESS.code)
-                .message(ResultCode.SUCCESS.message)
-                .data(productService.getProductList(pageable, search, status, categoryId, sellerId))
-                .build());
+        return ResponseEntity.ok(
+            new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, productService.getProductList(pageable, search, status, categoryId, sellerId))
+        );
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Api<ProductResponse>> getProduct(@PathVariable(name = "id") Long id) {
-        return ResponseEntity.ok(Api.<ProductResponse>builder()
-                .code(ResultCode.SUCCESS.code)
-                .message(ResultCode.SUCCESS.message)
-                .data(productService.getProduct(id))
-                .build());
+        return ResponseEntity.ok(
+            new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, productService.getProduct(id))
+        );
     }
 
 
     @GetMapping("/category")
     public ResponseEntity<Api<CategoryListResponse>> getCategoryList() {
-        return ResponseEntity.ok(Api.<CategoryListResponse>builder()
-                .code(ResultCode.SUCCESS.code)
-                .message(ResultCode.SUCCESS.message)
-                .data(productService.getCategoryList())
-                .build());
+        return ResponseEntity.ok(
+            new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, productService.getCategoryList())
+        );
     }
 
     @PatchMapping("/cnt")
     public ResponseEntity<Api<MessageVo>> addViewCnt(
             @RequestBody @Validated AddViewCntRequest addViewCntRequest, BindingResult bindingResult) {
-        return ResponseEntity.ok(Api.<MessageVo>builder()
-                .code(ResultCode.SUCCESS.code)
-                .message(ResultCode.SUCCESS.message)
-                .data(productService.addViewCnt(addViewCntRequest))
-                .build());
+        return ResponseEntity.ok(
+            new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, productService.addViewCnt(addViewCntRequest))
+        );
     }
 
     @GetMapping("/basket")
     public ResponseEntity<Api<ProductBasketListResponse>> getProductBasket(@RequestParam(name = "product_id") List<Long> productIdList) {
-        return ResponseEntity.ok(Api.<ProductBasketListResponse>builder()
-                .code(ResultCode.SUCCESS.code)
-                .message(ResultCode.SUCCESS.message)
-                .data(productService.getProductBasket(productIdList))
-                .build());
+        return ResponseEntity.ok(
+            new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, productService.getProductBasket(productIdList))
+        );
     }
 }

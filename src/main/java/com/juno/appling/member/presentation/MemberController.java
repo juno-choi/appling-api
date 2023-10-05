@@ -36,22 +36,14 @@ public class MemberController {
     @GetMapping("")
     public ResponseEntity<Api<MemberResponse>> member(HttpServletRequest request) {
         return ResponseEntity.ok(
-            Api.<MemberResponse>builder()
-                .code(SUCCESS.code)
-                .message(SUCCESS.message)
-                .data(memberService.member(request))
-                .build()
+            new Api<>(SUCCESS.code, SUCCESS.message, memberService.member(request))
         );
     }
 
     @GetMapping("/seller")
     public ResponseEntity<Api<SellerResponse>> getSeller(HttpServletRequest request) {
         return ResponseEntity.ok(
-            Api.<SellerResponse>builder()
-                .code(SUCCESS.code)
-                .message(SUCCESS.message)
-                .data(memberService.getSeller(request))
-                .build()
+            new Api<>(SUCCESS.code, SUCCESS.message, memberService.getSeller(request))
         );
     }
 
@@ -60,11 +52,7 @@ public class MemberController {
             @RequestBody @Validated PostSellerRequest postSellerRequest, HttpServletRequest request,
             BindingResult bindingResult) {
         return ResponseEntity.ok(
-            Api.<MessageVo>builder()
-                .code(POST.code)
-                .message(POST.message)
-                .data(memberService.postSeller(postSellerRequest, request))
-                .build()
+            new Api<>(POST.code, POST.message, memberService.postSeller(postSellerRequest, request))
         );
     }
 
@@ -73,11 +61,7 @@ public class MemberController {
             @RequestBody @Validated PutSellerRequest putSellerRequest, HttpServletRequest request,
             BindingResult bindingResult) {
         return ResponseEntity.ok(
-            Api.<MessageVo>builder()
-                .code(SUCCESS.code)
-                .message(SUCCESS.message)
-                .data(memberService.putSeller(putSellerRequest, request))
-                .build()
+            new Api<>(SUCCESS.code, SUCCESS.message, memberService.putSeller(putSellerRequest, request))
         );
     }
 
@@ -86,11 +70,7 @@ public class MemberController {
             @RequestBody @Validated PatchMemberRequest patchMemberRequest, HttpServletRequest request,
             BindingResult bindingResult) {
         return ResponseEntity.ok(
-            Api.<MessageVo>builder()
-                .code(SUCCESS.code)
-                .message(SUCCESS.message)
-                .data(memberService.patchMember(patchMemberRequest, request))
-                .build()
+            new Api<>(SUCCESS.code, SUCCESS.message, memberService.patchMember(patchMemberRequest, request))
         );
     }
 
@@ -99,21 +79,15 @@ public class MemberController {
             @RequestBody @Validated PostRecipientRequest postRecipientRequestInfo, HttpServletRequest request,
             BindingResult bindingResult) {
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(Api.<MessageVo>builder()
-                .code(POST.code)
-                .message(POST.message)
-                .data(memberService.postRecipient(postRecipientRequestInfo, request))
-                .build()
+            .body(
+                new Api<>(POST.code, POST.message, memberService.postRecipient(postRecipientRequestInfo, request))
             );
     }
 
     @GetMapping("/recipient")
     public ResponseEntity<Api<RecipientListResponse>> getRecipientList(HttpServletRequest request) {
-        return ResponseEntity.ok(Api.<RecipientListResponse>builder()
-            .code(SUCCESS.code)
-            .message(SUCCESS.message)
-            .data(memberService.getRecipient(request))
-            .build()
+        return ResponseEntity.ok(
+            new Api<>(SUCCESS.code, SUCCESS.message, memberService.getRecipient(request))
         );
     }
 
@@ -121,11 +95,8 @@ public class MemberController {
     public ResponseEntity<Api<MessageVo>> postIntroduce(
             @RequestBody @Validated PostIntroduceRequest postIntroduceRequest, HttpServletRequest request,
             BindingResult bindingResult) {
-        return ResponseEntity.ok(Api.<MessageVo>builder()
-            .code(SUCCESS.code)
-            .message(SUCCESS.message)
-            .data(memberService.postIntroduce(postIntroduceRequest, request))
-            .build()
+        return ResponseEntity.ok(
+            new Api<>(SUCCESS.code, SUCCESS.message, memberService.postIntroduce(postIntroduceRequest, request))
         );
     }
 

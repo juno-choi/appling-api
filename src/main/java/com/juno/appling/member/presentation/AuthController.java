@@ -26,22 +26,16 @@ public class AuthController {
     @PostMapping("/join")
     public ResponseEntity<Api<JoinResponse>> join(@RequestBody @Validated JoinRequest joinRequest,
                                                   BindingResult bindingResult) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(Api.<JoinResponse>builder()
-            .code(POST.code)
-            .message(POST.message)
-            .data(memberAuthService.join(joinRequest))
-            .build());
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+            new Api<>(POST.code, POST.message, memberAuthService.join(joinRequest))
+        );
     }
 
     @PostMapping("/login")
     public ResponseEntity<Api<LoginResponse>> login(@RequestBody @Validated LoginRequest loginRequest,
                                                     BindingResult bindingResult) {
         return ResponseEntity.ok(
-            Api.<LoginResponse>builder()
-                .code(SUCCESS.code)
-                .message(SUCCESS.message)
-                .data(memberAuthService.login(loginRequest))
-                .build()
+            new Api<>(SUCCESS.code, SUCCESS.message, memberAuthService.login(loginRequest))
         );
     }
 
@@ -49,11 +43,7 @@ public class AuthController {
     public ResponseEntity<Api<LoginResponse>> refresh(
         @PathVariable(value = "refresh_token") String refreshToken) {
         return ResponseEntity.ok(
-            Api.<LoginResponse>builder()
-                .code(SUCCESS.code)
-                .message(SUCCESS.message)
-                .data(memberAuthService.refresh(refreshToken))
-                .build()
+            new Api<>(SUCCESS.code, SUCCESS.message, memberAuthService.refresh(refreshToken))
         );
     }
 }

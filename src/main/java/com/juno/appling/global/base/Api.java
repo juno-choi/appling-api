@@ -2,7 +2,6 @@ package com.juno.appling.global.base;
 
 import lombok.*;
 
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
