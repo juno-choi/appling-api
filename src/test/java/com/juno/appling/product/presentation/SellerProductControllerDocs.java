@@ -59,10 +59,10 @@ class SellerProductControllerDocs extends ControllerBaseTest {
 
         ProductRequest productRequest = new ProductRequest(1L, "다른 유저 상품", "메인 설명", "상품 메인 설명", "상품 서브 설명",
             10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1",
-            "https://image2", "https://image3", "normal");
+            "https://image2", "https://image3", "normal", 10);
         ProductRequest searchDto = new ProductRequest(1L, "셀러 유저 상품", "메인 설명", "상품 메인 설명", "상품 서브 설명",
             10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1",
-            "https://image2", "https://image3", "normal");
+            "https://image2", "https://image3", "normal", 10);
         Category category = categoryRepository.findById(1L).get();
 
         Seller seller = sellerRepository.findByMember(member).get();
@@ -114,7 +114,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
                 fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN)
                     .description("페이지 데이터 존재 여부"),
                 fieldWithPath("data.list[]").type(JsonFieldType.ARRAY).description("등록 상품 list"),
-                fieldWithPath("data.list[].id").type(JsonFieldType.NUMBER).description("등록 상품 id"),
+                fieldWithPath("data.list[].product_id").type(JsonFieldType.NUMBER).description("등록 상품 id"),
                 fieldWithPath("data.list[].main_title").type(JsonFieldType.STRING)
                     .description("메인 타이틀"),
                 fieldWithPath("data.list[].main_explanation").type(JsonFieldType.STRING)
@@ -137,6 +137,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
                 fieldWithPath("data.list[].image2").type(JsonFieldType.STRING).description("이미지2"),
                 fieldWithPath("data.list[].image3").type(JsonFieldType.STRING).description("이미지3"),
                 fieldWithPath("data.list[].view_cnt").type(JsonFieldType.NUMBER).description("조회수"),
+                fieldWithPath("data.list[].ea").type(JsonFieldType.NUMBER).description("재고 수량"),
                 fieldWithPath("data.list[].status").type(JsonFieldType.STRING)
                     .description("상품 상태값 (일반:normal, 숨김:hidden, 삭제:delete / 대소문자 구분 없음)"),
                 fieldWithPath("data.list[].created_at").type(JsonFieldType.STRING)
@@ -177,7 +178,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
         LoginResponse login = memberAuthService.login(loginRequest);
         ProductRequest productRequest = new ProductRequest(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
-            "https://image3", "normal");
+            "https://image3", "normal", 10);
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         // when
         ResultActions perform = mock.perform(
@@ -211,13 +212,14 @@ class SellerProductControllerDocs extends ControllerBaseTest {
                 fieldWithPath("image1").type(JsonFieldType.STRING).description("이미지1").optional(),
                 fieldWithPath("image2").type(JsonFieldType.STRING).description("이미지2").optional(),
                 fieldWithPath("image3").type(JsonFieldType.STRING).description("이미지3").optional(),
+                fieldWithPath("ea").type(JsonFieldType.NUMBER).description("재고 수량").optional(),
                 fieldWithPath("status").type(JsonFieldType.STRING)
                     .description("상품 상태값 (일반:normal, 숨김:hidden, 삭제:delete / 대소문자 구분 없음)")
             ),
             responseFields(
                 fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
                 fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("등록 상품 id"),
+                fieldWithPath("data.product_id").type(JsonFieldType.NUMBER).description("등록 상품 id"),
                 fieldWithPath("data.main_title").type(JsonFieldType.STRING).description("메인 타이틀"),
                 fieldWithPath("data.main_explanation").type(JsonFieldType.STRING)
                     .description("메인 설명"),
@@ -237,6 +239,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
                 fieldWithPath("data.image2").type(JsonFieldType.STRING).description("이미지2"),
                 fieldWithPath("data.image3").type(JsonFieldType.STRING).description("이미지3"),
                 fieldWithPath("data.view_cnt").type(JsonFieldType.NUMBER).description("조회수"),
+                fieldWithPath("data.ea").type(JsonFieldType.NUMBER).description("재고 수량"),
                 fieldWithPath("data.status").type(JsonFieldType.STRING)
                     .description("상품 상태값 (일반:normal, 숨김:hidden, 삭제:delete / 대소문자 구분 없음)"),
                 fieldWithPath("data.created_at").type(JsonFieldType.STRING).description("생성일"),
@@ -278,13 +281,13 @@ class SellerProductControllerDocs extends ControllerBaseTest {
         Category category = categoryRepository.findById(1L).get();
 
         ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
-            8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
+            8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10);
         Seller seller = sellerRepository.findByMember(member).get();
         Product originalProduct = productRepository.save(Product.of(seller, category, productRequest));
         Long productId = originalProduct.getId();
         PutProductRequest putProductRequest = new PutProductRequest(productId, 2L, "수정된 제목", "수정된 설명",
             "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage",
-            "https://image1", "https://image2", "https://image3", "normal");
+            "https://image1", "https://image2", "https://image3", "normal", 10);
 
         // when
         ResultActions perform = mock.perform(
@@ -301,7 +304,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
                 headerWithName(AUTHORIZATION).description("access token (SELLER 권한 유저)")
             ),
             requestFields(
-                fieldWithPath("id").type(JsonFieldType.NUMBER).description("상품 id"),
+                fieldWithPath("product_id").type(JsonFieldType.NUMBER).description("상품 id"),
                 fieldWithPath("category_id").type(JsonFieldType.NUMBER).description("카테고리 id"),
                 fieldWithPath("main_title").type(JsonFieldType.STRING).description("제목"),
                 fieldWithPath("main_explanation").type(JsonFieldType.STRING).description("메인 설명"),
@@ -318,13 +321,14 @@ class SellerProductControllerDocs extends ControllerBaseTest {
                 fieldWithPath("image1").type(JsonFieldType.STRING).description("이미지1").optional(),
                 fieldWithPath("image2").type(JsonFieldType.STRING).description("이미지2").optional(),
                 fieldWithPath("image3").type(JsonFieldType.STRING).description("이미지3").optional(),
+                fieldWithPath("ea").type(JsonFieldType.NUMBER).description("재고 수량").optional(),
                 fieldWithPath("status").type(JsonFieldType.STRING)
                     .description("상품 상태값 (일반:normal, 숨김:hidden, 삭제:delete / 대소문자 구분 없음)")
             ),
             responseFields(
                 fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
                 fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
-                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("등록 상품 id"),
+                fieldWithPath("data.product_id").type(JsonFieldType.NUMBER).description("등록 상품 id"),
                 fieldWithPath("data.main_title").type(JsonFieldType.STRING).description("메인 타이틀"),
                 fieldWithPath("data.main_explanation").type(JsonFieldType.STRING)
                     .description("메인 설명"),
@@ -344,6 +348,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
                 fieldWithPath("data.image2").type(JsonFieldType.STRING).description("이미지2"),
                 fieldWithPath("data.image3").type(JsonFieldType.STRING).description("이미지3"),
                 fieldWithPath("data.view_cnt").type(JsonFieldType.NUMBER).description("조회수"),
+                fieldWithPath("data.ea").type(JsonFieldType.NUMBER).description("재고 수량"),
                 fieldWithPath("data.status").type(JsonFieldType.STRING)
                     .description("상품 상태값 (일반:normal, 숨김:hidden, 삭제:delete / 대소문자 구분 없음)"),
                 fieldWithPath("data.created_at").type(JsonFieldType.STRING).description("생성일"),

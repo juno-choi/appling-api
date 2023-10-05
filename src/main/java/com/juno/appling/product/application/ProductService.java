@@ -82,7 +82,7 @@ public class ProductService {
 
     @Transactional
     public ProductResponse putProduct(PutProductRequest putProductRequest) {
-        Long targetProductId = putProductRequest.getId();
+        Long targetProductId = putProductRequest.getProductId();
 
         Long categoryId = putProductRequest.getCategoryId();
 

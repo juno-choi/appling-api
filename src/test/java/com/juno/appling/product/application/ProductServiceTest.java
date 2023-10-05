@@ -61,13 +61,13 @@ class ProductServiceTest extends BaseTest {
 
         ProductRequest productRequest = new ProductRequest(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
-            "https://image3", "normal");
+            "https://image3", "normal", 10);
 
         //when
         ProductResponse productResponse = productService.postProduct(productRequest, request);
 
         //then
-        Optional<Product> byId = productRepository.findById(productResponse.getId());
+        Optional<Product> byId = productRepository.findById(productResponse.getProductId());
         Product product = byId.get();
         String email = product.getSeller().getEmail();
 
@@ -81,9 +81,9 @@ class ProductServiceTest extends BaseTest {
         Member member = memberRepository.findByEmail("seller@appling.com").get();
         Long categoryId = 1L;
         ProductRequest productRequest = new ProductRequest(categoryId, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
-            10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
+            10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10);
         ProductRequest searchDto = new ProductRequest(categoryId, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
-            10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
+            10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10);
         Category category = categoryRepository.findById(categoryId).get();
 
         Seller seller = sellerRepository.findByMember(member).get();
@@ -119,9 +119,9 @@ class ProductServiceTest extends BaseTest {
         Category category = categoryRepository.findById(categoryId).get();
 
         ProductRequest productRequest = new ProductRequest(categoryId, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
-            10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
+            10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10);
         ProductRequest searchDto = new ProductRequest(categoryId, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
-            10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
+            10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10);
 
         Seller seller = sellerRepository.findByMember(member).get();
         Seller seller2 = sellerRepository.findByMember(member2).get();
@@ -154,7 +154,7 @@ class ProductServiceTest extends BaseTest {
         Category category = categoryRepository.findById(1L).get();
 
         ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
-            8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
+            8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10);
         Seller seller = sellerRepository.findByMember(member).get();
 
         Product originalProduct = productRepository.save(Product.of(seller, category, productRequest));
@@ -163,7 +163,7 @@ class ProductServiceTest extends BaseTest {
         Long categoryId = originalProduct.getCategory().getId();
         PutProductRequest putProductRequest = new PutProductRequest(productId, 2L, "수정된 제목", "수정된 설명",
             "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage",
-            "https://image1", "https://image2", "https://image3", "normal");
+            "https://image1", "https://image2", "https://image3", "normal", 10);
         // when
         productService.putProduct(putProductRequest);
         // then
@@ -178,7 +178,7 @@ class ProductServiceTest extends BaseTest {
         Member member = memberRepository.findByEmail("seller@appling.com").get();
         Category category = categoryRepository.findById(1L).get();
         ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
-            8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal");
+            8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10);
 
         Seller seller = sellerRepository.findByMember(member).get();
 
