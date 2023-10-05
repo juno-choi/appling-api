@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,8 +19,9 @@ import lombok.Setter;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PutProductRequest {
 
-    @NotNull(message = "id 비어있을 수 없습니다.")
-    private Long id;
+    @NotNull(message = "product_id 비어있을 수 없습니다.")
+    @JsonProperty("product_id")
+    private Long productId;
     @NotNull(message = "category_id 비어있을 수 없습니다.")
     @JsonProperty("category_id")
     private Long categoryId;
@@ -55,4 +57,5 @@ public class PutProductRequest {
     private String image3;
     @NotNull(message = "status 비어있을 수 없습니다.")
     private String status;
+    private int ea;
 }

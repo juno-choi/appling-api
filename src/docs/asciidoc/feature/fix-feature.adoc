@@ -1,12 +1,16 @@
 
 == 🍏 수정된 기능
-### 📗 seller 상세 주소(address_detail) 추가된 내역 (23.09.21)
-- /api/member/seller (GET)
-- /api/member/seller (POST)
-- /api/member/seller (PUT)
-- /api/product
-- /api/product/{id}
-- /api/product/basket
-- /api/seller/product(GET)
-- /api/seller/product(POST)
-- /api/seller/product(PUT)
+### 📗 ea 데이터 추가 및 id -> product_id 변경 (2023.10.05)
+반환 데이터 ea 추가
+반환 데이터 id -> product_id로 변경
+ProductControllerDocs. /api/product/{id}
+ProductControllerDocs. /api/product/basket
+ProductControllerDocs. /api/product
+SellerProductControllerDocs. /api/seller/product(GET)
+
+반환 데이터 ea 추가
+반환 데이터 id -> product_id로 변경
+요청 데이터 ea 추가
+요청 데이터 id -> product_id로 변경 (PUT만!)
+SellerProductControllerDocs. /api/seller/product(POST)
+SellerProductControllerDocs. /api/seller/product(PUT)

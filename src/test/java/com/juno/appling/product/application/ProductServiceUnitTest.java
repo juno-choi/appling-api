@@ -65,7 +65,7 @@ class ProductServiceUnitTest {
 
         ProductRequest productRequest = new ProductRequest(1L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
             10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
-            "https://image3", "normal");
+            "https://image3", "normal", 10);
         Category category = new Category();
 
         given(tokenProvider.resolveToken(any())).willReturn("token");
@@ -93,7 +93,7 @@ class ProductServiceUnitTest {
 
         ProductRequest productRequest = new ProductRequest(0L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
             10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
-            "https://image3", "normal");
+            "https://image3", "normal", 10);
         //when
         Throwable throwable = catchThrowable(() -> productService.postProduct(productRequest, request));
 
@@ -120,7 +120,7 @@ class ProductServiceUnitTest {
     void putProductFail1() {
         // given
         PutProductRequest dto = new PutProductRequest(0L, 0L, null, null, null, null, 0, 0, null, null,
-            null, null, null, null, null, "normal");
+            null, null, null, null, null, "normal", 10);
         // when
         Throwable throwable = catchThrowable(() -> productService.putProduct(dto));
         // then
@@ -134,7 +134,7 @@ class ProductServiceUnitTest {
     void putProductFail2() {
         // given
         PutProductRequest dto = new PutProductRequest(0L, 1L, null, null, null, null, 0, 0, null, null,
-            null, null, null, null, null, "normal");
+            null, null, null, null, null, "normal", 10);
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(new Category()));
         given(productRepository.findById(any())).willReturn(Optional.ofNullable(null));
 

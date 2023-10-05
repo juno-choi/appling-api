@@ -82,10 +82,10 @@ class OrderControllerDocs extends ControllerBaseTest {
 
         ProductRequest searchDto1 = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
                 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal");
+                "https://image3", "normal", 10);
         ProductRequest searchDto2 = new ProductRequest(1L, "검색 제목2", "메인 설명", "상품 메인 설명", "상품 서브 설명", 15000,
                 10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal");
+                "https://image3", "normal", 10);
 
         LoginRequest loginRequest = new LoginRequest(MEMBER_EMAIL, "password");
         LoginResponse login = memberAuthService.login(loginRequest);
@@ -142,10 +142,10 @@ class OrderControllerDocs extends ControllerBaseTest {
 
         ProductRequest searchDto1 = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
                 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal");
+                "https://image3", "normal", 10);
         ProductRequest searchDto2 = new ProductRequest(1L, "검색 제목2", "메인 설명", "상품 메인 설명", "상품 서브 설명", 15000,
                 10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal");
+                "https://image3", "normal", 10);
         Seller seller = sellerRepository.findByMember(sellerMember).get();
         Product saveProduct1 = productRepository.save(Product.of(seller, category, searchDto1));
         Product saveProduct2 = productRepository.save(Product.of(seller, category, searchDto2));
@@ -224,10 +224,10 @@ class OrderControllerDocs extends ControllerBaseTest {
 
         ProductRequest searchDto1 = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
                 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal");
+                "https://image3", "normal", 10);
         ProductRequest searchDto2 = new ProductRequest(1L, "검색 제목2", "메인 설명", "상품 메인 설명", "상품 서브 설명", 15000,
                 10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal");
+                "https://image3", "normal", 10);
         Seller seller = sellerRepository.findByMember(sellerMember).get();
         Product saveProduct1 = productRepository.save(Product.of(seller, category, searchDto1));
         Product saveProduct2 = productRepository.save(Product.of(seller, category, searchDto2));

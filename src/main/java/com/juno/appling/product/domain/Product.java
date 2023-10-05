@@ -48,13 +48,14 @@ public class Product {
     private Long viewCnt;
     @Enumerated(EnumType.STRING)
     private Status status;
+    private int ea;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
 
     private Product(Seller seller, Category category, String mainTitle, String mainExplanation,
         String productMainExplanation, String productSubExplanation, int originPrice, int price,
         String purchaseInquiry, String origin, String producer, String mainImage, String image1,
-        String image2, String image3, Status status, LocalDateTime createAt,
+        String image2, String image3, Status status, int ea, LocalDateTime createAt,
         LocalDateTime modifiedAt) {
         this.seller = seller;
         this.category = category;
@@ -73,25 +74,27 @@ public class Product {
         this.image3 = image3;
         this.viewCnt = 0L;
         this.status = status;
+        this.ea = ea;
         this.createAt = createAt;
         this.modifiedAt = modifiedAt;
     }
 
     public static Product of(Seller member, Category category, ProductRequest productRequest) {
         LocalDateTime now = LocalDateTime.now();
-
-        Status status = Status.valueOf(Optional.ofNullable(productRequest.getStatus()).orElse("NORMAL").toUpperCase());
+        int ea = Optional.of(productRequest.getEa()).orElse(0);
+        Status status = Status.valueOf(Optional.of(productRequest.getStatus()).orElse("NORMAL").toUpperCase());
         return new Product(member, category, productRequest.getMainTitle(),
             productRequest.getMainExplanation(), productRequest.getProductMainExplanation(),
             productRequest.getProductSubExplanation(), productRequest.getOriginPrice(),
             productRequest.getPrice(), productRequest.getPurchaseInquiry(), productRequest.getOrigin(),
             productRequest.getProducer(), productRequest.getMainImage(), productRequest.getImage1(),
-            productRequest.getImage2(), productRequest.getImage3(), status, now, now);
+            productRequest.getImage2(), productRequest.getImage3(), status, ea, now, now);
     }
 
     public void put(PutProductRequest putProductRequest) {
         LocalDateTime now = LocalDateTime.now();
         Status status = Status.valueOf(putProductRequest.getStatus().toUpperCase());
+        int ea = Optional.of(putProductRequest.getEa()).orElse(0);
         this.mainTitle = putProductRequest.getMainTitle();
         this.mainExplanation = putProductRequest.getMainExplanation();
         this.productMainExplanation = putProductRequest.getProductMainExplanation();
@@ -107,6 +110,7 @@ public class Product {
         this.image3 = putProductRequest.getImage3();
         this.modifiedAt = now;
         this.status = status;
+        this.ea = ea;
     }
 
     public void putCategory(Category category) {
