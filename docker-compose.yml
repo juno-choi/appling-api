@@ -11,6 +11,8 @@ services:
       - db.url=jdbc:mysql://master/appling
       - db.username=juno
       - db.password=password
+    volumes:
+      - /log:/log
 networks:
   default:
     external:
