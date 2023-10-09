@@ -1,23 +1,22 @@
 
 == 🍏 수정된 기능
-### 📗 ea 데이터 추가 및 id -> product_id 변경 (2023.10.05)
+### 📗 option list 추가
 
 ```
 /api/product/{id}
 /api/product/basket
 /api/product
 /api/seller/product(GET)
-```
-- 반환 데이터 ea 추가
-- 반환 데이터 id -> product_id로 변경
-
-```
-/api/seller/product(POST)
+/api/seller/product(POST/option)
+/api/seller/product(POST/normal)
 /api/seller/product(PUT)
 ```
 
-- 반환 데이터 ea 추가
-- 반환 데이터 id -> product_id로 변경
-- 요청 데이터 ea 추가
-- 요청 데이터 id -> product_id로 변경 (PUT만!)
+- 반환 결과에 option_list 배열, type값 추가
 
+```
+/api/seller/product(POST/option)
+/api/seller/product(POST/normal)
+```
+
+- 등록시 option_list 값과 type값 추가

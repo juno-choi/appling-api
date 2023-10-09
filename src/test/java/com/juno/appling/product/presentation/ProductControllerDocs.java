@@ -6,11 +6,9 @@ import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.domain.MemberRepository;
 import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.domain.SellerRepository;
-import com.juno.appling.product.domain.Category;
-import com.juno.appling.product.domain.CategoryRepository;
-import com.juno.appling.product.domain.Product;
-import com.juno.appling.product.domain.ProductRepository;
+import com.juno.appling.product.domain.*;
 import com.juno.appling.product.dto.request.AddViewCntRequest;
+import com.juno.appling.product.dto.request.OptionRequest;
 import com.juno.appling.product.dto.request.ProductRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +18,10 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
@@ -29,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Transactional(readOnly = true)
 class ProductControllerDocs extends ControllerBaseTest {
 
     @Autowired
@@ -42,32 +45,47 @@ class ProductControllerDocs extends ControllerBaseTest {
     private CategoryRepository categoryRepository;
 
     @Autowired
+    private OptionRepository optionRepository;
+
+    @Autowired
     private SellerRepository sellerRepository;
 
     private final static String PREFIX = "/api/product";
 
     @Test
-    @DisplayName(PREFIX)
+    @DisplayName(PREFIX + "(GET)")
     void getProductList() throws Exception {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
-        ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+        List<OptionRequest> optionRequestList = new ArrayList<>();
+        OptionRequest optionRequest1 = new OptionRequest("option1", 1000, 100);
+        optionRequestList.add(optionRequest1);
+
+        ProductRequest productRequest1 = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
                 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal", 10);
-        ProductRequest searchDto = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+                "https://image3", "normal", 10, optionRequestList, "normal");
+        ProductRequest productRequest2 = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
                 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal", 10);
+                "https://image3", "normal", 10, optionRequestList, "normal");
 
         Seller seller = sellerRepository.findByMember(member).get();
-        productRepository.save(Product.of(seller, category, searchDto));
+        productRepository.save(Product.of(seller, category, productRequest2));
 
         for (int i = 0; i < 25; i++) {
-            productRepository.save(Product.of(seller, category, productRequest));
+            Product product = productRepository.save(Product.of(seller, category, productRequest1));
+            for (int j = 0; j < optionRequestList.size(); j++) {
+                Option option = optionRepository.save(Option.of(product, optionRequestList.get(j)));
+                product.addOptionsList(option);
+            }
         }
 
         for (int i = 0; i < 10; i++) {
-            productRepository.save(Product.of(seller, category, searchDto));
+            Product product = productRepository.save(Product.of(seller, category, productRequest2));
+            for (int j = 0; j < optionRequestList.size(); j++) {
+                Option option = optionRepository.save(Option.of(product, optionRequestList.get(j)));
+                product.addOptionsList(option);
+            }
         }
         //when
         ResultActions perform = mock.perform(
@@ -132,6 +150,22 @@ class ProductControllerDocs extends ControllerBaseTest {
                         fieldWithPath("data.list[].ea").type(JsonFieldType.NUMBER).description("재고 수량"),
                         fieldWithPath("data.list[].status").type(JsonFieldType.STRING)
                                 .description("상품 상태값 (일반:normal, 숨김:hidden, 삭제:delete / 대소문자 구분 없음)"),
+                        fieldWithPath("data.list[].type").type(JsonFieldType.STRING)
+                                .description("상품 type (일반:product, 옵션:option)"),
+                        fieldWithPath("data.list[].option_list").type(JsonFieldType.ARRAY)
+                                .description("상품 option list"),
+                        fieldWithPath("data.list[].option_list[].option_id").type(JsonFieldType.NUMBER)
+                                .description("상품 option id"),
+                        fieldWithPath("data.list[].option_list[].name").type(JsonFieldType.STRING)
+                                .description("상품 option명"),
+                        fieldWithPath("data.list[].option_list[].extra_price").type(JsonFieldType.NUMBER)
+                                .description("상품 option 추가 금액"),
+                        fieldWithPath("data.list[].option_list[].ea").type(JsonFieldType.NUMBER)
+                                .description("상품 option 재고"),
+                        fieldWithPath("data.list[].option_list[].create_at").type(JsonFieldType.STRING)
+                                .description("상품 option 등록일"),
+                        fieldWithPath("data.list[].option_list[].modified_at").type(JsonFieldType.STRING)
+                                .description("상품 option 수정일"),
                         fieldWithPath("data.list[].created_at").type(JsonFieldType.STRING)
                                 .description("등록일"),
                         fieldWithPath("data.list[].modified_at").type(JsonFieldType.STRING)
@@ -168,9 +202,14 @@ class ProductControllerDocs extends ControllerBaseTest {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
+
+        List<OptionRequest> optionRequestList = new ArrayList<>();
+        OptionRequest optionRequest1 = new OptionRequest("option1", 1000, 100);
+        optionRequestList.add(optionRequest1);
+
         ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
                 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal", 10);
+                "https://image3", "normal", 10, optionRequestList, "normal");
         Seller seller = sellerRepository.findByMember(member).get();
         Product product = productRepository.save(Product.of(seller, category, productRequest));
         //when
@@ -211,6 +250,10 @@ class ProductControllerDocs extends ControllerBaseTest {
                         fieldWithPath("data.ea").type(JsonFieldType.NUMBER).description("재고 수량"),
                         fieldWithPath("data.status").type(JsonFieldType.STRING)
                                 .description("상품 상태값 (일반:normal, 숨김:hidden, 삭제:delete / 대소문자 구분 없음)"),
+                        fieldWithPath("data..option_list").type(JsonFieldType.ARRAY)
+                                .description("상품 option list"),
+                        fieldWithPath("data.type").type(JsonFieldType.STRING)
+                                .description("상품 type (일반:product, 옵션:option)"),
                         fieldWithPath("data.seller.seller_id").type(JsonFieldType.NUMBER)
                                 .description("판매자 id"),
                         fieldWithPath("data.seller.email").type(JsonFieldType.STRING)
@@ -269,8 +312,12 @@ class ProductControllerDocs extends ControllerBaseTest {
         //given
         Member member = memberRepository.findByEmail("seller@appling.com").get();
         Category category = categoryRepository.findById(1L).get();
+        List<OptionRequest> optionRequestList = new ArrayList<>();
+        OptionRequest optionRequest1 = new OptionRequest("option1", 1000, 100);
+        optionRequestList.add(optionRequest1);
+
         ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
-                8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10);
+                8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10, optionRequestList, "normal");
 
         Seller seller = sellerRepository.findByMember(member).get();
         Product product = productRepository.save(Product.of(seller, category, productRequest));
@@ -302,12 +349,17 @@ class ProductControllerDocs extends ControllerBaseTest {
         //given
         Member member = memberRepository.findByEmail("seller@appling.com").get();
         Category category = categoryRepository.findById(1L).get();
+
+        List<OptionRequest> optionRequestList = new ArrayList<>();
+        OptionRequest optionRequest1 = new OptionRequest("option1", 1000, 100);
+        optionRequestList.add(optionRequest1);
+
         ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
-                8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image.s3.com", "https://image.s3.com", "https://image.s3.com", "normal", 10);
+                8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image.s3.com", "https://image.s3.com", "https://image.s3.com", "normal", 10, optionRequestList, "normal");
         ProductRequest productRequest2 = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
-                8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image.s3.com", "https://image.s3.com", "https://image.s3.com", "normal", 10);
+                8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image.s3.com", "https://image.s3.com", "https://image.s3.com", "normal", 10, optionRequestList, "normal");
         ProductRequest productRequest3 = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
-                8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image.s3.com", "https://image.s3.com", "https://image.s3.com", "normal", 10);
+                8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image.s3.com", "https://image.s3.com", "https://image.s3.com", "normal", 10, optionRequestList, "normal");
 
         Seller seller = sellerRepository.findByMember(member).get();
         Product product1 = productRepository.save(Product.of(seller, category, productRequest));
@@ -356,6 +408,10 @@ class ProductControllerDocs extends ControllerBaseTest {
                         fieldWithPath("data.basket_list[].ea").type(JsonFieldType.NUMBER).description("재고 수량"),
                         fieldWithPath("data.basket_list[].status").type(JsonFieldType.STRING)
                                 .description("상품 상태값 (일반:normal, 숨김:hidden, 삭제:delete / 대소문자 구분 없음)"),
+                        fieldWithPath("data.basket_list[].type").type(JsonFieldType.STRING)
+                                .description("상품 type (일반:product, 옵션:option)"),
+                        fieldWithPath("data.basket_list[].option_list").type(JsonFieldType.ARRAY)
+                                .description("상품 option list"),
                         fieldWithPath("data.basket_list[].created_at").type(JsonFieldType.STRING)
                                 .description("등록일"),
                         fieldWithPath("data.basket_list[].modified_at").type(JsonFieldType.STRING)

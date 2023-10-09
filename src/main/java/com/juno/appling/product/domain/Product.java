@@ -3,15 +3,18 @@ package com.juno.appling.product.domain;
 import com.juno.appling.member.domain.Seller;
 import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.dto.request.PutProductRequest;
-import com.juno.appling.product.enums.Status;
+import com.juno.appling.product.enums.ProductStatus;
+import com.juno.appling.product.enums.ProductType;
 import jakarta.persistence.*;
-import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Entity
@@ -47,53 +50,52 @@ public class Product {
     private String image3;
     private Long viewCnt;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private ProductStatus status;
     private int ea;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
 
-    private Product(Seller seller, Category category, String mainTitle, String mainExplanation,
-        String productMainExplanation, String productSubExplanation, int originPrice, int price,
-        String purchaseInquiry, String origin, String producer, String mainImage, String image1,
-        String image2, String image3, Status status, int ea, LocalDateTime createAt,
-        LocalDateTime modifiedAt) {
+    @OneToMany(mappedBy = "product")
+    private List<Option> optionList = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private ProductType type;
+
+    private Product(Seller seller, Category category, ProductRequest productRequest) {
+        LocalDateTime now = LocalDateTime.now();
+        Integer ea = Optional.ofNullable(productRequest.getEa()).orElse(0);
+        ProductStatus status = ProductStatus.valueOf(productRequest.getStatus().toUpperCase());
+        ProductType type = ProductType.valueOf(productRequest.getType().toUpperCase());
         this.seller = seller;
         this.category = category;
-        this.mainTitle = mainTitle;
-        this.mainExplanation = mainExplanation;
-        this.productMainExplanation = productMainExplanation;
-        this.productSubExplanation = productSubExplanation;
-        this.originPrice = originPrice;
-        this.price = price;
-        this.purchaseInquiry = purchaseInquiry;
-        this.origin = origin;
-        this.producer = producer;
-        this.mainImage = mainImage;
-        this.image1 = image1;
-        this.image2 = image2;
-        this.image3 = image3;
+        this.mainTitle = productRequest.getMainTitle();
+        this.mainExplanation = productRequest.getMainExplanation();
+        this.productMainExplanation = productRequest.getProductMainExplanation();
+        this.productSubExplanation = productRequest.getProductSubExplanation();
+        this.originPrice = productRequest.getOriginPrice();
+        this.price = productRequest.getPrice();
+        this.purchaseInquiry = productRequest.getPurchaseInquiry();
+        this.origin = productRequest.getOrigin();
+        this.producer = productRequest.getProducer();
+        this.mainImage = productRequest.getMainImage();
+        this.image1 = productRequest.getImage1();
+        this.image2 = productRequest.getImage2();
+        this.image3 = productRequest.getImage3();
         this.viewCnt = 0L;
         this.status = status;
+        this.type = type;
         this.ea = ea;
-        this.createAt = createAt;
-        this.modifiedAt = modifiedAt;
+        this.createAt = now;
+        this.modifiedAt = now;
     }
 
     public static Product of(Seller member, Category category, ProductRequest productRequest) {
-        LocalDateTime now = LocalDateTime.now();
-        int ea = Optional.of(productRequest.getEa()).orElse(0);
-        Status status = Status.valueOf(Optional.of(productRequest.getStatus()).orElse("NORMAL").toUpperCase());
-        return new Product(member, category, productRequest.getMainTitle(),
-            productRequest.getMainExplanation(), productRequest.getProductMainExplanation(),
-            productRequest.getProductSubExplanation(), productRequest.getOriginPrice(),
-            productRequest.getPrice(), productRequest.getPurchaseInquiry(), productRequest.getOrigin(),
-            productRequest.getProducer(), productRequest.getMainImage(), productRequest.getImage1(),
-            productRequest.getImage2(), productRequest.getImage3(), status, ea, now, now);
+        return new Product(member, category, productRequest);
     }
 
     public void put(PutProductRequest putProductRequest) {
         LocalDateTime now = LocalDateTime.now();
-        Status status = Status.valueOf(putProductRequest.getStatus().toUpperCase());
+        ProductStatus productStatus = ProductStatus.valueOf(putProductRequest.getStatus().toUpperCase());
         int ea = Optional.of(putProductRequest.getEa()).orElse(0);
         this.mainTitle = putProductRequest.getMainTitle();
         this.mainExplanation = putProductRequest.getMainExplanation();
@@ -109,7 +111,7 @@ public class Product {
         this.image2 = putProductRequest.getImage2();
         this.image3 = putProductRequest.getImage3();
         this.modifiedAt = now;
-        this.status = status;
+        this.status = productStatus;
         this.ea = ea;
     }
 
@@ -119,5 +121,9 @@ public class Product {
 
     public void addViewCnt() {
         this.viewCnt++;
+    }
+
+    public void addOptionsList(Option option) {
+        this.optionList.add(option);
     }
 }

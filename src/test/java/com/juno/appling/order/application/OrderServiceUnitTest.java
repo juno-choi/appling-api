@@ -14,7 +14,7 @@ import com.juno.appling.order.dto.response.PostTempOrderResponse;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.domain.ProductRepository;
-import com.juno.appling.product.enums.Status;
+import com.juno.appling.product.enums.ProductStatus;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -84,8 +84,8 @@ class OrderServiceUnitTest {
         TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
 
         List<Product> productList = new ArrayList<>();
-        Product product1 = new Product(1L, null, null, null, null, null, null, 0, 0, null, null, null, null, null, null, null, null, Status.NORMAL, 10, null, null);
-        Product product2 = new Product(1L, null, null, null, null, null, null, 0, 0, null, null, null, null, null, null, null, null, Status.HIDDEN, 10, null, null);
+        Product product1 = new Product(1L, null, null, null, null, null, null, 0, 0, null, null, null, null, null, null, null, null, ProductStatus.NORMAL, 10, null, null, null, null);
+        Product product2 = new Product(1L, null, null, null, null, null, null, 0, 0, null, null, null, null, null, null, null, null, ProductStatus.HIDDEN, 10, null, null, null, null);
         productList.add(product1);
         productList.add(product2);
         given(productRepository.findAllById(any())).willReturn(productList);
@@ -110,8 +110,8 @@ class OrderServiceUnitTest {
         TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
 
         List<Product> productList = new ArrayList<>();
-        Product product1 = new Product(1L, null, null, "상품명1", null, null, null, 0, 10000, null, null, null, null, null, null, null, null, Status.NORMAL, 10, null, null);
-        Product product2 = new Product(1L, null, null, "상품명2", null, null, null, 0, 12000, null, null, null, null, null, null, null, null, Status.NORMAL, 10, null, null);
+        Product product1 = new Product(1L, null, null, "상품명1", null, null, null, 0, 10000, null, null, null, null, null, null, null, null, ProductStatus.NORMAL, 10, null, null, null, null);
+        Product product2 = new Product(1L, null, null, "상품명2", null, null, null, 0, 12000, null, null, null, null, null, null, null, null, ProductStatus.NORMAL, 10, null, null, null, null);
         productList.add(product1);
         productList.add(product2);
         given(productRepository.findAllById(any())).willReturn(productList);

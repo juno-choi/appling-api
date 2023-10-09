@@ -1,7 +1,6 @@
 package com.juno.appling.product.enums;
 
-public enum Status {
+public enum ProductType {
     NORMAL,
-    HIDDEN,
-    DELETE,
+    OPTION,
 }
