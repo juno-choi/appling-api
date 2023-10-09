@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.juno.appling.product.domain.Product;
-import com.juno.appling.product.enums.Status;
+import com.juno.appling.product.enums.ProductStatus;
+import com.juno.appling.product.enums.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -31,12 +33,14 @@ public class ProductResponse {
     private String image2;
     private String image3;
     private Long viewCnt;
-    private Status status;
+    private ProductStatus status;
+    private ProductType type;
     private int ea;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private SellerResponse seller;
     private CategoryResponse category;
+    private List<OptionVo> optionList;
 
     public ProductResponse(Product product) {
         this(
@@ -56,6 +60,7 @@ public class ProductResponse {
             product.getImage3(),
             product.getViewCnt(),
             product.getStatus(),
+            product.getType(),
             product.getEa(),
             product.getCreateAt(),
             product.getModifiedAt(),
@@ -63,7 +68,8 @@ public class ProductResponse {
                 product.getSeller().getCompany(), product.getSeller().getZonecode(),
                 product.getSeller().getAddress(), product.getSeller().getAddressDetail(), product.getSeller().getTel()),
             new CategoryResponse(product.getCategory().getId(), product.getCategory().getName(),
-                product.getCategory().getCreatedAt(), product.getCategory().getModifiedAt())
+                product.getCategory().getCreatedAt(), product.getCategory().getModifiedAt()),
+            OptionVo.getVoList(product.getOptionList())
         );
     }
 }

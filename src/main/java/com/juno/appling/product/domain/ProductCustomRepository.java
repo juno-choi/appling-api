@@ -2,7 +2,7 @@ package com.juno.appling.product.domain;
 
 import com.juno.appling.global.querydsl.QuerydslConfig;
 import com.juno.appling.product.dto.response.ProductResponse;
-import com.juno.appling.product.enums.Status;
+import com.juno.appling.product.enums.ProductStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +21,10 @@ public class ProductCustomRepository {
     private final QuerydslConfig q;
 
 
-    public Page<ProductResponse> findAllByBasket(Pageable pageable, String search, Status status,
-                                                 Category category, Long memberId) {
+    public Page<ProductResponse> findAll(Pageable pageable, String search, ProductStatus productStatus,
+                                         Category category, Long memberId) {
         QProduct product = QProduct.product;
+        QOption option = QOption.option;
         BooleanBuilder builder = new BooleanBuilder();
 
         search = Optional.ofNullable(search).orElse("").trim();
@@ -39,12 +40,13 @@ public class ProductCustomRepository {
         if (optionalCategory.isPresent()) {
             builder.and(product.category.eq(category));
         }
-        builder.and(product.status.eq(status));
+        builder.and(product.status.eq(productStatus));
 
         List<ProductResponse> content = q.query().select(Projections.constructor(ProductResponse.class,
                 product
             ))
             .from(product)
+            .leftJoin(product.optionList, option)
             .where(builder)
             .orderBy(product.createAt.desc())
             .offset(pageable.getOffset())
@@ -54,7 +56,7 @@ public class ProductCustomRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
-    public List<ProductResponse> findAllByBasket(List<Long> productIdList) {
+    public List<ProductResponse> findAllByIdList(List<Long> productIdList) {
         QProduct product = QProduct.product;
         BooleanBuilder builder = new BooleanBuilder();
 

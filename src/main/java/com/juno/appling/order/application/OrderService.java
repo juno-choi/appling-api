@@ -12,7 +12,7 @@ import com.juno.appling.order.dto.response.TempOrderResponse;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.domain.ProductRepository;
-import com.juno.appling.product.enums.Status;
+import com.juno.appling.product.enums.ProductStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -75,7 +75,7 @@ public class OrderService {
         }
 
         for(Product p : productList){
-            if(p.getStatus() != Status.NORMAL){
+            if(p.getStatus() != ProductStatus.NORMAL){
                 throw new IllegalArgumentException("상품 상태가 유효하지 않습니다.");
             }
 
@@ -96,6 +96,16 @@ public class OrderService {
         return TempOrderResponse.of(order);
     }
 
+    /**
+     * 주문 정보를 update 해야됨!
+     * 1. 주문 상태 변경
+     * 2. 주문자, 수령자 정보 등록
+     * 3. 주문 번호 만들기
+     *
+     * @param  completeOrderRequest   주문 완료 요청 객체
+     * @param  request                HTTP 요청 객체
+     * @return                        완료된 주문 응답 객체
+     */
     @Transactional
     public CompleteOrderResponse completeOrder(CompleteOrderRequest completeOrderRequest, HttpServletRequest request){
         /**
@@ -122,6 +132,16 @@ public class OrderService {
         return new CompleteOrderResponse(orderId, orderNumber);
     }
 
+    /**
+     * Checks the order with the given order ID against the member's ID in the request.
+     *
+     * @param  request   the HttpServletRequest object containing the request information
+     * @param  orderId   the ID of the order to be checked
+     * @return           the Order object if the order is valid
+     * @throws IllegalArgumentException if the order ID is invalid or if the member ID in the request
+     *                                  does not match the member ID in the order or if the order
+     *                                  status is not TEMP
+     */
     private Order checkOrder(HttpServletRequest request, Long orderId) {
         Member member = memberUtil.getMember(request);
         Order order = orderRepository.findById(orderId).orElseThrow(() ->
@@ -139,4 +159,6 @@ public class OrderService {
 
         return order;
     }
+
+
 }

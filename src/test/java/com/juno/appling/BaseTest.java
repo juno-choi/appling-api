@@ -15,7 +15,7 @@ import com.juno.appling.product.domain.ProductRepository;
 import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.enums.CategoryStatus;
 import com.juno.appling.product.domain.CategoryRepository;
-import com.juno.appling.product.enums.Status;
+import com.juno.appling.product.enums.ProductStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.parallel.Execution;
@@ -26,6 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Execution(ExecutionMode.SAME_THREAD)
@@ -125,8 +126,8 @@ public class BaseTest {
          * 상품 등록
          */
         Category category = categoryRepository.findByName(FRUIT_CATEGORY).get();
-        ProductRequest productRequest1 = new ProductRequest(category.getId(), "테스트 상품1", "테스트", "테스트", "테스트 설명", 10000, 9000, "주의 사항", "원산지", "공급자", "이미지", "이미지1", "", "", Status.NORMAL.name(), 10);
-        ProductRequest productRequest2 = new ProductRequest(category.getId(), "테스트 상품2", "테스트", "테스트", "테스트 설명", 10000, 9000, "주의 사항", "원산지", "공급자", "이미지", "이미지1", "", "", Status.NORMAL.name(), 10);
+        ProductRequest productRequest1 = new ProductRequest(category.getId(), "테스트 상품1", "테스트", "테스트", "테스트 설명", 10000, 9000, "주의 사항", "원산지", "공급자", "이미지", "이미지1", "", "", ProductStatus.NORMAL.name(), 10, new ArrayList<>(), "normal");
+        ProductRequest productRequest2 = new ProductRequest(category.getId(), "테스트 상품2", "테스트", "테스트", "테스트 설명", 10000, 9000, "주의 사항", "원산지", "공급자", "이미지", "이미지1", "", "", ProductStatus.NORMAL.name(), 10, new ArrayList<>(), "normal");
         PRODUCT1 = productRepository.save(Product.of(SELLER1, category, productRequest1));
         PRODUCT2 = productRepository.save(Product.of(SELLER2, category, productRequest2));
     }

@@ -19,6 +19,7 @@ import com.juno.appling.product.domain.Category;
 import com.juno.appling.product.domain.CategoryRepository;
 import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.domain.ProductRepository;
+import com.juno.appling.product.dto.request.OptionRequest;
 import com.juno.appling.product.dto.request.ProductRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -80,12 +81,16 @@ class OrderControllerDocs extends ControllerBaseTest {
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
 
+        List<OptionRequest> optionRequestList = new ArrayList<>();
+        OptionRequest optionRequest1 = new OptionRequest("option1", 1000, 100);
+        optionRequestList.add(optionRequest1);
+
         ProductRequest searchDto1 = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
                 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal", 10);
+                "https://image3", "normal", 10, optionRequestList, "normal");
         ProductRequest searchDto2 = new ProductRequest(1L, "검색 제목2", "메인 설명", "상품 메인 설명", "상품 서브 설명", 15000,
                 10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal", 10);
+                "https://image3", "normal", 10, optionRequestList, "normal");
 
         LoginRequest loginRequest = new LoginRequest(MEMBER_EMAIL, "password");
         LoginResponse login = memberAuthService.login(loginRequest);
@@ -140,12 +145,16 @@ class OrderControllerDocs extends ControllerBaseTest {
         Member sellerMember = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
 
+        List<OptionRequest> optionRequestList = new ArrayList<>();
+        OptionRequest optionRequest1 = new OptionRequest("option1", 1000, 100);
+        optionRequestList.add(optionRequest1);
+
         ProductRequest searchDto1 = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
                 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal", 10);
+                "https://image3", "normal", 10, optionRequestList, "normal");
         ProductRequest searchDto2 = new ProductRequest(1L, "검색 제목2", "메인 설명", "상품 메인 설명", "상품 서브 설명", 15000,
                 10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal", 10);
+                "https://image3", "normal", 10, optionRequestList, "normal");
         Seller seller = sellerRepository.findByMember(sellerMember).get();
         Product saveProduct1 = productRepository.save(Product.of(seller, category, searchDto1));
         Product saveProduct2 = productRepository.save(Product.of(seller, category, searchDto2));
@@ -222,12 +231,16 @@ class OrderControllerDocs extends ControllerBaseTest {
         Member sellerMember = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
 
+        List<OptionRequest> optionRequestList = new ArrayList<>();
+        OptionRequest optionRequest1 = new OptionRequest("option1", 1000, 100);
+        optionRequestList.add(optionRequest1);
+
         ProductRequest searchDto1 = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
                 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal", 10);
+                "https://image3", "normal", 10, optionRequestList, "normal");
         ProductRequest searchDto2 = new ProductRequest(1L, "검색 제목2", "메인 설명", "상품 메인 설명", "상품 서브 설명", 15000,
                 10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
-                "https://image3", "normal", 10);
+                "https://image3", "normal", 10, optionRequestList, "normal");
         Seller seller = sellerRepository.findByMember(sellerMember).get();
         Product saveProduct1 = productRepository.save(Product.of(seller, category, searchDto1));
         Product saveProduct2 = productRepository.save(Product.of(seller, category, searchDto2));

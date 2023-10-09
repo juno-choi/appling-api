@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.juno.appling.order.domain.OrderItem;
-import com.juno.appling.product.enums.Status;
+import com.juno.appling.product.enums.ProductStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -32,7 +32,7 @@ public class OrderItemVo {
     private String image2;
     private String image3;
     private Long viewCnt;
-    private Status status;
+    private ProductStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private SellerVo seller;

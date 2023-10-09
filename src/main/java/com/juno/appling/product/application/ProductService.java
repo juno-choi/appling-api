@@ -11,7 +11,8 @@ import com.juno.appling.product.dto.request.AddViewCntRequest;
 import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.dto.request.PutProductRequest;
 import com.juno.appling.product.dto.response.*;
-import com.juno.appling.product.enums.Status;
+import com.juno.appling.product.enums.ProductStatus;
+import com.juno.appling.product.enums.ProductType;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,6 +35,7 @@ public class ProductService {
     private final TokenProvider tokenProvider;
     private final CategoryRepository categoryRepository;
     private final SellerRepository sellerRepository;
+    private final OptionRepository optionRepository;
 
     @Transactional
     public ProductResponse postProduct(ProductRequest productRequest, HttpServletRequest request) {
@@ -41,11 +43,25 @@ public class ProductService {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() ->
             new IllegalArgumentException("유효하지 않은 카테고리입니다.")
         );
+        ProductType type = ProductType.valueOf(productRequest.getType().toUpperCase(Locale.ROOT));
 
         Member member = getMember(request);
         Seller seller = sellerRepository.findByMember(member)
             .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 판매자입니다."));
         Product product = productRepository.save(Product.of(seller, category, productRequest));
+
+
+        if(type == ProductType.NORMAL) {
+            return new ProductResponse(product);
+        }
+
+        List<Option> optionList = new LinkedList<>();
+        for (int i = 0; i < productRequest.getOptionList().size(); i++) {
+            Option option = Option.of(product, productRequest.getOptionList().get(i));
+            optionList.add(option);
+            optionRepository.save(option);
+        }
+
         return new ProductResponse(product);
     }
 
@@ -58,9 +74,9 @@ public class ProductService {
 
     public ProductListResponse getProductList(Pageable pageable, String search, String status,
                                               Long categoryId, Long sellerId) {
-        Status statusOfEnums = Status.valueOf(status.toUpperCase(Locale.ROOT));
+        ProductStatus productStatusOfEnums = ProductStatus.valueOf(status.toUpperCase(Locale.ROOT));
         Category category = categoryRepository.findById(categoryId).orElse(null);
-        Page<ProductResponse> page = productCustomRepository.findAllByBasket(pageable, search, statusOfEnums,
+        Page<ProductResponse> page = productCustomRepository.findAll(pageable, search, productStatusOfEnums,
             category, sellerId);
 
         return new ProductListResponse(page.getTotalPages(), page.getTotalElements(),
@@ -68,7 +84,7 @@ public class ProductService {
     }
 
     public ProductBasketListResponse getProductBasket(List<Long> productIdList) {
-        List<ProductResponse> productList = productCustomRepository.findAllByBasket(productIdList);
+        List<ProductResponse> productList = productCustomRepository.findAllByIdList(productIdList);
         return new ProductBasketListResponse(productList);
     }
 
@@ -103,9 +119,9 @@ public class ProductService {
     public ProductListResponse getProductListBySeller(Pageable pageable, String search, String status,
                                                       Long categoryId, HttpServletRequest request) {
         Long memberId = tokenProvider.getMemberId(request);
-        Status statusOfEnums = Status.valueOf(status.toUpperCase(Locale.ROOT));
+        ProductStatus productStatusOfEnums = ProductStatus.valueOf(status.toUpperCase(Locale.ROOT));
         Category category = categoryRepository.findById(categoryId).orElse(null);
-        Page<ProductResponse> page = productCustomRepository.findAllByBasket(pageable, search, statusOfEnums,
+        Page<ProductResponse> page = productCustomRepository.findAll(pageable, search, productStatusOfEnums,
             category, memberId);
 
         return new ProductListResponse(page.getTotalPages(), page.getTotalElements(),
