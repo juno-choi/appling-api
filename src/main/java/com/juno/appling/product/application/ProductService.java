@@ -15,6 +15,7 @@ import com.juno.appling.product.dto.response.*;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -113,11 +114,14 @@ public class ProductService {
 
         if(product.getType() == ProductType.OPTION) {
             // optionList update
-            for (OptionRequest optionRequest : putProductRequest.getOptionList()) {
-                Option option = optionRepository.findById(optionRequest.getOptionId()).orElseThrow(() ->
-                    new IllegalArgumentException("유효하지 않은 옵션입니다.")
-                );
-                option.put(optionRequest);
+            List<Option> findOptionList = optionRepository.findByProduct(product);
+
+            for (Option option : findOptionList) {
+                for (OptionRequest optionRequest : putProductRequest.getOptionList()) {
+                    if(optionRequest.getOptionId() == option.getId()){
+                        option.put(optionRequest);
+                    }
+                }
             }
         }
 

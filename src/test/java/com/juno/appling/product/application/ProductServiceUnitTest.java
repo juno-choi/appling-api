@@ -205,8 +205,8 @@ class ProductServiceUnitTest {
     }
 
     @Test
-    @DisplayName("수정하려는 옵션 상품의 옵션이 존재하지 않는 경우 실패")
-    void putProductFail3() {
+    @DisplayName("옵션 상품 수정 성공")
+    void putProductSuccess1() {
         // given
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = new OptionRequest(2L, "option2", 1000, 100);
@@ -226,15 +226,15 @@ class ProductServiceUnitTest {
 
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
         given(productRepository.findById(any())).willReturn(Optional.ofNullable(product));
-        given(optionRepository.findById(any())).willReturn(Optional.ofNullable(null));
+        given(optionRepository.findByProduct(any(Product.class))).willReturn(product.getOptionList());
 
         PutProductRequest dto = new PutProductRequest(1L, 1L, null, null, null, null, 0, 0, null, null,
             null, null, null, null, null, "normal", 10, optionRequestList);
 
         // when
+        ProductResponse productResponse = productService.putProduct(dto);
         // then
-        assertThatThrownBy(() -> productService.putProduct(dto)).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("유효하지 않은 옵션");
+        assertThat(productResponse.getOptionList().get(0).getName()).isEqualTo(optionRequestList.get(0).getName());
     }
 
     @Test

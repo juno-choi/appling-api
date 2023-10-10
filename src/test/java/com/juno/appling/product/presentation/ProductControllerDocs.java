@@ -162,7 +162,7 @@ class ProductControllerDocs extends ControllerBaseTest {
                                 .description("상품 option 추가 금액"),
                         fieldWithPath("data.list[].option_list[].ea").type(JsonFieldType.NUMBER)
                                 .description("상품 option 재고"),
-                        fieldWithPath("data.list[].option_list[].create_at").type(JsonFieldType.STRING)
+                        fieldWithPath("data.list[].option_list[].created_at").type(JsonFieldType.STRING)
                                 .description("상품 option 등록일"),
                         fieldWithPath("data.list[].option_list[].modified_at").type(JsonFieldType.STRING)
                                 .description("상품 option 수정일"),

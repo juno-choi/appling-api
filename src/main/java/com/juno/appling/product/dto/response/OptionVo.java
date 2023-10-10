@@ -20,7 +20,7 @@ public class OptionVo {
     private String name;
     private int extraPrice;
     private int ea;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
     public static List<OptionVo> getVoList(List<Option> optionList) {
@@ -36,7 +36,7 @@ public class OptionVo {
         this.name = option.getName();
         this.extraPrice = option.getExtraPrice();
         this.ea = option.getEa();
-        this.createAt = option.getCreatedAt();
+        this.createdAt = option.getCreatedAt();
         this.modifiedAt = option.getModifiedAt();
     }
 }
