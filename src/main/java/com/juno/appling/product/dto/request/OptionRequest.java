@@ -15,6 +15,7 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class OptionRequest {
+    private Long optionId;
     private String name;
     private int extraPrice;
     private int ea;

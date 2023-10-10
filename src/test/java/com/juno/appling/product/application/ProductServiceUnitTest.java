@@ -12,6 +12,8 @@ import com.juno.appling.product.dto.request.OptionRequest;
 import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.dto.request.PutProductRequest;
 import com.juno.appling.product.dto.response.ProductResponse;
+import com.juno.appling.product.enums.ProductStatus;
+import com.juno.appling.product.enums.ProductType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.juno.appling.product.domain.QCategory.category;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -96,7 +100,7 @@ class ProductServiceUnitTest {
         String mainTitle = "메인 제목";
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest("option1", 1000, 100);
+        OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, 100);
         optionRequestList.add(optionRequest1);
 
         ProductRequest productRequest = new ProductRequest(1L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
@@ -175,7 +179,7 @@ class ProductServiceUnitTest {
     void putProductFail1() {
         // given
         PutProductRequest dto = new PutProductRequest(0L, 0L, null, null, null, null, 0, 0, null, null,
-            null, null, null, null, null, "normal", 10);
+            null, null, null, null, null, "normal", 10, null);
         // when
         Throwable throwable = catchThrowable(() -> productService.putProduct(dto));
         // then
@@ -189,7 +193,7 @@ class ProductServiceUnitTest {
     void putProductFail2() {
         // given
         PutProductRequest dto = new PutProductRequest(0L, 1L, null, null, null, null, 0, 0, null, null,
-            null, null, null, null, null, "normal", 10);
+            null, null, null, null, null, "normal", 10, null);
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(new Category()));
         given(productRepository.findById(any())).willReturn(Optional.ofNullable(null));
 
@@ -198,6 +202,39 @@ class ProductServiceUnitTest {
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("유효하지 않은 상품");
+    }
+
+    @Test
+    @DisplayName("수정하려는 옵션 상품의 옵션이 존재하지 않는 경우 실패")
+    void putProductFail3() {
+        // given
+        List<OptionRequest> optionRequestList = new ArrayList<>();
+        OptionRequest optionRequest1 = new OptionRequest(2L, "option2", 1000, 100);
+        optionRequestList.add(optionRequest1);
+        LocalDateTime now = LocalDateTime.now();
+
+        Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030",
+            Role.SELLER, null, null, now, now);
+        Seller seller = Seller.of(member, "회사명", "01012344321", "1234", "회사 주소", "상세 주소", "mail@mail.com");
+        Category category = new Category();
+        Product product = new Product(1L, seller, category, "메인 제목", "메인 설명", "상품 메인 설명",
+            "상품 서브 설명 ", 10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1",
+            "https://image2", "https://image3", 0L, ProductStatus.NORMAL, 100, now, now, new ArrayList<>(),
+            ProductType.OPTION);
+        Option option = new Option(1L, optionRequest1.getName(), optionRequest1.getExtraPrice(), optionRequest1.getEa(), now, now, product);
+        product.addOptionsList(option);
+
+        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
+        given(productRepository.findById(any())).willReturn(Optional.ofNullable(product));
+        given(optionRepository.findById(any())).willReturn(Optional.ofNullable(null));
+
+        PutProductRequest dto = new PutProductRequest(1L, 1L, null, null, null, null, 0, 0, null, null,
+            null, null, null, null, null, "normal", 10, optionRequestList);
+
+        // when
+        // then
+        assertThatThrownBy(() -> productService.putProduct(dto)).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효하지 않은 옵션");
     }
 
     @Test

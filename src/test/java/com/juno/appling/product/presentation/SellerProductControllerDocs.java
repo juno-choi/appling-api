@@ -62,7 +62,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
         Member member2 = memberRepository.findByEmail(SELLER2_EMAIL).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest("option1", 1000, 100);
+        OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, 100);
         optionRequestList.add(optionRequest1);
 
         ProductRequest productRequest = new ProductRequest(1L, "다른 유저 상품", "메인 설명", "상품 메인 설명", "상품 서브 설명",
@@ -296,7 +296,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
         LoginResponse login = memberAuthService.login(loginRequest);
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest("option1", 1000, 100);
+        OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, 100);
         optionRequestList.add(optionRequest1);
 
         ProductRequest productRequest = new ProductRequest(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
@@ -413,7 +413,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
         Category category = categoryRepository.findById(1L).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest("option1", 1000, 100);
+        OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, 100);
         optionRequestList.add(optionRequest1);
 
         ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
@@ -423,7 +423,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
         Long productId = originalProduct.getId();
         PutProductRequest putProductRequest = new PutProductRequest(productId, 2L, "수정된 제목", "수정된 설명",
             "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage",
-            "https://image1", "https://image2", "https://image3", "normal", 10);
+            "https://image1", "https://image2", "https://image3", "normal", 10, null);
 
         // when
         ResultActions perform = mock.perform(
