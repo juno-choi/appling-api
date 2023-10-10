@@ -82,7 +82,7 @@ class OrderControllerDocs extends ControllerBaseTest {
         Category category = categoryRepository.findById(1L).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest("option1", 1000, 100);
+        OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, 100);
         optionRequestList.add(optionRequest1);
 
         ProductRequest searchDto1 = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
@@ -146,7 +146,7 @@ class OrderControllerDocs extends ControllerBaseTest {
         Category category = categoryRepository.findById(1L).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest("option1", 1000, 100);
+        OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, 100);
         optionRequestList.add(optionRequest1);
 
         ProductRequest searchDto1 = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
@@ -232,7 +232,7 @@ class OrderControllerDocs extends ControllerBaseTest {
         Category category = categoryRepository.findById(1L).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest("option1", 1000, 100);
+        OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, 100);
         optionRequestList.add(optionRequest1);
 
         ProductRequest searchDto1 = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,

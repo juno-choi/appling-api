@@ -8,12 +8,14 @@ import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.domain.SellerRepository;
 import com.juno.appling.product.domain.*;
 import com.juno.appling.product.dto.request.AddViewCntRequest;
+import com.juno.appling.product.dto.request.OptionRequest;
 import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.dto.request.PutProductRequest;
 import com.juno.appling.product.dto.response.*;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -109,6 +111,19 @@ public class ProductService {
         Product product = productRepository.findById(targetProductId).orElseThrow(() ->
             new IllegalArgumentException("유효하지 않은 상품입니다.")
         );
+
+        if(product.getType() == ProductType.OPTION) {
+            // optionList update
+            List<Option> findOptionList = optionRepository.findByProduct(product);
+
+            for (Option option : findOptionList) {
+                for (OptionRequest optionRequest : putProductRequest.getOptionList()) {
+                    if(optionRequest.getOptionId() == option.getId()){
+                        option.put(optionRequest);
+                    }
+                }
+            }
+        }
 
         product.put(putProductRequest);
         product.putCategory(category);

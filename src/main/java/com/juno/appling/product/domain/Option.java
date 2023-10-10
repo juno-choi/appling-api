@@ -44,4 +44,11 @@ public class Option {
         Option option = new Option(optionRequest.getName(), optionRequest.getExtraPrice(), optionRequest.getEa(), product);
         return option;
     }
+
+    public void put(OptionRequest optionRequest) {
+        this.name = optionRequest.getName();
+        this.extraPrice = optionRequest.getExtraPrice();
+        this.ea = optionRequest.getEa();
+        this.modifiedAt = LocalDateTime.now();
+    }
 }
