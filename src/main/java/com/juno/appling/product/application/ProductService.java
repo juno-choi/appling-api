@@ -121,7 +121,7 @@ public class ProductService {
                 for (OptionRequest optionRequest : putProductRequest.getOptionList()) {
                     Long requestOptionId = Optional.ofNullable(optionRequest.getOptionId()).orElse(0L);
                     Long optionId = Optional.ofNullable(option.getId()).orElse(0L);
-                    if(requestOptionId == optionId){
+                    if(requestOptionId.equals(optionId)){
                         option.put(optionRequest);
                     } else {
                         Option saveOption = optionRepository.save(Option.of(product, optionRequest));
