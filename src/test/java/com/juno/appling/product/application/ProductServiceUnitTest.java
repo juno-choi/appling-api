@@ -209,8 +209,10 @@ class ProductServiceUnitTest {
     void putProductSuccess1() {
         // given
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest(2L, "option2", 1000, 100);
+        OptionRequest optionRequest1 = new OptionRequest(1L, "option2", 1000, 100);
+        OptionRequest optionRequest2 = new OptionRequest(null, "option2", 1000, 100);
         optionRequestList.add(optionRequest1);
+        optionRequestList.add(optionRequest2);
         LocalDateTime now = LocalDateTime.now();
 
         Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030",
@@ -223,10 +225,12 @@ class ProductServiceUnitTest {
             ProductType.OPTION);
         Option option = new Option(1L, optionRequest1.getName(), optionRequest1.getExtraPrice(), optionRequest1.getEa(), now, now, product);
         product.addOptionsList(option);
+        Option saveOption = new Option(2L, optionRequest1.getName(), optionRequest1.getExtraPrice(), optionRequest1.getEa(), now, now, product);
 
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
         given(productRepository.findById(any())).willReturn(Optional.ofNullable(product));
         given(optionRepository.findByProduct(any(Product.class))).willReturn(product.getOptionList());
+        given(optionRepository.save(any())).willReturn(saveOption);
 
         PutProductRequest dto = new PutProductRequest(1L, 1L, null, null, null, null, 0, 0, null, null,
             null, null, null, null, null, "normal", 10, optionRequestList);
@@ -249,15 +253,4 @@ class ProductServiceUnitTest {
             .hasMessageContaining("유효하지 않은 상품");
     }
 
-    @Test
-    @DisplayName("")
-    void getProductBasketFail1() {
-        // given
-        List<Long> productIdList = new ArrayList<>();
-        productIdList.add(1L);
-        productIdList.add(2L);
-        // when
-        productService.getProductBasket(productIdList);
-        // then
-    }
 }

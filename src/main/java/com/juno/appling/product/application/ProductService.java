@@ -115,11 +115,17 @@ public class ProductService {
         if(product.getType() == ProductType.OPTION) {
             // optionList update
             List<Option> findOptionList = optionRepository.findByProduct(product);
-
-            for (Option option : findOptionList) {
+            int findOptionListSize = findOptionList.size();
+            for (int i=0; i<findOptionListSize; i++) {
+                Option option = findOptionList.get(i);
                 for (OptionRequest optionRequest : putProductRequest.getOptionList()) {
-                    if(optionRequest.getOptionId() == option.getId()){
+                    Long requestOptionId = Optional.ofNullable(optionRequest.getOptionId()).orElse(0L);
+                    Long optionId = Optional.ofNullable(option.getId()).orElse(0L);
+                    if(requestOptionId == optionId){
                         option.put(optionRequest);
+                    } else {
+                        Option saveOption = optionRepository.save(Option.of(product, optionRequest));
+                        product.addOptionsList(saveOption);
                     }
                 }
             }
