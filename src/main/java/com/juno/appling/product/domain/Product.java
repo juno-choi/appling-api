@@ -1,6 +1,7 @@
 package com.juno.appling.product.domain;
 
 import com.juno.appling.member.domain.Seller;
+import com.juno.appling.product.dto.request.OptionRequest;
 import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.dto.request.PutProductRequest;
 import com.juno.appling.product.enums.ProductStatus;
@@ -125,5 +126,10 @@ public class Product {
 
     public void addOptionsList(Option option) {
         this.optionList.add(option);
+    }
+
+
+    public void addAllOptionsList(List<Option> options) {
+        this.optionList.addAll(options);
     }
 }

@@ -2,6 +2,8 @@ package com.juno.appling.product.domain;
 
 import com.juno.appling.product.dto.request.OptionRequest;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,6 +45,15 @@ public class Option {
     public static Option of(Product product, OptionRequest optionRequest) {
         Option option = new Option(optionRequest.getName(), optionRequest.getExtraPrice(), optionRequest.getEa(), product);
         return option;
+    }
+
+    public static List<Option> ofList(Product product, List<OptionRequest> saveRequestOptionList) {
+        List<Option> optionList = new ArrayList<>();
+        for (OptionRequest optionRequest : saveRequestOptionList) {
+            Option option = Option.of(product, optionRequest);
+            optionList.add(option);
+        }
+        return optionList;
     }
 
     public void put(OptionRequest optionRequest) {
