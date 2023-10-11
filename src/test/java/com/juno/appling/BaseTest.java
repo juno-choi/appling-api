@@ -55,6 +55,7 @@ public class BaseTest {
     protected String VEGETABLE_CATEGORY = "야채";
 
     protected LoginResponse SELLER_LOGIN;
+    protected LoginResponse SELLER2_LOGIN;
 
     protected LoginResponse MEMBER_LOGIN;
 
@@ -147,6 +148,12 @@ public class BaseTest {
          */
         LoginRequest sellerLoginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
         SELLER_LOGIN = memberAuthService.login(sellerLoginRequest);
+
+        LoginRequest sellerLoginRequest2 = new LoginRequest(SELLER2_EMAIL, PASSWORD);
+        SELLER2_LOGIN = memberAuthService.login(sellerLoginRequest2);
+
+        LoginRequest memberLoginRequest = new LoginRequest(MEMBER_EMAIL, PASSWORD);
+        MEMBER_LOGIN = memberAuthService.login(memberLoginRequest);
     }
 
 }
