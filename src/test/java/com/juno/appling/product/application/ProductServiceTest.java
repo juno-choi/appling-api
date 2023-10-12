@@ -54,10 +54,8 @@ class ProductServiceTest extends BaseTest {
     @DisplayName("상품 등록 성공")
     void postProductSuccess() {
         //given
-        LoginRequest loginRequest = new LoginRequest("seller@appling.com", "password");
-        LoginResponse login = memberAuthService.login(loginRequest);
         request.removeHeader(AUTHORIZATION);
-        request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
+        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
 
         ProductRequest productRequest = new ProductRequest(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
@@ -112,8 +110,6 @@ class ProductServiceTest extends BaseTest {
         //given
         Member member = memberRepository.findByEmail("seller@appling.com").get();
         Member member2 = memberRepository.findByEmail("seller2@appling.com").get();
-        LoginRequest loginRequest = new LoginRequest("seller@appling.com", "password");
-        LoginResponse login = memberAuthService.login(loginRequest);
         Long categoryId = 1L;
 
         Category category = categoryRepository.findById(categoryId).get();
@@ -137,7 +133,7 @@ class ProductServiceTest extends BaseTest {
         Pageable pageable = Pageable.ofSize(5);
         pageable = pageable.next();
         request.removeHeader(AUTHORIZATION);
-        request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
+        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
         //when
         ProductListResponse searchList = productService.getProductListBySeller(pageable, "", "normal",
             categoryId, request);
@@ -160,7 +156,6 @@ class ProductServiceTest extends BaseTest {
         Product originalProduct = productRepository.save(Product.of(seller, category, productRequest));
         String originalProductMainTitle = originalProduct.getMainTitle();
         Long productId = originalProduct.getId();
-        Long categoryId = originalProduct.getCategory().getId();
         PutProductRequest putProductRequest = new PutProductRequest(productId, 2L, "수정된 제목", "수정된 설명",
             "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage",
             "https://image1", "https://image2", "https://image3", "normal", 10, null);
@@ -181,7 +176,6 @@ class ProductServiceTest extends BaseTest {
             8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10, null, "normal");
 
         Seller seller = sellerRepository.findByMember(member).get();
-
         Product product = productRepository.save(Product.of(seller, category, productRequest));
         //when
         MessageVo messageVo = productService.addViewCnt(new AddViewCntRequest(product.getId()));
