@@ -18,6 +18,7 @@ import com.juno.appling.product.dto.response.ProductListResponse;
 import com.juno.appling.product.dto.response.ProductResponse;
 import com.juno.appling.product.domain.CategoryRepository;
 import com.juno.appling.product.domain.ProductRepository;
+import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,7 +159,7 @@ class ProductServiceTest extends BaseTest {
         Long productId = originalProduct.getId();
         PutProductRequest putProductRequest = new PutProductRequest(productId, 2L, "수정된 제목", "수정된 설명",
             "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage",
-            "https://image1", "https://image2", "https://image3", "normal", 10, null);
+            "https://image1", "https://image2", "https://image3", "normal", 10, null, new ArrayList<>());
         // when
         productService.putProduct(putProductRequest);
         // then

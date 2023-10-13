@@ -425,7 +425,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
         Long productId = originalProduct.getId();
         PutProductRequest putProductRequest = new PutProductRequest(productId, 2L, "수정된 제목", "수정된 설명",
             "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage",
-            "https://image1", "https://image2", "https://image3", "normal", 10, null);
+            "https://image1", "https://image2", "https://image3", "normal", 10, null, null);
 
         // when
         ResultActions perform = mock.perform(
@@ -551,7 +551,7 @@ class SellerProductControllerDocs extends ControllerBaseTest {
 
         PutProductRequest putProductRequest = new PutProductRequest(productId, 2L, "수정된 제목", "수정된 설명",
             "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage",
-            "https://image1", "https://image2", "https://image3", "normal", 10, putOptionRequestList);
+            "https://image1", "https://image2", "https://image3", "normal", 10, putOptionRequestList, null);
 
         // when
         ResultActions perform = mock.perform(

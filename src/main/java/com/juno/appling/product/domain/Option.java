@@ -1,6 +1,7 @@
 package com.juno.appling.product.domain;
 
 import com.juno.appling.product.dto.request.OptionRequest;
+import com.juno.appling.product.enums.OptionStatus;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class Option {
     private String name;
     private int extraPrice;
     private int ea;
+    private OptionStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
@@ -39,6 +41,7 @@ public class Option {
         this.ea = ea;
         this.createdAt = now;
         this.modifiedAt = now;
+        this.status = OptionStatus.NORMAL;
         this.product = product;
     }
 
@@ -61,5 +64,9 @@ public class Option {
         this.extraPrice = optionRequest.getExtraPrice();
         this.ea = optionRequest.getEa();
         this.modifiedAt = LocalDateTime.now();
+    }
+
+    public void delete() {
+        this.status = OptionStatus.DELETE;
     }
 }

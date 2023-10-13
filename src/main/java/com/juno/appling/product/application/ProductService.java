@@ -138,6 +138,14 @@ public class ProductService {
                 product.addAllOptionsList(options);
             }
 
+            // 옵션 삭제 상태처리
+            List<Long> deleteOptionList = Optional.ofNullable(putProductRequest.getDeleteOptionIdList()).orElse(new ArrayList<>());
+            if(!deleteOptionList.isEmpty()) {
+                List<Option> findDeleteOptionList = optionRepository.findAllById(deleteOptionList);
+                for(Option o : findDeleteOptionList) {
+                    o.delete();
+                }
+            }
         }
 
         product.put(putProductRequest);
