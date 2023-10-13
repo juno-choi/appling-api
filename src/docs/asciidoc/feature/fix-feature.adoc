@@ -2,21 +2,20 @@
 == 🍏 수정된 기능
 ### 📗 option list 추가
 
-```
-/api/product/{id}
-/api/product/basket
-/api/product
-/api/seller/product(GET)
-/api/seller/product(POST/option)
-/api/seller/product(POST/normal)
-/api/seller/product(PUT)
-```
+1. 반환 결과에 option_list 배열, type값 추가
+- link:#_상품_상세[상품 상세]
+- link:#_상품_검색[상품 검색]
+- link:#_장바구니_불러오기[장바구니 불러오기]
+- link:#_상품_등록_일반[상품등록 (일반)]
+- link:#_상품_등록_옵션[상품등록 (옵션)]
+- link:#_상품_수정_일반[상품수정 (일반)]
+- link:#_상품_수정_옵션[상품수정 (옵션)]
+- link:#_상품_검색_seller_전용[상품 검색 seller 전용]
 
-- 반환 결과에 option_list 배열, type값 추가
+2. 요청시 type 값 추가
+- link:#_상품_등록_일반[상품등록 (일반)]
+- link:#_상품_등록_옵션[상품등록 (옵션)]
 
-```
-/api/seller/product(POST/option)
-/api/seller/product(POST/normal)
-```
-
-- 등록시 option_list 값과 type값 추가
+3. 요청시 option_list 값 추가
+- link:#_상품_등록_옵션[상품등록 (옵션)]
+- link:#_상품_수정_옵션[상품수정 (옵션)]
