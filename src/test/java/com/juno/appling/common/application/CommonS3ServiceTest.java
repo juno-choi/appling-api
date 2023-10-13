@@ -1,5 +1,6 @@
 package com.juno.appling.common.application;
 
+import com.juno.appling.BaseTest;
 import com.juno.appling.common.dto.response.UploadResponse;
 import com.juno.appling.member.dto.request.LoginRequest;
 import com.juno.appling.member.dto.response.LoginResponse;
@@ -24,7 +25,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-class CommonS3ServiceTest {
+class CommonS3ServiceTest extends BaseTest {
 
     @Autowired
     private CommonS3Service commonS3Service;
@@ -40,10 +41,8 @@ class CommonS3ServiceTest {
     @DisplayName("이미 등록 성공")
     void uploadImage() {
         //given
-        LoginRequest loginRequest = new LoginRequest("seller@appling.com", "password");
-        LoginResponse login = memberAuthService.login(loginRequest);
         request.removeHeader(AUTHORIZATION);
-        request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
+        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
         List<MultipartFile> files = new LinkedList<>();
         String fileName1 = "test1.txt";
         String fileName2 = "test2.txt";

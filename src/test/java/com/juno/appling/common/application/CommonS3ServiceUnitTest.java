@@ -7,8 +7,12 @@ import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.enums.Role;
 import com.juno.appling.member.domain.MemberRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -45,24 +49,25 @@ class CommonS3ServiceUnitTest {
     private S3Service s3Service;
 
     private MockHttpServletRequest request = new MockHttpServletRequest();
-
-    @Test
-    @DisplayName("upload image 실패")
-    void uploadImageFail1() {
-        //given
-        List<MultipartFile> files = new LinkedList<>();
-        String fileName1 = "test1.txt";
-        String fileName2 = "test2.txt";
-        String fileName3 = "test3.txt";
-        String s3Url = "https://s3.aws.url";
-
+    private List<MultipartFile> files = new LinkedList<>();
+    private String fileName1 = "test1.txt";
+    private String fileName2 = "test2.txt";
+    private String fileName3 = "test3.txt";
+    private String s3Url = "https://s3.aws.url";
+    @BeforeEach
+    void setUp() {
+        files.clear();
         files.add(new MockMultipartFile("test1", fileName1, StandardCharsets.UTF_8.name(),
             "abcd".getBytes(StandardCharsets.UTF_8)));
         files.add(new MockMultipartFile("test2", fileName2, StandardCharsets.UTF_8.name(),
             "222".getBytes(StandardCharsets.UTF_8)));
         files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(),
             "3".getBytes(StandardCharsets.UTF_8)));
-
+    }
+    @Test
+    @DisplayName("upload image 실패")
+    void uploadImageFail1() {
+        //given
         //when
         Throwable throwable = catchThrowable(
             () -> commonS3Service.s3UploadFile(files, "image/%s/%s/", request));
@@ -76,18 +81,6 @@ class CommonS3ServiceUnitTest {
     @DisplayName("upload image 성공")
     void uploadImageSuccess1() {
         //given
-        List<MultipartFile> files = new LinkedList<>();
-        String fileName1 = "test1.txt";
-        String fileName2 = "test2.txt";
-        String fileName3 = "test3.txt";
-        String s3Url = "https://s3.aws.url";
-
-        files.add(new MockMultipartFile("test1", fileName1, StandardCharsets.UTF_8.name(),
-            "abcd".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test2", fileName2, StandardCharsets.UTF_8.name(),
-            "222".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(),
-            "3".getBytes(StandardCharsets.UTF_8)));
 
         LocalDateTime now = LocalDateTime.now();
         Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030",
@@ -110,19 +103,6 @@ class CommonS3ServiceUnitTest {
     @DisplayName("upload html 실패")
     void uploadHtmlFail1() {
         //given
-        List<MultipartFile> files = new LinkedList<>();
-        String fileName1 = "test1.txt";
-        String fileName2 = "test2.txt";
-        String fileName3 = "test3.txt";
-        String s3Url = "https://s3.aws.url";
-
-        files.add(new MockMultipartFile("test1", fileName1, StandardCharsets.UTF_8.name(),
-            "abcd".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test2", fileName2, StandardCharsets.UTF_8.name(),
-            "222".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(),
-            "3".getBytes(StandardCharsets.UTF_8)));
-
         //when
         Throwable throwable = catchThrowable(
             () -> commonS3Service.s3UploadFile(files, "html/%s/%s/", request));
@@ -136,19 +116,6 @@ class CommonS3ServiceUnitTest {
     @DisplayName("upload html 성공")
     void uploadHtmlSuccess1() {
         //given
-        List<MultipartFile> files = new LinkedList<>();
-        String fileName1 = "test1.txt";
-        String fileName2 = "test2.txt";
-        String fileName3 = "test3.txt";
-        String s3Url = "https://s3.aws.url";
-
-        files.add(new MockMultipartFile("test1", fileName1, StandardCharsets.UTF_8.name(),
-            "abcd".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test2", fileName2, StandardCharsets.UTF_8.name(),
-            "222".getBytes(StandardCharsets.UTF_8)));
-        files.add(new MockMultipartFile("test3", fileName3, StandardCharsets.UTF_8.name(),
-            "3".getBytes(StandardCharsets.UTF_8)));
-
         LocalDateTime now = LocalDateTime.now();
         Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030",
             Role.SELLER, null, null, now, now);

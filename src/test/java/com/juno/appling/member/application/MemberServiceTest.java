@@ -73,8 +73,6 @@ public class MemberServiceTest extends BaseTest {
     @DisplayName("수령인 정보 불러오기 성공")
     void getRecipientList() throws Exception {
         // given
-        LoginRequest loginRequest = new LoginRequest(MEMBER_EMAIL, PASSWORD);
-        LoginResponse login = memberAuthService.login(loginRequest);
         Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
 
         Recipient recipient1 = Recipient.of(member, "수령인1", "1234", "주소", "상세주소", "01012341234",
@@ -87,7 +85,7 @@ public class MemberServiceTest extends BaseTest {
         member.getRecipientList().add(recipient2);
 
         request.removeHeader(AUTHORIZATION);
-        request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
+        request.addHeader(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken());
         // when
         RecipientListResponse recipient = memberService.getRecipient(request);
         // then
@@ -102,11 +100,8 @@ public class MemberServiceTest extends BaseTest {
     @DisplayName("판매자 정보 수정 성공")
     void putSeller() {
         // given
-        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
-        LoginResponse login = memberAuthService.login(loginRequest);
-
         request.removeHeader(AUTHORIZATION);
-        request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
+        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
 
         String changeCompany = "변경 회사명";
         PutSellerRequest putSellerRequest = new PutSellerRequest(changeCompany, "01012341234", "4321", "변경된 주소", "상세 주소",

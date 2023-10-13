@@ -2,12 +2,10 @@ package com.juno.appling.common.presentation;
 
 import com.juno.appling.ControllerBaseTest;
 import com.juno.appling.global.s3.S3Service;
-import com.juno.appling.member.dto.request.LoginRequest;
 import com.juno.appling.member.domain.Introduce;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.enums.IntroduceStatus;
-import com.juno.appling.member.dto.response.LoginResponse;
 import com.juno.appling.member.domain.IntroduceRepository;
 import com.juno.appling.member.domain.MemberRepository;
 import com.juno.appling.member.domain.SellerRepository;
@@ -59,13 +57,10 @@ class CommonControllerDocs extends ControllerBaseTest {
     private S3Service s3Service;
 
     private final String PREFIX = "/api/common";
-
     @Test
     @DisplayName(PREFIX + "/image")
     void uploadImage() throws Exception {
         //given
-        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
-        LoginResponse login = memberAuthService.login(loginRequest);
         List<String> list = new LinkedList<>();
         list.add("image/1/20230606/202101.png");
         given(s3Service.putObject(anyString(), anyString(), any())).willReturn(list);
@@ -76,7 +71,7 @@ class CommonControllerDocs extends ControllerBaseTest {
                 .file(new MockMultipartFile("image", "test1.png",
                     MediaType.APPLICATION_FORM_URLENCODED_VALUE,
                     "123".getBytes(StandardCharsets.UTF_8)))
-                .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                .header(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         );
 
@@ -102,8 +97,6 @@ class CommonControllerDocs extends ControllerBaseTest {
     @DisplayName(PREFIX + "/html")
     void uploadHtml() throws Exception {
         //given
-        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
-        LoginResponse login = memberAuthService.login(loginRequest);
         List<String> list = new LinkedList<>();
         list.add("html/1/20230606/202101.html");
         given(s3Service.putObject(anyString(), anyString(), any())).willReturn(list);
@@ -114,7 +107,7 @@ class CommonControllerDocs extends ControllerBaseTest {
                 .file(new MockMultipartFile("html", "test1.html",
                     MediaType.APPLICATION_FORM_URLENCODED_VALUE,
                     "123".getBytes(StandardCharsets.UTF_8)))
-                .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                .header(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         );
 

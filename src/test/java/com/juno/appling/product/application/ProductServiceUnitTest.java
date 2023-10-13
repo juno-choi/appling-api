@@ -14,6 +14,7 @@ import com.juno.appling.product.dto.request.PutProductRequest;
 import com.juno.appling.product.dto.response.ProductResponse;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -64,11 +65,15 @@ class ProductServiceUnitTest {
 
     private MockHttpServletRequest request = new MockHttpServletRequest();
 
+    @BeforeEach
+    void setUp() {
+        request.addHeader(AUTHORIZATION, "Bearer token");
+    }
+
     @Test
     @DisplayName("상품 등록 성공")
     void postProductSuccess1() {
         //given
-        request.addHeader(AUTHORIZATION, "Bearer token");
         String mainTitle = "메인 제목";
 
         ProductRequest productRequest = new ProductRequest(1L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
@@ -96,7 +101,6 @@ class ProductServiceUnitTest {
     @DisplayName("옵션 상품 등록 성공")
     void postProductSuccess2() {
         //given
-        request.addHeader(AUTHORIZATION, "Bearer token");
         String mainTitle = "메인 제목";
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
@@ -128,7 +132,6 @@ class ProductServiceUnitTest {
     @DisplayName("상품 카테고리가 존재하지 않아 실패")
     void postProductFail1() {
         //given
-        request.addHeader(AUTHORIZATION, "Bearer token");
         String mainTitle = "메인 제목";
 
         ProductRequest productRequest = new ProductRequest(0L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
@@ -147,7 +150,6 @@ class ProductServiceUnitTest {
     @DisplayName("상품 타입이 존재하지 않아 실패")
     void postProductFail2() {
         //given
-        request.addHeader(AUTHORIZATION, "Bearer token");
         String mainTitle = "메인 제목";
 
         ProductRequest productRequest = new ProductRequest(0L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
@@ -225,12 +227,10 @@ class ProductServiceUnitTest {
             ProductType.OPTION);
         Option option = new Option(1L, optionRequest1.getName(), optionRequest1.getExtraPrice(), optionRequest1.getEa(), now, now, product);
         product.addOptionsList(option);
-        Option saveOption = new Option(2L, optionRequest1.getName(), optionRequest1.getExtraPrice(), optionRequest1.getEa(), now, now, product);
 
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
         given(productRepository.findById(any())).willReturn(Optional.ofNullable(product));
         given(optionRepository.findByProduct(any(Product.class))).willReturn(product.getOptionList());
-        given(optionRepository.save(any())).willReturn(saveOption);
 
         PutProductRequest dto = new PutProductRequest(1L, 1L, null, null, null, null, 0, 0, null, null,
             null, null, null, null, null, "normal", 10, optionRequestList);
