@@ -15,8 +15,6 @@ import com.juno.appling.product.dto.response.*;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -136,15 +135,6 @@ public class ProductService {
                 List<Option> options = Option.ofList(product, saveRequestOptionList);
                 optionRepository.saveAll(options);
                 product.addAllOptionsList(options);
-            }
-
-            // 옵션 삭제 상태처리
-            List<Long> deleteOptionList = Optional.ofNullable(putProductRequest.getDeleteOptionIdList()).orElse(new ArrayList<>());
-            if(!deleteOptionList.isEmpty()) {
-                List<Option> findDeleteOptionList = optionRepository.findAllById(deleteOptionList);
-                for(Option o : findDeleteOptionList) {
-                    o.delete();
-                }
             }
         }
 

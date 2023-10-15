@@ -3,14 +3,15 @@ package com.juno.appling.product.domain;
 import com.juno.appling.product.dto.request.OptionRequest;
 import com.juno.appling.product.enums.OptionStatus;
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -64,6 +65,7 @@ public class Option {
         this.extraPrice = optionRequest.getExtraPrice();
         this.ea = optionRequest.getEa();
         this.modifiedAt = LocalDateTime.now();
+        this.status = OptionStatus.valueOf(Optional.ofNullable(optionRequest.getStatus()).orElse("NORMAL").toUpperCase());
     }
 
     public void delete() {

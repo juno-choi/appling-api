@@ -30,9 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.juno.appling.product.domain.QCategory.category;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -105,7 +103,7 @@ class ProductServiceUnitTest {
         String mainTitle = "메인 제목";
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, 100);
+        OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
         optionRequestList.add(optionRequest1);
 
         ProductRequest productRequest = new ProductRequest(1L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
@@ -181,8 +179,7 @@ class ProductServiceUnitTest {
     @DisplayName("수정하려는 상품의 카테고리가 존재하지 않는 경우 실패")
     void putProductFail1() {
         // given
-        PutProductRequest dto = new PutProductRequest(0L, 0L, null, null, null, null, 0, 0, null, null,
-            null, null, null, null, null, "normal", 10, null, null);
+        PutProductRequest dto = new PutProductRequest(0L, 0L, null, null, null, null, 0, 0, null, null, null, null, null, null, null, "normal", 10, null);
         // when
         Throwable throwable = catchThrowable(() -> productService.putProduct(dto));
         // then
@@ -196,7 +193,7 @@ class ProductServiceUnitTest {
     void putProductFail2() {
         // given
         PutProductRequest dto = new PutProductRequest(0L, 1L, null, null, null, null, 0, 0, null, null,
-            null, null, null, null, null, "normal", 10, null, null);
+            null, null, null, null, null, "normal", 10, null);
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(new Category()));
         given(productRepository.findById(any())).willReturn(Optional.ofNullable(null));
 
@@ -212,8 +209,8 @@ class ProductServiceUnitTest {
     void putProductSuccess1() {
         // given
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest(1L, "option2", 1000, 100);
-        OptionRequest optionRequest2 = new OptionRequest(null, "option2", 1000, 100);
+        OptionRequest optionRequest1 = new OptionRequest(1L, "option2", 1000, OptionStatus.NORMAL.name(), 100);
+        OptionRequest optionRequest2 = new OptionRequest(null, "option2", 1000, OptionStatus.NORMAL.name(), 100);
         optionRequestList.add(optionRequest1);
         optionRequestList.add(optionRequest2);
         LocalDateTime now = LocalDateTime.now();
@@ -234,7 +231,7 @@ class ProductServiceUnitTest {
         given(optionRepository.findByProduct(any(Product.class))).willReturn(product.getOptionList());
 
         PutProductRequest dto = new PutProductRequest(1L, 1L, null, null, null, null, 0, 0, null, null,
-            null, null, null, null, null, "normal", 10, optionRequestList, null);
+            null, null, null, null, null, "normal", 10, optionRequestList);
 
         // when
         ProductResponse productResponse = productService.putProduct(dto);
