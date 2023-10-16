@@ -11,9 +11,15 @@ services:
       - db.url=jdbc:mysql://master/appling
       - db.username=juno
       - db.password=password
+      - s3.id=${S3_ID}
+      - s3.key=${S3_KEY}
+      - kakao.id=${KAKAO_ID}
+      - kakao.url=${KAKAO_URL}
+      - google.key=${GOOGLE_KEY}
     volumes:
       - /log:/log
 networks:
   default:
     external:
       name: normal
+
