@@ -28,6 +28,7 @@ public class Option {
     private String name;
     private int extraPrice;
     private int ea;
+    @Enumerated(EnumType.STRING)
     private OptionStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

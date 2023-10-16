@@ -179,7 +179,9 @@ class ProductServiceUnitTest {
     @DisplayName("수정하려는 상품의 카테고리가 존재하지 않는 경우 실패")
     void putProductFail1() {
         // given
-        PutProductRequest dto = new PutProductRequest(0L, 0L, null, null, null, null, 0, 0, null, null, null, null, null, null, null, "normal", 10, null);
+        PutProductRequest dto = PutProductRequest.builder()
+                .status("normal")
+                .build();
         // when
         Throwable throwable = catchThrowable(() -> productService.putProduct(dto));
         // then
@@ -192,8 +194,10 @@ class ProductServiceUnitTest {
     @DisplayName("수정하려는 상품이 존재하지 않는 경우 실패")
     void putProductFail2() {
         // given
-        PutProductRequest dto = new PutProductRequest(0L, 1L, null, null, null, null, 0, 0, null, null,
-            null, null, null, null, null, "normal", 10, null);
+        PutProductRequest dto = PutProductRequest.builder()
+                .categoryId(1L)
+                .status("normal")
+                .build();
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(new Category()));
         given(productRepository.findById(any())).willReturn(Optional.ofNullable(null));
 
@@ -228,10 +232,14 @@ class ProductServiceUnitTest {
 
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
         given(productRepository.findById(any())).willReturn(Optional.ofNullable(product));
-        given(optionRepository.findByProduct(any(Product.class))).willReturn(product.getOptionList());
 
-        PutProductRequest dto = new PutProductRequest(1L, 1L, null, null, null, null, 0, 0, null, null,
-            null, null, null, null, null, "normal", 10, optionRequestList);
+        PutProductRequest dto = PutProductRequest.builder()
+                .productId(1L)
+                .categoryId(1L)
+                .status("normal")
+                .ea(10)
+                .optionList(optionRequestList)
+                .build();
 
         // when
         ProductResponse productResponse = productService.putProduct(dto);

@@ -5,12 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -19,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@Builder
 public class PutProductRequest {
 
     @NotNull(message = "product_id 비어있을 수 없습니다.")
@@ -59,8 +56,10 @@ public class PutProductRequest {
     private String image3;
     @NotNull(message = "status 비어있을 수 없습니다.")
     private String status;
+    @NotNull(message = "type 비어있을 수 없습니다.")
+    private String type;
     private int ea;
     @JsonProperty("option_list")
-    private List<OptionRequest> optionList = new ArrayList<>();
+    private List<OptionRequest> optionList;
 
 }

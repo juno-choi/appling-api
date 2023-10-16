@@ -1,7 +1,6 @@
 package com.juno.appling.product.domain;
 
 import com.juno.appling.member.domain.Seller;
-import com.juno.appling.product.dto.request.OptionRequest;
 import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.dto.request.PutProductRequest;
 import com.juno.appling.product.enums.ProductStatus;
@@ -97,6 +96,8 @@ public class Product {
     public void put(PutProductRequest putProductRequest) {
         LocalDateTime now = LocalDateTime.now();
         ProductStatus productStatus = ProductStatus.valueOf(putProductRequest.getStatus().toUpperCase());
+        ProductType type = ProductType.valueOf(Optional.ofNullable(putProductRequest.getType()).orElse("NORMAL").toUpperCase());
+
         int ea = Optional.of(putProductRequest.getEa()).orElse(0);
         this.mainTitle = putProductRequest.getMainTitle();
         this.mainExplanation = putProductRequest.getMainExplanation();
@@ -113,6 +114,7 @@ public class Product {
         this.image3 = putProductRequest.getImage3();
         this.modifiedAt = now;
         this.status = productStatus;
+        this.type = type;
         this.ea = ea;
     }
 
