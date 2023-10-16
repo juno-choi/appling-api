@@ -2,22 +2,20 @@ package com.juno.appling.product.application;
 
 import com.juno.appling.BaseTest;
 import com.juno.appling.global.base.MessageVo;
-import com.juno.appling.member.dto.request.LoginRequest;
-import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.domain.Seller;
-import com.juno.appling.member.dto.response.LoginResponse;
-import com.juno.appling.member.domain.MemberRepository;
-import com.juno.appling.member.domain.SellerRepository;
 import com.juno.appling.member.application.MemberAuthService;
+import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.domain.MemberRepository;
+import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.domain.SellerRepository;
+import com.juno.appling.product.domain.Category;
+import com.juno.appling.product.domain.CategoryRepository;
+import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.domain.ProductRepository;
 import com.juno.appling.product.dto.request.AddViewCntRequest;
 import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.dto.request.PutProductRequest;
-import com.juno.appling.product.domain.Category;
-import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.dto.response.ProductListResponse;
 import com.juno.appling.product.dto.response.ProductResponse;
-import com.juno.appling.product.domain.CategoryRepository;
-import com.juno.appling.product.domain.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,9 +154,23 @@ class ProductServiceTest extends BaseTest {
         Product originalProduct = productRepository.save(Product.of(seller, category, productRequest));
         String originalProductMainTitle = originalProduct.getMainTitle();
         Long productId = originalProduct.getId();
-        PutProductRequest putProductRequest = new PutProductRequest(productId, 2L, "수정된 제목", "수정된 설명",
-            "상품 메인 설명", "상품 서브 설명", 12000, 10000, "보관 방법", "원산지", "생산자", "https://mainImage",
-            "https://image1", "https://image2", "https://image3", "normal", 10, null);
+        PutProductRequest putProductRequest = PutProductRequest.builder()
+                .productId(productId)
+                .categoryId(2L)
+                .mainTitle("수정된 제목")
+                .mainExplanation("수정된 설명")
+                .mainImage("https://mainImage")
+                .origin("원산지")
+                .purchaseInquiry("보관방법")
+                .producer("생산자")
+                .originPrice(12000)
+                .price(10000)
+                .image1("https://image1")
+                .image2("https://image2")
+                .image3("https://image3")
+                .status("normal")
+                .ea(10)
+                .build();
         // when
         productService.putProduct(putProductRequest);
         // then

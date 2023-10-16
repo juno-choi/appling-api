@@ -12,11 +12,10 @@ import com.juno.appling.product.dto.request.OptionRequest;
 import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.dto.request.PutProductRequest;
 import com.juno.appling.product.dto.response.*;
+import com.juno.appling.product.enums.OptionStatus;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -113,22 +113,23 @@ public class ProductService {
             new IllegalArgumentException("유효하지 않은 상품입니다.")
         );
 
+        product.put(putProductRequest);
+        product.putCategory(category);
+
         if(product.getType() == ProductType.OPTION) {
             // optionList update
-            List<Option> findOptionList = optionRepository.findByProduct(product);
+            List<Option> findOptionList = optionRepository.findByProductAndStatus(product, OptionStatus.NORMAL);
             List<OptionRequest> saveRequestOptionList = new LinkedList<>();
 
-            int findOptionListSize = findOptionList.size();
-            for (int i=0; i<findOptionListSize; i++) {
-                Option option = findOptionList.get(i);
-                for (OptionRequest optionRequest : putProductRequest.getOptionList()) {
-                    Long requestOptionId = Optional.ofNullable(optionRequest.getOptionId()).orElse(0L);
-                    Long optionId = Optional.ofNullable(option.getId()).orElse(0L);
-                    if(requestOptionId.equals(optionId)){
-                        option.put(optionRequest);
-                    } else {
-                        saveRequestOptionList.add(optionRequest);
-                    }
+            for (OptionRequest optionRequest : putProductRequest.getOptionList()) {
+                Long requestOptionId = Optional.ofNullable(optionRequest.getOptionId()).orElse(0L);
+                Optional<Option> optionalOption = findOptionList.stream().filter(option -> option.getId().equals(requestOptionId)).findFirst();
+
+                if(optionalOption.isPresent()){
+                    Option option = optionalOption.get();
+                    option.put(optionRequest);
+                } else {
+                    saveRequestOptionList.add(optionRequest);
                 }
             }
 
@@ -137,11 +138,7 @@ public class ProductService {
                 optionRepository.saveAll(options);
                 product.addAllOptionsList(options);
             }
-
         }
-
-        product.put(putProductRequest);
-        product.putCategory(category);
 
         return new ProductResponse(product);
     }
