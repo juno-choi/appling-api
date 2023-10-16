@@ -1,6 +1,6 @@
 package com.juno.appling.member.presentation;
 
-import com.juno.appling.ControllerBaseTest;
+import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.global.base.ResultCode;
 import com.juno.appling.global.mail.MyMailSender;
 import com.juno.appling.member.dto.request.JoinRequest;
@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
-class MemberAuthControllerDocs extends ControllerBaseTest {
+class MemberAuthRestdocsDocs extends RestdocsBaseTest {
 
     @Autowired
     private MemberAuthService memberAuthService;

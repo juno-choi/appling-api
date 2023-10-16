@@ -1,6 +1,6 @@
 package com.juno.appling.member.presentation;
 
-import com.juno.appling.ControllerBaseTest;
+import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.global.base.ResultCode;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.member.domain.Member;
@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MemberControllerDocs extends ControllerBaseTest {
+class MemberRestdocsDocs extends RestdocsBaseTest {
 
     @Autowired
     private MemberAuthService memberAuthService;

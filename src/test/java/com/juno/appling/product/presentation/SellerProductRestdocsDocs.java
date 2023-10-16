@@ -1,6 +1,6 @@
 package com.juno.appling.product.presentation;
 
-import com.juno.appling.ControllerBaseTest;
+import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.member.application.MemberAuthService;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.domain.MemberRepository;
@@ -35,7 +35,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class SellerProductControllerDocs extends ControllerBaseTest {
+class SellerProductRestdocsDocs extends RestdocsBaseTest {
 
     @Autowired
     private MemberAuthService memberAuthService;

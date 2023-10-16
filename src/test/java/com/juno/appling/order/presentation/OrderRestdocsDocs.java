@@ -1,6 +1,6 @@
 package com.juno.appling.order.presentation;
 
-import com.juno.appling.ControllerBaseTest;
+import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.member.application.MemberAuthService;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.domain.MemberRepository;
@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
-class OrderControllerDocs extends ControllerBaseTest {
+class OrderRestdocsDocs extends RestdocsBaseTest {
 
     @Autowired
     private MemberRepository memberRepository;

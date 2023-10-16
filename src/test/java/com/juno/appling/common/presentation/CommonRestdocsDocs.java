@@ -1,6 +1,6 @@
 package com.juno.appling.common.presentation;
 
-import com.juno.appling.ControllerBaseTest;
+import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.member.domain.Introduce;
 import com.juno.appling.member.domain.Member;
@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
-class CommonControllerDocs extends ControllerBaseTest {
+class CommonRestdocsDocs extends RestdocsBaseTest {
 
     @Autowired
     private MemberAuthService memberAuthService;
