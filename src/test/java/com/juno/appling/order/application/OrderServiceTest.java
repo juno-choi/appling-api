@@ -1,6 +1,5 @@
 package com.juno.appling.order.application;
 
-import com.juno.appling.BaseTest;
 import com.juno.appling.member.application.MemberAuthService;
 import com.juno.appling.member.dto.request.LoginRequest;
 import com.juno.appling.member.dto.response.LoginResponse;
@@ -22,9 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
+import static com.juno.appling.Base.MEMBER_EMAIL;
 
 @SpringBootTest
-class OrderServiceTest extends BaseTest {
+class OrderServiceTest {
     @Autowired
     private OrderService orderService;
 
@@ -46,8 +46,8 @@ class OrderServiceTest extends BaseTest {
         request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
 
         List<TempOrderDto> tempOrderDtoList = new ArrayList<>();
-        TempOrderDto tempOrderDto1 = new TempOrderDto(PRODUCT1.getId(), 3);
-        TempOrderDto tempOrderDto2 = new TempOrderDto(PRODUCT2.getId(), 3);
+        TempOrderDto tempOrderDto1 = new TempOrderDto(1L, 3);
+        TempOrderDto tempOrderDto2 = new TempOrderDto(2L, 3);
         tempOrderDtoList.add(tempOrderDto1);
         tempOrderDtoList.add(tempOrderDto2);
 

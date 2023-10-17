@@ -1,6 +1,5 @@
 package com.juno.appling.product.application;
 
-import com.juno.appling.BaseTest;
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.member.application.MemberAuthService;
 import com.juno.appling.member.domain.Member;
@@ -26,12 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static com.juno.appling.Base.SELLER_LOGIN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-class ProductServiceTest extends BaseTest {
+class ProductServiceTest {
 
     @Autowired
     private ProductService productService;

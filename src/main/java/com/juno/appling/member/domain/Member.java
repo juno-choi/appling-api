@@ -6,6 +6,7 @@ import com.juno.appling.member.enums.SnsJoinType;
 import com.juno.appling.member.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import java.util.LinkedList;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -46,7 +47,7 @@ public class Member {
     private Status status;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Recipient> recipientList = new ArrayList<>();
+    private List<Recipient> recipientList = new LinkedList<>();
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

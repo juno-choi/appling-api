@@ -25,6 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.juno.appling.Base.PASSWORD;
+import static com.juno.appling.Base.SELLER2_EMAIL;
+import static com.juno.appling.Base.SELLER_EMAIL;
+import static com.juno.appling.Base.objectMapper;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;

@@ -1,9 +1,6 @@
 package com.juno.appling.common.application;
 
-import com.juno.appling.BaseTest;
 import com.juno.appling.common.dto.response.UploadResponse;
-import com.juno.appling.member.dto.request.LoginRequest;
-import com.juno.appling.member.dto.response.LoginResponse;
 import com.juno.appling.member.application.MemberAuthService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -21,11 +18,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.juno.appling.Base.SELLER_LOGIN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-class CommonS3ServiceTest extends BaseTest {
+class CommonS3ServiceTest {
 
     @Autowired
     private CommonS3Service commonS3Service;

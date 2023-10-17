@@ -29,6 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.juno.appling.Base.MEMBER_EMAIL;
+import static com.juno.appling.Base.MEMBER_LOGIN;
+import static com.juno.appling.Base.SELLER2_LOGIN;
+import static com.juno.appling.Base.SELLER_LOGIN;
+import static com.juno.appling.Base.objectMapper;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;

@@ -6,8 +6,11 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,6 +37,9 @@ public class TokenProvider {
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 7;  // 7일
     private static final String TYPE = "Bearer ";
     private final Key key;
+
+    @Value("${spring.profiles.active}")
+    private String profile;
 
     public TokenProvider(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -123,6 +129,15 @@ public class TokenProvider {
 
     public Long getMemberId(HttpServletRequest request) {
         String token = resolveToken(request);
+
+        if(profile.equals("local") && token.contains("test")) {
+            Map<String, Long> memberMap = new HashMap<>();
+            memberMap.put("member-test-token", 1L);
+            memberMap.put("seller-test-token", 2L);
+            memberMap.put("seller2-test-token", 3L);
+
+            return memberMap.get(token);
+        }
         return getMemberId(token);
     }
 

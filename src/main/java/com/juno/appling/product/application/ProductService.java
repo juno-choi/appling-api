@@ -1,5 +1,7 @@
 package com.juno.appling.product.application;
 
+import static com.juno.appling.WarmupRunner.isWarmup;
+
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.Member;
@@ -77,6 +79,7 @@ public class ProductService {
 
     public ProductListResponse getProductList(Pageable pageable, String search, String status,
                                               Long categoryId, Long sellerId) {
+        System.out.println("warmup = " + isWarmup);
         ProductStatus productStatusOfEnums = ProductStatus.valueOf(status.toUpperCase(Locale.ROOT));
         Category category = categoryRepository.findById(categoryId).orElse(null);
         Page<ProductResponse> page = productCustomRepository.findAll(pageable, search, productStatusOfEnums,
