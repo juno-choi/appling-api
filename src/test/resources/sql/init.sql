@@ -17,7 +17,7 @@ VALUES(1, 2, '회사명', 'mail@mail.com', '1234', '주소', '상세주소', '01
 -- seller2
 INSERT INTO `member`
 (member_id, birth, email, name, nickname, password, status, `role`, sns_id, sns_type, created_at, modified_at)
-VALUES(3, '19941030', 'selle2r@appling.com', '김투셀러', 'seller2', '$2a$10$45eEiSOQxLtJx0rhmAZ1aeA8/B6XxsDk3MM0jf26E/3Drf.a.05im', 'NORMAL', 'SELLER', null, null, '2023-09-26 13:51:08.615676000', '2023-09-26 13:51:08.615676000');
+VALUES(3, '19941030', 'seller2@appling.com', '김투셀러', 'seller2', '$2a$10$45eEiSOQxLtJx0rhmAZ1aeA8/B6XxsDk3MM0jf26E/3Drf.a.05im', 'NORMAL', 'SELLER', null, null, '2023-09-26 13:51:08.615676000', '2023-09-26 13:51:08.615676000');
 
 INSERT INTO seller
 (seller_id, member_id, company, email, zonecode, address, address_detail, tel, created_at, modified_at)
@@ -26,3 +26,12 @@ VALUES(2, 3, '회사명2', 'mail2@mail.com', '1234', '주소', '상세주소', '
 INSERT INTO introduce
 (seller_id, subject, url, status, created_at, modified_at)
 VALUES(2, '제목', 'https://appling-s3-bucket.s3.ap-northeast-2.amazonaws.com/html/1/20230815/184934_0.html', 'USE', '2023-09-26 15:09:27.207857000', '2023-09-26 15:09:27.207857000');
+
+-- category
+INSERT INTO category
+(category_id, name, status, created_at, modified_at)
+VALUES(1, '과일', 'USE', '2023-09-26 15:09:27.263900000', '2023-09-26 15:09:27.263900000');
+
+INSERT INTO category
+(category_id, name, status, created_at, modified_at)
+VALUES(2, '야채', 'USE', '2023-09-26 15:09:27.263900000', '2023-09-26 15:09:27.263900000');

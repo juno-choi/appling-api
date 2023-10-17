@@ -12,5 +12,7 @@ public class Base {
     public static final LoginResponse MEMBER_LOGIN = new LoginResponse("", "member-test-token", "refresh-token", 1000L, 1000L);
     public static final LoginResponse SELLER_LOGIN = new LoginResponse("", "seller-test-token", "refresh-token", 1000L, 1000L);
     public static final LoginResponse SELLER2_LOGIN = new LoginResponse("", "seller2-test-token", "refresh-token", 1000L, 1000L);
+    public static final Long CATEGORY_ID_FRUIT = 1L;
+    public static final Long CATEGORY_ID_VEGETABLE = 2L;
 
 }

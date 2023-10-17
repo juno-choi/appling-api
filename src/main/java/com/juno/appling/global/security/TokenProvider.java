@@ -123,20 +123,28 @@ public class TokenProvider {
     }
 
     public Long getMemberId(String token) {
+        if(profile.equals("local") && token.contains("test")) {
+            return getTestMemberId(token);
+        }
+
         Claims claims = parseClaims(token);
         return Long.parseLong(claims.get("sub").toString());
+    }
+
+    private static Long getTestMemberId(String token) {
+        Map<String, Long> memberMap = new HashMap<>();
+        memberMap.put("member-test-token", 1L);
+        memberMap.put("seller-test-token", 2L);
+        memberMap.put("seller2-test-token", 3L);
+
+        return memberMap.get(token);
     }
 
     public Long getMemberId(HttpServletRequest request) {
         String token = resolveToken(request);
 
         if(profile.equals("local") && token.contains("test")) {
-            Map<String, Long> memberMap = new HashMap<>();
-            memberMap.put("member-test-token", 1L);
-            memberMap.put("seller-test-token", 2L);
-            memberMap.put("seller2-test-token", 3L);
-
-            return memberMap.get(token);
+            return getTestMemberId(token);
         }
         return getMemberId(token);
     }

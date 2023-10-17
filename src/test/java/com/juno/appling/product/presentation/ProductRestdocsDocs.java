@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.juno.appling.Base.SELLER2_EMAIL;
 import static com.juno.appling.Base.SELLER_EMAIL;
 import static com.juno.appling.Base.objectMapper;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -313,7 +314,7 @@ class ProductRestdocsDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/cnt")
     void addViewCnt() throws Exception {
         //given
-        Member member = memberRepository.findByEmail("seller@appling.com").get();
+        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
@@ -350,7 +351,7 @@ class ProductRestdocsDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/basket")
     void getProductBasket() throws Exception {
         //given
-        Member member = memberRepository.findByEmail("seller@appling.com").get();
+        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(1L).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
