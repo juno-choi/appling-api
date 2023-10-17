@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
-class OAuthRestdocsDocs extends RestdocsBaseTest {
+class OAuthControllerDocs extends RestdocsBaseTest {
 
     private static MockWebServer mockWebServer;
 
