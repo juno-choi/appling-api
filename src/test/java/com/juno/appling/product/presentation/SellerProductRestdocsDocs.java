@@ -19,12 +19,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.juno.appling.Base.CATEGORY_ID_FRUIT;
 import static com.juno.appling.Base.PASSWORD;
 import static com.juno.appling.Base.SELLER2_EMAIL;
 import static com.juno.appling.Base.SELLER_EMAIL;
@@ -39,6 +43,10 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SqlGroup({
+    @Sql(scripts = {"/sql/init.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    @Sql(scripts = {"/sql/clear.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+})
 class SellerProductRestdocsDocs extends RestdocsBaseTest {
 
     @Autowired
@@ -77,7 +85,7 @@ class SellerProductRestdocsDocs extends RestdocsBaseTest {
         ProductRequest searchDto = new ProductRequest(1L, "셀러 유저 상품", "메인 설명", "상품 메인 설명", "상품 서브 설명",
             10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1",
             "https://image2", "https://image3", "normal", 10, optionRequestList, "normal");
-        Category category = categoryRepository.findById(1L).get();
+        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
         Seller seller = sellerRepository.findByMember(member).get();
         Seller seller2 = sellerRepository.findByMember(member2).get();
@@ -417,7 +425,7 @@ class SellerProductRestdocsDocs extends RestdocsBaseTest {
         LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
         LoginResponse login = memberAuthService.login(loginRequest);
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(1L).get();
+        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
         ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10, null, "normal");
@@ -546,7 +554,7 @@ class SellerProductRestdocsDocs extends RestdocsBaseTest {
         LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
         LoginResponse login = memberAuthService.login(loginRequest);
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(1L).get();
+        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
         ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10, new ArrayList<>(), "option");

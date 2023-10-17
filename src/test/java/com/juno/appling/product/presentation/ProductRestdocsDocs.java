@@ -18,12 +18,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.juno.appling.Base.CATEGORY_ID_FRUIT;
 import static com.juno.appling.Base.SELLER2_EMAIL;
 import static com.juno.appling.Base.SELLER_EMAIL;
 import static com.juno.appling.Base.objectMapper;
@@ -36,6 +40,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional(readOnly = true)
+@SqlGroup({
+    @Sql(scripts = {"/sql/init.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    @Sql(scripts = {"/sql/clear.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+})
 class ProductRestdocsDocs extends RestdocsBaseTest {
 
     @Autowired
@@ -61,7 +69,7 @@ class ProductRestdocsDocs extends RestdocsBaseTest {
     void getProductList() throws Exception {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(1L).get();
+        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
         optionRequestList.add(optionRequest1);
@@ -205,7 +213,7 @@ class ProductRestdocsDocs extends RestdocsBaseTest {
     void getProduct() throws Exception {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(1L).get();
+        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
@@ -315,7 +323,7 @@ class ProductRestdocsDocs extends RestdocsBaseTest {
     void addViewCnt() throws Exception {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(1L).get();
+        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
         optionRequestList.add(optionRequest1);
@@ -352,7 +360,7 @@ class ProductRestdocsDocs extends RestdocsBaseTest {
     void getProductBasket() throws Exception {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(1L).get();
+        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);

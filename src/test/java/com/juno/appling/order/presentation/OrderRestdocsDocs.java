@@ -36,6 +36,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.juno.appling.Base.CATEGORY_ID_FRUIT;
 import static com.juno.appling.Base.MEMBER_EMAIL;
 import static com.juno.appling.Base.SELLER_EMAIL;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -82,7 +83,7 @@ class OrderRestdocsDocs extends RestdocsBaseTest {
     void postTempOrder() throws Exception {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(1L).get();
+        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
@@ -146,7 +147,7 @@ class OrderRestdocsDocs extends RestdocsBaseTest {
         Order order = orderRepository.save(Order.of(member, "테스트 상품"));
 
         Member sellerMember = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(1L).get();
+        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
@@ -232,7 +233,7 @@ class OrderRestdocsDocs extends RestdocsBaseTest {
         Long orderId = order.getId();
 
         Member sellerMember = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(1L).get();
+        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
