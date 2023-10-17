@@ -15,6 +15,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -24,6 +27,10 @@ import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.Http
 import static com.juno.appling.Base.MEMBER_EMAIL;
 
 @SpringBootTest
+@SqlGroup({
+    @Sql(scripts = {"/sql/init.sql", "/sql/order.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    @Sql(scripts = {"/sql/clear.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+})
 class OrderServiceTest {
     @Autowired
     private OrderService orderService;

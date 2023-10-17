@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @Sql(scripts = {"/sql/init.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
     @Sql(scripts = {"/sql/clear.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
 })
-class SellerProductRestdocsDocs extends RestdocsBaseTest {
+class SellerProductControllerDocs extends RestdocsBaseTest {
 
     @Autowired
     private MemberAuthService memberAuthService;

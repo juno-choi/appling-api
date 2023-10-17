@@ -35,3 +35,4 @@ VALUES(1, '과일', 'USE', '2023-09-26 15:09:27.263900000', '2023-09-26 15:09:27
 INSERT INTO category
 (category_id, name, status, created_at, modified_at)
 VALUES(2, '야채', 'USE', '2023-09-26 15:09:27.263900000', '2023-09-26 15:09:27.263900000');
+

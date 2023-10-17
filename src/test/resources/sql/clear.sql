@@ -1,4 +1,6 @@
-
+delete from delivery;
+delete from order_item;
+delete from orders;
 delete from introduce;
 delete from options;
 delete from product;

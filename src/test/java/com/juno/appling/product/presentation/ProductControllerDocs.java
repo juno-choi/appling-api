@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.juno.appling.Base.CATEGORY_ID_FRUIT;
-import static com.juno.appling.Base.SELLER2_EMAIL;
 import static com.juno.appling.Base.SELLER_EMAIL;
 import static com.juno.appling.Base.objectMapper;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -44,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @Sql(scripts = {"/sql/init.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
     @Sql(scripts = {"/sql/clear.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
 })
-class ProductRestdocsDocs extends RestdocsBaseTest {
+class ProductControllerDocs extends RestdocsBaseTest {
 
     @Autowired
     private MemberAuthService memberAuthService;

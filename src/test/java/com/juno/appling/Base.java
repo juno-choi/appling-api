@@ -15,4 +15,7 @@ public class Base {
     public static final Long CATEGORY_ID_FRUIT = 1L;
     public static final Long CATEGORY_ID_VEGETABLE = 2L;
 
+    public static final Long PRODUCT_ID_APPLE = 1L;
+    public static final Long PRODUCT_ID_PEAR = 2L;
+
 }
