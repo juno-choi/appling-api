@@ -73,8 +73,7 @@ class MemberControllerDocs extends RestdocsBaseTest {
     private S3Service s3Service;
 
     private final static String PREFIX = "/api/member";
-    private final static String EMAIL = "juno@member.com";
-    private final static String PASSWORD = "password";
+
 
     @Test
     @DisplayName(PREFIX + " (GET)")
@@ -115,10 +114,12 @@ class MemberControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/seller (POST)")
     void postSeller() throws Exception {
         //given
-        JoinRequest joinRequest = new JoinRequest(EMAIL, passwordEncoder.encode(PASSWORD), "name", "nick",
+        String email = "juno@member.com";
+        String password = "password";
+        JoinRequest joinRequest = new JoinRequest(email, passwordEncoder.encode(password), "name", "nick",
             "19941030");
         memberRepository.save(Member.of(joinRequest));
-        LoginRequest loginRequest = new LoginRequest(EMAIL, PASSWORD);
+        LoginRequest loginRequest = new LoginRequest(email, password);
         LoginResponse loginResponse = memberAuthService.login(loginRequest);
 
         PostSellerRequest postSellerRequest = new PostSellerRequest("판매자 이름", "010-1234-4312", "1234",

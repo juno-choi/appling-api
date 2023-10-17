@@ -246,10 +246,10 @@ class OrderControllerDocs extends RestdocsBaseTest {
         OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
         optionRequestList.add(optionRequest1);
 
-        ProductRequest searchDto1 = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+        ProductRequest searchDto1 = new ProductRequest(CATEGORY_ID_FRUIT, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
                 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
                 "https://image3", "normal", 10, optionRequestList, "normal");
-        ProductRequest searchDto2 = new ProductRequest(1L, "검색 제목2", "메인 설명", "상품 메인 설명", "상품 서브 설명", 15000,
+        ProductRequest searchDto2 = new ProductRequest(CATEGORY_ID_FRUIT, "검색 제목2", "메인 설명", "상품 메인 설명", "상품 서브 설명", 15000,
                 10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
                 "https://image3", "normal", 10, optionRequestList, "normal");
         Seller seller = sellerRepository.findByMember(sellerMember).get();

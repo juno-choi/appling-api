@@ -25,6 +25,8 @@ import java.util.List;
 
 import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
 import static com.juno.appling.Base.MEMBER_EMAIL;
+import static com.juno.appling.Base.PRODUCT_ID_APPLE;
+import static com.juno.appling.Base.PRODUCT_ID_PEAR;
 
 @SpringBootTest
 @SqlGroup({
@@ -53,8 +55,8 @@ class OrderServiceTest {
         request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
 
         List<TempOrderDto> tempOrderDtoList = new ArrayList<>();
-        TempOrderDto tempOrderDto1 = new TempOrderDto(1L, 3);
-        TempOrderDto tempOrderDto2 = new TempOrderDto(2L, 3);
+        TempOrderDto tempOrderDto1 = new TempOrderDto(PRODUCT_ID_APPLE, 3);
+        TempOrderDto tempOrderDto2 = new TempOrderDto(PRODUCT_ID_PEAR, 3);
         tempOrderDtoList.add(tempOrderDto1);
         tempOrderDtoList.add(tempOrderDto2);
 
