@@ -33,7 +33,7 @@ public class Option {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Product product;
 
     public Option(String name, int extraPrice, int ea, Product product) {
