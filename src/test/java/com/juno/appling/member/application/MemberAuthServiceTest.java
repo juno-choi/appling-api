@@ -1,6 +1,5 @@
 package com.juno.appling.member.application;
 
-import com.juno.appling.BaseTest;
 import com.juno.appling.member.dto.response.LoginResponse;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MemberAuthServiceTest extends BaseTest {
+class MemberAuthServiceTest {
 
     @Autowired
     private MemberAuthService memberAuthService;

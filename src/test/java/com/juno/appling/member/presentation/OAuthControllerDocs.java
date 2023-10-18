@@ -1,6 +1,6 @@
 package com.juno.appling.member.presentation;
 
-import com.juno.appling.ControllerBaseTest;
+import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.global.mail.MyMailSender;
 import com.juno.appling.member.dto.response.kakao.KakaoLoginResponse;
 import okhttp3.mockwebserver.MockResponse;
@@ -19,6 +19,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import static com.juno.appling.Base.objectMapper;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -32,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
-class OAuthControllerDocs extends ControllerBaseTest {
+class OAuthControllerDocs extends RestdocsBaseTest {
 
     private static MockWebServer mockWebServer;
 

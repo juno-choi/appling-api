@@ -1,6 +1,6 @@
 package com.juno.appling.member.presentation;
 
-import com.juno.appling.ControllerBaseTest;
+import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.global.base.ResultCode;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.member.domain.Member;
@@ -24,11 +24,21 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.juno.appling.Base.MEMBER_EMAIL;
+import static com.juno.appling.Base.MEMBER_LOGIN;
+import static com.juno.appling.Base.SELLER2_LOGIN;
+import static com.juno.appling.Base.SELLER_LOGIN;
+import static com.juno.appling.Base.objectMapper;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -40,7 +50,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MemberControllerDocs extends ControllerBaseTest {
+@SqlGroup({
+    @Sql(scripts = {"/sql/init.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    @Sql(scripts = {"/sql/clear.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+})
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+class MemberControllerDocs extends RestdocsBaseTest {
 
     @Autowired
     private MemberAuthService memberAuthService;
@@ -61,8 +76,7 @@ class MemberControllerDocs extends ControllerBaseTest {
     private S3Service s3Service;
 
     private final static String PREFIX = "/api/member";
-    private final static String EMAIL = "juno@member.com";
-    private final static String PASSWORD = "password";
+
 
     @Test
     @DisplayName(PREFIX + " (GET)")
@@ -103,10 +117,12 @@ class MemberControllerDocs extends ControllerBaseTest {
     @DisplayName(PREFIX + "/seller (POST)")
     void postSeller() throws Exception {
         //given
-        JoinRequest joinRequest = new JoinRequest(EMAIL, passwordEncoder.encode(PASSWORD), "name", "nick",
+        String email = "juno@member.com";
+        String password = "password";
+        JoinRequest joinRequest = new JoinRequest(email, passwordEncoder.encode(password), "name", "nick",
             "19941030");
         memberRepository.save(Member.of(joinRequest));
-        LoginRequest loginRequest = new LoginRequest(EMAIL, PASSWORD);
+        LoginRequest loginRequest = new LoginRequest(email, password);
         LoginResponse loginResponse = memberAuthService.login(loginRequest);
 
         PostSellerRequest postSellerRequest = new PostSellerRequest("판매자 이름", "010-1234-4312", "1234",

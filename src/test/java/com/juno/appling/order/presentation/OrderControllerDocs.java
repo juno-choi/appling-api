@@ -1,6 +1,6 @@
 package com.juno.appling.order.presentation;
 
-import com.juno.appling.ControllerBaseTest;
+import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.member.application.MemberAuthService;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.domain.MemberRepository;
@@ -30,12 +30,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.ResultActions;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.juno.appling.Base.CATEGORY_ID_FRUIT;
+import static com.juno.appling.Base.MEMBER_EMAIL;
+import static com.juno.appling.Base.SELLER_EMAIL;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -47,7 +55,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
-class OrderControllerDocs extends ControllerBaseTest {
+@SqlGroup({
+    @Sql(scripts = {"/sql/init.sql", "/sql/order.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    @Sql(scripts = {"/sql/clear.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+})
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+class OrderControllerDocs extends RestdocsBaseTest {
 
     @Autowired
     private MemberRepository memberRepository;
@@ -80,7 +93,7 @@ class OrderControllerDocs extends ControllerBaseTest {
     void postTempOrder() throws Exception {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(1L).get();
+        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
@@ -144,7 +157,7 @@ class OrderControllerDocs extends ControllerBaseTest {
         Order order = orderRepository.save(Order.of(member, "테스트 상품"));
 
         Member sellerMember = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(1L).get();
+        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
@@ -230,16 +243,16 @@ class OrderControllerDocs extends ControllerBaseTest {
         Long orderId = order.getId();
 
         Member sellerMember = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(1L).get();
+        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
         optionRequestList.add(optionRequest1);
 
-        ProductRequest searchDto1 = new ProductRequest(1L, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
+        ProductRequest searchDto1 = new ProductRequest(CATEGORY_ID_FRUIT, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
                 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
                 "https://image3", "normal", 10, optionRequestList, "normal");
-        ProductRequest searchDto2 = new ProductRequest(1L, "검색 제목2", "메인 설명", "상품 메인 설명", "상품 서브 설명", 15000,
+        ProductRequest searchDto2 = new ProductRequest(CATEGORY_ID_FRUIT, "검색 제목2", "메인 설명", "상품 메인 설명", "상품 서브 설명", 15000,
                 10000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1", "https://image2",
                 "https://image3", "normal", 10, optionRequestList, "normal");
         Seller seller = sellerRepository.findByMember(sellerMember).get();

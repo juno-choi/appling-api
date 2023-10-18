@@ -1,6 +1,6 @@
 package com.juno.appling.member.presentation;
 
-import com.juno.appling.ControllerBaseTest;
+import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.member.dto.request.JoinRequest;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.domain.MemberRepository;
@@ -15,11 +15,12 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.juno.appling.Base.objectMapper;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MemberAuthControllerTest extends ControllerBaseTest {
+class AuthControllerTest extends RestdocsBaseTest {
 
     @Autowired
     private MemberRepository memberRepository;
