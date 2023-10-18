@@ -27,11 +27,11 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -55,7 +55,7 @@ public class Product {
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Option> optionList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

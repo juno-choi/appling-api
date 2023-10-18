@@ -42,11 +42,9 @@ public class ProductCustomRepository {
         }
         builder.and(product.status.eq(productStatus));
 
-        List<ProductResponse> content = q.query().select(Projections.constructor(ProductResponse.class,
-                product
-            ))
+        List<ProductResponse> content = q.query()
+            .select(Projections.constructor(ProductResponse.class, product))
             .from(product)
-            .leftJoin(product.optionList, option)
             .where(builder)
             .orderBy(product.createAt.desc())
             .offset(pageable.getOffset())
