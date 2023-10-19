@@ -2,7 +2,7 @@ package com.juno.appling.global.security;
 
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.enums.Role;
-import com.juno.appling.member.domain.MemberRepository;
+import com.juno.appling.member.infrastruceture.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;

@@ -1,8 +1,6 @@
 package com.juno.appling.member.domain;
 
-import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
-
-import com.juno.appling.member.dto.request.PostRecipientRequest;
+import com.juno.appling.member.controller.request.PostRecipientRequest;
 import com.juno.appling.member.enums.RecipientInfoStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import org.hibernate.envers.Audited;
 
 @Entity
 @Getter

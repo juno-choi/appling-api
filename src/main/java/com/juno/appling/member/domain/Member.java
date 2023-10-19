@@ -1,6 +1,6 @@
 package com.juno.appling.member.domain;
 
-import com.juno.appling.member.dto.request.JoinRequest;
+import com.juno.appling.member.controller.request.JoinRequest;
 import com.juno.appling.member.enums.Role;
 import com.juno.appling.member.enums.SnsJoinType;
 import com.juno.appling.member.enums.Status;
@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

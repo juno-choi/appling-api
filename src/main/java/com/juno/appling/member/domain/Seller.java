@@ -1,6 +1,6 @@
 package com.juno.appling.member.domain;
 
-import com.juno.appling.member.dto.request.PutSellerRequest;
+import com.juno.appling.member.controller.request.PutSellerRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

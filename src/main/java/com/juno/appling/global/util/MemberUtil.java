@@ -2,7 +2,7 @@ package com.juno.appling.global.util;
 
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.domain.MemberRepository;
+import com.juno.appling.member.infrastruceture.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

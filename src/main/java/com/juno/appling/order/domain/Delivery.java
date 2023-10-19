@@ -1,6 +1,6 @@
 package com.juno.appling.order.domain;
 
-import com.juno.appling.order.dto.request.CompleteOrderRequest;
+import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.enums.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

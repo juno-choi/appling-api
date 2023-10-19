@@ -1,7 +1,7 @@
 package com.juno.appling.global.security;
 
 import com.github.dockerjava.api.exception.UnauthorizedException;
-import com.juno.appling.member.dto.response.LoginResponse;
+import com.juno.appling.member.controller.response.LoginResponse;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

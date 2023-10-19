@@ -1,8 +1,8 @@
 package com.juno.appling.product.domain;
 
 import com.juno.appling.member.domain.Seller;
-import com.juno.appling.product.dto.request.ProductRequest;
-import com.juno.appling.product.dto.request.PutProductRequest;
+import com.juno.appling.product.controller.request.ProductRequest;
+import com.juno.appling.product.controller.request.PutProductRequest;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
 import jakarta.persistence.*;

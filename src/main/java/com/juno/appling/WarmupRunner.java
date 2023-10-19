@@ -1,6 +1,6 @@
 package com.juno.appling;
 
-import com.juno.appling.product.application.ProductService;
+import com.juno.appling.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;

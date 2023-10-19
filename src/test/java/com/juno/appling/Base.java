@@ -1,6 +1,6 @@
 package com.juno.appling;
 
-import com.juno.appling.member.dto.response.LoginResponse;
+import com.juno.appling.member.controller.response.LoginResponse;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Base {

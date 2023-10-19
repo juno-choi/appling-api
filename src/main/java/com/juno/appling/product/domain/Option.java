@@ -1,6 +1,6 @@
 package com.juno.appling.product.domain;
 
-import com.juno.appling.product.dto.request.OptionRequest;
+import com.juno.appling.product.controller.request.OptionRequest;
 import com.juno.appling.product.enums.OptionStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
