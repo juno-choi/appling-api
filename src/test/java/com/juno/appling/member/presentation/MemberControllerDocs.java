@@ -15,7 +15,9 @@ import com.juno.appling.member.domain.RecipientRepository;
 import com.juno.appling.member.domain.SellerRepository;
 import com.juno.appling.member.application.MemberAuthService;
 import com.juno.appling.member.application.MemberService;
+import com.juno.appling.product.domain.CategoryRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +53,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SqlGroup({
-    @Sql(scripts = {"/sql/init.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-    @Sql(scripts = {"/sql/clear.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = {"/sql/init.sql", "/sql/introduce.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class MemberControllerDocs extends RestdocsBaseTest {
@@ -72,10 +73,22 @@ class MemberControllerDocs extends RestdocsBaseTest {
     private IntroduceRepository introduceRepository;
     @Autowired
     private SellerRepository sellerRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
     @MockBean
     private S3Service s3Service;
 
     private final static String PREFIX = "/api/member";
+
+    @AfterEach
+    void cleanup() {
+        categoryRepository.deleteAll();
+        recipientRepository.deleteAll();
+        introduceRepository.deleteAll();
+        sellerRepository.deleteAll();
+        memberRepository.deleteAll();
+    }
 
 
     @Test

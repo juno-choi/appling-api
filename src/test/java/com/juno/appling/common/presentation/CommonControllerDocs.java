@@ -10,6 +10,8 @@ import com.juno.appling.member.domain.IntroduceRepository;
 import com.juno.appling.member.domain.MemberRepository;
 import com.juno.appling.member.domain.SellerRepository;
 import com.juno.appling.member.application.MemberAuthService;
+import com.juno.appling.product.domain.CategoryRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +32,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.juno.appling.Base.SELLER_EMAIL;
 import static com.juno.appling.Base.SELLER_LOGIN;
@@ -49,8 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
 @SqlGroup({
-    @Sql(scripts = {"/sql/init.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-    @Sql(scripts = {"/sql/clear.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = {"/sql/init.sql", "/sql/introduce.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class CommonControllerDocs extends RestdocsBaseTest {
@@ -65,10 +67,21 @@ class CommonControllerDocs extends RestdocsBaseTest {
     @Autowired
     private IntroduceRepository introduceRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @MockBean
     private S3Service s3Service;
 
     private final String PREFIX = "/api/common";
+
+    @AfterEach
+    void cleanup() {
+        categoryRepository.deleteAll();
+        introduceRepository.deleteAll();
+        sellerRepository.deleteAll();
+        memberRepository.deleteAll();
+    }
     @Test
     @DisplayName(PREFIX + "/image")
     void uploadImage() throws Exception {

@@ -2,8 +2,10 @@ package com.juno.appling.product.application;
 
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.member.application.MemberAuthService;
+import com.juno.appling.member.domain.IntroduceRepository;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.domain.MemberRepository;
+import com.juno.appling.member.domain.RecipientRepository;
 import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.domain.SellerRepository;
 import com.juno.appling.product.domain.Category;
@@ -15,6 +17,7 @@ import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.dto.request.PutProductRequest;
 import com.juno.appling.product.dto.response.ProductListResponse;
 import com.juno.appling.product.dto.response.ProductResponse;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +42,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Transactional
 @SqlGroup({
-    @Sql(scripts = {"/sql/init.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-    @Sql(scripts = {"/sql/clear.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = {"/sql/init.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Transactional(readOnly = true)
 class ProductServiceTest {
 
     @Autowired
@@ -61,6 +63,14 @@ class ProductServiceTest {
     private SellerRepository sellerRepository;
 
     private MockHttpServletRequest request = new MockHttpServletRequest();
+
+    @AfterEach
+    void cleanup() {
+        productRepository.deleteAll();
+        categoryRepository.deleteAll();
+        sellerRepository.deleteAll();
+        memberRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("상품 등록 성공")

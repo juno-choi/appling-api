@@ -1,6 +1,8 @@
 package com.juno.appling.order.application;
 
 import com.juno.appling.member.application.MemberAuthService;
+import com.juno.appling.member.domain.MemberRepository;
+import com.juno.appling.member.domain.SellerRepository;
 import com.juno.appling.member.dto.request.LoginRequest;
 import com.juno.appling.member.dto.response.LoginResponse;
 import com.juno.appling.order.domain.Order;
@@ -9,7 +11,11 @@ import com.juno.appling.order.domain.OrderRepository;
 import com.juno.appling.order.dto.request.TempOrderDto;
 import com.juno.appling.order.dto.request.TempOrderRequest;
 import com.juno.appling.order.dto.response.PostTempOrderResponse;
+import com.juno.appling.product.domain.CategoryRepository;
+import com.juno.appling.product.domain.OptionRepository;
+import com.juno.appling.product.domain.ProductRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +39,9 @@ import static com.juno.appling.Base.PRODUCT_ID_PEAR;
 @SpringBootTest
 @SqlGroup({
     @Sql(scripts = {"/sql/init.sql", "/sql/order.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-    @Sql(scripts = {"/sql/clear.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Transactional(readOnly = true)
 class OrderServiceTest {
     @Autowired
     private OrderService orderService;
@@ -46,7 +52,31 @@ class OrderServiceTest {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private SellerRepository sellerRepository;
+    @Autowired
+    private OptionRepository optionRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     private MockHttpServletRequest request = new MockHttpServletRequest();
+
+    @AfterEach
+    void cleanup() {
+        orderRepository.deleteAll();
+        optionRepository.deleteAll();
+        productRepository.deleteAll();
+        categoryRepository.deleteAll();
+        sellerRepository.deleteAll();
+        memberRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("임시 주문 성공")

@@ -13,6 +13,7 @@ import com.juno.appling.product.dto.request.OptionRequest;
 import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.dto.request.PutProductRequest;
 import com.juno.appling.product.enums.OptionStatus;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SqlGroup({
-    @Sql(scripts = {"/sql/init.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-    @Sql(scripts = {"/sql/clear.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = {"/sql/init.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class SellerProductControllerDocs extends RestdocsBaseTest {
@@ -68,6 +68,14 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
 
     private final static String PREFIX = "/api/seller/product";
 
+    @AfterEach
+    void cleanup() {
+        optionRepository.deleteAll();
+        productRepository.deleteAll();
+        categoryRepository.deleteAll();
+        sellerRepository.deleteAll();
+        memberRepository.deleteAll();
+    }
     @Test
     @DisplayName(PREFIX + "(GET)")
     void getProductList() throws Exception {

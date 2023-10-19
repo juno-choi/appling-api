@@ -13,6 +13,7 @@ import com.juno.appling.member.dto.response.LoginResponse;
 import com.juno.appling.member.dto.response.RecipientListResponse;
 import com.juno.appling.member.domain.MemberRepository;
 import com.juno.appling.member.domain.SellerRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Transactional
 @SqlGroup({
-    @Sql(scripts = {"/sql/init.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-    @Sql(scripts = {"/sql/clear.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = {"/sql/init.sql", "/sql/introduce.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Transactional(readOnly = true)
 public class MemberServiceTest {
 
     @Autowired
@@ -55,6 +55,12 @@ public class MemberServiceTest {
     private SellerRepository sellerRepository;
 
     MockHttpServletRequest request = new MockHttpServletRequest();
+
+    @AfterEach
+    void cleanup() {
+        memberRepository.deleteAll();
+        sellerRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("회원 정보 수정에 성공")

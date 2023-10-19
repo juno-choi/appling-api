@@ -8,6 +8,7 @@ import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.domain.SellerRepository;
 import com.juno.appling.member.dto.request.LoginRequest;
 import com.juno.appling.member.dto.response.LoginResponse;
+import com.juno.appling.order.domain.DeliveryRepository;
 import com.juno.appling.order.domain.Order;
 import com.juno.appling.order.domain.OrderItem;
 import com.juno.appling.order.domain.OrderItemRepository;
@@ -17,11 +18,13 @@ import com.juno.appling.order.dto.request.TempOrderDto;
 import com.juno.appling.order.dto.request.TempOrderRequest;
 import com.juno.appling.product.domain.Category;
 import com.juno.appling.product.domain.CategoryRepository;
+import com.juno.appling.product.domain.OptionRepository;
 import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.domain.ProductRepository;
 import com.juno.appling.product.dto.request.OptionRequest;
 import com.juno.appling.product.dto.request.ProductRequest;
 import com.juno.appling.product.enums.OptionStatus;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,6 +39,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
@@ -57,7 +61,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @SqlGroup({
     @Sql(scripts = {"/sql/init.sql", "/sql/order.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-    @Sql(scripts = {"/sql/clear.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class OrderControllerDocs extends RestdocsBaseTest {
@@ -83,10 +86,28 @@ class OrderControllerDocs extends RestdocsBaseTest {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    @Autowired
+    private OptionRepository optionRepository;
+
+    @Autowired
+    private DeliveryRepository deliveryRepository;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
 
     private final static String PREFIX = "/api/order";
+
+    @AfterEach
+    void cleanup() {
+        deliveryRepository.deleteAll();
+        orderItemRepository.deleteAll();
+        orderRepository.deleteAll();
+        optionRepository.deleteAll();
+        productRepository.deleteAll();
+        categoryRepository.deleteAll();
+        sellerRepository.deleteAll();
+        memberRepository.deleteAll();
+    }
 
     @Test
     @DisplayName(PREFIX + " (POST)")
