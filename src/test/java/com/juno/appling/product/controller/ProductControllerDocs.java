@@ -389,6 +389,8 @@ class ProductControllerDocs extends RestdocsBaseTest {
         Product product2 = productRepository.save(Product.of(seller, category, productRequest2));
         Product product3 = productRepository.save(Product.of(seller, category, productRequest3));
 
+        optionRepository.save(new Option("옵션1", 1000, 100, product1));
+        optionRepository.save(new Option("옵션2", 1000, 100, product2));
         //when
         ResultActions perform = mock.perform(
                 get(PREFIX + "/basket").param("product_id", product3.getId().toString())
@@ -460,7 +462,13 @@ class ProductControllerDocs extends RestdocsBaseTest {
                         fieldWithPath("data.basket_list[].category.created_at").type(JsonFieldType.STRING)
                                 .description("카테고리 생성일"),
                         fieldWithPath("data.basket_list[].category.modified_at").type(JsonFieldType.STRING)
-                                .description("카테고리 수정일")
+                                .description("카테고리 수정일"),
+                        fieldWithPath("data.basket_list[].option_list[].option_id").type(JsonFieldType.NUMBER).description("옵션 id"),
+                        fieldWithPath("data.basket_list[].option_list[].name").type(JsonFieldType.STRING).description("옵션명"),
+                        fieldWithPath("data.basket_list[].option_list[].extra_price").type(JsonFieldType.NUMBER).description("옵션 추가금액"),
+                        fieldWithPath("data.basket_list[].option_list[].ea").type(JsonFieldType.NUMBER).description("재고량"),
+                        fieldWithPath("data.basket_list[].option_list[].created_at").type(JsonFieldType.STRING).description("재고 등록일"),
+                        fieldWithPath("data.basket_list[].option_list[].modified_at").type(JsonFieldType.STRING).description("재고 tnwjddlf")
                 )
         ));
     }
