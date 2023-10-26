@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.juno.appling.Base.PRODUCT_ID_APPLE;
+import static com.juno.appling.Base.PRODUCT_ID_PEAR;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -59,8 +61,14 @@ class OrderServiceUnitTest {
     void postTempOrderFail1() {
         //given
         List<TempOrderDto> tempOrderDtoList = new ArrayList<>();
-        TempOrderDto tempOrderDto1 = new TempOrderDto(1L, 10);
-        TempOrderDto tempOrderDto2 = new TempOrderDto(2L, 5);
+        TempOrderDto tempOrderDto1 = TempOrderDto.builder()
+            .productId(PRODUCT_ID_APPLE)
+            .ea(3)
+            .build();
+        TempOrderDto tempOrderDto2 = TempOrderDto.builder()
+            .productId(PRODUCT_ID_PEAR)
+            .ea(10)
+            .build();
         tempOrderDtoList.add(tempOrderDto1);
         tempOrderDtoList.add(tempOrderDto2);
         TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
@@ -77,8 +85,14 @@ class OrderServiceUnitTest {
     void postTempOrderFail2() {
         //given
         List<TempOrderDto> tempOrderDtoList = new ArrayList<>();
-        TempOrderDto tempOrderDto1 = new TempOrderDto(1L, 10);
-        TempOrderDto tempOrderDto2 = new TempOrderDto(2L, 5);
+        TempOrderDto tempOrderDto1 = TempOrderDto.builder()
+            .productId(PRODUCT_ID_APPLE)
+            .ea(5)
+            .build();
+        TempOrderDto tempOrderDto2 = TempOrderDto.builder()
+            .productId(PRODUCT_ID_PEAR)
+            .ea(10)
+            .build();
         tempOrderDtoList.add(tempOrderDto1);
         tempOrderDtoList.add(tempOrderDto2);
         TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
@@ -103,8 +117,14 @@ class OrderServiceUnitTest {
     void postTempOrderSuccess() {
         //given
         List<TempOrderDto> tempOrderDtoList = new ArrayList<>();
-        TempOrderDto tempOrderDto1 = new TempOrderDto(1L, 10);
-        TempOrderDto tempOrderDto2 = new TempOrderDto(2L, 5);
+        TempOrderDto tempOrderDto1 = TempOrderDto.builder()
+            .productId(PRODUCT_ID_APPLE)
+            .ea(10)
+            .build();
+        TempOrderDto tempOrderDto2 = TempOrderDto.builder()
+            .productId(PRODUCT_ID_PEAR)
+            .ea(5)
+            .build();
         tempOrderDtoList.add(tempOrderDto1);
         tempOrderDtoList.add(tempOrderDto2);
         TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);

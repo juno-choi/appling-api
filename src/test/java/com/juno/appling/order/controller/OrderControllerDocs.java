@@ -46,6 +46,8 @@ import java.util.List;
 
 import static com.juno.appling.Base.CATEGORY_ID_FRUIT;
 import static com.juno.appling.Base.MEMBER_EMAIL;
+import static com.juno.appling.Base.PRODUCT_ID_APPLE;
+import static com.juno.appling.Base.PRODUCT_ID_PEAR;
 import static com.juno.appling.Base.SELLER_EMAIL;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -136,8 +138,14 @@ class OrderControllerDocs extends RestdocsBaseTest {
         List<TempOrderDto> orderList = new ArrayList<>();
         int orderEa1 = 3;
         int orderEa2 = 2;
-        TempOrderDto order1 = new TempOrderDto(saveProduct1.getId(), orderEa1);
-        TempOrderDto order2 = new TempOrderDto(saveProduct2.getId(), orderEa2);
+        TempOrderDto order1 = TempOrderDto.builder()
+            .productId(saveProduct1.getId())
+            .ea(orderEa1)
+            .build();
+        TempOrderDto order2 = TempOrderDto.builder()
+            .productId(saveProduct2.getId())
+            .ea(orderEa2)
+            .build();
         orderList.add(order1);
         orderList.add(order2);
         TempOrderRequest tempOrderRequest = new TempOrderRequest(orderList);
