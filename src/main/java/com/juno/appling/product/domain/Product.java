@@ -8,6 +8,7 @@ import com.juno.appling.product.enums.ProductType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -60,6 +61,37 @@ public class Product {
 
     @Enumerated(EnumType.STRING)
     private ProductType type;
+
+    @Builder
+    public Product(Long id, Seller seller, Category category, String mainTitle,
+        String mainExplanation,
+        String productMainExplanation, String productSubExplanation, int originPrice, int price,
+        String purchaseInquiry, String origin, String producer, String mainImage, String image1,
+        String image2, String image3, Long viewCnt, ProductStatus status, int ea,
+        LocalDateTime createAt, LocalDateTime modifiedAt, ProductType type) {
+        this.id = id;
+        this.seller = seller;
+        this.category = category;
+        this.mainTitle = mainTitle;
+        this.mainExplanation = mainExplanation;
+        this.productMainExplanation = productMainExplanation;
+        this.productSubExplanation = productSubExplanation;
+        this.originPrice = originPrice;
+        this.price = price;
+        this.purchaseInquiry = purchaseInquiry;
+        this.origin = origin;
+        this.producer = producer;
+        this.mainImage = mainImage;
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
+        this.viewCnt = viewCnt;
+        this.status = status;
+        this.ea = ea;
+        this.createAt = createAt;
+        this.modifiedAt = modifiedAt;
+        this.type = type;
+    }
 
     private Product(Seller seller, Category category, ProductRequest productRequest) {
         LocalDateTime now = LocalDateTime.now();
@@ -133,5 +165,9 @@ public class Product {
 
     public void addAllOptionsList(List<Option> options) {
         this.optionList.addAll(options);
+    }
+
+    public void minusEa(int ea) {
+        this.ea -= ea;
     }
 }

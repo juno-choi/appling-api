@@ -88,8 +88,14 @@ class OrderServiceTest {
         request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
 
         List<TempOrderDto> tempOrderDtoList = new ArrayList<>();
-        TempOrderDto tempOrderDto1 = new TempOrderDto(PRODUCT_ID_APPLE, 3);
-        TempOrderDto tempOrderDto2 = new TempOrderDto(PRODUCT_ID_PEAR, 3);
+        TempOrderDto tempOrderDto1 = TempOrderDto.builder()
+            .productId(PRODUCT_ID_APPLE)
+            .ea(3)
+            .build();
+        TempOrderDto tempOrderDto2 =  TempOrderDto.builder()
+            .productId(PRODUCT_ID_PEAR)
+            .ea(3)
+            .build();
         tempOrderDtoList.add(tempOrderDto1);
         tempOrderDtoList.add(tempOrderDto2);
 
