@@ -99,8 +99,14 @@ class OrderServiceUnitTest {
         TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
 
         List<Product> productList = new ArrayList<>();
-        Product product1 = new Product(1L, null, null, null, null, null, null, 0, 0, null, null, null, null, null, null, null, null, ProductStatus.NORMAL, 10, null, null, null, null);
-        Product product2 = new Product(1L, null, null, null, null, null, null, 0, 0, null, null, null, null, null, null, null, null, ProductStatus.HIDDEN, 10, null, null, null, null);
+        Product product1 = Product.builder()
+            .id(PRODUCT_ID_APPLE)
+            .ea(10)
+            .build();
+        Product product2 = Product.builder()
+            .id(PRODUCT_ID_APPLE)
+            .ea(10)
+            .build();
         productList.add(product1);
         productList.add(product2);
         given(productRepository.findAllById(any())).willReturn(productList);
@@ -133,9 +139,24 @@ class OrderServiceUnitTest {
         TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
 
         List<Product> productList = new ArrayList<>();
-        Product product1 = new Product(1L, null, null, "상품명1", null, null, null, 0, 10000, null, null, null, null, null, null, null, null, ProductStatus.NORMAL, 10, null, null, new ArrayList<>(),
-            ProductType.OPTION);
-        Product product2 = new Product(1L, null, null, "상품명2", null, null, null, 0, 12000, null, null, null, null, null, null, null, null, ProductStatus.NORMAL, 10, null, null, null, null);
+        Product product1 = Product.builder()
+            .id(PRODUCT_ID_APPLE)
+            .mainTitle("상풍명1")
+            .price(10000)
+            .ea(10)
+            .status(ProductStatus.NORMAL)
+            .type(ProductType.OPTION)
+            .build();
+        product1.addAllOptionsList(new ArrayList<>());
+
+        Product product2 = Product.builder()
+            .id(PRODUCT_ID_PEAR)
+            .mainTitle("상풍명2")
+            .price(10000)
+            .status(ProductStatus.NORMAL)
+            .ea(10)
+            .build();
+
         productList.add(product1);
         productList.add(product2);
         given(productRepository.findAllById(any())).willReturn(productList);
@@ -167,8 +188,20 @@ class OrderServiceUnitTest {
         TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
 
         List<Product> productList = new ArrayList<>();
-        Product product1 = new Product(1L, null, null, "상품명1", null, null, null, 0, 10000, null, null, null, null, null, null, null, null, ProductStatus.NORMAL, 10, null, null, null, null);
-        Product product2 = new Product(1L, null, null, "상품명2", null, null, null, 0, 12000, null, null, null, null, null, null, null, null, ProductStatus.NORMAL, 10, null, null, null, null);
+        Product product1 = Product.builder()
+            .id(PRODUCT_ID_APPLE)
+            .mainTitle("상풍명1")
+            .price(10000)
+            .ea(0)
+            .status(ProductStatus.NORMAL)
+            .build();
+        Product product2 = Product.builder()
+            .id(PRODUCT_ID_PEAR)
+            .mainTitle("상풍명2")
+            .price(10000)
+            .ea(0)
+            .status(ProductStatus.NORMAL)
+            .build();
         productList.add(product1);
         productList.add(product2);
         given(productRepository.findAllById(any())).willReturn(productList);
@@ -200,8 +233,20 @@ class OrderServiceUnitTest {
         TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
 
         List<Product> productList = new ArrayList<>();
-        Product product1 = new Product(1L, null, null, "상품명1", null, null, null, 0, 10000, null, null, null, null, null, null, null, null, ProductStatus.NORMAL, 10, null, null, null, null);
-        Product product2 = new Product(1L, null, null, "상품명2", null, null, null, 0, 12000, null, null, null, null, null, null, null, null, ProductStatus.NORMAL, 10, null, null, null, null);
+        Product product1 = Product.builder()
+            .id(PRODUCT_ID_APPLE)
+            .mainTitle("상풍명1")
+            .price(10000)
+            .status(ProductStatus.NORMAL)
+            .ea(10)
+            .build();
+        Product product2 = Product.builder()
+            .id(PRODUCT_ID_PEAR)
+            .mainTitle("상풍명2")
+            .price(10000)
+            .status(ProductStatus.NORMAL)
+            .ea(10)
+            .build();
         productList.add(product1);
         productList.add(product2);
         given(productRepository.findAllById(any())).willReturn(productList);
