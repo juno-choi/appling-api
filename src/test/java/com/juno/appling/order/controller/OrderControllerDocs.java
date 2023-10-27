@@ -4,7 +4,6 @@ import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.infrastruceture.MemberRepository;
-import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.infrastruceture.SellerRepository;
 import com.juno.appling.member.controller.request.LoginRequest;
 import com.juno.appling.member.controller.response.LoginResponse;
@@ -16,19 +15,16 @@ import com.juno.appling.order.infrastructure.OrderRepository;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
-import com.juno.appling.product.domain.Category;
-import com.juno.appling.product.domain.Option;
 import com.juno.appling.product.infrastructure.CategoryRepository;
 import com.juno.appling.product.infrastructure.OptionRepository;
 import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.infrastructure.ProductRepository;
-import com.juno.appling.product.controller.request.OptionRequest;
-import com.juno.appling.product.controller.request.ProductRequest;
-import com.juno.appling.product.enums.OptionStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,6 +36,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
@@ -67,6 +64,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @Sql(scripts = {"/sql/init.sql", "/sql/order.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Execution(ExecutionMode.CONCURRENT)
 class OrderControllerDocs extends RestdocsBaseTest {
 
     @Autowired

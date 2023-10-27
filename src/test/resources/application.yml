@@ -78,6 +78,6 @@ spring:
   datasource:
     hikari:
       driver-class-name: org.h2.Driver
-      jdbc-url: jdbc:h2:mem:appling;mode=mysql
+      jdbc-url: jdbc:h2:mem:appling;DB_CLOSE_ON_EXIT=FALSE;mode=mysql
       username: sa
       password:

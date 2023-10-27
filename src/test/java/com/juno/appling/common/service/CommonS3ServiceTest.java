@@ -6,6 +6,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
@@ -22,7 +24,8 @@ import static com.juno.appling.Base.SELLER_LOGIN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Transactional
+@Transactional(readOnly = true)
+@Execution(ExecutionMode.CONCURRENT)
 class CommonS3ServiceTest {
 
     @Autowired
@@ -37,6 +40,7 @@ class CommonS3ServiceTest {
     @Test
     @Disabled("s3에 실제로 데이터가 올라가는 테스트임")
     @DisplayName("이미 등록 성공")
+    @Transactional
     void uploadImage() {
         //given
         request.removeHeader(AUTHORIZATION);
