@@ -34,6 +34,7 @@ public class Option {
     private LocalDateTime modifiedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     public Option(String name, int extraPrice, int ea, Product product) {

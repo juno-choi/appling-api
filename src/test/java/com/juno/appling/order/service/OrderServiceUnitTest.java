@@ -13,6 +13,7 @@ import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.enums.ProductType;
 import com.juno.appling.product.infrastructure.ProductRepository;
 import com.juno.appling.product.enums.ProductStatus;
 import org.assertj.core.api.Assertions;
@@ -112,6 +113,75 @@ class OrderServiceUnitTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("상품 상태");
     }
+
+    @Test
+    @DisplayName("옵션 번호가 유효하지 않아 상품 임시 주문 등록에 실패")
+    void postTempOrderFail3() {
+        //given
+        List<TempOrderDto> tempOrderDtoList = new ArrayList<>();
+        TempOrderDto tempOrderDto1 = TempOrderDto.builder()
+            .productId(PRODUCT_ID_APPLE)
+            .ea(10)
+            .optionId(300L)
+            .build();
+        TempOrderDto tempOrderDto2 = TempOrderDto.builder()
+            .productId(PRODUCT_ID_PEAR)
+            .ea(5)
+            .build();
+        tempOrderDtoList.add(tempOrderDto1);
+        tempOrderDtoList.add(tempOrderDto2);
+        TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
+
+        List<Product> productList = new ArrayList<>();
+        Product product1 = new Product(1L, null, null, "상품명1", null, null, null, 0, 10000, null, null, null, null, null, null, null, null, ProductStatus.NORMAL, 10, null, null, new ArrayList<>(),
+            ProductType.OPTION);
+        Product product2 = new Product(1L, null, null, "상품명2", null, null, null, 0, 12000, null, null, null, null, null, null, null, null, ProductStatus.NORMAL, 10, null, null, null, null);
+        productList.add(product1);
+        productList.add(product2);
+        given(productRepository.findAllById(any())).willReturn(productList);
+
+        given(orderRepository.save(any())).willReturn(new Order(1L, null, null, new ArrayList<>(), null, null, null, null, null));
+
+        //when
+        //then
+        Assertions.assertThatThrownBy(() -> orderService.postTempOrder(tempOrderRequest, request))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("optionId");
+    }
+
+    @Test
+    @DisplayName("상품 재고가 부족하여 상품 임시 주문 등록에 실패")
+    void postTempOrderFail4() {
+        //given
+        List<TempOrderDto> tempOrderDtoList = new ArrayList<>();
+        TempOrderDto tempOrderDto1 = TempOrderDto.builder()
+            .productId(PRODUCT_ID_APPLE)
+            .ea(20)
+            .build();
+        TempOrderDto tempOrderDto2 = TempOrderDto.builder()
+            .productId(PRODUCT_ID_PEAR)
+            .ea(5)
+            .build();
+        tempOrderDtoList.add(tempOrderDto1);
+        tempOrderDtoList.add(tempOrderDto2);
+        TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
+
+        List<Product> productList = new ArrayList<>();
+        Product product1 = new Product(1L, null, null, "상품명1", null, null, null, 0, 10000, null, null, null, null, null, null, null, null, ProductStatus.NORMAL, 10, null, null, null, null);
+        Product product2 = new Product(1L, null, null, "상품명2", null, null, null, 0, 12000, null, null, null, null, null, null, null, null, ProductStatus.NORMAL, 10, null, null, null, null);
+        productList.add(product1);
+        productList.add(product2);
+        given(productRepository.findAllById(any())).willReturn(productList);
+
+        given(orderRepository.save(any())).willReturn(new Order(1L, null, null, new ArrayList<>(), null, null, null, null, null));
+
+        //when
+        //then
+        Assertions.assertThatThrownBy(() -> orderService.postTempOrder(tempOrderRequest, request))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("재고");
+    }
+
     @Test
     @DisplayName("임시 주문 등록에 성공")
     void postTempOrderSuccess() {

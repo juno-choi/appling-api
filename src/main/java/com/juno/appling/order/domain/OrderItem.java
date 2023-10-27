@@ -1,8 +1,10 @@
 package com.juno.appling.order.domain;
 
 import com.juno.appling.order.enums.OrderItemStatus;
+import com.juno.appling.product.domain.Option;
 import com.juno.appling.product.domain.Product;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
@@ -31,6 +33,11 @@ public class OrderItem {
     @NotAudited
     private Product product;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "option_id")
+    @NotAudited
+    private Option option;
+
     @Enumerated(EnumType.STRING)
     private OrderItemStatus status;
 
@@ -42,11 +49,12 @@ public class OrderItem {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private OrderItem(Order order, Product product, OrderItemStatus status, int ea,
+    private OrderItem(Order order, Product product, Option option, OrderItemStatus status, int ea,
                       int productPrice, int productTotalPrice, LocalDateTime createdAt,
                       LocalDateTime modifiedAt) {
         this.order = order;
         this.product = product;
+        this.option = option;
         this.status = status;
         this.ea = ea;
         this.productPrice = productPrice;
@@ -55,9 +63,9 @@ public class OrderItem {
         this.modifiedAt = modifiedAt;
     }
 
-    public static OrderItem of(Order order, Product product, int ea) {
+    public static OrderItem of(Order order, Product product, Option option, int ea) {
         LocalDateTime now = LocalDateTime.now();
-        return new OrderItem(order, product, OrderItemStatus.TEMP, ea, product.getPrice(),
+        return new OrderItem(order, product, option, OrderItemStatus.TEMP, ea, product.getPrice(),
             product.getPrice() * ea, now, now);
     }
 }

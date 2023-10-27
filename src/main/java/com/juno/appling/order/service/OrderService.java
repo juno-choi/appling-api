@@ -13,7 +13,9 @@ import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.order.infrastructure.DeliveryRepository;
 import com.juno.appling.order.infrastructure.OrderItemRepository;
 import com.juno.appling.order.infrastructure.OrderRepository;
+import com.juno.appling.product.domain.Option;
 import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.enums.ProductType;
 import com.juno.appling.product.infrastructure.ProductRepository;
 import com.juno.appling.product.enums.ProductStatus;
 import jakarta.servlet.http.HttpServletRequest;
@@ -72,9 +74,9 @@ public class OrderService {
         Order saveOrder = orderRepository.save(Order.of(member, sb.toString()));
 
         // 주문 상품 등록
-        Map<Long, Integer> eaMap = new HashMap<>();
+        Map<Long, TempOrderDto> eaMap = new HashMap<>();
         for(TempOrderDto o : requestOrderProductList){
-            eaMap.put(o.getProductId(), o.getEa());
+            eaMap.put(o.getProductId(), o);
         }
 
         for(Product p : productList){
@@ -82,8 +84,20 @@ public class OrderService {
                 throw new IllegalArgumentException("상품 상태가 유효하지 않습니다.");
             }
 
-            int ea = eaMap.get(p.getId());
-            OrderItem orderItem = orderItemRepository.save(OrderItem.of(saveOrder, p, ea));
+            Long optionId = eaMap.get(p.getId()).getOptionId();
+
+            // 옵션이 없을 경우 exception 처리
+            Option option = p.getType() == ProductType.OPTION ? p.getOptionList().stream().filter(o -> o.getId().equals(optionId))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("optionId가 유효하지 않습니다.")) : null;
+
+            // 재고 확인
+            int ea = eaMap.get(p.getId()).getEa();
+            int productEa = p.getType() == ProductType.OPTION ? option.getEa() : p.getEa();
+            if(productEa < ea) {
+                throw  new IllegalArgumentException(String.format("상품의 재고가 부족합니다! 남은 재고 = %s개", productEa));
+            }
+
+            OrderItem orderItem = orderItemRepository.save(OrderItem.of(saveOrder, p, option, ea));
             saveOrder.getOrderItemList().add(orderItem);
         }
 
