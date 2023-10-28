@@ -10,6 +10,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -31,7 +32,12 @@ public class OptionVo {
         return optionVoList;
     }
 
-    public OptionVo(Option option) {
+    public static OptionVo of(Option option) {
+        Optional<Option> optionalOption = Optional.ofNullable(option);
+        return optionalOption.isPresent() ? new OptionVo(option) : null;
+    }
+
+    private OptionVo(Option option) {
         this.optionId = option.getId();
         this.name = option.getName();
         this.extraPrice = option.getExtraPrice();
