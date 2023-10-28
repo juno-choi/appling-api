@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.juno.appling.order.domain.OrderItem;
+import com.juno.appling.product.domain.vo.OptionVo;
 import com.juno.appling.product.enums.ProductStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,6 +38,7 @@ public class OrderItemVo {
     private LocalDateTime modifiedAt;
     private SellerVo seller;
     private CategoryVo category;
+    private OptionVo option;
 
     public static OrderItemVo of(OrderItem orderItem) {
         return new OrderItemVo(orderItem.getProduct().getId(), orderItem.getEa(),
@@ -52,6 +54,9 @@ public class OrderItemVo {
             orderItem.getProduct().getViewCnt(), orderItem.getProduct().getStatus(),
             orderItem.getProduct().getCreateAt(), orderItem.getModifiedAt(),
             SellerVo.of(orderItem.getProduct().getSeller()),
-            CategoryVo.of(orderItem.getProduct().getCategory()));
+            CategoryVo.of(orderItem.getProduct().getCategory()),
+            OptionVo.of(orderItem.getOption())
+        );
+
     }
 }

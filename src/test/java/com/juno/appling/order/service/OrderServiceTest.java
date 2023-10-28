@@ -34,9 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
-import static com.juno.appling.Base.MEMBER_EMAIL;
-import static com.juno.appling.Base.PRODUCT_ID_APPLE;
-import static com.juno.appling.Base.PRODUCT_ID_PEAR;
+import static com.juno.appling.Base.*;
 
 @SpringBootTest
 @SqlGroup({
@@ -93,10 +91,12 @@ class OrderServiceTest {
         List<TempOrderDto> tempOrderDtoList = new ArrayList<>();
         TempOrderDto tempOrderDto1 = TempOrderDto.builder()
             .productId(PRODUCT_ID_APPLE)
+            .optionId(PRODUCT_OPTION_ID_APPLE)
             .ea(3)
             .build();
         TempOrderDto tempOrderDto2 =  TempOrderDto.builder()
             .productId(PRODUCT_ID_PEAR)
+            .optionId(PRODUCT_OPTION_ID_PEAR)
             .ea(3)
             .build();
         tempOrderDtoList.add(tempOrderDto1);

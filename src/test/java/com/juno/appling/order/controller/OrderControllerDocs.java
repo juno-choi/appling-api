@@ -1,23 +1,24 @@
 package com.juno.appling.order.controller;
 
 import com.juno.appling.RestdocsBaseTest;
-import com.juno.appling.member.service.MemberAuthService;
+import com.juno.appling.member.controller.request.LoginRequest;
+import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.infrastruceture.MemberRepository;
 import com.juno.appling.member.infrastruceture.SellerRepository;
-import com.juno.appling.member.controller.request.LoginRequest;
-import com.juno.appling.member.controller.response.LoginResponse;
-import com.juno.appling.order.infrastructure.DeliveryRepository;
-import com.juno.appling.order.domain.Order;
-import com.juno.appling.order.domain.OrderItem;
-import com.juno.appling.order.infrastructure.OrderItemRepository;
-import com.juno.appling.order.infrastructure.OrderRepository;
+import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
+import com.juno.appling.order.domain.Order;
+import com.juno.appling.order.domain.OrderItem;
+import com.juno.appling.order.infrastructure.DeliveryRepository;
+import com.juno.appling.order.infrastructure.OrderItemRepository;
+import com.juno.appling.order.infrastructure.OrderRepository;
+import com.juno.appling.product.domain.Option;
+import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.infrastructure.CategoryRepository;
 import com.juno.appling.product.infrastructure.OptionRepository;
-import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.infrastructure.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,19 +37,12 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.juno.appling.Base.CATEGORY_ID_FRUIT;
-import static com.juno.appling.Base.MEMBER_EMAIL;
-import static com.juno.appling.Base.PRODUCT_ID_APPLE;
-import static com.juno.appling.Base.PRODUCT_ID_PEAR;
-import static com.juno.appling.Base.PRODUCT_OPTION_ID_APPLE;
-import static com.juno.appling.Base.PRODUCT_OPTION_ID_PEAR;
-import static com.juno.appling.Base.SELLER_EMAIL;
+import static com.juno.appling.Base.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -170,11 +164,13 @@ class OrderControllerDocs extends RestdocsBaseTest {
 
         Order order = orderRepository.save(Order.of(member, "테스트 상품"));
 
-        Product product1 = productRepository.findById(PRODUCT_ID_APPLE).get();
-        Product product2 = productRepository.findById(PRODUCT_ID_PEAR).get();
+        Product normalProduct = productRepository.findById(PRODUCT_ID_NORMAL).get();
+        Product optionProduct = productRepository.findById(PRODUCT_ID_APPLE).get();
 
-        orderItemRepository.save(OrderItem.of(order, product1, null, 3));
-        orderItemRepository.save(OrderItem.of(order, product2, null, 5));
+        Option option1 = optionRepository.findById(PRODUCT_OPTION_ID_APPLE).get();
+
+        orderItemRepository.save(OrderItem.of(order, normalProduct, null, 3));
+        orderItemRepository.save(OrderItem.of(order, optionProduct, option1, 5));
 
         //when
         ResultActions perform = mock.perform(
@@ -226,7 +222,14 @@ class OrderControllerDocs extends RestdocsBaseTest {
                         fieldWithPath("data.order_item_list[].category.category_id").type(JsonFieldType.NUMBER).description("상품 카테고리 id"),
                         fieldWithPath("data.order_item_list[].category.name").type(JsonFieldType.STRING).description("상품 카테고리명"),
                         fieldWithPath("data.order_item_list[].category.created_at").type(JsonFieldType.STRING).description("상품 카테고리 생성일"),
-                        fieldWithPath("data.order_item_list[].category.modified_at").type(JsonFieldType.STRING).description("상품 카테고리 수정일")
+                        fieldWithPath("data.order_item_list[].category.modified_at").type(JsonFieldType.STRING).description("상품 카테고리 수정일"),
+                        fieldWithPath("data.order_item_list[].option").type(JsonFieldType.OBJECT).description("상품 옵션").optional(),
+                        fieldWithPath("data.order_item_list[].option.option_id").type(JsonFieldType.NUMBER).description("상품 옵션 id").optional(),
+                        fieldWithPath("data.order_item_list[].option.name").type(JsonFieldType.STRING).description("상품 옵션명").optional(),
+                        fieldWithPath("data.order_item_list[].option.extra_price").type(JsonFieldType.NUMBER).description("상품 옵션 추가 금액").optional(),
+                        fieldWithPath("data.order_item_list[].option.ea").type(JsonFieldType.NUMBER).description("상품 옵션 재고").optional(),
+                        fieldWithPath("data.order_item_list[].option.created_at").type(JsonFieldType.STRING).description("상품 옵션 생성일").optional(),
+                        fieldWithPath("data.order_item_list[].option.modified_at").type(JsonFieldType.STRING).description("상품 옵션 수정일").optional()
                 )
         ));
     }
