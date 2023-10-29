@@ -22,6 +22,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -112,5 +113,19 @@ class OrderServiceTest {
         Order order = orderRepository.findById(orderId).get();
         List<OrderItem> orderItemList = order.getOrderItemList();
         Assertions.assertThat(orderItemList).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("임시 주문 성공")
+    @Transactional
+    void getOrderList() {
+        //given
+        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, "password");
+        LoginResponse login = memberAuthService.login(loginRequest);
+        request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
+        //when
+        Pageable pageable = Pageable.ofSize(10);
+        orderService.getOrderListByAdmin(pageable, "", "COMPLETE", request);
+        //then
     }
 }

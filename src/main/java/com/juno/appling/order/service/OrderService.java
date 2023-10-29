@@ -1,35 +1,40 @@
 package com.juno.appling.order.service;
 
+import com.github.dockerjava.api.exception.UnauthorizedException;
 import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.Member;
-import com.juno.appling.order.domain.*;
+import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.infrastruceture.SellerRepository;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
+import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.controller.response.TempOrderResponse;
+import com.juno.appling.order.domain.Delivery;
+import com.juno.appling.order.domain.Order;
+import com.juno.appling.order.domain.OrderItem;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.order.infrastructure.DeliveryRepository;
+import com.juno.appling.order.infrastructure.OrderCustomRepository;
 import com.juno.appling.order.infrastructure.OrderItemRepository;
 import com.juno.appling.order.infrastructure.OrderRepository;
 import com.juno.appling.product.domain.Option;
 import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
 import com.juno.appling.product.infrastructure.ProductRepository;
-import com.juno.appling.product.enums.ProductStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +47,8 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final DeliveryRepository deliveryRepository;
     private final MemberUtil memberUtil;
+    private final SellerRepository sellerRepository;
+    private final OrderCustomRepository orderCustomRepository;
 
     @Transactional
     public PostTempOrderResponse postTempOrder(TempOrderRequest tempOrderRequest, HttpServletRequest request){
@@ -207,5 +214,19 @@ public class OrderService {
         return order;
     }
 
+    public List<OrderResponse> getOrderListByAdmin(Pageable pageable, String search, String status, HttpServletRequest request) {
+        Member member = memberUtil.getMember(request);
+        Seller seller = sellerRepository.findByMember(member)
+                .orElseThrow(() -> new UnauthorizedException("잘못된 접근입니다."));
 
+        /**
+         * 1. order item 중 seller product가 있는 리스트 불러오기
+         * 2. response data 만들기
+         */
+        OrderStatus orderStatus = OrderStatus.valueOf(status);
+
+        orderCustomRepository.findAll(pageable, search, orderStatus, seller);
+
+        return Arrays.asList(new OrderResponse(1L));
+    }
 }
