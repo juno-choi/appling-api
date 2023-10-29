@@ -39,7 +39,7 @@ import static com.juno.appling.Base.*;
 
 @SpringBootTest
 @SqlGroup({
-    @Sql(scripts = {"/sql/init.sql", "/sql/order.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    @Sql(scripts = {"/sql/init.sql", "/sql/product.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional(readOnly = true)
