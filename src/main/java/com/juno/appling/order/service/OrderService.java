@@ -29,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -93,15 +94,19 @@ public class OrderService {
             // 재고 확인
             int ea = eaMap.get(p.getId()).getEa();
             int productEa = p.getType() == ProductType.OPTION ? option.getEa() : p.getEa();
-            if(productEa < ea) {
-                throw  new IllegalArgumentException(String.format("상품의 재고가 부족합니다! 남은 재고 = %s개", productEa));
-            }
+            checkEa(p.getMainTitle(), productEa, ea);
 
             OrderItem orderItem = orderItemRepository.save(OrderItem.of(saveOrder, p, option, ea));
             saveOrder.getOrderItemList().add(orderItem);
         }
 
         return new PostTempOrderResponse(saveOrder.getId());
+    }
+
+    private void checkEa(String productName, int productEa, int orderEa) {
+        if(productEa < orderEa) {
+            throw  new IllegalArgumentException(String.format("[%s]상품의 재고가 부족합니다! 남은 재고 = %s개", productName, productEa));
+        }
     }
 
     public TempOrderResponse getTempOrder(Long orderId, HttpServletRequest request){
@@ -134,7 +139,32 @@ public class OrderService {
         Long orderId = completeOrderRequest.getOrderId();
         Order order = checkOrder(request, orderId);
 
+        // 재고 확인
         List<OrderItem> orderItemList = order.getOrderItemList();
+        for(OrderItem oi : orderItemList){
+            Product product = oi.getProduct();
+
+            // type 체크
+            int orderEa = oi.getEa();
+            ProductType productType = product.getType();
+            int productEa = 0;
+            Option option = null;
+            if(productType == ProductType.OPTION) {
+                option = Optional.ofNullable(oi.getOption()).orElseThrow(() -> new IllegalArgumentException("요청한 주문의 optionId가 유효하지 않습니다."));
+                Option constOption = option;
+                productEa = product.getOptionList().stream().filter(o -> o.getId().equals(constOption.getId()))
+                        .findFirst().orElseThrow(() -> new IllegalArgumentException("optionId가 유효하지 않습니다.")).getEa();
+            } else {
+                productEa = product.getEa();
+            }
+
+            checkEa(product.getMainTitle(), productEa, orderEa);
+
+            // TODO 일반 상품은 minus 옵션 상품은 minusOption
+            product.minusEa(orderEa, option);
+        }
+
+        // 배송 정보 등록
         for(OrderItem oi : orderItemList){
             deliveryRepository.save(Delivery.of(order, oi, completeOrderRequest));
         }

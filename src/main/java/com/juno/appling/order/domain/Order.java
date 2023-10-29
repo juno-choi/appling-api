@@ -34,11 +34,11 @@ public class Order {
     private String orderNumber;
 
     @NotAudited
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderItem> orderItemList = new ArrayList<>();
 
     @NotAudited
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<Delivery> deliveryList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

@@ -246,9 +246,11 @@ class OrderControllerDocs extends RestdocsBaseTest {
         Long orderId = order.getId();
 
         Product product1 = productRepository.findById(PRODUCT_ID_APPLE).get();
-        Product product2 = productRepository.findById(PRODUCT_ID_PEAR).get();
+        Product product2 = productRepository.findById(PRODUCT_ID_NORMAL).get();
 
-        orderItemRepository.save(OrderItem.of(order, product1, null, 3));
+        Option option1 = optionRepository.findById(PRODUCT_OPTION_ID_APPLE).get();
+
+        orderItemRepository.save(OrderItem.of(order, product1, option1, 3));
         orderItemRepository.save(OrderItem.of(order, product2, null, 5));
 
         CompleteOrderRequest completeOrderRequest = new CompleteOrderRequest(orderId, "주문자", "주문자 우편번호", "주문자 주소", "주문자 상세 주소", "주문자 연락처", "수령인", "수령인 우편번호", "수령인 주소", "수령인 상세 주소", "수령인 연락처");
