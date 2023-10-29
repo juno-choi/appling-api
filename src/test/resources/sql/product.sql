@@ -17,3 +17,7 @@ VALUES(1, '2023-09-26 15:09:27.363409000', 1000, 1000, '2023-09-26 15:09:27.3634
 INSERT INTO `options`
 (option_id, created_at, ea, extra_price, modified_at, name, status, product_id)
 VALUES(2, '2023-09-26 15:09:27.363409000', 1000, 1000, '2023-09-26 15:09:27.363409000', '상품2옵션1', 'NORMAL', 2);
+
+INSERT INTO `options`
+(option_id, created_at, ea, extra_price, modified_at, name, status, product_id)
+VALUES(3, '2023-09-26 15:09:27.363409000', 1000, 1000, '2023-09-26 15:09:27.363409000', '상품1옵션2', 'NORMAL', 1);

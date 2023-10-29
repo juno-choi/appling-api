@@ -28,6 +28,7 @@ import com.juno.appling.product.infrastructure.ProductRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -214,7 +215,7 @@ public class OrderService {
         return order;
     }
 
-    public List<OrderResponse> getOrderListByAdmin(Pageable pageable, String search, String status, HttpServletRequest request) {
+    public Page<OrderResponse> getOrderListBySeller(Pageable pageable, String search, String status, HttpServletRequest request) {
         Member member = memberUtil.getMember(request);
         Seller seller = sellerRepository.findByMember(member)
                 .orElseThrow(() -> new UnauthorizedException("잘못된 접근입니다."));
@@ -225,8 +226,8 @@ public class OrderService {
          */
         OrderStatus orderStatus = OrderStatus.valueOf(status);
 
-        orderCustomRepository.findAll(pageable, search, orderStatus, seller);
+        Page<OrderResponse> orderList = orderCustomRepository.findAllBySeller(pageable, search, orderStatus, seller);
 
-        return Arrays.asList(new OrderResponse(1L));
+        return orderList;
     }
 }
