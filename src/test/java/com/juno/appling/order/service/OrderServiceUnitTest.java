@@ -3,19 +3,22 @@ package com.juno.appling.order.service;
 import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.enums.Role;
-import com.juno.appling.order.domain.Order;
-import com.juno.appling.order.infrastructure.OrderItemRepository;
-import com.juno.appling.order.infrastructure.OrderRepository;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
+import com.juno.appling.order.domain.Order;
+import com.juno.appling.order.domain.OrderItem;
 import com.juno.appling.order.enums.OrderStatus;
+import com.juno.appling.order.infrastructure.DeliveryRepository;
+import com.juno.appling.order.infrastructure.OrderItemRepository;
+import com.juno.appling.order.infrastructure.OrderRepository;
+import com.juno.appling.product.domain.Option;
 import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
 import com.juno.appling.product.infrastructure.ProductRepository;
-import com.juno.appling.product.enums.ProductStatus;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,6 +57,8 @@ class OrderServiceUnitTest {
     @Mock
     private OrderItemRepository orderItemRepository;
 
+    @Mock
+    private DeliveryRepository deliveryRepository;
 
     private MockHttpServletRequest request = new MockHttpServletRequest();
 
@@ -306,6 +311,33 @@ class OrderServiceUnitTest {
                 .hasMessageContaining("유효하지 않은 주문");
     }
 
+    @Test
+    @DisplayName("주문 자체에 유효하지 않은 option id 값으로 인해 주문 완료 실패")
+    void completeOrderFail1() {
+        //given
+        Long orderId = 1L;
+        LocalDateTime now = LocalDateTime.now();
+        Member member = new Member(1L, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        CompleteOrderRequest completeOrderRequest = new CompleteOrderRequest(orderId, "주문자", "주문자 우편번호", "주문자 주소", "주문자 상세 주소", "주문자 연락처", "수령인", "수령인 우편번호", "수령인 주소", "수령인 상세 주소", "수령인 연락처");
+        Product product = Product.builder()
+                .id(PRODUCT_ID_APPLE)
+                .mainTitle("상풍명1")
+                .price(10000)
+                .status(ProductStatus.NORMAL)
+                .ea(10)
+                .build();
+
+        Order order = new Order(orderId, member, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now);
+        List<OrderItem> orderItemList = order.getOrderItemList();
+        orderItemList.add(OrderItem.of(order, product, new Option("option1", 1000, 100, product), 1));
+
+        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(order));
+        given(memberUtil.getMember(any())).willReturn(member);
+        //when
+        CompleteOrderResponse completeOrderResponse = orderService.completeOrder(completeOrderRequest, request);
+        //then
+        Assertions.assertThat(completeOrderResponse.getOrderNumber()).contains("ORDER-");
+    }
     @Test
     @DisplayName("주문 완료 성공")
     void completeOrderSuccess() {
