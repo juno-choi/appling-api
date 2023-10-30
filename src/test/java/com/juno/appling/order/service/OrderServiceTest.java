@@ -7,6 +7,7 @@ import com.juno.appling.member.infrastruceture.SellerRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
+import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.domain.Order;
@@ -137,7 +138,8 @@ class OrderServiceTest {
         request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
         //when
         Pageable pageable = Pageable.ofSize(10);
-        Page<OrderVo> complete = orderService.getOrderListBySeller(pageable, "", "COMPLETE", request);
+        OrderResponse complete = orderService.getOrderListBySeller(pageable, "", "COMPLETE",
+            request);
         //then
         assertThat(complete.getTotalElements()).isGreaterThan(1);
     }

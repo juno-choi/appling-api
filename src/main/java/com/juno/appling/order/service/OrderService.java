@@ -9,6 +9,7 @@ import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
+import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.controller.response.TempOrderResponse;
@@ -215,7 +216,7 @@ public class OrderService {
         return order;
     }
 
-    public Page<OrderVo> getOrderListBySeller(Pageable pageable, String search, String status, HttpServletRequest request) {
+    public OrderResponse getOrderListBySeller(Pageable pageable, String search, String status, HttpServletRequest request) {
         Member member = memberUtil.getMember(request);
         Seller seller = sellerRepository.findByMember(member)
                 .orElseThrow(() -> new UnauthorizedException("잘못된 접근입니다."));
@@ -224,10 +225,10 @@ public class OrderService {
          * 1. order item 중 seller product가 있는 리스트 불러오기
          * 2. response data 만들기
          */
-        OrderStatus orderStatus = OrderStatus.valueOf(status);
+        OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase(Locale.ROOT));
 
         Page<OrderVo> orderList = orderCustomRepository.findAllBySeller(pageable, search, orderStatus, seller);
 
-        return orderList;
+        return new OrderResponse(orderList.getTotalPages(), orderList.getTotalElements(), orderList.getNumber(), orderList.isLast(), orderList.isEmpty(), orderList.getContent());
     }
 }

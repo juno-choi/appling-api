@@ -2,6 +2,7 @@ package com.juno.appling.order.controller;
 
 import com.juno.appling.global.base.Api;
 import com.juno.appling.global.base.ResultCode;
+import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.service.OrderService;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
@@ -49,10 +50,10 @@ public class OrderController {
     }
 
     @GetMapping("/seller")
-    public ResponseEntity<Api<Page<OrderVo>>> getOrderBySeller(
+    public ResponseEntity<Api<OrderResponse>> getOrderBySeller(
         @PageableDefault(size = 10, page = 0) Pageable pageable,
         @RequestParam(required = false, name = "search") String search,
-        @RequestParam(required = false, name = "status", defaultValue = "normal") String status,
+        @RequestParam(required = false, name = "status", defaultValue = "complete") String status,
         HttpServletRequest request) {
         return ResponseEntity.ok(
             new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderListBySeller(pageable, search, status, request))
