@@ -30,6 +30,7 @@ public class Delivery {
     @JoinColumn(name = "order_item_id")
     private OrderItem orderItem;
 
+    @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
 
     private String ownerName;

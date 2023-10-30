@@ -1,20 +1,23 @@
 package com.juno.appling.order.service;
 
-import com.juno.appling.member.service.MemberAuthService;
-import com.juno.appling.member.infrastruceture.MemberRepository;
-import com.juno.appling.member.infrastruceture.SellerRepository;
 import com.juno.appling.member.controller.request.LoginRequest;
 import com.juno.appling.member.controller.response.LoginResponse;
-import com.juno.appling.order.domain.Order;
-import com.juno.appling.order.domain.OrderItem;
-import com.juno.appling.order.infrastructure.OrderRepository;
+import com.juno.appling.member.infrastruceture.MemberRepository;
+import com.juno.appling.member.infrastruceture.SellerRepository;
+import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
+import com.juno.appling.order.controller.response.OrderResponse;
+import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
+import com.juno.appling.order.domain.Order;
+import com.juno.appling.order.domain.OrderItem;
+import com.juno.appling.order.infrastructure.DeliveryRepository;
+import com.juno.appling.order.infrastructure.OrderItemRepository;
+import com.juno.appling.order.infrastructure.OrderRepository;
 import com.juno.appling.product.infrastructure.CategoryRepository;
 import com.juno.appling.product.infrastructure.OptionRepository;
 import com.juno.appling.product.infrastructure.ProductRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +25,8 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -35,10 +40,11 @@ import java.util.List;
 
 import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
 import static com.juno.appling.Base.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @SqlGroup({
-    @Sql(scripts = {"/sql/init.sql", "/sql/order.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional(readOnly = true)
@@ -67,10 +73,18 @@ class OrderServiceTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
+    @Autowired
+    private DeliveryRepository deliveryRepository;
+
     private MockHttpServletRequest request = new MockHttpServletRequest();
 
     @AfterEach
     void cleanup() {
+        deliveryRepository.deleteAll();
+        orderItemRepository.deleteAll();
         orderRepository.deleteAll();
         optionRepository.deleteAll();
         productRepository.deleteAll();
@@ -111,6 +125,22 @@ class OrderServiceTest {
         Long orderId = postTempOrderResponse.getOrderId();
         Order order = orderRepository.findById(orderId).get();
         List<OrderItem> orderItemList = order.getOrderItemList();
-        Assertions.assertThat(orderItemList).isNotEmpty();
+        assertThat(orderItemList).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("관리자툴에서 주문 불러오기 성공")
+    @Transactional
+    void getOrderList() {
+        //given
+        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, "password");
+        LoginResponse login = memberAuthService.login(loginRequest);
+        request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
+        //when
+        Pageable pageable = Pageable.ofSize(10);
+        OrderResponse complete = orderService.getOrderListBySeller(pageable, "", "COMPLETE",
+            request);
+        //then
+        assertThat(complete.getTotalElements()).isGreaterThan(1);
     }
 }

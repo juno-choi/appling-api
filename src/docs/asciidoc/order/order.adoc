@@ -67,3 +67,24 @@ include::{snippets}/order-controller-docs/complete/http-response.adoc[]
 ==== 🟢 RESPONSE FIELD
 
 include::{snippets}/order-controller-docs/complete/response-fields.adoc[]
+
+### 📗 주문 내역 확인 (Seller)
+
+==== 🔵 REQUEST
+include::{snippets}/order-controller-docs/get-order-by-seller/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/order-controller-docs/get-order-by-seller/request-headers.adoc[]
+
+==== 🔵 REQUEST PARAMETERS
+
+include::{snippets}/order-controller-docs/get-order-by-seller/query-parameters.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/order-controller-docs/get-order-by-seller/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/order-controller-docs/get-order-by-seller/response-fields.adoc[]

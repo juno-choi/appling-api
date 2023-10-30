@@ -70,4 +70,5 @@ public class ProductCustomRepository {
                 .fetch();
         return content;
     }
+
 }
