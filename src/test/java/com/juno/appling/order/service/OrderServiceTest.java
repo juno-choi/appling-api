@@ -7,7 +7,7 @@ import com.juno.appling.member.infrastruceture.SellerRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
-import com.juno.appling.order.controller.response.OrderResponse;
+import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.domain.Order;
 import com.juno.appling.order.domain.OrderItem;
@@ -17,7 +17,6 @@ import com.juno.appling.order.infrastructure.OrderRepository;
 import com.juno.appling.product.infrastructure.CategoryRepository;
 import com.juno.appling.product.infrastructure.OptionRepository;
 import com.juno.appling.product.infrastructure.ProductRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,6 +39,7 @@ import java.util.List;
 
 import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
 import static com.juno.appling.Base.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @SqlGroup({
@@ -124,11 +124,11 @@ class OrderServiceTest {
         Long orderId = postTempOrderResponse.getOrderId();
         Order order = orderRepository.findById(orderId).get();
         List<OrderItem> orderItemList = order.getOrderItemList();
-        Assertions.assertThat(orderItemList).isNotEmpty();
+        assertThat(orderItemList).isNotEmpty();
     }
 
     @Test
-    @DisplayName("임시 주문 성공")
+    @DisplayName("관리자툴에서 주문 불러오기 성공")
     @Transactional
     void getOrderList() {
         //given
@@ -137,7 +137,8 @@ class OrderServiceTest {
         request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
         //when
         Pageable pageable = Pageable.ofSize(10);
-        Page<OrderResponse> complete = orderService.getOrderListBySeller(pageable, "", "COMPLETE", request);
+        Page<OrderVo> complete = orderService.getOrderListBySeller(pageable, "", "COMPLETE", request);
         //then
+        assertThat(complete.getTotalElements()).isGreaterThan(1);
     }
 }

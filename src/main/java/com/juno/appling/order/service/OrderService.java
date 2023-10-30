@@ -9,7 +9,7 @@ import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
-import com.juno.appling.order.controller.response.OrderResponse;
+import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.controller.response.TempOrderResponse;
 import com.juno.appling.order.domain.Delivery;
@@ -215,7 +215,7 @@ public class OrderService {
         return order;
     }
 
-    public Page<OrderResponse> getOrderListBySeller(Pageable pageable, String search, String status, HttpServletRequest request) {
+    public Page<OrderVo> getOrderListBySeller(Pageable pageable, String search, String status, HttpServletRequest request) {
         Member member = memberUtil.getMember(request);
         Seller seller = sellerRepository.findByMember(member)
                 .orElseThrow(() -> new UnauthorizedException("잘못된 접근입니다."));
@@ -226,7 +226,7 @@ public class OrderService {
          */
         OrderStatus orderStatus = OrderStatus.valueOf(status);
 
-        Page<OrderResponse> orderList = orderCustomRepository.findAllBySeller(pageable, search, orderStatus, seller);
+        Page<OrderVo> orderList = orderCustomRepository.findAllBySeller(pageable, search, orderStatus, seller);
 
         return orderList;
     }

@@ -2,6 +2,7 @@ package com.juno.appling.order.controller;
 
 import com.juno.appling.global.base.Api;
 import com.juno.appling.global.base.ResultCode;
+import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.service.OrderService;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderRequest;
@@ -10,6 +11,9 @@ import com.juno.appling.order.controller.response.TempOrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -41,6 +45,17 @@ public class OrderController {
     public ResponseEntity<Api<CompleteOrderResponse>> completeOrder(@RequestBody @Validated CompleteOrderRequest completeOrderRequest, HttpServletRequest request, BindingResult bindingResult) {
         return ResponseEntity.ok(
             new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.completeOrder(completeOrderRequest, request))
+        );
+    }
+
+    @GetMapping("/seller")
+    public ResponseEntity<Api<Page<OrderVo>>> getOrderBySeller(
+        @PageableDefault(size = 10, page = 0) Pageable pageable,
+        @RequestParam(required = false, name = "search") String search,
+        @RequestParam(required = false, name = "status", defaultValue = "normal") String status,
+        HttpServletRequest request) {
+        return ResponseEntity.ok(
+            new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderListBySeller(pageable, search, status, request))
         );
     }
 }

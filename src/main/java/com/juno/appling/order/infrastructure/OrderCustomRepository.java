@@ -2,7 +2,7 @@ package com.juno.appling.order.infrastructure;
 
 import com.juno.appling.global.querydsl.QuerydslConfig;
 import com.juno.appling.member.domain.Seller;
-import com.juno.appling.order.controller.response.OrderResponse;
+import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.domain.QOrder;
 import com.juno.appling.order.domain.QOrderItem;
 import com.juno.appling.order.enums.OrderStatus;
@@ -23,7 +23,7 @@ import java.util.List;
 public class OrderCustomRepository {
     private final QuerydslConfig q;
 
-    public Page<OrderResponse> findAllBySeller(Pageable pageable, String search, OrderStatus status, Seller seller) {
+    public Page<OrderVo> findAllBySeller(Pageable pageable, String search, OrderStatus status, Seller seller) {
         QProduct product = QProduct.product;
         QOrder order = QOrder.order;
         QOrderItem orderItem = QOrderItem.orderItem;
@@ -34,7 +34,7 @@ public class OrderCustomRepository {
         builder.and(order.status.eq(OrderStatus.COMPLETE));
         builder.and(product.seller.id.eq(seller.getId()));
 
-        List<OrderResponse> content = q.query().select(Projections.constructor(OrderResponse.class,
+        List<OrderVo> content = q.query().select(Projections.constructor(OrderVo.class,
                     order
                 ))
                 .from(order)
