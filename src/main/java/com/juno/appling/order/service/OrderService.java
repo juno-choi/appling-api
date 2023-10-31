@@ -18,7 +18,7 @@ import com.juno.appling.order.domain.Order;
 import com.juno.appling.order.domain.OrderItem;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.order.infrastructure.DeliveryRepository;
-import com.juno.appling.order.infrastructure.OrderCustomRepository;
+import com.juno.appling.order.infrastructure.OrderCustomRepositoryImpl;
 import com.juno.appling.order.infrastructure.OrderItemRepository;
 import com.juno.appling.order.infrastructure.OrderRepository;
 import com.juno.appling.product.domain.Option;
@@ -50,7 +50,7 @@ public class OrderService {
     private final DeliveryRepository deliveryRepository;
     private final MemberUtil memberUtil;
     private final SellerRepository sellerRepository;
-    private final OrderCustomRepository orderCustomRepository;
+    private final OrderCustomRepositoryImpl orderCustomRepositoryImpl;
 
     @Transactional
     public PostTempOrderResponse postTempOrder(TempOrderRequest tempOrderRequest, HttpServletRequest request){
@@ -227,7 +227,7 @@ public class OrderService {
          */
         OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase(Locale.ROOT));
 
-        Page<OrderVo> orderList = orderCustomRepository.findAllBySeller(pageable, search, orderStatus, seller);
+        Page<OrderVo> orderList = orderCustomRepositoryImpl.findAllBySeller(pageable, search, orderStatus, seller);
 
         return new OrderResponse(orderList.getTotalPages(), orderList.getTotalElements(), orderList.getNumber(), orderList.isLast(), orderList.isEmpty(), orderList.getContent());
     }
