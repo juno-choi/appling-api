@@ -3,11 +3,14 @@ package com.juno.appling.product.infrastructure;
 import com.juno.appling.global.querydsl.QuerydslConfig;
 import com.juno.appling.product.controller.response.ProductResponse;
 import com.juno.appling.product.domain.Category;
+import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.domain.QOption;
 import com.juno.appling.product.domain.QProduct;
+import com.juno.appling.product.enums.OptionStatus;
 import com.juno.appling.product.enums.ProductStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -45,14 +48,21 @@ public class ProductCustomRepository {
         }
         builder.and(product.status.eq(productStatus));
 
-        List<ProductResponse> content = q.query()
-            .select(Projections.constructor(ProductResponse.class, product))
-            .from(product)
+        List<Product> fetch = q.query()
+            .selectFrom(product)
+            .join(product.category).fetchJoin()
+            .join(product.seller).fetchJoin()
+            .leftJoin(product.optionList, option).fetchJoin()
             .where(builder)
+            .distinct()
             .orderBy(product.createAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
+
+        List<ProductResponse> content = fetch.stream().map(ProductResponse::new)
+            .collect(Collectors.toList());
+
         Long total = q.query().from(product).where(builder).stream().count();
         return new PageImpl<>(content, pageable, total);
     }

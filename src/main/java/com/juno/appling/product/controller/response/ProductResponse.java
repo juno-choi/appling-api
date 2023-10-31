@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.domain.vo.OptionVo;
+import com.juno.appling.product.enums.OptionStatus;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
 import lombok.AllArgsConstructor;
@@ -70,7 +71,7 @@ public class ProductResponse {
                 product.getSeller().getAddress(), product.getSeller().getAddressDetail(), product.getSeller().getTel()),
             new CategoryResponse(product.getCategory().getId(), product.getCategory().getName(),
                 product.getCategory().getCreatedAt(), product.getCategory().getModifiedAt()),
-            OptionVo.getVoList(product.getOptionList())
+            OptionVo.getVoList(product.getOptionList().stream().filter(o -> o.getStatus().equals(OptionStatus.NORMAL)).toList())
         );
     }
 }
