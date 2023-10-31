@@ -73,8 +73,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop  #절대 수정 금지
+      format_sql: true
     show-sql: true
     defer-datasource-initialization: true
+    properties:
+      hibernate:
+        default_batch_size: 100
   datasource:
     hikari:
       driver-class-name: org.h2.Driver
