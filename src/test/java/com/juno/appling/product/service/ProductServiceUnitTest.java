@@ -17,7 +17,7 @@ import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
 import com.juno.appling.product.infrastructure.CategoryRepository;
 import com.juno.appling.product.infrastructure.OptionRepository;
-import com.juno.appling.product.infrastructure.ProductCustomRepository;
+import com.juno.appling.product.infrastructure.ProductCustomRepositoryImpl;
 import com.juno.appling.product.infrastructure.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,7 +59,7 @@ class ProductServiceUnitTest {
     private SellerRepository sellerRepository;
 
     @Mock
-    private ProductCustomRepository productCustomRepository;
+    private ProductCustomRepositoryImpl productCustomRepositoryImpl;
 
     @Mock
     private OptionRepository optionRepository;

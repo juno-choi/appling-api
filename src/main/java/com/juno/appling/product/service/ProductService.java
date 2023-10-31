@@ -21,7 +21,7 @@ import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
 import com.juno.appling.product.infrastructure.CategoryRepository;
 import com.juno.appling.product.infrastructure.OptionRepository;
-import com.juno.appling.product.infrastructure.ProductCustomRepository;
+import com.juno.appling.product.infrastructure.ProductCustomRepositoryImpl;
 import com.juno.appling.product.infrastructure.ProductRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +41,7 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductCustomRepository productCustomRepository;
+    private final ProductCustomRepositoryImpl productCustomRepositoryImpl;
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
     private final CategoryRepository categoryRepository;
@@ -87,7 +87,7 @@ public class ProductService {
                                               Long categoryId, Long sellerId) {
         ProductStatus productStatusOfEnums = ProductStatus.valueOf(status.toUpperCase(Locale.ROOT));
         Category category = categoryRepository.findById(categoryId).orElse(null);
-        Page<ProductResponse> page = productCustomRepository.findAll(pageable, search, productStatusOfEnums,
+        Page<ProductResponse> page = productCustomRepositoryImpl.findAll(pageable, search, productStatusOfEnums,
             category, sellerId);
 
         return new ProductListResponse(page.getTotalPages(), page.getTotalElements(),
@@ -95,7 +95,7 @@ public class ProductService {
     }
 
     public ProductBasketListResponse getProductBasket(List<Long> productIdList) {
-        List<ProductResponse> productList = productCustomRepository.findAllByIdList(productIdList);
+        List<ProductResponse> productList = productCustomRepositoryImpl.findAllByIdList(productIdList);
         return new ProductBasketListResponse(productList);
     }
 
@@ -156,7 +156,7 @@ public class ProductService {
         Long memberId = tokenProvider.getMemberId(request);
         ProductStatus productStatusOfEnums = ProductStatus.valueOf(status.toUpperCase(Locale.ROOT));
         Category category = categoryRepository.findById(categoryId).orElse(null);
-        Page<ProductResponse> page = productCustomRepository.findAll(pageable, search, productStatusOfEnums,
+        Page<ProductResponse> page = productCustomRepositoryImpl.findAll(pageable, search, productStatusOfEnums,
             category, memberId);
 
         return new ProductListResponse(page.getTotalPages(), page.getTotalElements(),
