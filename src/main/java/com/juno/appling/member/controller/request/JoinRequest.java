@@ -3,6 +3,7 @@ package com.juno.appling.member.controller.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class JoinRequest {
 
     @NotNull(message = "email 비어있을 수 없습니다.")

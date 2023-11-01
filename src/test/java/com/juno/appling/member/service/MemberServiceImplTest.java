@@ -75,16 +75,26 @@ public class MemberServiceImplTest {
         String changeName = "수정함";
         String changeBirth = "19941030";
 
-        JoinRequest joinRequest = new JoinRequest(email, password, "수정자", "수정할거야", "19991010");
+        JoinRequest joinRequest = JoinRequest.builder()
+            .email(email)
+            .password(password)
+            .name("수정자")
+            .nickname("수정할거야")
+            .birth("19991010")
+            .build();
         joinRequest.passwordEncoder(passwordEncoder);
         memberRepository.save(Member.of(joinRequest));
-        LoginRequest loginRequest = new LoginRequest(email, password);
+        LoginRequest loginRequest = LoginRequest.builder().email(email).password(password).build();
         LoginResponse login = memberAuthService.login(loginRequest);
         request.removeHeader(AUTHORIZATION);
         request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
 
-        PatchMemberRequest patchMemberRequest = new PatchMemberRequest(changeBirth, changeName, changePassword,
-            "수정되버림", null);
+        PatchMemberRequest patchMemberRequest = PatchMemberRequest.builder()
+            .birth(changeBirth)
+            .name(changeName)
+            .password(changePassword)
+            .nickname("수정되어버림")
+            .build();
         // when
         MessageVo messageVo = memberService.patchMember(patchMemberRequest, request);
         // then
@@ -126,8 +136,15 @@ public class MemberServiceImplTest {
         request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
 
         String changeCompany = "변경 회사명";
-        PutSellerRequest putSellerRequest = new PutSellerRequest(changeCompany, "01012341234", "4321", "변경된 주소", "상세 주소",
-            "mail@mail.com");
+        PutSellerRequest putSellerRequest = PutSellerRequest.builder()
+            .company(changeCompany)
+            .tel("01012341234")
+            .zonecode("4321")
+            .address("변경 주소")
+            .addressDetail("상세 주소")
+            .email("mail@mail.com")
+            .build();
+
         // when
         MessageVo messageVo = memberService.putSeller(putSellerRequest, request);
         // then

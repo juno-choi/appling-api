@@ -181,8 +181,13 @@ public class MemberAuthServiceImpl implements MemberAuthService{
         Member member;
         if (findMember.isEmpty()) {
             // 회원 가입 진행
-            JoinRequest joinRequest = new JoinRequest(email, snsId, info.kakao_account.profile.nickname,
-                info.kakao_account.profile.nickname, null);
+            JoinRequest joinRequest = JoinRequest.builder()
+                .email(email)
+                .password(snsId)
+                .name(info.kakao_account.profile.nickname)
+                .nickname(info.kakao_account.profile.nickname)
+                .build();
+
             joinRequest.passwordEncoder(passwordEncoder);
             member = memberRepository.save(Member.of(joinRequest, snsId, SnsJoinType.KAKAO));
             myMailSender.send("애플링 가족이 되신걸 환영해요!", "<html><h1>애플링 회원 가입에 감사드립니다.</h1></html>",
