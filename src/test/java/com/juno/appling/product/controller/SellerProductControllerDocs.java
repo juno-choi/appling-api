@@ -93,15 +93,53 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
         Member member2 = memberRepository.findByEmail(SELLER2_EMAIL).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
+        OptionRequest optionRequest1 = OptionRequest.builder()
+                .name("option1")
+                .extraPrice(1000)
+                .status(OptionStatus.NORMAL.name())
+                .ea(100)
+                .build();
         optionRequestList.add(optionRequest1);
 
-        ProductRequest productRequest = new ProductRequest(1L, "다른 유저 상품", "메인 설명", "상품 메인 설명", "상품 서브 설명",
-            10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1",
-            "https://image2", "https://image3", "normal", 10, optionRequestList, "normal");
-        ProductRequest searchDto = new ProductRequest(1L, "셀러 유저 상품", "메인 설명", "상품 메인 설명", "상품 서브 설명",
-            10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", "https://image1",
-            "https://image2", "https://image3", "normal", 10, optionRequestList, "normal");
+        ProductRequest productRequest = ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle("메인 제목")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("normal")
+            .build();
+        ProductRequest searchDto =ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle("메인 제목")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("option")
+            .optionList(optionRequestList)
+            .build();
         Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
         Seller seller = sellerRepository.findByMember(member).get();
@@ -217,9 +255,25 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "(POST/normal)")
     void postProduct() throws Exception {
         // given
-        ProductRequest productRequest = new ProductRequest(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
-            9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
-            "https://image3", "normal", 10, null, "normal");
+        ProductRequest productRequest = ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle("메인 제목")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("normal")
+            .build();
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         // when
         ResultActions perform = mock.perform(
@@ -321,12 +375,34 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
     void postOptionProduct() throws Exception {
         // given
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
+        OptionRequest optionRequest1 = OptionRequest.builder()
+            .name("option1")
+            .extraPrice(1000)
+            .status(OptionStatus.NORMAL.name())
+            .ea(100)
+            .build();
         optionRequestList.add(optionRequest1);
 
-        ProductRequest productRequest = new ProductRequest(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
-                9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
-                "https://image3", "normal", 10, optionRequestList, "option");
+        ProductRequest productRequest = ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle("메인 제목")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("option")
+            .optionList(optionRequestList)
+            .build();
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         // when
         ResultActions perform = mock.perform(
@@ -436,8 +512,25 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
-        ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
-            8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10, null, "normal");
+        ProductRequest productRequest = ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle("메인 제목")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("normal")
+            .build();
         Seller seller = sellerRepository.findByMember(member).get();
         Product originalProduct = productRepository.save(Product.of(seller, category, productRequest));
         Long productId = originalProduct.getId();
@@ -566,14 +659,37 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
-        ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
-            8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10, new ArrayList<>(), "option");
+        ProductRequest productRequest = ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle("메인 제목")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("option")
+            .optionList(new ArrayList<>())
+            .build();
         Seller seller = sellerRepository.findByMember(member).get();
         Product originalProduct = productRepository.save(Product.of(seller, category, productRequest));
         Long productId = originalProduct.getId();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
+        OptionRequest optionRequest1 = OptionRequest.builder()
+            .name("option1")
+            .extraPrice(1000)
+            .status(OptionStatus.NORMAL.name())
+            .ea(100)
+            .build();
         optionRequestList.add(optionRequest1);
 
         Option option = optionRepository.save(Option.of(originalProduct, optionRequest1));
@@ -581,7 +697,13 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
         originalProduct.addOptionsList(option);
 
         List<OptionRequest> putOptionRequestList = new ArrayList<>();
-        OptionRequest putOptionRequest1 = new OptionRequest(optionId, "option3333", 1000, OptionStatus.NORMAL.name(), 100);
+        OptionRequest putOptionRequest1 = OptionRequest.builder()
+            .optionId(optionId)
+            .name("option3333")
+            .extraPrice(1000)
+            .status(OptionStatus.NORMAL.name())
+            .ea(100)
+            .build();
         putOptionRequestList.add(putOptionRequest1);
 
         PutProductRequest putProductRequest = PutProductRequest.builder()

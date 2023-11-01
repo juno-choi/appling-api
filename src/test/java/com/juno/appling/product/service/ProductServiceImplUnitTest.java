@@ -1,5 +1,6 @@
 package com.juno.appling.product.service;
 
+import static com.juno.appling.Base.CATEGORY_ID_FRUIT;
 import static com.juno.appling.Base.PRODUCT_ID_APPLE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -81,9 +82,25 @@ class ProductServiceImplUnitTest {
         //given
         String mainTitle = "메인 제목";
 
-        ProductRequest productRequest = new ProductRequest(1L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
-            10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
-            "https://image3", "normal", 10, null, "normal");
+        ProductRequest productRequest = ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle("메인 제목")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("normal")
+            .build();
         Category category = new Category();
 
         given(tokenProvider.resolveToken(any())).willReturn("token");
@@ -109,12 +126,34 @@ class ProductServiceImplUnitTest {
         String mainTitle = "메인 제목";
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
+        OptionRequest optionRequest1 = OptionRequest.builder()
+            .name("option1")
+            .extraPrice(1000)
+            .status(OptionStatus.NORMAL.name())
+            .ea(100)
+            .build();
         optionRequestList.add(optionRequest1);
 
-        ProductRequest productRequest = new ProductRequest(1L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
-                10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
-                "https://image3", "normal", 10, optionRequestList, "option");
+        ProductRequest productRequest = ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle("메인 제목")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .optionList(optionRequestList)
+            .type("option")
+            .build();
         Category category = new Category();
 
         given(tokenProvider.resolveToken(any())).willReturn("token");
@@ -139,9 +178,25 @@ class ProductServiceImplUnitTest {
         //given
         String mainTitle = "메인 제목";
 
-        ProductRequest productRequest = new ProductRequest(0L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
-            10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
-            "https://image3", "normal", 10, null, "normal");
+        ProductRequest productRequest = ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle(mainTitle)
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("normal")
+            .build();
         //when
         Throwable throwable = catchThrowable(() -> productService.postProduct(productRequest, request));
 
@@ -157,9 +212,25 @@ class ProductServiceImplUnitTest {
         //given
         String mainTitle = "메인 제목";
 
-        ProductRequest productRequest = new ProductRequest(0L, mainTitle, "메인 설명", "상품 메인 설명", "상품 서브 설명",
-                10000, 9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
-                "https://image3", "normal", 10, null, "normal");
+        ProductRequest productRequest = ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle("메인 제목")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("normal")
+            .build();
         //when
         Throwable throwable = catchThrowable(() -> productService.postProduct(productRequest, request));
 
@@ -219,8 +290,19 @@ class ProductServiceImplUnitTest {
     void putProductSuccess1() {
         // given
         List<OptionRequest> optionRequestList = new ArrayList<>();
-        OptionRequest optionRequest1 = new OptionRequest(1L, "option2", 1000, OptionStatus.NORMAL.name(), 100);
-        OptionRequest optionRequest2 = new OptionRequest(null, "option2", 1000, OptionStatus.NORMAL.name(), 100);
+        OptionRequest optionRequest1 = OptionRequest.builder()
+            .optionId(1L)
+            .name("option2")
+            .extraPrice(1000)
+            .status(OptionStatus.NORMAL.name())
+            .ea(100)
+            .build();
+        OptionRequest optionRequest2 = OptionRequest.builder()
+            .name("option2")
+            .extraPrice(1000)
+            .status(OptionStatus.NORMAL.name())
+            .ea(100)
+            .build();
         optionRequestList.add(optionRequest1);
         optionRequestList.add(optionRequest2);
         LocalDateTime now = LocalDateTime.now();
@@ -276,7 +358,7 @@ class ProductServiceImplUnitTest {
         // given
         // when
         Throwable throwable = catchThrowable(
-            () -> productService.addViewCnt(new AddViewCntRequest(1L)));
+            () -> productService.addViewCnt(AddViewCntRequest.builder().productId(1L).build()));
         // then
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("유효하지 않은 상품");
