@@ -113,7 +113,7 @@ public class OrderServiceImpl implements OrderService{
             saveOrder.getOrderItemList().add(orderItem);
         }
 
-        return new PostTempOrderResponse(saveOrder.getId());
+        return PostTempOrderResponse.builder().orderId(saveOrder.getId()).build();
     }
 
     private void checkEa(String productName, int productEa, int orderEa) {
@@ -129,7 +129,7 @@ public class OrderServiceImpl implements OrderService{
          */
         Order order = checkOrder(request, orderId);
 
-        return TempOrderResponse.of(order);
+        return TempOrderResponse.from(order);
     }
 
     /**
@@ -191,7 +191,7 @@ public class OrderServiceImpl implements OrderService{
         String orderNumber = String.format("ORDER-%s-%s", createdAt.format(formatter), orderId);
         order.orderNumber(orderNumber);
 
-        return new CompleteOrderResponse(orderId, orderNumber);
+        return CompleteOrderResponse.from(order);
     }
 
     /**
@@ -236,6 +236,6 @@ public class OrderServiceImpl implements OrderService{
 
         Page<OrderVo> orderList = orderCustomRepositoryImpl.findAllBySeller(pageable, search, orderStatus, seller);
 
-        return new OrderResponse(orderList.getTotalPages(), orderList.getTotalElements(), orderList.getNumber(), orderList.isLast(), orderList.isEmpty(), orderList.getContent());
+        return OrderResponse.from(orderList);
     }
 }

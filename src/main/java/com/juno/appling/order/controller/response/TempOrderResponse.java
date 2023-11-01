@@ -9,24 +9,29 @@ import com.juno.appling.order.domain.vo.OrderItemVo;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@Builder
 public class TempOrderResponse {
     private Long orderId;
     private List<OrderItemVo> orderItemList;
 
 
-    public static TempOrderResponse of(Order order) {
+    public static TempOrderResponse from(Order order) {
         List<OrderItem> itemList = order.getOrderItemList();
         List<OrderItemVo> orderItemVoList = new ArrayList<>();
         for(OrderItem o : itemList){
-            orderItemVoList.add(OrderItemVo.fromOrderItemEntity(o));
+            orderItemVoList.add(OrderItemVo.from(o));
         }
 
-        return new TempOrderResponse(order.getId(), orderItemVoList);
+        return TempOrderResponse.builder()
+            .orderId(order.getId())
+            .orderItemList(orderItemVoList)
+            .build();
     }
 }
