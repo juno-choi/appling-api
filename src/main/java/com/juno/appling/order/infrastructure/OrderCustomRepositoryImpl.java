@@ -2,21 +2,20 @@ package com.juno.appling.order.infrastructure;
 
 import com.juno.appling.global.querydsl.QuerydslConfig;
 import com.juno.appling.member.domain.Seller;
-import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.domain.QOrder;
 import com.juno.appling.order.domain.QOrderItem;
+import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.QOption;
 import com.juno.appling.product.domain.QProduct;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor

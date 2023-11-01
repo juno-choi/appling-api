@@ -3,6 +3,9 @@ package com.juno.appling.global.security;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.enums.Role;
 import com.juno.appling.member.infrastruceture.MemberRepository;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
@@ -10,10 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Service

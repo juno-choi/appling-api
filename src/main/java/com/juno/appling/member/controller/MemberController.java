@@ -1,5 +1,8 @@
 package com.juno.appling.member.controller;
 
+import static com.juno.appling.global.base.ResultCode.POST;
+import static com.juno.appling.global.base.ResultCode.SUCCESS;
+
 import com.juno.appling.global.advice.exception.DuringProcessException;
 import com.juno.appling.global.base.Api;
 import com.juno.appling.global.base.MessageVo;
@@ -14,20 +17,22 @@ import com.juno.appling.member.service.MemberService;
 import com.juno.appling.product.controller.response.SellerResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
-
-import static com.juno.appling.global.base.ResultCode.POST;
-import static com.juno.appling.global.base.ResultCode.SUCCESS;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("${api-prefix}/member")

@@ -9,15 +9,14 @@ import com.juno.appling.product.domain.QProduct;
 import com.juno.appling.product.enums.ProductStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor

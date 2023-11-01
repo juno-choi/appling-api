@@ -1,5 +1,14 @@
 package com.juno.appling.order.service;
 
+import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
+import static com.juno.appling.Base.MEMBER_EMAIL;
+import static com.juno.appling.Base.PRODUCT_ID_APPLE;
+import static com.juno.appling.Base.PRODUCT_ID_PEAR;
+import static com.juno.appling.Base.PRODUCT_OPTION_ID_APPLE;
+import static com.juno.appling.Base.PRODUCT_OPTION_ID_PEAR;
+import static com.juno.appling.Base.SELLER_EMAIL;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.juno.appling.member.controller.request.LoginRequest;
 import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.infrastruceture.MemberRepository;
@@ -8,7 +17,6 @@ import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.OrderResponse;
-import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.domain.Order;
 import com.juno.appling.order.domain.OrderItem;
@@ -18,6 +26,8 @@ import com.juno.appling.order.infrastructure.OrderRepository;
 import com.juno.appling.product.infrastructure.CategoryRepository;
 import com.juno.appling.product.infrastructure.OptionRepository;
 import com.juno.appling.product.infrastructure.ProductRepository;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +35,6 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -34,13 +43,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
-import static com.juno.appling.Base.*;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @SqlGroup({

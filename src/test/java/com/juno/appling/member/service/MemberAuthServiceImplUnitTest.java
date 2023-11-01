@@ -1,19 +1,35 @@
 package com.juno.appling.member.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.juno.appling.global.mail.MyMailSender;
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.controller.request.JoinRequest;
+import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.controller.response.kakao.KakaoLoginResponse;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.enums.SnsJoinType;
-import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.infrastruceture.MemberRepository;
 import io.jsonwebtoken.Jwts;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -30,21 +46,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
-
 @ExtendWith({MockitoExtension.class})
-class MemberAuthServiceUnitTest {
+class MemberAuthServiceImplUnitTest {
 
     @InjectMocks
-    private MemberAuthService memberAuthService;
+    private MemberAuthServiceImpl memberAuthService;
 
     @Mock
     private Environment env;
@@ -89,7 +95,7 @@ class MemberAuthServiceUnitTest {
     void initialize() {
         String baseUrl = String.format("http://localhost:%s", mockWebServer.getPort());
         final WebClient webClient = WebClient.create(baseUrl);
-        memberAuthService = new MemberAuthService(
+        memberAuthService = new MemberAuthServiceImpl(
             memberRepository, passwordEncoder, authenticationManagerBuilder, tokenProvider,
             redisTemplate, webClient, webClient, env, myMailSender
         );

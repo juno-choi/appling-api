@@ -6,11 +6,10 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.juno.appling.order.domain.Order;
 import com.juno.appling.order.domain.OrderItem;
 import com.juno.appling.order.domain.vo.OrderItemVo;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @Getter
 @AllArgsConstructor

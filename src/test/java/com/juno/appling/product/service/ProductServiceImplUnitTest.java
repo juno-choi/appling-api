@@ -1,17 +1,27 @@
 package com.juno.appling.product.service;
 
+import static com.juno.appling.Base.PRODUCT_ID_APPLE;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.infrastruceture.MemberRepository;
 import com.juno.appling.member.domain.Seller;
-import com.juno.appling.member.infrastruceture.SellerRepository;
 import com.juno.appling.member.enums.Role;
-import com.juno.appling.product.domain.*;
+import com.juno.appling.member.infrastruceture.MemberRepository;
+import com.juno.appling.member.infrastruceture.SellerRepository;
 import com.juno.appling.product.controller.request.AddViewCntRequest;
 import com.juno.appling.product.controller.request.OptionRequest;
 import com.juno.appling.product.controller.request.ProductRequest;
 import com.juno.appling.product.controller.request.PutProductRequest;
 import com.juno.appling.product.controller.response.ProductResponse;
+import com.juno.appling.product.domain.Category;
+import com.juno.appling.product.domain.Option;
+import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.enums.OptionStatus;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
@@ -19,6 +29,10 @@ import com.juno.appling.product.infrastructure.CategoryRepository;
 import com.juno.appling.product.infrastructure.OptionRepository;
 import com.juno.appling.product.infrastructure.ProductCustomRepositoryImpl;
 import com.juno.appling.product.infrastructure.ProductRepository;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,24 +43,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static com.juno.appling.Base.PRODUCT_ID_APPLE;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-
 @ExtendWith(MockitoExtension.class)
-class ProductServiceUnitTest {
+class ProductServiceImplUnitTest {
 
     @InjectMocks
-    private ProductService productService;
+    private ProductServiceImpl productService;
     @Mock
     private ProductRepository productRepository;
     @Mock

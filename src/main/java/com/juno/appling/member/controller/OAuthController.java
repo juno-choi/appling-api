@@ -1,5 +1,7 @@
 package com.juno.appling.member.controller;
 
+import static com.juno.appling.global.base.ResultCode.SUCCESS;
+
 import com.juno.appling.global.base.Api;
 import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.service.MemberAuthService;
@@ -9,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import static com.juno.appling.global.base.ResultCode.SUCCESS;
 
 @RestController
 @RequestMapping("${api-prefix}/oauth")

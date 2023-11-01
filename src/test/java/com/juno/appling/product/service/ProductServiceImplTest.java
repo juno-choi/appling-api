@@ -1,20 +1,29 @@
 package com.juno.appling.product.service;
 
+import static com.juno.appling.Base.CATEGORY_ID_FRUIT;
+import static com.juno.appling.Base.CATEGORY_ID_VEGETABLE;
+import static com.juno.appling.Base.SELLER2_EMAIL;
+import static com.juno.appling.Base.SELLER_EMAIL;
+import static com.juno.appling.Base.SELLER_LOGIN;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 import com.juno.appling.global.base.MessageVo;
-import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.infrastruceture.MemberRepository;
 import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.infrastruceture.MemberRepository;
 import com.juno.appling.member.infrastruceture.SellerRepository;
-import com.juno.appling.product.domain.Category;
-import com.juno.appling.product.infrastructure.CategoryRepository;
-import com.juno.appling.product.domain.Product;
-import com.juno.appling.product.infrastructure.ProductRepository;
+import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.product.controller.request.AddViewCntRequest;
 import com.juno.appling.product.controller.request.ProductRequest;
 import com.juno.appling.product.controller.request.PutProductRequest;
 import com.juno.appling.product.controller.response.ProductListResponse;
 import com.juno.appling.product.controller.response.ProductResponse;
+import com.juno.appling.product.domain.Category;
+import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.infrastructure.CategoryRepository;
+import com.juno.appling.product.infrastructure.ProductRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,16 +40,6 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
-import static com.juno.appling.Base.CATEGORY_ID_FRUIT;
-import static com.juno.appling.Base.CATEGORY_ID_VEGETABLE;
-import static com.juno.appling.Base.SELLER2_EMAIL;
-import static com.juno.appling.Base.SELLER_EMAIL;
-import static com.juno.appling.Base.SELLER_LOGIN;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SqlGroup({
     @Sql(scripts = {"/sql/init.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
@@ -48,7 +47,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional(readOnly = true)
 @Execution(ExecutionMode.CONCURRENT)
-class ProductServiceTest {
+class ProductServiceImplTest {
 
     @Autowired
     private ProductService productService;

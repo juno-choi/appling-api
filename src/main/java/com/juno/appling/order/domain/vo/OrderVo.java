@@ -4,13 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.juno.appling.order.domain.Order;
-import com.juno.appling.order.domain.vo.DeliveryVo;
-import com.juno.appling.order.domain.vo.MemberVo;
-import com.juno.appling.order.domain.vo.OrderItemVo;
 import java.time.LocalDateTime;
-import lombok.Getter;
-
 import java.util.List;
+import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)

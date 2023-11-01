@@ -1,11 +1,21 @@
 package com.juno.appling.common.service;
 
+import static org.assertj.core.api.BDDAssertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+
 import com.juno.appling.common.controller.response.UploadResponse;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.enums.Role;
 import com.juno.appling.member.infrastruceture.MemberRepository;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,23 +29,12 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.BDDAssertions.catchThrowable;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
-
 
 @ExtendWith(MockitoExtension.class)
-class CommonS3ServiceUnitTest {
+class CommonS3ServiceImplUnitTest {
 
     @InjectMocks
-    private CommonS3Service commonS3Service;
+    private CommonS3ServiceImpl commonS3Service;
     @Mock
     private Environment env;
     @Mock

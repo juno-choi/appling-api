@@ -1,16 +1,23 @@
 package com.juno.appling.member.service;
 
+import static com.juno.appling.Base.MEMBER_EMAIL;
+import static com.juno.appling.Base.MEMBER_LOGIN;
+import static com.juno.appling.Base.SELLER_EMAIL;
+import static com.juno.appling.Base.SELLER_LOGIN;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.member.controller.request.JoinRequest;
 import com.juno.appling.member.controller.request.LoginRequest;
 import com.juno.appling.member.controller.request.PatchMemberRequest;
 import com.juno.appling.member.controller.request.PutSellerRequest;
+import com.juno.appling.member.controller.response.LoginResponse;
+import com.juno.appling.member.controller.response.RecipientListResponse;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.domain.Recipient;
 import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.enums.RecipientInfoStatus;
-import com.juno.appling.member.controller.response.LoginResponse;
-import com.juno.appling.member.controller.response.RecipientListResponse;
 import com.juno.appling.member.infrastruceture.MemberRepository;
 import com.juno.appling.member.infrastruceture.SellerRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -29,13 +36,6 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.juno.appling.Base.MEMBER_EMAIL;
-import static com.juno.appling.Base.MEMBER_LOGIN;
-import static com.juno.appling.Base.SELLER_EMAIL;
-import static com.juno.appling.Base.SELLER_LOGIN;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SqlGroup({
     @Sql(scripts = {"/sql/init.sql", "/sql/introduce.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
@@ -43,7 +43,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional(readOnly = true)
 @Execution(ExecutionMode.CONCURRENT)
-public class MemberServiceTest {
+public class MemberServiceImplTest {
 
     @Autowired
     private MemberService memberService;

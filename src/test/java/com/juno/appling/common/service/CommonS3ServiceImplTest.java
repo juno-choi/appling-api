@@ -1,7 +1,13 @@
 package com.juno.appling.common.service;
 
+import static com.juno.appling.Base.SELLER_LOGIN;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 import com.juno.appling.common.controller.response.UploadResponse;
 import com.juno.appling.member.service.MemberAuthService;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -16,17 +22,10 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
-import java.util.List;
-
-import static com.juno.appling.Base.SELLER_LOGIN;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional(readOnly = true)
 @Execution(ExecutionMode.CONCURRENT)
-class CommonS3ServiceTest {
+class CommonS3ServiceImplTest {
 
     @Autowired
     private CommonS3Service commonS3Service;

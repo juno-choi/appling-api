@@ -7,10 +7,9 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.juno.appling.member.enums.Role;
 import com.juno.appling.member.enums.SnsJoinType;
 import com.juno.appling.member.enums.Status;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
