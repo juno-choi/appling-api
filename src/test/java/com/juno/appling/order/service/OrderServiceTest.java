@@ -1,16 +1,14 @@
 package com.juno.appling.order.service;
 
 import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
-import static com.juno.appling.Base.MEMBER_EMAIL;
+import static com.juno.appling.Base.MEMBER_LOGIN;
 import static com.juno.appling.Base.PRODUCT_ID_APPLE;
 import static com.juno.appling.Base.PRODUCT_ID_PEAR;
 import static com.juno.appling.Base.PRODUCT_OPTION_ID_APPLE;
 import static com.juno.appling.Base.PRODUCT_OPTION_ID_PEAR;
-import static com.juno.appling.Base.SELLER_EMAIL;
+import static com.juno.appling.Base.SELLER_LOGIN;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.juno.appling.member.controller.request.LoginRequest;
-import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.infrastruceture.MemberRepository;
 import com.juno.appling.member.infrastruceture.SellerRepository;
 import com.juno.appling.member.service.MemberAuthService;
@@ -100,9 +98,7 @@ class OrderServiceTest {
     @Transactional
     void tempOrder() {
         //given
-        LoginRequest loginRequest = new LoginRequest(MEMBER_EMAIL, "password");
-        LoginResponse login = memberAuthService.login(loginRequest);
-        request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
+        request.addHeader(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken());
 
         List<TempOrderDto> tempOrderDtoList = new ArrayList<>();
         TempOrderDto tempOrderDto1 = TempOrderDto.builder()
@@ -135,9 +131,7 @@ class OrderServiceTest {
     @Transactional
     void getOrderList() {
         //given
-        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, "password");
-        LoginResponse login = memberAuthService.login(loginRequest);
-        request.addHeader(AUTHORIZATION, "Bearer " + login.getAccessToken());
+        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
         //when
         Pageable pageable = Pageable.ofSize(10);
         OrderResponse complete = orderService.getOrderListBySeller(pageable, "", "COMPLETE",

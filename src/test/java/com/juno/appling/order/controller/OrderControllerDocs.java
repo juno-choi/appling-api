@@ -1,12 +1,13 @@
 package com.juno.appling.order.controller;
 
 import static com.juno.appling.Base.MEMBER_EMAIL;
+import static com.juno.appling.Base.MEMBER_LOGIN;
 import static com.juno.appling.Base.PRODUCT_ID_APPLE;
 import static com.juno.appling.Base.PRODUCT_ID_NORMAL;
 import static com.juno.appling.Base.PRODUCT_ID_PEAR;
 import static com.juno.appling.Base.PRODUCT_OPTION_ID_APPLE;
 import static com.juno.appling.Base.PRODUCT_OPTION_ID_PEAR;
-import static com.juno.appling.Base.SELLER_EMAIL;
+import static com.juno.appling.Base.SELLER_LOGIN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -22,8 +23,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.juno.appling.RestdocsBaseTest;
-import com.juno.appling.member.controller.request.LoginRequest;
-import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.infrastruceture.MemberRepository;
 import com.juno.appling.member.infrastruceture.SellerRepository;
@@ -119,9 +118,6 @@ class OrderControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + " (POST)")
     void postTempOrder() throws Exception {
         //given
-        LoginRequest loginRequest = new LoginRequest(MEMBER_EMAIL, "password");
-        LoginResponse login = memberAuthService.login(loginRequest);
-
         List<TempOrderDto> orderList = new ArrayList<>();
         int orderEa1 = 3;
         int orderEa2 = 2;
@@ -141,7 +137,7 @@ class OrderControllerDocs extends RestdocsBaseTest {
         //when
         ResultActions perform = mock.perform(
                 post(PREFIX).contentType(MediaType.APPLICATION_JSON)
-                        .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                        .header(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken())
                         .content(objectMapper.writeValueAsString(tempOrderRequest))
         );
         //then
@@ -168,8 +164,6 @@ class OrderControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/temp/{order_id} (GET)")
     void getTempOrder() throws Exception {
         //given
-        LoginRequest loginRequest = new LoginRequest(MEMBER_EMAIL, "password");
-        LoginResponse login = memberAuthService.login(loginRequest);
         Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
 
         Order order = orderRepository.save(Order.of(member, "테스트 상품"));
@@ -185,7 +179,7 @@ class OrderControllerDocs extends RestdocsBaseTest {
         //when
         ResultActions perform = mock.perform(
                 get(PREFIX + "/temp/{order_id}", order.getId())
-                        .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                        .header(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken())
         );
         //then
         perform.andExpect(status().is2xxSuccessful());
@@ -248,8 +242,6 @@ class OrderControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/complete (PATCH)")
     void complete() throws Exception {
         //given
-        LoginRequest loginRequest = new LoginRequest(MEMBER_EMAIL, "password");
-        LoginResponse login = memberAuthService.login(loginRequest);
         Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
 
         Order order = orderRepository.save(Order.of(member, "테스트 상품"));
@@ -267,7 +259,7 @@ class OrderControllerDocs extends RestdocsBaseTest {
         //when
         ResultActions perform = mock.perform(
                 patch(PREFIX + "/complete")
-                        .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                        .header(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(completeOrderRequest))
         );
@@ -302,13 +294,10 @@ class OrderControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/seller (GET)")
     void getOrderBySeller() throws Exception {
         //given
-        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, "password");
-        LoginResponse login = memberAuthService.login(loginRequest);
-
         //when
         ResultActions perform = mock.perform(
             get(PREFIX + "/seller")
-                .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                .header(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken())
                 .param("search", "")
                 .param("page", "0")
                 .param("size", "5")

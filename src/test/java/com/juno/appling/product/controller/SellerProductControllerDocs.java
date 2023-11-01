@@ -1,9 +1,9 @@
 package com.juno.appling.product.controller;
 
 import static com.juno.appling.Base.CATEGORY_ID_FRUIT;
-import static com.juno.appling.Base.PASSWORD;
 import static com.juno.appling.Base.SELLER2_EMAIL;
 import static com.juno.appling.Base.SELLER_EMAIL;
+import static com.juno.appling.Base.SELLER_LOGIN;
 import static com.juno.appling.Base.objectMapper;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -19,8 +19,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.juno.appling.RestdocsBaseTest;
-import com.juno.appling.member.controller.request.LoginRequest;
-import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.member.domain.Seller;
 import com.juno.appling.member.infrastruceture.MemberRepository;
@@ -91,9 +89,6 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "(GET)")
     void getProductList() throws Exception {
         //given
-        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
-        LoginResponse login = memberAuthService.login(loginRequest);
-
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Member member2 = memberRepository.findByEmail(SELLER2_EMAIL).get();
 
@@ -128,7 +123,7 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
                 .param("page", "0")
                 .param("size", "5")
                 .param("status", "normal")
-                .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                .header(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken())
         );
         //then
         perform.andExpect(status().is2xxSuccessful());
@@ -222,9 +217,6 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "(POST/normal)")
     void postProduct() throws Exception {
         // given
-        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
-        LoginResponse login = memberAuthService.login(loginRequest);
-
         ProductRequest productRequest = new ProductRequest(1L, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
             9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
             "https://image3", "normal", 10, null, "normal");
@@ -232,7 +224,7 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
         // when
         ResultActions perform = mock.perform(
             post(PREFIX)
-                .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                .header(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(productRequest))
         );
@@ -328,9 +320,6 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "(POST/option)")
     void postOptionProduct() throws Exception {
         // given
-        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
-        LoginResponse login = memberAuthService.login(loginRequest);
-
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = new OptionRequest(null, "option1", 1000, OptionStatus.NORMAL.name(), 100);
         optionRequestList.add(optionRequest1);
@@ -342,7 +331,7 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
         // when
         ResultActions perform = mock.perform(
                 post(PREFIX)
-                        .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                        .header(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productRequest))
         );
@@ -444,8 +433,6 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "(PUT/normal)")
     void putProduct() throws Exception {
         // given
-        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
-        LoginResponse login = memberAuthService.login(loginRequest);
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
@@ -478,7 +465,7 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
         // when
         ResultActions perform = mock.perform(
             put(PREFIX)
-                .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                .header(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(putProductRequest))
         );
@@ -576,8 +563,6 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
     @Transactional
     void putProductByOption() throws Exception {
         // given
-        LoginRequest loginRequest = new LoginRequest(SELLER_EMAIL, PASSWORD);
-        LoginResponse login = memberAuthService.login(loginRequest);
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
@@ -624,7 +609,7 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
         // when
         ResultActions perform = mock.perform(
             put(PREFIX)
-                .header(AUTHORIZATION, "Bearer " + login.getAccessToken())
+                .header(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(putProductRequest))
         );
