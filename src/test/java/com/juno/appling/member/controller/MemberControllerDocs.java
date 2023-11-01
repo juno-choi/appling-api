@@ -146,8 +146,8 @@ class MemberControllerDocs extends RestdocsBaseTest {
         String email = "juno@member.com";
         String password = "password";
         JoinRequest joinRequest = JoinRequest.builder()
-            .email(password)
-            .password("password")
+            .email(email)
+            .password(password)
             .name("name")
             .nickname("nick")
             .birth("19941030")

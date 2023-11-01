@@ -72,7 +72,7 @@ public class MemberAuthServiceImpl implements MemberAuthService{
         Member saveMember = memberRepository.save(Member.of(joinRequest));
         myMailSender.send("애플링 가족이 되신걸 환영해요!", "<html><h1>애플링 회원 가입에 감사드립니다.</h1></html>",
             saveMember.getEmail());
-        return new JoinResponse(saveMember.getName(), saveMember.getNickname(), saveMember.getEmail());
+        return JoinResponse.from(saveMember);
     }
 
     @Override
@@ -123,7 +123,12 @@ public class MemberAuthServiceImpl implements MemberAuthService{
         Authentication authentication = tokenProvider.getAuthentication(accessToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return new LoginResponse(TYPE, accessToken, refreshToken, accessTokenExpired.getTime(), null);
+        return LoginResponse.builder()
+            .type(TYPE)
+            .accessToken(accessToken)
+            .refreshToken(refreshToken)
+            .accessTokenExpired(accessTokenExpired.getTime())
+            .build();
     }
 
     @Override
@@ -151,10 +156,20 @@ public class MemberAuthServiceImpl implements MemberAuthService{
                 )
                 .bodyToMono(KakaoLoginResponse.class)
                 .block()
-        ).orElse(new KakaoLoginResponse("", "", 0L, 0L));
+        ).orElse(KakaoLoginResponse.builder()
+            .access_token("")
+            .refresh_token("")
+            .expires_in(0L)
+            .refresh_token_expires_in(0L)
+            .build());
 
-        return new LoginResponse(TYPE, kakaoToken.access_token, kakaoToken.refresh_token,
-            kakaoToken.expires_in, kakaoToken.refresh_token_expires_in);
+        return LoginResponse.builder()
+            .type(TYPE)
+            .accessToken(kakaoToken.access_token)
+            .refreshToken(kakaoToken.refresh_token)
+            .accessTokenExpired(kakaoToken.expires_in)
+            .refreshTokenExpired(kakaoToken.refresh_token_expires_in)
+            .build();
     }
 
     @Transactional

@@ -293,7 +293,12 @@ class MemberAuthServiceImplUnitTest {
 
         given(memberRepository.findByEmail(anyString())).willReturn(Optional.ofNullable(null));
         given(tokenProvider.generateTokenDto(any())).willReturn(
-            new LoginResponse(TYPE, "access token", "refresh token", 1L, null)
+            LoginResponse.builder()
+                .type(TYPE)
+                .accessToken("access token")
+                .refreshToken("refresh token")
+                .accessTokenExpired(1L)
+                .build()
         );
         String snsId = "snsId";
         JoinRequest joinRequest = JoinRequest.builder()

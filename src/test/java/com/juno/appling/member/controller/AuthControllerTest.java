@@ -42,7 +42,7 @@ class AuthControllerTest extends RestdocsBaseTest {
                 .name("name")
                 .nickname("nick")
                 .birth("19941030")
-                .build()
+                .build();
             memberRepository.save(Member.of(joinRequest));
             //when
             ResultActions resultActions = mock.perform(

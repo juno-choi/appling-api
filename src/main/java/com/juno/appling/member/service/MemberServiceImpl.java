@@ -64,10 +64,7 @@ public class MemberServiceImpl implements MemberService{
     public MemberResponse member(HttpServletRequest request) {
         Member findMember = getMember(request);
 
-        return new MemberResponse(findMember.getId(), findMember.getEmail(),
-                findMember.getNickname(),
-                findMember.getName(), findMember.getRole(), findMember.getSnsType(),
-                findMember.getStatus(), findMember.getCreatedAt(), findMember.getModifiedAt());
+        return MemberResponse.from(findMember);
     }
 
 
@@ -126,12 +123,11 @@ public class MemberServiceImpl implements MemberService{
         if (!recipientList.isEmpty()) {
             Recipient r = recipientList.get(0);
             list.add(
-                    new RecipientResponse(r.getId(), r.getName(), r.getZonecode(), r.getAddress(),
-                            r.getAddressDetail(), r.getTel(), r.getStatus(), r.getCreatedAt(),
-                            r.getModifiedAt()));
+                    RecipientResponse.from(r)
+            );
         }
 
-        return new RecipientListResponse(list);
+        return RecipientListResponse.builder().list(list).build();
     }
 
     @Transactional
