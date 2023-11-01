@@ -59,7 +59,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
             .limit(pageable.getPageSize())
             .fetch();
 
-        List<ProductResponse> content = fetch.stream().map(ProductResponse::new)
+        List<ProductResponse> content = fetch.stream().map(ProductResponse::from)
             .collect(Collectors.toList());
 
         Long total = q.query().from(product).where(builder).stream().count();
@@ -72,12 +72,12 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
         BooleanBuilder builder = new BooleanBuilder();
 
         builder.and(product.id.in(productIdList));
-        List<ProductResponse> content = q.query().select(Projections.constructor(ProductResponse.class,
-                        product
-                ))
-                .from(product)
-                .where(builder)
-                .fetch();
+        List<Product> fetch = q.query()
+            .selectFrom(product)
+            .where(builder)
+            .fetch();
+        List<ProductResponse> content = fetch.stream().map(ProductResponse::from)
+            .collect(Collectors.toList());
         return content;
     }
 

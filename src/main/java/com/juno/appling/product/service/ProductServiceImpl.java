@@ -65,7 +65,7 @@ public class ProductServiceImpl implements ProductService{
 
 
         if(type == ProductType.NORMAL) {
-            return new ProductResponse(product);
+            return ProductResponse.from(product);
         }
 
         List<Option> optionList = new LinkedList<>();
@@ -75,7 +75,7 @@ public class ProductServiceImpl implements ProductService{
         }
         optionRepository.saveAll(optionList);
 
-        return new ProductResponse(product);
+        return ProductResponse.from(product);
     }
 
     private Member getMember(HttpServletRequest request) {
@@ -93,14 +93,13 @@ public class ProductServiceImpl implements ProductService{
         Page<ProductResponse> page = productCustomRepositoryImpl.findAll(pageable, search, productStatusOfEnums,
             category, sellerId);
 
-        return new ProductListResponse(page.getTotalPages(), page.getTotalElements(),
-            page.getNumberOfElements(), page.isLast(), page.isEmpty(), page.getContent());
+        return ProductListResponse.from(page);
     }
 
     @Override
     public ProductBasketListResponse getProductBasket(List<Long> productIdList) {
         List<ProductResponse> productList = productCustomRepositoryImpl.findAllByIdList(productIdList);
-        return new ProductBasketListResponse(productList);
+        return ProductBasketListResponse.builder().basketList(productList).build();
     }
 
     @Override
@@ -109,7 +108,7 @@ public class ProductServiceImpl implements ProductService{
             new IllegalArgumentException("유효하지 않은 상품번호 입니다.")
         );
 
-        return new ProductResponse(product);
+        return ProductResponse.from(product);
     }
 
     @Transactional
@@ -154,7 +153,7 @@ public class ProductServiceImpl implements ProductService{
             }
         }
 
-        return new ProductResponse(product);
+        return ProductResponse.from(product);
     }
 
     @Override
@@ -166,8 +165,7 @@ public class ProductServiceImpl implements ProductService{
         Page<ProductResponse> page = productCustomRepositoryImpl.findAll(pageable, search, productStatusOfEnums,
             category, memberId);
 
-        return new ProductListResponse(page.getTotalPages(), page.getTotalElements(),
-            page.getNumberOfElements(), page.isLast(), page.isEmpty(), page.getContent());
+        return ProductListResponse.from(page);
     }
 
     @Override
@@ -176,10 +174,16 @@ public class ProductServiceImpl implements ProductService{
         List<CategoryResponse> categoryResponseList = new LinkedList<>();
         for (Category c : categoryList) {
             categoryResponseList.add(
-                new CategoryResponse(c.getId(), c.getName(), c.getCreatedAt(), c.getModifiedAt()));
+                CategoryResponse.builder()
+                    .categoryId(c.getId())
+                    .name(c.getName())
+                    .createdAt(c.getCreatedAt())
+                    .modifiedAt(c.getModifiedAt())
+                    .build()
+            );
         }
 
-        return new CategoryListResponse(categoryResponseList);
+        return CategoryListResponse.builder().list(categoryResponseList).build();
     }
 
     @Transactional

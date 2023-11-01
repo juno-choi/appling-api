@@ -187,8 +187,7 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public SellerResponse getSeller(HttpServletRequest request) {
         Seller seller = getSellerByRequest(request);
-        return new SellerResponse(seller.getId(), seller.getEmail(), seller.getCompany(),
-                seller.getZonecode(), seller.getAddress(), seller.getAddressDetail(), seller.getTel());
+        return SellerResponse.from(seller);
     }
 
     @Transactional
