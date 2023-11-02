@@ -72,41 +72,38 @@ public class OrderServiceImpl implements OrderService{
         List<Long> requestProductIdList = requestOrderProductList.stream().mapToLong(o -> o.getProductId())
                 .boxed().collect(Collectors.toList());
 
-        List<ProductEntity> productEntityList = productJpaRepository.findAllById(requestProductIdList);
-        productEntityList = productEntityList.stream().sorted((p1, p2) -> p2.getPrice() - p1.getPrice()).collect(Collectors.toList());
+        List<Product> productList = productRepository.findAllById(requestProductIdList);
 
-        if((requestOrderProductList.size() != productEntityList.size()) || productEntityList.size() == 0){
-            throw new IllegalArgumentException("유효하지 않은 상품이 존재합니다.");
-        }
+        sb.append(productList.get(0).getMainTitle());
 
-        sb.append(productEntityList.get(0).getMainTitle());
-        if(productEntityList.size() > 1){
+        if(requestOrderProductList.size() > 1){
             sb.append(" 외 ");
-            sb.append(productEntityList.size() -1);
+            sb.append(requestOrderProductList.size() -1);
             sb.append("개");
         }
         OrderEntity saveOrderEntity = orderJpaRepository.save(OrderEntity.of(memberEntity, sb.toString()));
 
         // 주문 상품 등록
-        Map<Long, TempOrderDto> eaMap = new HashMap<>();
-        for(TempOrderDto o : requestOrderProductList){
-            eaMap.put(o.getProductId(), o);
+        Map<Long, Product> eaMap = new HashMap<>();
+        for(Product p : productList){
+            eaMap.put(p.getId(), p);
         }
 
-        for(ProductEntity p : productEntityList){
+        for(TempOrderDto tod : requestOrderProductList){
+            Product p = eaMap.get(tod.getProductId());
+
             if(p.getStatus() != ProductStatus.NORMAL){
                 throw new IllegalArgumentException("상품 상태가 유효하지 않습니다.");
             }
 
-            Long optionId = eaMap.get(p.getId()).getOptionId();
-
+            Long optionId = tod.getOptionId();
             // 옵션이 없을 경우 exception 처리
             OptionEntity optionEntity = p.getType() == ProductType.OPTION ? p.getOptionList().stream().filter(o -> o.getId().equals(optionId))
                 .findFirst().orElseThrow(() -> new IllegalArgumentException("optionId가 유효하지 않습니다.")) : null;
 
             // 재고 확인
-            int ea = eaMap.get(p.getId()).getEa();
-            int productEa = p.getType() == ProductType.OPTION ? optionEntity.getEa() : p.getEa();
+            int ea = tod.getEa();
+            int productEa = p.getType() == ProductType.OPTION ? option.getEa() : p.getEa();
             checkEa(p.getMainTitle(), productEa, ea);
 
             OrderItemEntity orderItemEntity = orderItemJpaRepository.save(
@@ -182,11 +179,11 @@ public class OrderServiceImpl implements OrderService{
         }
 
         // 배송 정보 등록
-        for(OrderItemEntity oi : orderItemEntityList){
-            deliveryJpaRepository.save(DeliveryEntity.of(orderEntity, oi, completeOrderRequest));
+        for(OrderItem oi : orderItemList){
+            deliveryRepository.save(Delivery.of(order, oi, completeOrderRequest));
+            oi.statusComplete();
         }
-
-        orderEntity.statusComplete();
+        order.statusComplete();
 
         LocalDateTime createdAt = orderEntity.getCreatedAt();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");

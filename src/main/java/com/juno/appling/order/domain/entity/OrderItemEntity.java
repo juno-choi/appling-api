@@ -1,6 +1,9 @@
-package com.juno.appling.order.domain.entity;
+package com.juno.appling.order.domain;
 
 import com.juno.appling.order.enums.OrderItemStatus;
+import com.juno.appling.product.domain.Option;
+import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.enums.ProductType;
 import com.juno.appling.product.domain.entity.OptionEntity;
 import com.juno.appling.product.domain.entity.ProductEntity;
 import jakarta.persistence.Column;
@@ -74,6 +77,14 @@ public class OrderItemEntity {
 
     public static OrderItemEntity of(OrderEntity orderEntity, ProductEntity productEntity, OptionEntity optionEntity, int ea) {
         LocalDateTime now = LocalDateTime.now();
+        int price = product.getType() == ProductType.OPTION ? product.getPrice() + option.getExtraPrice() : product.getPrice();
+
+        return new OrderItem(order, product, option, OrderItemStatus.TEMP, ea, price, price * ea, now, now);
+    }
+
+    public void statusComplete() {
+        this.status = OrderItemStatus.ORDER;
+        this.modifiedAt = LocalDateTime.now();
         return new OrderItemEntity(orderEntity, productEntity, optionEntity, OrderItemStatus.TEMP, ea, productEntity.getPrice(),
             productEntity.getPrice() * ea, now, now);
     }
