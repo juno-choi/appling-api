@@ -68,8 +68,12 @@ public class TokenProvider {
             .signWith(key, SignatureAlgorithm.HS512)
             .compact();
 
-        return new LoginResponse("Bearer ", accessToken, refreshToken, accessTokenExpiresIn.getTime(),
-            null);
+        return LoginResponse.builder()
+            .type(TYPE)
+            .accessToken(accessToken)
+            .refreshToken(refreshToken)
+            .accessTokenExpired(accessTokenExpiresIn.getTime())
+            .build();
     }
 
     public String createAccessToken(String sub, String authorities, Date accessTokenExpiresIn) {

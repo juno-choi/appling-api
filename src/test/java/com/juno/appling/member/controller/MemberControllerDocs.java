@@ -145,14 +145,27 @@ class MemberControllerDocs extends RestdocsBaseTest {
         //given
         String email = "juno@member.com";
         String password = "password";
-        JoinRequest joinRequest = new JoinRequest(email, passwordEncoder.encode(password), "name", "nick",
-            "19941030");
+        JoinRequest joinRequest = JoinRequest.builder()
+            .email(email)
+            .password(password)
+            .name("name")
+            .nickname("nick")
+            .birth("19941030")
+            .build();
+        joinRequest.passwordEncoder(passwordEncoder);
         memberRepository.save(Member.of(joinRequest));
-        LoginRequest loginRequest = new LoginRequest(email, password);
+        LoginRequest loginRequest = LoginRequest.builder().email(email).password(password).build();
         LoginResponse loginResponse = memberAuthService.login(loginRequest);
 
-        PostSellerRequest postSellerRequest = new PostSellerRequest("판매자 이름", "010-1234-4312", "1234",
-            "강원도 평창군 대화면 장미산길", "상세 주소", "mail@mail.com");
+        PostSellerRequest postSellerRequest = PostSellerRequest.builder()
+            .company("판매자 이름")
+            .tel("010-1234-4312")
+            .zonecode("1234")
+            .address("강원도 평창군 대화면 장미산길")
+            .addressDetail("상세 주소")
+            .email("mail@mail.com")
+            .build();
+
         //when
         ResultActions resultActions = mock.perform(
             post(PREFIX + "/seller")
@@ -190,8 +203,14 @@ class MemberControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/seller (PUT)")
     void putSeller() throws Exception {
         //given
-        PutSellerRequest putSellerRequest = new PutSellerRequest("변경된 판매자 이름", "010-1234-4312", "1234",
-            "강원도 평창군 대화면 장미산길", "상세 주소","mail@mail.com");
+        PutSellerRequest putSellerRequest = PutSellerRequest.builder()
+            .company("수정된 판매자 이름")
+            .tel("010-1234-4312")
+            .zonecode("1234")
+            .address("강원도 평창군 대화면 장미산길")
+            .addressDetail("상세 주소")
+            .email("mail@mail.com")
+            .build();
         //when
         ResultActions resultActions = mock.perform(
             put(PREFIX + "/seller")
@@ -268,14 +287,25 @@ class MemberControllerDocs extends RestdocsBaseTest {
         String changeName = "수정함";
         String changeBirth = "19941030";
 
-        JoinRequest joinRequest = new JoinRequest(email, password, "수정자", "수정할거야", "19991010");
+        JoinRequest joinRequest = JoinRequest.builder()
+            .email(email)
+            .password(password)
+            .nickname("nickname")
+            .name("name")
+            .birth("19941030")
+            .build();
+
         joinRequest.passwordEncoder(passwordEncoder);
         memberRepository.save(Member.of(joinRequest));
-        LoginRequest loginRequest = new LoginRequest(email, password);
+        LoginRequest loginRequest = LoginRequest.builder().email(email).password(password).build();
         LoginResponse loginResponse = memberAuthService.login(loginRequest);
 
-        PatchMemberRequest patchMemberRequest = new PatchMemberRequest(changeBirth, changeName, changePassword,
-            "수정되버림", null);
+        PatchMemberRequest patchMemberRequest = PatchMemberRequest.builder()
+            .nickname("수정되어버림2")
+            .password(changePassword)
+            .birth(changeBirth)
+            .name(changeName)
+            .build();
 
         //when
         ResultActions resultActions = mock.perform(
@@ -314,8 +344,13 @@ class MemberControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/recipient (POST)")
     void postRecipient() throws Exception {
         //given
-        PostRecipientRequest postRecipientRequest = new PostRecipientRequest("수령인", "1234",
-            "주소",  "상세 주소", "01012341234");
+        PostRecipientRequest postRecipientRequest = PostRecipientRequest.builder()
+            .name("수령인")
+            .zonecode("1234")
+            .address("주소")
+            .addressDetail("상세 주소")
+            .tel("01012341234")
+            .build();
         //when
         ResultActions resultActions = mock.perform(
             post(PREFIX + "/recipient")
@@ -401,8 +436,7 @@ class MemberControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/seller/introduce (POST)")
     void postSellerIntroduce() throws Exception {
         //given
-        PostIntroduceRequest postIntroduceRequest = new PostIntroduceRequest("제목",
-            "https://www.s3.com/test.html");
+        PostIntroduceRequest postIntroduceRequest = PostIntroduceRequest.builder().subject("제목").url("https://s3.com/html/test1.html").build();
         //when
         ResultActions resultActions = mock.perform(
             post(PREFIX + "/seller/introduce")

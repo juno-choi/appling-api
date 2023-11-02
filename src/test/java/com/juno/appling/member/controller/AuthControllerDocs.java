@@ -53,7 +53,13 @@ class AuthControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/join")
     void join() throws Exception {
         //given
-        JoinRequest joinRequest = new JoinRequest("juno@auth.com", "password", "name", "nick", "19941030");
+        JoinRequest joinRequest = JoinRequest.builder()
+            .email("juno@auth.com")
+            .password("password")
+            .name("name")
+            .nickname("nick")
+            .birth("19941030")
+            .build();
         doNothing().when(myMailSender).send(anyString(), anyString(), anyString());
 
         //when
@@ -94,9 +100,15 @@ class AuthControllerDocs extends RestdocsBaseTest {
         String email = "juno2@auth.com";
         String password = "password";
 
-        JoinRequest joinRequest = new JoinRequest(email, password, "name", "nick", "19941030");
+        JoinRequest joinRequest = JoinRequest.builder()
+            .email(email)
+            .password(password)
+            .name("name")
+            .nickname("nick")
+            .birth("19941030")
+            .build();
         memberAuthService.join(joinRequest);
-        LoginRequest loginRequest = new LoginRequest(email, password);
+        LoginRequest loginRequest = LoginRequest.builder().email(email).password(password).build();
 
         //when
         ResultActions resultActions = mock.perform(
@@ -134,9 +146,15 @@ class AuthControllerDocs extends RestdocsBaseTest {
         //given
         String email = "juno3@auth.com";
         String password = "password";
-        JoinRequest joinRequest = new JoinRequest(email, password, "name", "nick", "19941030");
+        JoinRequest joinRequest = JoinRequest.builder()
+            .email(email)
+            .password(password)
+            .name("name")
+            .nickname("nick")
+            .birth("19941030")
+            .build();
         memberAuthService.join(joinRequest);
-        LoginRequest loginRequest = new LoginRequest(email, password);
+        LoginRequest loginRequest = LoginRequest.builder().email(email).password(password).build();
         LoginResponse loginResponse = memberAuthService.login(loginRequest);
 
         //when

@@ -79,9 +79,25 @@ class ProductServiceImplTest {
         request.removeHeader(AUTHORIZATION);
         request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
 
-        ProductRequest productRequest = new ProductRequest(CATEGORY_ID_FRUIT, "메인 타이틀", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
-            9000, "취급 방법", "원산지", "공급자", "https://메인이미지", "https://image1", "https://image2",
-            "https://image3", "normal", 10, null, "normal");
+        ProductRequest productRequest = ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle("메인 제목")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("normal")
+            .build();
 
         //when
         ProductResponse productResponse = productService.postProduct(productRequest, request);
@@ -98,11 +114,46 @@ class ProductServiceImplTest {
     @DisplayName("상품 리스트 불러오기")
     void getProductListSuccess() {
         //given
+        String mainTitle = "검색";
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        ProductRequest productRequest = new ProductRequest(CATEGORY_ID_FRUIT, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
-            10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10, null, "normal");
-        ProductRequest searchDto = new ProductRequest(CATEGORY_ID_FRUIT, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
-            10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10, null, "normal");
+        ProductRequest productRequest = ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle(mainTitle)
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("normal")
+            .build();
+        ProductRequest searchDto = ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle(mainTitle+"2")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("normal")
+            .build();
         Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
         Seller seller = sellerRepository.findByMember(member).get();
@@ -119,10 +170,10 @@ class ProductServiceImplTest {
         Pageable pageable = Pageable.ofSize(5);
         pageable = pageable.next();
         //when
-        ProductListResponse searchList = productService.getProductList(pageable, "검색", "normal",
+        ProductListResponse searchList = productService.getProductList(pageable, mainTitle, "normal",
             CATEGORY_ID_FRUIT, 0L);
         //then
-        assertThat(searchList.getList().stream().findFirst().get().getMainTitle()).contains("검색");
+        assertThat(searchList.getList().stream().findFirst().get().getMainTitle()).contains(mainTitle);
     }
 
     @Test
@@ -135,10 +186,44 @@ class ProductServiceImplTest {
 
         Category category = categoryRepository.findById(categoryId).get();
 
-        ProductRequest productRequest = new ProductRequest(categoryId, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
-            10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10, null, "normal");
-        ProductRequest searchDto = new ProductRequest(categoryId, "검색 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명",
-            10000, 8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10, null, "normal");
+        ProductRequest productRequest = ProductRequest.builder()
+            .categoryId(categoryId)
+            .mainTitle("메인 제목")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("normal")
+            .build();
+        ProductRequest searchDto = ProductRequest.builder()
+            .categoryId(categoryId)
+            .mainTitle("메인 제목")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("normal")
+            .build();
 
         Seller seller = sellerRepository.findByMember(member).get();
         Seller seller2 = sellerRepository.findByMember(member2).get();
@@ -170,8 +255,25 @@ class ProductServiceImplTest {
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
 
-        ProductRequest productRequest = new ProductRequest(CATEGORY_ID_FRUIT, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
-            8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10, null, "normal");
+        ProductRequest productRequest = ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle("메인 제목")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("normal")
+            .build();
         Seller seller = sellerRepository.findByMember(member).get();
 
         Product originalProduct = productRepository.save(Product.of(seller, category, productRequest));
@@ -207,13 +309,31 @@ class ProductServiceImplTest {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
         Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
-        ProductRequest productRequest = new ProductRequest(1L, "메인 제목", "메인 설명", "상품 메인 설명", "상품 서브 설명", 10000,
-            8000, "보관 방법", "원산지", "생산자", "https://mainImage", null, null, null, "normal", 10, null, "normal");
+        ProductRequest productRequest = ProductRequest.builder()
+            .categoryId(CATEGORY_ID_FRUIT)
+            .mainTitle("메인 제목")
+            .mainExplanation("메인 설명")
+            .productMainExplanation("상품 메인 설명")
+            .productSubExplanation("상품 서브 설명")
+            .originPrice(10000)
+            .price(8000)
+            .purchaseInquiry("보관 방법")
+            .origin("원산지")
+            .producer("생산자")
+            .mainImage("https://mainImage")
+            .image1("https://image1")
+            .image2("https://image2")
+            .image3("https://image3")
+            .status("normal")
+            .ea(10)
+            .type("normal")
+            .build();
 
         Seller seller = sellerRepository.findByMember(member).get();
         Product product = productRepository.save(Product.of(seller, category, productRequest));
         //when
-        MessageVo messageVo = productService.addViewCnt(new AddViewCntRequest(product.getId()));
+        MessageVo messageVo = productService.addViewCnt(AddViewCntRequest.builder()
+                .productId(product.getId()).build());
 
         //then
         assertThat(messageVo.message())

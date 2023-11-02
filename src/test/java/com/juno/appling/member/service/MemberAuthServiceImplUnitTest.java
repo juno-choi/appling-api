@@ -105,7 +105,13 @@ class MemberAuthServiceImplUnitTest {
     @DisplayName("이미 가입한 회원은 회원 가입 불가")
     void joinFail1() {
         //given
-        JoinRequest joinRequest = new JoinRequest("join-1@mail.com", "password", "최준호", "닉네임", "1999-10-30");
+        JoinRequest joinRequest = JoinRequest.builder()
+            .email("join-1@mail.com")
+            .password("password")
+            .name("name")
+            .nickname("nick")
+            .birth("19941030")
+            .build();
         given(memberRepository.findByEmail(anyString())).willReturn(
             Optional.of(Member.of(joinRequest)));
         //when
@@ -287,10 +293,20 @@ class MemberAuthServiceImplUnitTest {
 
         given(memberRepository.findByEmail(anyString())).willReturn(Optional.ofNullable(null));
         given(tokenProvider.generateTokenDto(any())).willReturn(
-            new LoginResponse(TYPE, "access token", "refresh token", 1L, null)
+            LoginResponse.builder()
+                .type(TYPE)
+                .accessToken("access token")
+                .refreshToken("refresh token")
+                .accessTokenExpired(1L)
+                .build()
         );
         String snsId = "snsId";
-        JoinRequest joinRequest = new JoinRequest("kakao@email.com", snsId, "카카오회원", "카카오회원", null);
+        JoinRequest joinRequest = JoinRequest.builder()
+            .email("kakao@email.com")
+            .password(snsId)
+            .name("카카오회원")
+            .nickname("카카오회원")
+            .build();
         given(memberRepository.save(any())).willReturn(
             Member.of(joinRequest, snsId, SnsJoinType.KAKAO));
         given(authenticationManagerBuilder.getObject()).willReturn(mockAuthenticationManager());

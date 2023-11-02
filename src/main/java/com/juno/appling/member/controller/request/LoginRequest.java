@@ -2,6 +2,7 @@ package com.juno.appling.member.controller.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class LoginRequest {
 
     @NotNull(message = "email 비어있을 수 없습니다.")
