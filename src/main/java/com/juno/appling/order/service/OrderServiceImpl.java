@@ -179,8 +179,8 @@ public class OrderServiceImpl implements OrderService{
         // 배송 정보 등록
         for(OrderItem oi : orderItemList){
             deliveryRepository.save(Delivery.of(order, oi, completeOrderRequest));
+            oi.statusComplete();
         }
-
         order.statusComplete();
 
         LocalDateTime createdAt = order.getCreatedAt();
