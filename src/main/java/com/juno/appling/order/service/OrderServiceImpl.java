@@ -3,6 +3,8 @@ package com.juno.appling.order.service;
 import com.github.dockerjava.api.exception.UnauthorizedException;
 import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.order.domain.entity.DeliveryEntity;
+import com.juno.appling.order.domain.entity.OrderItemEntity;
 import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
@@ -12,9 +14,7 @@ import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.controller.response.TempOrderResponse;
-import com.juno.appling.order.domain.entity.DeliveryEntity;
 import com.juno.appling.order.domain.entity.OrderEntity;
-import com.juno.appling.order.domain.entity.OrderItemEntity;
 import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.order.repository.DeliveryJpaRepository;
@@ -72,7 +72,7 @@ public class OrderServiceImpl implements OrderService{
         List<Long> requestProductIdList = requestOrderProductList.stream().mapToLong(o -> o.getProductId())
                 .boxed().collect(Collectors.toList());
 
-        List<Product> productList = productRepository.findAllById(requestProductIdList);
+        List<ProductEntity> productList = productJpaRepository.findAllById(requestProductIdList);
 
         sb.append(productList.get(0).getMainTitle());
 
@@ -84,13 +84,13 @@ public class OrderServiceImpl implements OrderService{
         OrderEntity saveOrderEntity = orderJpaRepository.save(OrderEntity.of(memberEntity, sb.toString()));
 
         // 주문 상품 등록
-        Map<Long, Product> eaMap = new HashMap<>();
-        for(Product p : productList){
+        Map<Long, ProductEntity> eaMap = new HashMap<>();
+        for(ProductEntity p : productList){
             eaMap.put(p.getId(), p);
         }
 
         for(TempOrderDto tod : requestOrderProductList){
-            Product p = eaMap.get(tod.getProductId());
+            ProductEntity p = eaMap.get(tod.getProductId());
 
             if(p.getStatus() != ProductStatus.NORMAL){
                 throw new IllegalArgumentException("상품 상태가 유효하지 않습니다.");
@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService{
 
             // 재고 확인
             int ea = tod.getEa();
-            int productEa = p.getType() == ProductType.OPTION ? option.getEa() : p.getEa();
+            int productEa = p.getType() == ProductType.OPTION ? optionEntity.getEa() : p.getEa();
             checkEa(p.getMainTitle(), productEa, ea);
 
             OrderItemEntity orderItemEntity = orderItemJpaRepository.save(
@@ -179,11 +179,11 @@ public class OrderServiceImpl implements OrderService{
         }
 
         // 배송 정보 등록
-        for(OrderItem oi : orderItemList){
-            deliveryRepository.save(Delivery.of(order, oi, completeOrderRequest));
+        for(OrderItemEntity oi : orderItemEntityList){
+            deliveryJpaRepository.save(DeliveryEntity.of(orderEntity, oi, completeOrderRequest));
             oi.statusComplete();
         }
-        order.statusComplete();
+        orderEntity.statusComplete();
 
         LocalDateTime createdAt = orderEntity.getCreatedAt();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");

@@ -1,8 +1,6 @@
-package com.juno.appling.order.domain;
+package com.juno.appling.order.domain.entity;
 
 import com.juno.appling.order.enums.OrderItemStatus;
-import com.juno.appling.product.domain.Option;
-import com.juno.appling.product.domain.Product;
 import com.juno.appling.product.enums.ProductType;
 import com.juno.appling.product.domain.entity.OptionEntity;
 import com.juno.appling.product.domain.entity.ProductEntity;
@@ -75,17 +73,15 @@ public class OrderItemEntity {
         this.modifiedAt = modifiedAt;
     }
 
-    public static OrderItemEntity of(OrderEntity orderEntity, ProductEntity productEntity, OptionEntity optionEntity, int ea) {
+    public static OrderItemEntity of(OrderEntity order, ProductEntity product, OptionEntity option, int ea) {
         LocalDateTime now = LocalDateTime.now();
         int price = product.getType() == ProductType.OPTION ? product.getPrice() + option.getExtraPrice() : product.getPrice();
 
-        return new OrderItem(order, product, option, OrderItemStatus.TEMP, ea, price, price * ea, now, now);
+        return new OrderItemEntity(order, product, option, OrderItemStatus.TEMP, ea, price, price * ea, now, now);
     }
 
     public void statusComplete() {
         this.status = OrderItemStatus.ORDER;
         this.modifiedAt = LocalDateTime.now();
-        return new OrderItemEntity(orderEntity, productEntity, optionEntity, OrderItemStatus.TEMP, ea, productEntity.getPrice(),
-            productEntity.getPrice() * ea, now, now);
     }
 }
