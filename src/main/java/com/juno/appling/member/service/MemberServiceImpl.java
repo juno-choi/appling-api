@@ -11,15 +11,15 @@ import com.juno.appling.member.controller.request.PutSellerRequest;
 import com.juno.appling.member.controller.response.MemberResponse;
 import com.juno.appling.member.controller.response.RecipientListResponse;
 import com.juno.appling.member.controller.response.RecipientResponse;
-import com.juno.appling.member.domain.entity.IntroduceEntity;
+import com.juno.appling.member.enums.MemberRole;
+import com.juno.appling.product.domain.entity.IntroduceEntity;
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.domain.entity.MemberApplySellerEntity;
 import com.juno.appling.member.domain.entity.RecipientEntity;
-import com.juno.appling.member.domain.entity.SellerEntity;
+import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.enums.IntroduceStatus;
 import com.juno.appling.member.enums.MemberApplySellerStatus;
 import com.juno.appling.member.enums.RecipientInfoStatus;
-import com.juno.appling.member.enums.Role;
 import com.juno.appling.member.repository.IntroduceJpaRepository;
 import com.juno.appling.member.repository.MemberApplySellerJpaRepository;
 import com.juno.appling.member.repository.MemberJpaRepository;
@@ -70,7 +70,7 @@ public class MemberServiceImpl implements MemberService{
 
     private void permitSeller(MemberEntity memberEntity, MemberApplySellerEntity memberApplySellerEntity) {
         memberApplySellerEntity.patchApplyStatus(MemberApplySellerStatus.PERMIT);
-        memberEntity.patchMemberRole(Role.SELLER);
+        memberEntity.patchMemberRole(MemberRole.SELLER);
     }
 
     @Transactional

@@ -1,6 +1,8 @@
-package com.juno.appling.member.domain.entity;
+package com.juno.appling.product.domain.entity;
 
 import com.juno.appling.member.controller.request.PutSellerRequest;
+import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.product.domain.model.Seller;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -50,6 +52,36 @@ public class SellerEntity {
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    public static SellerEntity from(Seller seller) {
+        SellerEntity sellerEntity = new SellerEntity();
+        sellerEntity.id = seller.getId();
+        sellerEntity.member = MemberEntity.from(seller.getMember());
+        sellerEntity.company = seller.getCompany();
+        sellerEntity.tel = seller.getTel();
+        sellerEntity.zonecode = seller.getZonecode();
+        sellerEntity.address = seller.getAddress();
+        sellerEntity.addressDetail = seller.getAddressDetail();
+        sellerEntity.email = seller.getEmail();
+        sellerEntity.createdAt = seller.getCreatedAt();
+        sellerEntity.modifiedAt = seller.getModifiedAt();
+        return sellerEntity;
+    }
+
+    public Seller toModel() {
+        return Seller.builder()
+            .id(id)
+            .member(member.toModel())
+            .company(company)
+            .tel(tel)
+            .zonecode(zonecode)
+            .address(address)
+            .addressDetail(addressDetail)
+            .email(email)
+            .createdAt(createdAt)
+            .modifiedAt(modifiedAt)
+            .build();
+    }
 
     private SellerEntity(MemberEntity member, @NotNull(message = "company 비어있을 수 없습니다.") String company,
         @NotNull(message = "tel 비어있을 수 없습니다.") String tel,

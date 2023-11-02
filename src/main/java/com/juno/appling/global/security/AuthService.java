@@ -1,7 +1,7 @@
 package com.juno.appling.global.security;
 
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.member.enums.Role;
+import com.juno.appling.member.enums.MemberRole;
 import com.juno.appling.member.repository.MemberJpaRepository;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -29,9 +29,9 @@ public class AuthService implements UserDetailsService {
             new UsernameNotFoundException("유효하지 않은 회원입니다.")
         );
 
-        Role role = memberEntity.getRole();
+        MemberRole memberRole = memberEntity.getRole();
         Set<String> roleSet = new HashSet<>();
-        String roleListToString = Role.valueOf(role.roleName).roleList;
+        String roleListToString = MemberRole.valueOf(memberRole.roleName).roleList;
         String[] roleList = roleListToString.split(",");
 
         for (String r : roleList) {

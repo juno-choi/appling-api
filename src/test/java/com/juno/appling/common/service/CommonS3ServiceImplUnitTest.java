@@ -9,7 +9,7 @@ import com.juno.appling.common.controller.response.UploadResponse;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.member.enums.Role;
+import com.juno.appling.member.enums.MemberRole;
 import com.juno.appling.member.repository.MemberJpaRepository;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -80,7 +80,7 @@ class CommonS3ServiceImplUnitTest {
 
         LocalDateTime now = LocalDateTime.now();
         MemberEntity memberEntity = new MemberEntity(1L, "email@mail.com", "password", "nickname", "name", "19941030",
-            Role.SELLER, null, null, now, now);
+            MemberRole.SELLER, null, null, now, now);
         given(memberJpaRepository.findById(any())).willReturn(Optional.of(memberEntity));
         given(env.getProperty(anyString())).willReturn(s3Url);
         List<String> list = new LinkedList<>();
@@ -114,7 +114,7 @@ class CommonS3ServiceImplUnitTest {
         //given
         LocalDateTime now = LocalDateTime.now();
         MemberEntity memberEntity = new MemberEntity(1L, "email@mail.com", "password", "nickname", "name", "19941030",
-            Role.SELLER, null, null, now, now);
+            MemberRole.SELLER, null, null, now, now);
         given(memberJpaRepository.findById(any())).willReturn(Optional.of(memberEntity));
         given(env.getProperty(anyString())).willReturn(s3Url);
         List<String> list = new LinkedList<>();

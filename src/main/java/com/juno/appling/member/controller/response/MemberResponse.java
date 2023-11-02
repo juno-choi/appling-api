@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.member.enums.Role;
+import com.juno.appling.member.enums.MemberRole;
 import com.juno.appling.member.enums.SnsJoinType;
-import com.juno.appling.member.enums.Status;
+import com.juno.appling.member.enums.MemberStatus;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,9 +23,9 @@ public class MemberResponse {
     private String email;
     private String nickname;
     private String name;
-    private Role role;
+    private MemberRole role;
     private SnsJoinType snsType;
-    private Status status;
+    private MemberStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 

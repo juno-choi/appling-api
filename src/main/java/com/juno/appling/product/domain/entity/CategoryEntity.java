@@ -1,5 +1,6 @@
 package com.juno.appling.product.domain.entity;
 
+import com.juno.appling.product.domain.model.Category;
 import com.juno.appling.product.enums.CategoryStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 @Table(name = "category")
 public class CategoryEntity {
 
@@ -34,6 +35,26 @@ public class CategoryEntity {
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    public static CategoryEntity from(Category category) {
+        CategoryEntity categoryEntity = new CategoryEntity();
+        categoryEntity.id = category.getId();
+        categoryEntity.name = category.getName();
+        categoryEntity.status = category.getStatus();
+        categoryEntity.createdAt = category.getCreatedAt();
+        categoryEntity.modifiedAt = category.getModifiedAt();
+        return categoryEntity;
+    }
+
+    public Category toModel() {
+        return Category.builder()
+            .id(id)
+            .name(name)
+            .status(status)
+            .createdAt(createdAt)
+            .modifiedAt(modifiedAt)
+            .build();
+    }
 
     private CategoryEntity(@NotNull String name, CategoryStatus status, LocalDateTime createdAt,
         LocalDateTime modifiedAt) {

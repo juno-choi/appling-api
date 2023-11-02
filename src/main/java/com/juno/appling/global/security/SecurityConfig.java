@@ -1,6 +1,6 @@
 package com.juno.appling.global.security;
 
-import com.juno.appling.member.enums.Role;
+import com.juno.appling.member.enums.MemberRole;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
@@ -53,8 +53,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth ->
                 auth
                     .requestMatchers(PathRequest.toH2Console()).permitAll()
-                    .requestMatchers(SELLER_LIST).hasRole(Role.SELLER.roleName)
-                    .requestMatchers(MEMBER_LIST).hasRole(Role.MEMBER.roleName)
+                    .requestMatchers(SELLER_LIST).hasRole(MemberRole.SELLER.roleName)
+                    .requestMatchers(MEMBER_LIST).hasRole(MemberRole.MEMBER.roleName)
                     .anyRequest().permitAll()
             ).exceptionHandling(c ->
                 c.authenticationEntryPoint(entryPoint).accessDeniedHandler(accessDeniedHandler)

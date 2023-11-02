@@ -16,7 +16,7 @@ import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.controller.response.RecipientListResponse;
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.domain.entity.RecipientEntity;
-import com.juno.appling.member.domain.entity.SellerEntity;
+import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.enums.RecipientInfoStatus;
 import com.juno.appling.member.repository.MemberJpaRepository;
 import com.juno.appling.member.repository.SellerJpaRepository;

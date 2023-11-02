@@ -1,6 +1,6 @@
 package com.juno.appling.member.controller.request;
 
-import com.juno.appling.member.enums.Status;
+import com.juno.appling.member.enums.MemberStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
@@ -21,5 +21,5 @@ public class PatchMemberRequest {
     private String nickname;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private MemberStatus status;
 }

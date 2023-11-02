@@ -11,8 +11,8 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.member.domain.entity.SellerEntity;
-import com.juno.appling.member.enums.Role;
+import com.juno.appling.member.enums.MemberRole;
+import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.repository.MemberJpaRepository;
 import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.product.controller.request.AddViewCntRequest;
@@ -23,6 +23,8 @@ import com.juno.appling.product.controller.response.ProductResponse;
 import com.juno.appling.product.domain.entity.CategoryEntity;
 import com.juno.appling.product.domain.entity.OptionEntity;
 import com.juno.appling.product.domain.entity.ProductEntity;
+import com.juno.appling.product.domain.model.Category;
+import com.juno.appling.product.domain.model.Option;
 import com.juno.appling.product.enums.OptionStatus;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
@@ -101,18 +103,18 @@ class ProductEntityServiceImplUnitTest {
             .ea(10)
             .type("normal")
             .build();
-        CategoryEntity categoryEntity = new CategoryEntity();
+        CategoryEntity categoryEntity = CategoryEntity.from(Category.builder().build());
 
         given(tokenProvider.resolveToken(any())).willReturn("token");
         LocalDateTime now = LocalDateTime.now();
         MemberEntity memberEntity = new MemberEntity(1L, "email@mail.com", "password", "nickname", "name", "19941030",
-            Role.SELLER, null, null, now, now);
+            MemberRole.SELLER, null, null, now, now);
         SellerEntity sellerEntity = SellerEntity.of(memberEntity, "회사명", "01012344321", "1234", "회사 주소", "상세 주소", "mail@mail.com");
         given(memberJpaRepository.findById(any())).willReturn(Optional.of(memberEntity));
         given(sellerJpaRepository.findByMember(any())).willReturn(Optional.of(sellerEntity));
         given(productJpaRepository.save(any())).willReturn(
             ProductEntity.of(sellerEntity, categoryEntity, productRequest));
-        given(categoryJpaRepository.findById(anyLong())).willReturn(Optional.of(new CategoryEntity()));
+        given(categoryJpaRepository.findById(anyLong())).willReturn(Optional.of(CategoryEntity.from(Category.builder().build())));
         //when
         ProductResponse productResponse = productService.postProduct(productRequest, request);
 
@@ -155,18 +157,18 @@ class ProductEntityServiceImplUnitTest {
             .optionList(optionRequestList)
             .type("option")
             .build();
-        CategoryEntity categoryEntity = new CategoryEntity();
+        CategoryEntity categoryEntity = CategoryEntity.from(Category.builder().build());
 
         given(tokenProvider.resolveToken(any())).willReturn("token");
         LocalDateTime now = LocalDateTime.now();
         MemberEntity memberEntity = new MemberEntity(1L, "email@mail.com", "password", "nickname", "name", "19941030",
-                Role.SELLER, null, null, now, now);
+                MemberRole.SELLER, null, null, now, now);
         SellerEntity sellerEntity = SellerEntity.of(memberEntity, "회사명", "01012344321", "1234", "회사 주소", "상세 주소", "mail@mail.com");
         given(memberJpaRepository.findById(any())).willReturn(Optional.of(memberEntity));
         given(sellerJpaRepository.findByMember(any())).willReturn(Optional.of(sellerEntity));
         given(productJpaRepository.save(any())).willReturn(
             ProductEntity.of(sellerEntity, categoryEntity, productRequest));
-        given(categoryJpaRepository.findById(anyLong())).willReturn(Optional.of(new CategoryEntity()));
+        given(categoryJpaRepository.findById(anyLong())).willReturn(Optional.of(CategoryEntity.from(Category.builder().build())));
         //when
         ProductResponse productResponse = productService.postProduct(productRequest, request);
 
@@ -277,7 +279,7 @@ class ProductEntityServiceImplUnitTest {
                 .categoryId(1L)
                 .status("normal")
                 .build();
-        given(categoryJpaRepository.findById(anyLong())).willReturn(Optional.of(new CategoryEntity()));
+        given(categoryJpaRepository.findById(anyLong())).willReturn(Optional.of(CategoryEntity.from(Category.builder().build())));
         given(productJpaRepository.findById(any())).willReturn(Optional.ofNullable(null));
 
         // when
@@ -310,9 +312,9 @@ class ProductEntityServiceImplUnitTest {
         LocalDateTime now = LocalDateTime.now();
 
         MemberEntity memberEntity = new MemberEntity(1L, "email@mail.com", "password", "nickname", "name", "19941030",
-            Role.SELLER, null, null, now, now);
+            MemberRole.SELLER, null, null, now, now);
         SellerEntity sellerEntity = SellerEntity.of(memberEntity, "회사명", "01012344321", "1234", "회사 주소", "상세 주소", "mail@mail.com");
-        CategoryEntity categoryEntity = new CategoryEntity();
+        CategoryEntity categoryEntity = CategoryEntity.from(Category.builder().build());
         ProductEntity productEntity = ProductEntity.builder()
             .id(PRODUCT_ID_APPLE)
             .seller(sellerEntity)
@@ -328,14 +330,23 @@ class ProductEntityServiceImplUnitTest {
             .image2("https://image2")
             .image3("https://image3")
             .status(ProductStatus.NORMAL)
-            .createAt(now)
+            .createdAt(now)
             .modifiedAt(now)
             .type(ProductType.OPTION)
             .build();
         productEntity.addAllOptionsList(new ArrayList<>());
 
-        OptionEntity optionEntity = new OptionEntity(1L, optionRequest1.getName(), optionRequest1.getExtraPrice(), optionRequest1.getEa(), OptionStatus.NORMAL, now, now,
-            productEntity);
+        Option optionBuild = Option.builder()
+            .id(1L)
+            .name(optionRequest1.getName())
+            .extraPrice(optionRequest1.getExtraPrice())
+            .ea(optionRequest1.getEa())
+            .status(OptionStatus.NORMAL)
+            .createdAt(now)
+            .modifiedAt(now)
+            .product(productEntity.toModel())
+            .build();
+        OptionEntity optionEntity = OptionEntity.from(optionBuild);
         productEntity.addOptionsList(optionEntity);
 
         given(categoryJpaRepository.findById(anyLong())).willReturn(Optional.of(categoryEntity));

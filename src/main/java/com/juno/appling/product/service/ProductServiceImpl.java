@@ -3,7 +3,7 @@ package com.juno.appling.product.service;
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.member.domain.entity.SellerEntity;
+import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.repository.MemberJpaRepository;
 import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.product.controller.request.AddViewCntRequest;

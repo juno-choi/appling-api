@@ -1,7 +1,7 @@
 package com.juno.appling.order.repository;
 
 import com.juno.appling.global.querydsl.QuerydslConfig;
-import com.juno.appling.member.domain.entity.SellerEntity;
+import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.order.domain.entity.QOrderEntity;
 import com.juno.appling.order.domain.entity.QOrderItemEntity;
 import com.juno.appling.order.domain.vo.OrderVo;

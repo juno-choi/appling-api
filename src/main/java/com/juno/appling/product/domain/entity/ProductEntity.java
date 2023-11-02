@@ -1,8 +1,8 @@
 package com.juno.appling.product.domain.entity;
 
-import com.juno.appling.member.domain.entity.SellerEntity;
 import com.juno.appling.product.controller.request.ProductRequest;
 import com.juno.appling.product.controller.request.PutProductRequest;
+import com.juno.appling.product.domain.model.Product;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
 import jakarta.persistence.Column;
@@ -64,7 +64,7 @@ public class ProductEntity {
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
     private int ea;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
@@ -73,13 +73,67 @@ public class ProductEntity {
     @Enumerated(EnumType.STRING)
     private ProductType type;
 
+    public static ProductEntity from(Product product) {
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.id = product.getId();
+        productEntity.seller = SellerEntity.from(product.getSeller());
+        productEntity.category = CategoryEntity.from(product.getCategory());
+        productEntity.mainTitle = product.getMainTitle();
+        productEntity.mainExplanation = product.getMainExplanation();
+        productEntity.productMainExplanation = product.getProductMainExplanation();
+        productEntity.productSubExplanation = product.getProductSubExplanation();
+        productEntity.originPrice = product.getOriginPrice();
+        productEntity.price = product.getPrice();
+        productEntity.purchaseInquiry = product.getPurchaseInquiry();
+        productEntity.origin = product.getOrigin();
+        productEntity.producer = product.getProducer();
+        productEntity.mainImage = product.getMainImage();
+        productEntity.image1 = product.getImage1();
+        productEntity.image2 = product.getImage2();
+        productEntity.image3 = product.getImage3();
+        productEntity.viewCnt = product.getViewCnt();
+        productEntity.status = product.getStatus();
+        productEntity.ea = product.getEa();
+        productEntity.createdAt = product.getCreatedAt();
+        productEntity.modifiedAt = product.getModifiedAt();
+        productEntity.type = product.getType();
+        return productEntity;
+    }
+
+    public Product toModel() {
+        return Product.builder()
+            .id(id)
+            .seller(seller.toModel())
+            .category(category.toModel())
+            .mainTitle(mainTitle)
+            .mainExplanation(mainExplanation)
+            .productMainExplanation(productMainExplanation)
+            .productSubExplanation(productSubExplanation)
+            .originPrice(originPrice)
+            .price(price)
+            .purchaseInquiry(purchaseInquiry)
+            .origin(origin)
+            .producer(producer)
+            .mainImage(mainImage)
+            .image1(image1)
+            .image2(image2)
+            .image3(image3)
+            .viewCnt(viewCnt)
+            .status(status)
+            .ea(ea)
+            .createdAt(createdAt)
+            .modifiedAt(modifiedAt)
+            .type(type)
+            .build();
+    }
+
     @Builder
     public ProductEntity(Long id, SellerEntity seller, CategoryEntity category, String mainTitle,
         String mainExplanation,
         String productMainExplanation, String productSubExplanation, int originPrice, int price,
         String purchaseInquiry, String origin, String producer, String mainImage, String image1,
         String image2, String image3, Long viewCnt, ProductStatus status, int ea,
-        LocalDateTime createAt, LocalDateTime modifiedAt, ProductType type) {
+        LocalDateTime createdAt, LocalDateTime modifiedAt, ProductType type) {
         this.id = id;
         this.seller = seller;
         this.category = category;
@@ -99,7 +153,7 @@ public class ProductEntity {
         this.viewCnt = viewCnt;
         this.status = status;
         this.ea = ea;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.type = type;
     }
@@ -128,7 +182,7 @@ public class ProductEntity {
         this.status = status;
         this.type = type;
         this.ea = ea;
-        this.createAt = now;
+        this.createdAt = now;
         this.modifiedAt = now;
     }
 

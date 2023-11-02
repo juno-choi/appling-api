@@ -1,6 +1,6 @@
 package com.juno.appling.member.enums;
 
-public enum Status {
+public enum MemberStatus {
     NORMAL,
     WITHDRAW,
 }

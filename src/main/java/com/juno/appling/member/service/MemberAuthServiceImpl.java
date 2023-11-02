@@ -12,7 +12,7 @@ import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.controller.response.kakao.KakaoLoginResponse;
 import com.juno.appling.member.controller.response.kakao.KakaoMemberResponse;
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.member.enums.Role;
+import com.juno.appling.member.enums.MemberRole;
 import com.juno.appling.member.enums.SnsJoinType;
 import com.juno.appling.member.repository.MemberJpaRepository;
 import io.jsonwebtoken.Claims;
@@ -110,8 +110,8 @@ public class MemberAuthServiceImpl implements MemberAuthService{
             new IllegalArgumentException("유효하지 않은 회원입니다.")
         );
 
-        Role role = Role.valueOf(memberEntity.getRole().roleName);
-        String[] roleSplitList = role.roleList.split(",");
+        MemberRole memberRole = MemberRole.valueOf(memberEntity.getRole().roleName);
+        String[] roleSplitList = memberRole.roleList.split(",");
         List<String> trimRoleList = Arrays.stream(roleSplitList)
             .map(r -> String.format("ROLE_%s", r.trim())).toList();
         String roleList = trimRoleList.toString().replace("[", "").replace("]", "")
@@ -211,8 +211,8 @@ public class MemberAuthServiceImpl implements MemberAuthService{
             memberEntity = findMember.get();
         }
 
-        Role role = Role.valueOf(memberEntity.getRole().roleName);
-        String[] roleSplitList = role.roleList.split(",");
+        MemberRole memberRole = MemberRole.valueOf(memberEntity.getRole().roleName);
+        String[] roleSplitList = memberRole.roleList.split(",");
         List<SimpleGrantedAuthority> grantedList = new LinkedList<>();
         for (String r : roleSplitList) {
             grantedList.add(new SimpleGrantedAuthority(r));

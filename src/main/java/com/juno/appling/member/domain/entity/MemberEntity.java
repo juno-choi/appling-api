@@ -1,9 +1,10 @@
 package com.juno.appling.member.domain.entity;
 
 import com.juno.appling.member.controller.request.JoinRequest;
-import com.juno.appling.member.enums.Role;
+import com.juno.appling.member.domain.model.Member;
+import com.juno.appling.member.enums.MemberRole;
+import com.juno.appling.member.enums.MemberStatus;
 import com.juno.appling.member.enums.SnsJoinType;
-import com.juno.appling.member.enums.Status;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "member")
+@Table(name = "members")
 public class MemberEntity {
 
     @Id
@@ -44,7 +45,7 @@ public class MemberEntity {
     private String birth;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private MemberRole role;
 
     private String snsId;
 
@@ -52,7 +53,7 @@ public class MemberEntity {
     private SnsJoinType snsType;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private MemberStatus status;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<RecipientEntity> recipientList = new LinkedList<>();
@@ -60,9 +61,43 @@ public class MemberEntity {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
+    public static MemberEntity from(Member member) {
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.id = member.getId();
+        memberEntity.email = member.getEmail();
+        memberEntity.password = member.getPassword();
+        memberEntity.nickname = member.getNickname();
+        memberEntity.name = member.getName();
+        memberEntity.birth = member.getBirth();
+        memberEntity.role = member.getRole();
+        memberEntity.snsId = member.getSnsId();
+        memberEntity.snsType = member.getSnsType();
+        memberEntity.status = member.getStatus();
+        memberEntity.createdAt = member.getCreatedAt();
+        memberEntity.modifiedAt = member.getModifiedAt();
+        return memberEntity;
+    }
+
+    public Member toModel() {
+        return Member.builder()
+            .id(id)
+            .email(email)
+            .password(password)
+            .nickname(nickname)
+            .name(name)
+            .birth(birth)
+            .role(role)
+            .snsId(snsId)
+            .snsType(snsType)
+            .status(status)
+            .createdAt(createdAt)
+            .modifiedAt(modifiedAt)
+            .build();
+    }
+
     public MemberEntity(@NotNull String email, @NotNull String password, @NotNull String nickname,
-        @NotNull String name, String birth, Role role, String snsId, SnsJoinType snsType,
-        Status status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        @NotNull String name, String birth, MemberRole role, String snsId, SnsJoinType snsType,
+        MemberStatus status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -77,7 +112,7 @@ public class MemberEntity {
     }
 
     public MemberEntity(Long id, @NotNull String email, @NotNull String password,
-        @NotNull String nickname, @NotNull String name, String birth, Role role, String snsId,
+        @NotNull String nickname, @NotNull String name, String birth, MemberRole role, String snsId,
         SnsJoinType snsType, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.email = email;
@@ -95,14 +130,14 @@ public class MemberEntity {
     public static MemberEntity of(JoinRequest joinRequest) {
         LocalDateTime now = LocalDateTime.now();
         return new MemberEntity(joinRequest.getEmail(), joinRequest.getPassword(), joinRequest.getNickname(),
-            joinRequest.getName(), joinRequest.getBirth(), Role.MEMBER, null, null, Status.NORMAL, now,
+            joinRequest.getName(), joinRequest.getBirth(), MemberRole.MEMBER, null, null, MemberStatus.NORMAL, now,
             now);
     }
 
     public static MemberEntity of(JoinRequest joinRequest, String snsId, SnsJoinType snsType) {
         LocalDateTime now = LocalDateTime.now();
         return new MemberEntity(joinRequest.getEmail(), joinRequest.getPassword(), joinRequest.getNickname(),
-            joinRequest.getName(), joinRequest.getBirth(), Role.MEMBER, snsId, snsType, Status.NORMAL, now,
+            joinRequest.getName(), joinRequest.getBirth(), MemberRole.MEMBER, snsId, snsType, MemberStatus.NORMAL, now,
             now);
     }
 
@@ -126,8 +161,8 @@ public class MemberEntity {
         }
     }
 
-    public void patchMemberRole(Role role) {
-        this.role = role;
+    public void patchMemberRole(MemberRole memberRole) {
+        this.role = memberRole;
     }
 
 }

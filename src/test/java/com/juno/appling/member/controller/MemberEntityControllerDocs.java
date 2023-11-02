@@ -33,8 +33,8 @@ import com.juno.appling.member.controller.request.PutSellerRequest;
 import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.domain.entity.RecipientEntity;
+import com.juno.appling.member.enums.MemberRole;
 import com.juno.appling.member.enums.RecipientInfoStatus;
-import com.juno.appling.member.enums.Role;
 import com.juno.appling.member.repository.IntroduceJpaRepository;
 import com.juno.appling.member.repository.MemberJpaRepository;
 import com.juno.appling.member.repository.RecipientJpaRepository;
@@ -131,7 +131,7 @@ class MemberEntityControllerDocs extends RestdocsBaseTest {
                 fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("nickname"),
                 fieldWithPath("data.name").type(JsonFieldType.STRING).description("name"),
                 fieldWithPath("data.role").type(JsonFieldType.STRING).description(
-                    String.format("권한 (일반 유저 : %s, 판매자 : %s)", Role.MEMBER, Role.SELLER)),
+                    String.format("권한 (일반 유저 : %s, 판매자 : %s)", MemberRole.MEMBER, MemberRole.SELLER)),
                 fieldWithPath("data.status").type(JsonFieldType.STRING).description("회원 상태"),
                 fieldWithPath("data.created_at").type(JsonFieldType.STRING).description("생성일"),
                 fieldWithPath("data.modified_at").type(JsonFieldType.STRING).description("수정일")

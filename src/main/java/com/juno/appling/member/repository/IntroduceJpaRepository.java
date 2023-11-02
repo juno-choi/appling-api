@@ -1,7 +1,7 @@
 package com.juno.appling.member.repository;
 
-import com.juno.appling.member.domain.entity.IntroduceEntity;
-import com.juno.appling.member.domain.entity.SellerEntity;
+import com.juno.appling.product.domain.entity.IntroduceEntity;
+import com.juno.appling.product.domain.entity.SellerEntity;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

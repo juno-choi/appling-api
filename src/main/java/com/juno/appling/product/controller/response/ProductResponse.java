@@ -65,7 +65,7 @@ public class ProductResponse {
             .status(productEntity.getStatus())
             .type(productEntity.getType())
             .ea(productEntity.getEa())
-            .createdAt(productEntity.getCreateAt())
+            .createdAt(productEntity.getCreatedAt())
             .modifiedAt(productEntity.getModifiedAt())
             .seller(SellerResponse.from(productEntity.getSeller()))
             .category(CategoryResponse.from(productEntity))

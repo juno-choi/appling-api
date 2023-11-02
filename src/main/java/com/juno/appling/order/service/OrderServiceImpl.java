@@ -3,7 +3,7 @@ package com.juno.appling.order.service;
 import com.github.dockerjava.api.exception.UnauthorizedException;
 import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.member.domain.entity.SellerEntity;
+import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;

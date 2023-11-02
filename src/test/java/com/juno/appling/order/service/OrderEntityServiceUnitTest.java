@@ -11,7 +11,7 @@ import static org.mockito.BDDMockito.given;
 import com.github.dockerjava.api.exception.UnauthorizedException;
 import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.member.enums.Role;
+import com.juno.appling.member.enums.MemberRole;
 import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
@@ -289,8 +289,8 @@ class OrderEntityServiceUnitTest {
         Long orderId = 1L;
         Long memberId = 1L;
         LocalDateTime now = LocalDateTime.now();
-        MemberEntity memberEntity1 = new MemberEntity(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
-        MemberEntity memberEntity2 = new MemberEntity(2L, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        MemberEntity memberEntity1 = new MemberEntity(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", MemberRole.SELLER, null, null, now, now);
+        MemberEntity memberEntity2 = new MemberEntity(2L, "emial@mail.com", "password", "nickname", "name", "19991030", MemberRole.SELLER, null, null, now, now);
         given(memberUtil.getMember(any())).willReturn(memberEntity1);
         given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(new OrderEntity(orderId,
             memberEntity2, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now)));
@@ -308,7 +308,7 @@ class OrderEntityServiceUnitTest {
         Long orderId = 1L;
         Long memberId = 1L;
         LocalDateTime now = LocalDateTime.now();
-        MemberEntity memberEntity1 = new MemberEntity(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        MemberEntity memberEntity1 = new MemberEntity(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", MemberRole.SELLER, null, null, now, now);
         given(memberUtil.getMember(any())).willReturn(memberEntity1);
         given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(new OrderEntity(orderId,
             memberEntity1, null, new ArrayList<>(), null, OrderStatus.ORDER, "", now, now)));
@@ -325,7 +325,7 @@ class OrderEntityServiceUnitTest {
         //given
         Long orderId = 1L;
         LocalDateTime now = LocalDateTime.now();
-        MemberEntity memberEntity = new MemberEntity(1L, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        MemberEntity memberEntity = new MemberEntity(1L, "emial@mail.com", "password", "nickname", "name", "19991030", MemberRole.SELLER, null, null, now, now);
         CompleteOrderRequest completeOrderRequest = CompleteOrderRequest.builder()
             .orderId(orderId)
             .ownerName("주문자")
@@ -365,7 +365,7 @@ class OrderEntityServiceUnitTest {
         //given
         Long orderId = 1L;
         LocalDateTime now = LocalDateTime.now();
-        MemberEntity memberEntity = new MemberEntity(1L, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        MemberEntity memberEntity = new MemberEntity(1L, "emial@mail.com", "password", "nickname", "name", "19991030", MemberRole.SELLER, null, null, now, now);
         CompleteOrderRequest completeOrderRequest = CompleteOrderRequest.builder()
             .orderId(orderId)
             .ownerName("주문자")
@@ -394,7 +394,7 @@ class OrderEntityServiceUnitTest {
         //given
         Long memberId = 1L;
         LocalDateTime now = LocalDateTime.now();
-        MemberEntity memberEntity1 = new MemberEntity(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        MemberEntity memberEntity1 = new MemberEntity(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", MemberRole.SELLER, null, null, now, now);
         given(memberUtil.getMember(any())).willReturn(memberEntity1);
         given(sellerJpaRepository.findByMember(any(MemberEntity.class))).willReturn(Optional.ofNullable(null));
         //when

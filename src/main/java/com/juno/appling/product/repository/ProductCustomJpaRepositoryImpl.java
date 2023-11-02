@@ -53,7 +53,7 @@ public class ProductCustomJpaRepositoryImpl implements ProductCustomJpaRepositor
             .leftJoin(product.optionList, option).fetchJoin()
             .where(builder)
             .distinct()
-            .orderBy(product.createAt.desc())
+            .orderBy(product.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();

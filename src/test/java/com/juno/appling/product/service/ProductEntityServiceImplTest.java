@@ -10,7 +10,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.member.domain.entity.SellerEntity;
+import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.repository.MemberJpaRepository;
 import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;

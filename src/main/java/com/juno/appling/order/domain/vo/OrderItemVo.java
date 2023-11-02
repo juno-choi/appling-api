@@ -51,7 +51,7 @@ public class OrderItemVo {
             orderItemEntity.getProduct().getMainImage(), orderItemEntity.getProduct().getImage1(),
             orderItemEntity.getProduct().getImage2(), orderItemEntity.getProduct().getImage3(),
             orderItemEntity.getProduct().getViewCnt(), orderItemEntity.getProduct().getStatus(),
-            orderItemEntity.getProduct().getCreateAt(), orderItemEntity.getModifiedAt(),
+            orderItemEntity.getProduct().getCreatedAt(), orderItemEntity.getModifiedAt(),
             SellerVo.of(orderItemEntity.getProduct().getSeller()),
             CategoryVo.of(orderItemEntity.getProduct().getCategory()),
             OptionVo.of(orderItemEntity.getOption())

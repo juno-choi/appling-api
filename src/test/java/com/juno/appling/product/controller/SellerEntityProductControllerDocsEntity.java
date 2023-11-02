@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.member.domain.entity.SellerEntity;
+import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.repository.MemberJpaRepository;
 import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
