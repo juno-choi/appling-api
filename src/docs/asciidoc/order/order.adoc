@@ -3,88 +3,88 @@
 ### 📗 임시 주문 등록 (주문전 등록 필수!)
 
 ==== 🔵 REQUEST
-include::{snippets}/order-controller-docs/post-temp-order/http-request.adoc[]
+include::{snippets}/orderEntity-controller-docs/post-temp-orderEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/order-controller-docs/post-temp-order/request-headers.adoc[]
+include::{snippets}/orderEntity-controller-docs/post-temp-orderEntity/request-headers.adoc[]
 
 ==== 🔵 REQUEST FIELD
 
-include::{snippets}/order-controller-docs/post-temp-order/request-body.adoc[]
+include::{snippets}/orderEntity-controller-docs/post-temp-orderEntity/request-body.adoc[]
 
-include::{snippets}/order-controller-docs/post-temp-order/request-fields.adoc[]
+include::{snippets}/orderEntity-controller-docs/post-temp-orderEntity/request-fields.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/order-controller-docs/post-temp-order/http-response.adoc[]
+include::{snippets}/orderEntity-controller-docs/post-temp-orderEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/order-controller-docs/post-temp-order/response-fields.adoc[]
+include::{snippets}/orderEntity-controller-docs/post-temp-orderEntity/response-fields.adoc[]
 
 ### 📗 임시 주문 불러오기
 
 ==== 🔵 REQUEST
-include::{snippets}/order-controller-docs/get-temp-order/http-request.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-temp-orderEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/order-controller-docs/get-temp-order/request-headers.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-temp-orderEntity/request-headers.adoc[]
 
 ==== 🔵 REQUEST PATH
 
-include::{snippets}/order-controller-docs/get-temp-order/path-parameters.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-temp-orderEntity/path-parameters.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/order-controller-docs/get-temp-order/http-response.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-temp-orderEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/order-controller-docs/get-temp-order/response-fields.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-temp-orderEntity/response-fields.adoc[]
 
 
 ### 📗 주문 완료
 
 ==== 🔵 REQUEST
-include::{snippets}/order-controller-docs/complete/http-request.adoc[]
+include::{snippets}/orderEntity-controller-docs/complete/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/order-controller-docs/complete/request-headers.adoc[]
+include::{snippets}/orderEntity-controller-docs/complete/request-headers.adoc[]
 
 ==== 🔵 REQUEST FIELD
 
-include::{snippets}/order-controller-docs/complete/request-body.adoc[]
+include::{snippets}/orderEntity-controller-docs/complete/request-body.adoc[]
 
-include::{snippets}/order-controller-docs/complete/request-fields.adoc[]
+include::{snippets}/orderEntity-controller-docs/complete/request-fields.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/order-controller-docs/complete/http-response.adoc[]
+include::{snippets}/orderEntity-controller-docs/complete/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/order-controller-docs/complete/response-fields.adoc[]
+include::{snippets}/orderEntity-controller-docs/complete/response-fields.adoc[]
 
 ### 📗 주문 내역 확인 (Seller)
 
 ==== 🔵 REQUEST
-include::{snippets}/order-controller-docs/get-order-by-seller/http-request.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-seller/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/order-controller-docs/get-order-by-seller/request-headers.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-seller/request-headers.adoc[]
 
 ==== 🔵 REQUEST PARAMETERS
 
-include::{snippets}/order-controller-docs/get-order-by-seller/query-parameters.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-seller/query-parameters.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/order-controller-docs/get-order-by-seller/http-response.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-seller/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/order-controller-docs/get-order-by-seller/response-fields.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-seller/response-fields.adoc[]

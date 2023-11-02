@@ -1,4 +1,4 @@
-package com.juno.appling.order.domain;
+package com.juno.appling.order.domain.entity;
 
 import com.juno.appling.member.domain.Member;
 import com.juno.appling.order.enums.OrderStatus;
@@ -29,7 +29,7 @@ import org.hibernate.envers.NotAudited;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ORDERS")
-public class Order {
+public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,11 +45,11 @@ public class Order {
 
     @NotAudited
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-    private List<OrderItem> orderItemList = new ArrayList<>();
+    private List<OrderItemEntity> orderItemList = new ArrayList<>();
 
     @NotAudited
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-    private List<Delivery> deliveryList = new ArrayList<>();
+    private List<DeliveryEntity> deliveryList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
@@ -59,7 +59,7 @@ public class Order {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Order(Member member, OrderStatus status, String orderName, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    private OrderEntity(Member member, OrderStatus status, String orderName, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.member = member;
         this.status = status;
         this.orderName = orderName;
@@ -67,9 +67,9 @@ public class Order {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Order of(Member member, String orderName){
+    public static OrderEntity of(Member member, String orderName){
         LocalDateTime now = LocalDateTime.now();
-        return new Order(member, OrderStatus.TEMP, orderName, now, now);
+        return new OrderEntity(member, OrderStatus.TEMP, orderName, now, now);
     }
 
     public void statusComplete() {

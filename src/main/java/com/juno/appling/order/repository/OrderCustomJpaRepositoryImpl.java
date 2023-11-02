@@ -1,9 +1,9 @@
-package com.juno.appling.order.infrastructure;
+package com.juno.appling.order.repository;
 
 import com.juno.appling.global.querydsl.QuerydslConfig;
 import com.juno.appling.member.domain.Seller;
-import com.juno.appling.order.domain.QOrder;
-import com.juno.appling.order.domain.QOrderItem;
+import com.juno.appling.order.domain.entity.QOrderEntity;
+import com.juno.appling.order.domain.entity.QOrderItemEntity;
 import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.entity.QOptionEntity;
@@ -19,14 +19,14 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class OrderCustomRepositoryImpl implements OrderCustomRepository {
+public class OrderCustomJpaRepositoryImpl implements OrderCustomJpaRepository {
     private final QuerydslConfig q;
 
     @Override
     public Page<OrderVo> findAllBySeller(Pageable pageable, String search, OrderStatus status, Seller seller) {
         QProductEntity product = QProductEntity.productEntity;
-        QOrder order = QOrder.order;
-        QOrderItem orderItem = QOrderItem.orderItem;
+        QOrderEntity order = QOrderEntity.orderEntity;
+        QOrderItemEntity orderItem = QOrderItemEntity.orderItemEntity;
         QOptionEntity option = QOptionEntity.optionEntity;
 
         BooleanBuilder builder = new BooleanBuilder();

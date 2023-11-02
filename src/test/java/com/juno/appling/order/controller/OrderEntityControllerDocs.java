@@ -30,11 +30,11 @@ import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
-import com.juno.appling.order.domain.Order;
-import com.juno.appling.order.domain.OrderItem;
-import com.juno.appling.order.infrastructure.DeliveryRepository;
-import com.juno.appling.order.infrastructure.OrderItemRepository;
-import com.juno.appling.order.infrastructure.OrderRepository;
+import com.juno.appling.order.domain.entity.OrderEntity;
+import com.juno.appling.order.domain.entity.OrderItemEntity;
+import com.juno.appling.order.repository.DeliveryJpaRepository;
+import com.juno.appling.order.repository.OrderItemJpaRepository;
+import com.juno.appling.order.repository.OrderJpaRepository;
 import com.juno.appling.product.domain.entity.OptionEntity;
 import com.juno.appling.product.domain.entity.ProductEntity;
 import com.juno.appling.product.repository.CategoryJpaRepository;
@@ -68,7 +68,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-class OrderControllerDocs extends RestdocsBaseTest {
+class OrderEntityControllerDocs extends RestdocsBaseTest {
 
     @Autowired
     private MemberRepository memberRepository;
@@ -86,16 +86,16 @@ class OrderControllerDocs extends RestdocsBaseTest {
     private MemberAuthService memberAuthService;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private OrderJpaRepository orderJpaRepository;
 
     @Autowired
-    private OrderItemRepository orderItemRepository;
+    private OrderItemJpaRepository orderItemJpaRepository;
 
     @Autowired
     private OptionJpaRepository optionJpaRepository;
 
     @Autowired
-    private DeliveryRepository deliveryRepository;
+    private DeliveryJpaRepository deliveryJpaRepository;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -104,9 +104,9 @@ class OrderControllerDocs extends RestdocsBaseTest {
 
     @AfterEach
     void cleanup() {
-        deliveryRepository.deleteAll();
-        orderItemRepository.deleteAll();
-        orderRepository.deleteAll();
+        deliveryJpaRepository.deleteAll();
+        orderItemJpaRepository.deleteAll();
+        orderJpaRepository.deleteAll();
         optionJpaRepository.deleteAll();
         productJpaRepository.deleteAll();
         categoryJpaRepository.deleteAll();
@@ -166,19 +166,20 @@ class OrderControllerDocs extends RestdocsBaseTest {
         //given
         Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
 
-        Order order = orderRepository.save(Order.of(member, "테스트 상품"));
+        OrderEntity orderEntity = orderJpaRepository.save(OrderEntity.of(member, "테스트 상품"));
 
         ProductEntity normalProductEntity = productJpaRepository.findById(PRODUCT_ID_NORMAL).get();
         ProductEntity optionProductEntity = productJpaRepository.findById(PRODUCT_ID_APPLE).get();
 
         OptionEntity optionEntity1 = optionJpaRepository.findById(PRODUCT_OPTION_ID_APPLE).get();
 
-        orderItemRepository.save(OrderItem.of(order, normalProductEntity, null, 3));
-        orderItemRepository.save(OrderItem.of(order, optionProductEntity, optionEntity1, 5));
+        orderItemJpaRepository.save(OrderItemEntity.of(orderEntity, normalProductEntity, null, 3));
+        orderItemJpaRepository.save(
+            OrderItemEntity.of(orderEntity, optionProductEntity, optionEntity1, 5));
 
         //when
         ResultActions perform = mock.perform(
-                get(PREFIX + "/temp/{order_id}", order.getId())
+                get(PREFIX + "/temp/{order_id}", orderEntity.getId())
                         .header(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken())
         );
         //then
@@ -244,16 +245,16 @@ class OrderControllerDocs extends RestdocsBaseTest {
         //given
         Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
 
-        Order order = orderRepository.save(Order.of(member, "테스트 상품"));
-        Long orderId = order.getId();
+        OrderEntity orderEntity = orderJpaRepository.save(OrderEntity.of(member, "테스트 상품"));
+        Long orderId = orderEntity.getId();
 
         ProductEntity productEntity1 = productJpaRepository.findById(PRODUCT_ID_APPLE).get();
         ProductEntity productEntity2 = productJpaRepository.findById(PRODUCT_ID_NORMAL).get();
 
         OptionEntity optionEntity1 = optionJpaRepository.findById(PRODUCT_OPTION_ID_APPLE).get();
 
-        orderItemRepository.save(OrderItem.of(order, productEntity1, optionEntity1, 3));
-        orderItemRepository.save(OrderItem.of(order, productEntity2, null, 5));
+        orderItemJpaRepository.save(OrderItemEntity.of(orderEntity, productEntity1, optionEntity1, 3));
+        orderItemJpaRepository.save(OrderItemEntity.of(orderEntity, productEntity2, null, 5));
 
         CompleteOrderRequest completeOrderRequest = CompleteOrderRequest.builder()
             .orderId(orderId)

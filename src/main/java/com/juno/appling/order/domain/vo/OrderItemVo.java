@@ -3,7 +3,7 @@ package com.juno.appling.order.domain.vo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.order.domain.OrderItem;
+import com.juno.appling.order.domain.entity.OrderItemEntity;
 import com.juno.appling.product.domain.vo.OptionVo;
 import com.juno.appling.product.enums.ProductStatus;
 import java.time.LocalDateTime;
@@ -39,22 +39,22 @@ public class OrderItemVo {
     private CategoryVo category;
     private OptionVo option;
 
-    public static OrderItemVo from(OrderItem orderItem) {
-        return new OrderItemVo(orderItem.getProduct().getId(), orderItem.getEa(),
-            orderItem.getProduct().getMainTitle(),
-            orderItem.getProduct().getMainExplanation(),
-            orderItem.getProduct().getProductMainExplanation(),
-            orderItem.getProduct().getProductSubExplanation(),
-            orderItem.getProduct().getOriginPrice(), orderItem.getProduct().getPrice(),
-            orderItem.getProduct().getPurchaseInquiry(),
-            orderItem.getProduct().getOrigin(), orderItem.getProduct().getProducer(),
-            orderItem.getProduct().getMainImage(), orderItem.getProduct().getImage1(),
-            orderItem.getProduct().getImage2(), orderItem.getProduct().getImage3(),
-            orderItem.getProduct().getViewCnt(), orderItem.getProduct().getStatus(),
-            orderItem.getProduct().getCreateAt(), orderItem.getModifiedAt(),
-            SellerVo.of(orderItem.getProduct().getSeller()),
-            CategoryVo.of(orderItem.getProduct().getCategory()),
-            OptionVo.of(orderItem.getOption())
+    public static OrderItemVo from(OrderItemEntity orderItemEntity) {
+        return new OrderItemVo(orderItemEntity.getProduct().getId(), orderItemEntity.getEa(),
+            orderItemEntity.getProduct().getMainTitle(),
+            orderItemEntity.getProduct().getMainExplanation(),
+            orderItemEntity.getProduct().getProductMainExplanation(),
+            orderItemEntity.getProduct().getProductSubExplanation(),
+            orderItemEntity.getProduct().getOriginPrice(), orderItemEntity.getProduct().getPrice(),
+            orderItemEntity.getProduct().getPurchaseInquiry(),
+            orderItemEntity.getProduct().getOrigin(), orderItemEntity.getProduct().getProducer(),
+            orderItemEntity.getProduct().getMainImage(), orderItemEntity.getProduct().getImage1(),
+            orderItemEntity.getProduct().getImage2(), orderItemEntity.getProduct().getImage3(),
+            orderItemEntity.getProduct().getViewCnt(), orderItemEntity.getProduct().getStatus(),
+            orderItemEntity.getProduct().getCreateAt(), orderItemEntity.getModifiedAt(),
+            SellerVo.of(orderItemEntity.getProduct().getSeller()),
+            CategoryVo.of(orderItemEntity.getProduct().getCategory()),
+            OptionVo.of(orderItemEntity.getOption())
         );
 
     }

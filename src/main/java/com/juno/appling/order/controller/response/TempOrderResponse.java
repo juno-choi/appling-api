@@ -3,8 +3,8 @@ package com.juno.appling.order.controller.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.order.domain.Order;
-import com.juno.appling.order.domain.OrderItem;
+import com.juno.appling.order.domain.entity.OrderEntity;
+import com.juno.appling.order.domain.entity.OrderItemEntity;
 import com.juno.appling.order.domain.vo.OrderItemVo;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +22,15 @@ public class TempOrderResponse {
     private List<OrderItemVo> orderItemList;
 
 
-    public static TempOrderResponse from(Order order) {
-        List<OrderItem> itemList = order.getOrderItemList();
+    public static TempOrderResponse from(OrderEntity orderEntity) {
+        List<OrderItemEntity> itemList = orderEntity.getOrderItemList();
         List<OrderItemVo> orderItemVoList = new ArrayList<>();
-        for(OrderItem o : itemList){
+        for(OrderItemEntity o : itemList){
             orderItemVoList.add(OrderItemVo.from(o));
         }
 
         return TempOrderResponse.builder()
-            .orderId(order.getId())
+            .orderId(orderEntity.getId())
             .orderItemList(orderItemVoList)
             .build();
     }

@@ -1,4 +1,4 @@
-package com.juno.appling.order.domain;
+package com.juno.appling.order.domain.entity;
 
 import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.product.domain.entity.OptionEntity;
@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,8 @@ import org.hibernate.envers.NotAudited;
 @Getter
 @NoArgsConstructor
 @Audited
-public class OrderItem {
+@Table(name = "order_item")
+public class OrderItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +35,7 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     @NotAudited
-    private Order order;
+    private OrderEntity order;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
@@ -56,7 +58,7 @@ public class OrderItem {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private OrderItem(Order order, ProductEntity product, OptionEntity option, OrderItemStatus status, int ea,
+    private OrderItemEntity(OrderEntity order, ProductEntity product, OptionEntity option, OrderItemStatus status, int ea,
                       int productPrice, int productTotalPrice, LocalDateTime createdAt,
                       LocalDateTime modifiedAt) {
         this.order = order;
@@ -70,9 +72,9 @@ public class OrderItem {
         this.modifiedAt = modifiedAt;
     }
 
-    public static OrderItem of(Order order, ProductEntity productEntity, OptionEntity optionEntity, int ea) {
+    public static OrderItemEntity of(OrderEntity orderEntity, ProductEntity productEntity, OptionEntity optionEntity, int ea) {
         LocalDateTime now = LocalDateTime.now();
-        return new OrderItem(order, productEntity, optionEntity, OrderItemStatus.TEMP, ea, productEntity.getPrice(),
+        return new OrderItemEntity(orderEntity, productEntity, optionEntity, OrderItemStatus.TEMP, ea, productEntity.getPrice(),
             productEntity.getPrice() * ea, now, now);
     }
 }

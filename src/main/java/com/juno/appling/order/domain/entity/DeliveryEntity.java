@@ -1,4 +1,4 @@
-package com.juno.appling.order.domain;
+package com.juno.appling.order.domain.entity;
 
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.enums.DeliveryStatus;
@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +24,8 @@ import org.hibernate.envers.Audited;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Delivery {
+@Table(name = "delivery")
+public class DeliveryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +34,11 @@ public class Delivery {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    private Order order;
+    private OrderEntity order;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_item_id")
-    private OrderItem orderItem;
+    private OrderItemEntity orderItem;
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
@@ -56,7 +58,7 @@ public class Delivery {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Delivery(Order order, OrderItem orderItem, DeliveryStatus status, String ownerName, String ownerZonecode, String ownerAddress, String ownerAddressDetail, String ownerTel, String recipientName, String recipientZonecode, String recipientAddress, String recipientAddressDetail, String recipientTel, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    private DeliveryEntity(OrderEntity order, OrderItemEntity orderItem, DeliveryStatus status, String ownerName, String ownerZonecode, String ownerAddress, String ownerAddressDetail, String ownerTel, String recipientName, String recipientZonecode, String recipientAddress, String recipientAddressDetail, String recipientTel, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.order = order;
         this.orderItem = orderItem;
         this.status = status;
@@ -74,8 +76,8 @@ public class Delivery {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Delivery of(Order order, OrderItem oi, CompleteOrderRequest completeOrderRequest) {
+    public static DeliveryEntity of(OrderEntity orderEntity, OrderItemEntity oi, CompleteOrderRequest completeOrderRequest) {
         LocalDateTime now = LocalDateTime.now();
-        return new Delivery(order, oi, DeliveryStatus.TEMP, completeOrderRequest.getOwnerName(), completeOrderRequest.getOwnerZonecode(), completeOrderRequest.getOwnerAddress(), completeOrderRequest.getOwnerAddressDetail(), completeOrderRequest.getOwnerTel(), completeOrderRequest.getRecipientName(), completeOrderRequest.getRecipientZonecode(), completeOrderRequest.getRecipientAddress(), completeOrderRequest.getRecipientAddressDetail(), completeOrderRequest.getRecipientTel(), now, now);
+        return new DeliveryEntity(orderEntity, oi, DeliveryStatus.TEMP, completeOrderRequest.getOwnerName(), completeOrderRequest.getOwnerZonecode(), completeOrderRequest.getOwnerAddress(), completeOrderRequest.getOwnerAddressDetail(), completeOrderRequest.getOwnerTel(), completeOrderRequest.getRecipientName(), completeOrderRequest.getRecipientZonecode(), completeOrderRequest.getRecipientAddress(), completeOrderRequest.getRecipientAddressDetail(), completeOrderRequest.getRecipientTel(), now, now);
     }
 }

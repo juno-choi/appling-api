@@ -18,12 +18,12 @@ import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
-import com.juno.appling.order.domain.Order;
-import com.juno.appling.order.domain.OrderItem;
+import com.juno.appling.order.domain.entity.OrderEntity;
+import com.juno.appling.order.domain.entity.OrderItemEntity;
 import com.juno.appling.order.enums.OrderStatus;
-import com.juno.appling.order.infrastructure.DeliveryRepository;
-import com.juno.appling.order.infrastructure.OrderItemRepository;
-import com.juno.appling.order.infrastructure.OrderRepository;
+import com.juno.appling.order.repository.DeliveryJpaRepository;
+import com.juno.appling.order.repository.OrderItemJpaRepository;
+import com.juno.appling.order.repository.OrderJpaRepository;
 import com.juno.appling.product.domain.entity.OptionEntity;
 import com.juno.appling.product.domain.entity.ProductEntity;
 import com.juno.appling.product.enums.ProductStatus;
@@ -43,7 +43,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 @ExtendWith({MockitoExtension.class})
-class OrderServiceUnitTest {
+class OrderEntityServiceUnitTest {
 
     @InjectMocks
     private OrderServiceImpl orderServiceImpl;
@@ -55,13 +55,13 @@ class OrderServiceUnitTest {
     private MemberUtil memberUtil;
 
     @Mock
-    private OrderRepository orderRepository;
+    private OrderJpaRepository orderJpaRepository;
 
     @Mock
-    private OrderItemRepository orderItemRepository;
+    private OrderItemJpaRepository orderItemJpaRepository;
 
     @Mock
-    private DeliveryRepository deliveryRepository;
+    private DeliveryJpaRepository deliveryJpaRepository;
 
     @Mock
     private SellerRepository sellerRepository;
@@ -122,7 +122,7 @@ class OrderServiceUnitTest {
         productEntityList.add(productEntity2);
         given(productJpaRepository.findAllById(any())).willReturn(productEntityList);
 
-        given(orderRepository.save(any())).willReturn(new Order(1L, null, null, new ArrayList<>(), null, null, null, null, null));
+        given(orderJpaRepository.save(any())).willReturn(new OrderEntity(1L, null, null, new ArrayList<>(), null, null, null, null, null));
 
         //when
         //then
@@ -172,7 +172,7 @@ class OrderServiceUnitTest {
         productEntityList.add(productEntity2);
         given(productJpaRepository.findAllById(any())).willReturn(productEntityList);
 
-        given(orderRepository.save(any())).willReturn(new Order(1L, null, null, new ArrayList<>(), null, null, null, null, null));
+        given(orderJpaRepository.save(any())).willReturn(new OrderEntity(1L, null, null, new ArrayList<>(), null, null, null, null, null));
 
         //when
         //then
@@ -217,7 +217,7 @@ class OrderServiceUnitTest {
         productEntityList.add(productEntity2);
         given(productJpaRepository.findAllById(any())).willReturn(productEntityList);
 
-        given(orderRepository.save(any())).willReturn(new Order(1L, null, null, new ArrayList<>(), null, null, null, null, null));
+        given(orderJpaRepository.save(any())).willReturn(new OrderEntity(1L, null, null, new ArrayList<>(), null, null, null, null, null));
 
         //when
         //then
@@ -262,7 +262,7 @@ class OrderServiceUnitTest {
         productEntityList.add(productEntity2);
         given(productJpaRepository.findAllById(any())).willReturn(productEntityList);
 
-        given(orderRepository.save(any())).willReturn(new Order(1L, null, null, new ArrayList<>(), null, null, null, null, null));
+        given(orderJpaRepository.save(any())).willReturn(new OrderEntity(1L, null, null, new ArrayList<>(), null, null, null, null, null));
 
         //when
         PostTempOrderResponse postTempOrderResponse = orderServiceImpl.postTempOrder(tempOrderRequest, request);
@@ -274,7 +274,7 @@ class OrderServiceUnitTest {
     @DisplayName("임시 주문 불러오기에 유효하지 않은 order id로 실패")
     void getTempOrderFail1() {
         //given
-        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(null));
+        given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(null));
         //when
         //then
         assertThatThrownBy(() -> orderServiceImpl.getTempOrder(0L, request))
@@ -292,7 +292,7 @@ class OrderServiceUnitTest {
         Member member1 = new Member(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
         Member member2 = new Member(2L, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
         given(memberUtil.getMember(any())).willReturn(member1);
-        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(new Order(orderId, member2, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now)));
+        given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(new OrderEntity(orderId, member2, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now)));
         //when
         //then
         assertThatThrownBy(() -> orderServiceImpl.getTempOrder(orderId, request))
@@ -309,7 +309,7 @@ class OrderServiceUnitTest {
         LocalDateTime now = LocalDateTime.now();
         Member member1 = new Member(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
         given(memberUtil.getMember(any())).willReturn(member1);
-        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(new Order(orderId, member1, null, new ArrayList<>(), null, OrderStatus.ORDER, "", now, now)));
+        given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(new OrderEntity(orderId, member1, null, new ArrayList<>(), null, OrderStatus.ORDER, "", now, now)));
         //when
         //then
         assertThatThrownBy(() -> orderServiceImpl.getTempOrder(orderId, request))
@@ -345,12 +345,12 @@ class OrderServiceUnitTest {
                 .ea(10)
                 .build();
 
-        Order order = new Order(orderId, member, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now);
-        List<OrderItem> orderItemList = order.getOrderItemList();
-        orderItemList.add(OrderItem.of(order,
+        OrderEntity orderEntity = new OrderEntity(orderId, member, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now);
+        List<OrderItemEntity> orderItemEntityList = orderEntity.getOrderItemList();
+        orderItemEntityList.add(OrderItemEntity.of(orderEntity,
             productEntity, new OptionEntity("option1", 1000, 100, productEntity), 1));
 
-        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(order));
+        given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(orderEntity));
         given(memberUtil.getMember(any())).willReturn(member);
         //when
         CompleteOrderResponse completeOrderResponse = orderServiceImpl.completeOrder(completeOrderRequest, request);
@@ -377,7 +377,7 @@ class OrderServiceUnitTest {
             .recipientAddressDetail("수령인 상세 주소")
             .recipientTel("수령인 연락처")
             .build();
-        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(new Order(orderId, member, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now)));
+        given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(new OrderEntity(orderId, member, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now)));
         given(memberUtil.getMember(any())).willReturn(member);
         //when
         CompleteOrderResponse completeOrderResponse = orderServiceImpl.completeOrder(completeOrderRequest, request);

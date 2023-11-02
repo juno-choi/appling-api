@@ -3,7 +3,7 @@ package com.juno.appling.order.controller.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.order.domain.Order;
+import com.juno.appling.order.domain.entity.OrderEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,10 +17,10 @@ public class CompleteOrderResponse {
     private Long orderId;
     private String orderNumber;
 
-    public static CompleteOrderResponse from(Order order) {
+    public static CompleteOrderResponse from(OrderEntity orderEntity) {
         return CompleteOrderResponse.builder()
-                .orderId(order.getId())
-                .orderNumber(order.getOrderNumber())
+                .orderId(orderEntity.getId())
+                .orderNumber(orderEntity.getOrderNumber())
                 .build();
 
     }

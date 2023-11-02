@@ -16,11 +16,11 @@ import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
-import com.juno.appling.order.domain.Order;
-import com.juno.appling.order.domain.OrderItem;
-import com.juno.appling.order.infrastructure.DeliveryRepository;
-import com.juno.appling.order.infrastructure.OrderItemRepository;
-import com.juno.appling.order.infrastructure.OrderRepository;
+import com.juno.appling.order.domain.entity.OrderEntity;
+import com.juno.appling.order.domain.entity.OrderItemEntity;
+import com.juno.appling.order.repository.DeliveryJpaRepository;
+import com.juno.appling.order.repository.OrderItemJpaRepository;
+import com.juno.appling.order.repository.OrderJpaRepository;
 import com.juno.appling.product.repository.CategoryJpaRepository;
 import com.juno.appling.product.repository.OptionJpaRepository;
 import com.juno.appling.product.repository.ProductJpaRepository;
@@ -49,7 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional(readOnly = true)
 @Execution(ExecutionMode.CONCURRENT)
-class OrderServiceTest {
+class OrderEntityServiceTest {
     @Autowired
     private OrderService orderService;
 
@@ -57,7 +57,7 @@ class OrderServiceTest {
     private MemberAuthService memberAuthService;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private OrderJpaRepository orderJpaRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -74,18 +74,18 @@ class OrderServiceTest {
     private CategoryJpaRepository categoryJpaRepository;
 
     @Autowired
-    private OrderItemRepository orderItemRepository;
+    private OrderItemJpaRepository orderItemJpaRepository;
 
     @Autowired
-    private DeliveryRepository deliveryRepository;
+    private DeliveryJpaRepository deliveryJpaRepository;
 
     private MockHttpServletRequest request = new MockHttpServletRequest();
 
     @AfterEach
     void cleanup() {
-        deliveryRepository.deleteAll();
-        orderItemRepository.deleteAll();
-        orderRepository.deleteAll();
+        deliveryJpaRepository.deleteAll();
+        orderItemJpaRepository.deleteAll();
+        orderJpaRepository.deleteAll();
         optionJpaRepository.deleteAll();
         productJpaRepository.deleteAll();
         categoryJpaRepository.deleteAll();
@@ -121,9 +121,9 @@ class OrderServiceTest {
 
         //then
         Long orderId = postTempOrderResponse.getOrderId();
-        Order order = orderRepository.findById(orderId).get();
-        List<OrderItem> orderItemList = order.getOrderItemList();
-        assertThat(orderItemList).isNotEmpty();
+        OrderEntity orderEntity = orderJpaRepository.findById(orderId).get();
+        List<OrderItemEntity> orderItemEntityList = orderEntity.getOrderItemList();
+        assertThat(orderItemEntityList).isNotEmpty();
     }
 
     @Test
