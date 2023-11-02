@@ -3,6 +3,7 @@ package com.juno.appling.order.domain;
 import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.product.domain.Option;
 import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.enums.ProductType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -72,7 +73,8 @@ public class OrderItem {
 
     public static OrderItem of(Order order, Product product, Option option, int ea) {
         LocalDateTime now = LocalDateTime.now();
-        return new OrderItem(order, product, option, OrderItemStatus.TEMP, ea, product.getPrice(),
-            product.getPrice() * ea, now, now);
+        int price = product.getType() == ProductType.OPTION ? product.getPrice() + option.getExtraPrice() : product.getPrice();
+
+        return new OrderItem(order, product, option, OrderItemStatus.TEMP, ea, price, price * ea, now, now);
     }
 }
