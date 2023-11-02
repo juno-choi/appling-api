@@ -1,6 +1,6 @@
 
 == 🍏 수정된 기능
-### 📗 option list 추가
+### 📗 optionEntity list 추가
 
 1. 반환 결과에 option_list 배열, type값 추가
 - link:#_상품_상세[상품 상세]

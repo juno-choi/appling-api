@@ -28,7 +28,7 @@ import com.juno.appling.member.infrastruceture.IntroduceRepository;
 import com.juno.appling.member.infrastruceture.MemberRepository;
 import com.juno.appling.member.infrastruceture.SellerRepository;
 import com.juno.appling.member.service.MemberAuthService;
-import com.juno.appling.product.infrastructure.CategoryRepository;
+import com.juno.appling.product.repository.CategoryJpaRepository;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
@@ -72,7 +72,7 @@ class CommonControllerDocs extends RestdocsBaseTest {
     private IntroduceRepository introduceRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryJpaRepository categoryJpaRepository;
 
     @MockBean
     private S3Service s3Service;
@@ -81,7 +81,7 @@ class CommonControllerDocs extends RestdocsBaseTest {
 
     @AfterEach
     void cleanup() {
-        categoryRepository.deleteAll();
+        categoryJpaRepository.deleteAll();
         introduceRepository.deleteAll();
         sellerRepository.deleteAll();
         memberRepository.deleteAll();

@@ -1,8 +1,8 @@
 package com.juno.appling.order.domain;
 
 import com.juno.appling.order.enums.OrderItemStatus;
-import com.juno.appling.product.domain.Option;
-import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.domain.entity.OptionEntity;
+import com.juno.appling.product.domain.entity.ProductEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -38,12 +38,12 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     @NotAudited
-    private Product product;
+    private ProductEntity product;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "option_id")
     @NotAudited
-    private Option option;
+    private OptionEntity option;
 
     @Enumerated(EnumType.STRING)
     private OrderItemStatus status;
@@ -56,7 +56,7 @@ public class OrderItem {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private OrderItem(Order order, Product product, Option option, OrderItemStatus status, int ea,
+    private OrderItem(Order order, ProductEntity product, OptionEntity option, OrderItemStatus status, int ea,
                       int productPrice, int productTotalPrice, LocalDateTime createdAt,
                       LocalDateTime modifiedAt) {
         this.order = order;
@@ -70,9 +70,9 @@ public class OrderItem {
         this.modifiedAt = modifiedAt;
     }
 
-    public static OrderItem of(Order order, Product product, Option option, int ea) {
+    public static OrderItem of(Order order, ProductEntity productEntity, OptionEntity optionEntity, int ea) {
         LocalDateTime now = LocalDateTime.now();
-        return new OrderItem(order, product, option, OrderItemStatus.TEMP, ea, product.getPrice(),
-            product.getPrice() * ea, now, now);
+        return new OrderItem(order, productEntity, optionEntity, OrderItemStatus.TEMP, ea, productEntity.getPrice(),
+            productEntity.getPrice() * ea, now, now);
     }
 }

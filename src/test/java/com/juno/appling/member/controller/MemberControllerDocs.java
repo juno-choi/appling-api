@@ -41,7 +41,7 @@ import com.juno.appling.member.infrastruceture.RecipientRepository;
 import com.juno.appling.member.infrastruceture.SellerRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.member.service.MemberService;
-import com.juno.appling.product.infrastructure.CategoryRepository;
+import com.juno.appling.product.repository.CategoryJpaRepository;
 import java.nio.charset.StandardCharsets;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -88,7 +88,7 @@ class MemberControllerDocs extends RestdocsBaseTest {
     private SellerRepository sellerRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryJpaRepository categoryJpaRepository;
     @MockBean
     private S3Service s3Service;
 
@@ -96,7 +96,7 @@ class MemberControllerDocs extends RestdocsBaseTest {
 
     @AfterEach
     void cleanup() {
-        categoryRepository.deleteAll();
+        categoryJpaRepository.deleteAll();
         recipientRepository.deleteAll();
         introduceRepository.deleteAll();
         sellerRepository.deleteAll();

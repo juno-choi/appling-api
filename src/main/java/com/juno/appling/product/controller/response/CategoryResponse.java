@@ -3,7 +3,7 @@ package com.juno.appling.product.controller.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.domain.entity.ProductEntity;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -23,12 +23,12 @@ public class CategoryResponse {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public static CategoryResponse from(Product product) {
+    public static CategoryResponse from(ProductEntity productEntity) {
         return CategoryResponse.builder()
-            .categoryId(product.getCategory().getId())
-            .name(product.getCategory().getName())
-            .createdAt(product.getCategory().getCreatedAt())
-            .modifiedAt(product.getCategory().getModifiedAt())
+            .categoryId(productEntity.getCategory().getId())
+            .name(productEntity.getCategory().getName())
+            .createdAt(productEntity.getCategory().getCreatedAt())
+            .modifiedAt(productEntity.getCategory().getModifiedAt())
             .build();
     }
 }

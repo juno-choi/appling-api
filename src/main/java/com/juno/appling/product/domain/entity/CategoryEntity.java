@@ -1,4 +1,4 @@
-package com.juno.appling.product.domain;
+package com.juno.appling.product.domain.entity;
 
 import com.juno.appling.product.enums.CategoryStatus;
 import jakarta.persistence.Column;
@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -16,7 +17,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Category {
+@Table(name = "category")
+public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +35,7 @@ public class Category {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Category(@NotNull String name, CategoryStatus status, LocalDateTime createdAt,
+    private CategoryEntity(@NotNull String name, CategoryStatus status, LocalDateTime createdAt,
         LocalDateTime modifiedAt) {
         this.name = name;
         this.status = status;
@@ -41,8 +43,8 @@ public class Category {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Category of(String name, CategoryStatus status) {
+    public static CategoryEntity of(String name, CategoryStatus status) {
         LocalDateTime now = LocalDateTime.now();
-        return new Category(name, status, now, now);
+        return new CategoryEntity(name, status, now, now);
     }
 }

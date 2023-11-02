@@ -20,16 +20,16 @@ import com.juno.appling.product.controller.request.OptionRequest;
 import com.juno.appling.product.controller.request.ProductRequest;
 import com.juno.appling.product.controller.request.PutProductRequest;
 import com.juno.appling.product.controller.response.ProductResponse;
-import com.juno.appling.product.domain.Category;
-import com.juno.appling.product.domain.Option;
-import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.domain.entity.CategoryEntity;
+import com.juno.appling.product.domain.entity.OptionEntity;
+import com.juno.appling.product.domain.entity.ProductEntity;
 import com.juno.appling.product.enums.OptionStatus;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
-import com.juno.appling.product.infrastructure.CategoryRepository;
-import com.juno.appling.product.infrastructure.OptionRepository;
-import com.juno.appling.product.infrastructure.ProductCustomRepositoryImpl;
-import com.juno.appling.product.infrastructure.ProductRepository;
+import com.juno.appling.product.repository.CategoryJpaRepository;
+import com.juno.appling.product.repository.OptionJpaRepository;
+import com.juno.appling.product.repository.ProductCustomJpaRepositoryImpl;
+import com.juno.appling.product.repository.ProductJpaRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,26 +45,26 @@ import org.springframework.core.env.Environment;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 @ExtendWith(MockitoExtension.class)
-class ProductServiceImplUnitTest {
+class ProductEntityServiceImplUnitTest {
 
     @InjectMocks
     private ProductServiceImpl productService;
     @Mock
-    private ProductRepository productRepository;
+    private ProductJpaRepository productJpaRepository;
     @Mock
     private TokenProvider tokenProvider;
     @Mock
     private MemberRepository memberRepository;
     @Mock
-    private CategoryRepository categoryRepository;
+    private CategoryJpaRepository categoryJpaRepository;
     @Mock
     private SellerRepository sellerRepository;
 
     @Mock
-    private ProductCustomRepositoryImpl productCustomRepositoryImpl;
+    private ProductCustomJpaRepositoryImpl productCustomRepositoryImpl;
 
     @Mock
-    private OptionRepository optionRepository;
+    private OptionJpaRepository optionJpaRepository;
 
     @Mock
     private Environment env;
@@ -101,7 +101,7 @@ class ProductServiceImplUnitTest {
             .ea(10)
             .type("normal")
             .build();
-        Category category = new Category();
+        CategoryEntity categoryEntity = new CategoryEntity();
 
         given(tokenProvider.resolveToken(any())).willReturn("token");
         LocalDateTime now = LocalDateTime.now();
@@ -110,8 +110,9 @@ class ProductServiceImplUnitTest {
         Seller seller = Seller.of(member, "회사명", "01012344321", "1234", "회사 주소", "상세 주소", "mail@mail.com");
         given(memberRepository.findById(any())).willReturn(Optional.of(member));
         given(sellerRepository.findByMember(any())).willReturn(Optional.of(seller));
-        given(productRepository.save(any())).willReturn(Product.of(seller, category, productRequest));
-        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(new Category()));
+        given(productJpaRepository.save(any())).willReturn(
+            ProductEntity.of(seller, categoryEntity, productRequest));
+        given(categoryJpaRepository.findById(anyLong())).willReturn(Optional.of(new CategoryEntity()));
         //when
         ProductResponse productResponse = productService.postProduct(productRequest, request);
 
@@ -154,7 +155,7 @@ class ProductServiceImplUnitTest {
             .optionList(optionRequestList)
             .type("option")
             .build();
-        Category category = new Category();
+        CategoryEntity categoryEntity = new CategoryEntity();
 
         given(tokenProvider.resolveToken(any())).willReturn("token");
         LocalDateTime now = LocalDateTime.now();
@@ -163,8 +164,9 @@ class ProductServiceImplUnitTest {
         Seller seller = Seller.of(member, "회사명", "01012344321", "1234", "회사 주소", "상세 주소", "mail@mail.com");
         given(memberRepository.findById(any())).willReturn(Optional.of(member));
         given(sellerRepository.findByMember(any())).willReturn(Optional.of(seller));
-        given(productRepository.save(any())).willReturn(Product.of(seller, category, productRequest));
-        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(new Category()));
+        given(productJpaRepository.save(any())).willReturn(
+            ProductEntity.of(seller, categoryEntity, productRequest));
+        given(categoryJpaRepository.findById(anyLong())).willReturn(Optional.of(new CategoryEntity()));
         //when
         ProductResponse productResponse = productService.postProduct(productRequest, request);
 
@@ -275,8 +277,8 @@ class ProductServiceImplUnitTest {
                 .categoryId(1L)
                 .status("normal")
                 .build();
-        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(new Category()));
-        given(productRepository.findById(any())).willReturn(Optional.ofNullable(null));
+        given(categoryJpaRepository.findById(anyLong())).willReturn(Optional.of(new CategoryEntity()));
+        given(productJpaRepository.findById(any())).willReturn(Optional.ofNullable(null));
 
         // when
         Throwable throwable = catchThrowable(() -> productService.putProduct(dto));
@@ -310,11 +312,11 @@ class ProductServiceImplUnitTest {
         Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030",
             Role.SELLER, null, null, now, now);
         Seller seller = Seller.of(member, "회사명", "01012344321", "1234", "회사 주소", "상세 주소", "mail@mail.com");
-        Category category = new Category();
-        Product product = Product.builder()
+        CategoryEntity categoryEntity = new CategoryEntity();
+        ProductEntity productEntity = ProductEntity.builder()
             .id(PRODUCT_ID_APPLE)
             .seller(seller)
-            .category(category)
+            .category(categoryEntity)
             .mainTitle("메인 제목")
             .mainExplanation("메인 설명")
             .productMainExplanation("상품 메인 설명")
@@ -330,13 +332,14 @@ class ProductServiceImplUnitTest {
             .modifiedAt(now)
             .type(ProductType.OPTION)
             .build();
-        product.addAllOptionsList(new ArrayList<>());
+        productEntity.addAllOptionsList(new ArrayList<>());
 
-        Option option = new Option(1L, optionRequest1.getName(), optionRequest1.getExtraPrice(), optionRequest1.getEa(), OptionStatus.NORMAL, now, now, product);
-        product.addOptionsList(option);
+        OptionEntity optionEntity = new OptionEntity(1L, optionRequest1.getName(), optionRequest1.getExtraPrice(), optionRequest1.getEa(), OptionStatus.NORMAL, now, now,
+            productEntity);
+        productEntity.addOptionsList(optionEntity);
 
-        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
-        given(productRepository.findById(any())).willReturn(Optional.ofNullable(product));
+        given(categoryJpaRepository.findById(anyLong())).willReturn(Optional.of(categoryEntity));
+        given(productJpaRepository.findById(any())).willReturn(Optional.ofNullable(productEntity));
 
         PutProductRequest dto = PutProductRequest.builder()
                 .productId(1L)

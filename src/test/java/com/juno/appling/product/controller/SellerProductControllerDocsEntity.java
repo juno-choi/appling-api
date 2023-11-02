@@ -27,13 +27,13 @@ import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.product.controller.request.OptionRequest;
 import com.juno.appling.product.controller.request.ProductRequest;
 import com.juno.appling.product.controller.request.PutProductRequest;
-import com.juno.appling.product.domain.Category;
-import com.juno.appling.product.domain.Option;
-import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.domain.entity.CategoryEntity;
+import com.juno.appling.product.domain.entity.OptionEntity;
+import com.juno.appling.product.domain.entity.ProductEntity;
 import com.juno.appling.product.enums.OptionStatus;
-import com.juno.appling.product.infrastructure.CategoryRepository;
-import com.juno.appling.product.infrastructure.OptionRepository;
-import com.juno.appling.product.infrastructure.ProductRepository;
+import com.juno.appling.product.repository.CategoryJpaRepository;
+import com.juno.appling.product.repository.OptionJpaRepository;
+import com.juno.appling.product.repository.ProductJpaRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -59,29 +59,29 @@ import org.springframework.transaction.annotation.Transactional;
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-class SellerProductControllerDocs extends RestdocsBaseTest {
+class SellerProductControllerDocsEntity extends RestdocsBaseTest {
 
     @Autowired
     private MemberAuthService memberAuthService;
     @Autowired
-    private ProductRepository productRepository;
+    private ProductJpaRepository productJpaRepository;
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryJpaRepository categoryJpaRepository;
     @Autowired
     private SellerRepository sellerRepository;
 
     @Autowired
-    private OptionRepository optionRepository;
+    private OptionJpaRepository optionJpaRepository;
 
     private final static String PREFIX = "/api/seller/product";
 
     @AfterEach
     void cleanup() {
-        optionRepository.deleteAll();
-        productRepository.deleteAll();
-        categoryRepository.deleteAll();
+        optionJpaRepository.deleteAll();
+        productJpaRepository.deleteAll();
+        categoryJpaRepository.deleteAll();
         sellerRepository.deleteAll();
         memberRepository.deleteAll();
     }
@@ -140,19 +140,19 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
             .type("option")
             .optionList(optionRequestList)
             .build();
-        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
+        CategoryEntity categoryEntity = categoryJpaRepository.findById(CATEGORY_ID_FRUIT).get();
 
         Seller seller = sellerRepository.findByMember(member).get();
         Seller seller2 = sellerRepository.findByMember(member2).get();
 
-        productRepository.save(Product.of(seller, category, searchDto));
+        productJpaRepository.save(ProductEntity.of(seller, categoryEntity, searchDto));
 
         for (int i = 0; i < 25; i++) {
-            productRepository.save(Product.of(seller2, category, productRequest));
+            productJpaRepository.save(ProductEntity.of(seller2, categoryEntity, productRequest));
         }
 
         for (int i = 0; i < 10; i++) {
-            productRepository.save(Product.of(seller, category, searchDto));
+            productJpaRepository.save(ProductEntity.of(seller, categoryEntity, searchDto));
         }
         //when
         ResultActions perform = mock.perform(
@@ -510,7 +510,7 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
     void putProduct() throws Exception {
         // given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
+        CategoryEntity categoryEntity = categoryJpaRepository.findById(CATEGORY_ID_FRUIT).get();
 
         ProductRequest productRequest = ProductRequest.builder()
             .categoryId(CATEGORY_ID_FRUIT)
@@ -532,8 +532,9 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
             .type("normal")
             .build();
         Seller seller = sellerRepository.findByMember(member).get();
-        Product originalProduct = productRepository.save(Product.of(seller, category, productRequest));
-        Long productId = originalProduct.getId();
+        ProductEntity originalProductEntity = productJpaRepository.save(
+            ProductEntity.of(seller, categoryEntity, productRequest));
+        Long productId = originalProductEntity.getId();
         PutProductRequest putProductRequest = PutProductRequest.builder()
                 .productId(productId)
                 .categoryId(2L)
@@ -657,7 +658,7 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
     void putProductByOption() throws Exception {
         // given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
+        CategoryEntity categoryEntity = categoryJpaRepository.findById(CATEGORY_ID_FRUIT).get();
 
         ProductRequest productRequest = ProductRequest.builder()
             .categoryId(CATEGORY_ID_FRUIT)
@@ -680,8 +681,9 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
             .optionList(new ArrayList<>())
             .build();
         Seller seller = sellerRepository.findByMember(member).get();
-        Product originalProduct = productRepository.save(Product.of(seller, category, productRequest));
-        Long productId = originalProduct.getId();
+        ProductEntity originalProductEntity = productJpaRepository.save(
+            ProductEntity.of(seller, categoryEntity, productRequest));
+        Long productId = originalProductEntity.getId();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = OptionRequest.builder()
@@ -692,9 +694,10 @@ class SellerProductControllerDocs extends RestdocsBaseTest {
             .build();
         optionRequestList.add(optionRequest1);
 
-        Option option = optionRepository.save(Option.of(originalProduct, optionRequest1));
-        Long optionId = option.getId();
-        originalProduct.addOptionsList(option);
+        OptionEntity optionEntity = optionJpaRepository.save(
+            OptionEntity.of(originalProductEntity, optionRequest1));
+        Long optionId = optionEntity.getId();
+        originalProductEntity.addOptionsList(optionEntity);
 
         List<OptionRequest> putOptionRequestList = new ArrayList<>();
         OptionRequest putOptionRequest1 = OptionRequest.builder()

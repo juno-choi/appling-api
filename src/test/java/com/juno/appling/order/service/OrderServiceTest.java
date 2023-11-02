@@ -21,9 +21,9 @@ import com.juno.appling.order.domain.OrderItem;
 import com.juno.appling.order.infrastructure.DeliveryRepository;
 import com.juno.appling.order.infrastructure.OrderItemRepository;
 import com.juno.appling.order.infrastructure.OrderRepository;
-import com.juno.appling.product.infrastructure.CategoryRepository;
-import com.juno.appling.product.infrastructure.OptionRepository;
-import com.juno.appling.product.infrastructure.ProductRepository;
+import com.juno.appling.product.repository.CategoryJpaRepository;
+import com.juno.appling.product.repository.OptionJpaRepository;
+import com.juno.appling.product.repository.ProductJpaRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -65,13 +65,13 @@ class OrderServiceTest {
     @Autowired
     private SellerRepository sellerRepository;
     @Autowired
-    private OptionRepository optionRepository;
+    private OptionJpaRepository optionJpaRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductJpaRepository productJpaRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryJpaRepository categoryJpaRepository;
 
     @Autowired
     private OrderItemRepository orderItemRepository;
@@ -86,9 +86,9 @@ class OrderServiceTest {
         deliveryRepository.deleteAll();
         orderItemRepository.deleteAll();
         orderRepository.deleteAll();
-        optionRepository.deleteAll();
-        productRepository.deleteAll();
-        categoryRepository.deleteAll();
+        optionJpaRepository.deleteAll();
+        productJpaRepository.deleteAll();
+        categoryJpaRepository.deleteAll();
         sellerRepository.deleteAll();
         memberRepository.deleteAll();
     }

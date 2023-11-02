@@ -19,10 +19,10 @@ import com.juno.appling.product.controller.request.ProductRequest;
 import com.juno.appling.product.controller.request.PutProductRequest;
 import com.juno.appling.product.controller.response.ProductListResponse;
 import com.juno.appling.product.controller.response.ProductResponse;
-import com.juno.appling.product.domain.Category;
-import com.juno.appling.product.domain.Product;
-import com.juno.appling.product.infrastructure.CategoryRepository;
-import com.juno.appling.product.infrastructure.ProductRepository;
+import com.juno.appling.product.domain.entity.CategoryEntity;
+import com.juno.appling.product.domain.entity.ProductEntity;
+import com.juno.appling.product.repository.CategoryJpaRepository;
+import com.juno.appling.product.repository.ProductJpaRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,7 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional(readOnly = true)
 @Execution(ExecutionMode.CONCURRENT)
-class ProductServiceImplTest {
+class ProductEntityServiceImplTest {
 
     @Autowired
     private ProductService productService;
@@ -56,9 +56,9 @@ class ProductServiceImplTest {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
-    private ProductRepository productRepository;
+    private ProductJpaRepository productJpaRepository;
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryJpaRepository categoryJpaRepository;
     @Autowired
     private SellerRepository sellerRepository;
 
@@ -66,8 +66,8 @@ class ProductServiceImplTest {
 
     @AfterEach
     void cleanup() {
-        productRepository.deleteAll();
-        categoryRepository.deleteAll();
+        productJpaRepository.deleteAll();
+        categoryJpaRepository.deleteAll();
         sellerRepository.deleteAll();
         memberRepository.deleteAll();
     }
@@ -103,9 +103,9 @@ class ProductServiceImplTest {
         ProductResponse productResponse = productService.postProduct(productRequest, request);
 
         //then
-        Optional<Product> byId = productRepository.findById(productResponse.getProductId());
-        Product product = byId.get();
-        String email = product.getSeller().getEmail();
+        Optional<ProductEntity> byId = productJpaRepository.findById(productResponse.getProductId());
+        ProductEntity productEntity = byId.get();
+        String email = productEntity.getSeller().getEmail();
 
         assertThat(byId).isNotEmpty();
     }
@@ -154,17 +154,17 @@ class ProductServiceImplTest {
             .ea(10)
             .type("normal")
             .build();
-        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
+        CategoryEntity categoryEntity = categoryJpaRepository.findById(CATEGORY_ID_FRUIT).get();
 
         Seller seller = sellerRepository.findByMember(member).get();
-        productRepository.save(Product.of(seller, category, searchDto));
+        productJpaRepository.save(ProductEntity.of(seller, categoryEntity, searchDto));
 
         for (int i = 0; i < 25; i++) {
-            productRepository.save(Product.of(seller, category, productRequest));
+            productJpaRepository.save(ProductEntity.of(seller, categoryEntity, productRequest));
         }
 
         for (int i = 0; i < 10; i++) {
-            productRepository.save(Product.of(seller, category, searchDto));
+            productJpaRepository.save(ProductEntity.of(seller, categoryEntity, searchDto));
         }
 
         Pageable pageable = Pageable.ofSize(5);
@@ -184,7 +184,7 @@ class ProductServiceImplTest {
         Member member2 = memberRepository.findByEmail(SELLER2_EMAIL).get();
         Long categoryId = CATEGORY_ID_FRUIT;
 
-        Category category = categoryRepository.findById(categoryId).get();
+        CategoryEntity categoryEntity = categoryJpaRepository.findById(categoryId).get();
 
         ProductRequest productRequest = ProductRequest.builder()
             .categoryId(categoryId)
@@ -227,13 +227,13 @@ class ProductServiceImplTest {
 
         Seller seller = sellerRepository.findByMember(member).get();
         Seller seller2 = sellerRepository.findByMember(member2).get();
-        productRepository.save(Product.of(seller, category, searchDto));
+        productJpaRepository.save(ProductEntity.of(seller, categoryEntity, searchDto));
 
         for (int i = 0; i < 10; i++) {
-            productRepository.save(Product.of(seller, category, searchDto));
+            productJpaRepository.save(ProductEntity.of(seller, categoryEntity, searchDto));
         }
         for (int i = 0; i < 10; i++) {
-            productRepository.save(Product.of(seller2, category, productRequest));
+            productJpaRepository.save(ProductEntity.of(seller2, categoryEntity, productRequest));
         }
 
         Pageable pageable = Pageable.ofSize(5);
@@ -253,7 +253,7 @@ class ProductServiceImplTest {
     void putProductSuccess() {
         // given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
+        CategoryEntity categoryEntity = categoryJpaRepository.findById(CATEGORY_ID_FRUIT).get();
 
         ProductRequest productRequest = ProductRequest.builder()
             .categoryId(CATEGORY_ID_FRUIT)
@@ -276,9 +276,10 @@ class ProductServiceImplTest {
             .build();
         Seller seller = sellerRepository.findByMember(member).get();
 
-        Product originalProduct = productRepository.save(Product.of(seller, category, productRequest));
-        String originalProductMainTitle = originalProduct.getMainTitle();
-        Long productId = originalProduct.getId();
+        ProductEntity originalProductEntity = productJpaRepository.save(
+            ProductEntity.of(seller, categoryEntity, productRequest));
+        String originalProductMainTitle = originalProductEntity.getMainTitle();
+        Long productId = originalProductEntity.getId();
         PutProductRequest putProductRequest = PutProductRequest.builder()
                 .productId(productId)
                 .categoryId(CATEGORY_ID_VEGETABLE)
@@ -299,8 +300,8 @@ class ProductServiceImplTest {
         // when
         productService.putProduct(putProductRequest);
         // then
-        Product changeProduct = productRepository.findById(productId).get();
-        assertThat(changeProduct.getMainTitle()).isNotEqualTo(originalProductMainTitle);
+        ProductEntity changeProductEntity = productJpaRepository.findById(productId).get();
+        assertThat(changeProductEntity.getMainTitle()).isNotEqualTo(originalProductMainTitle);
     }
 
     @Test
@@ -308,7 +309,7 @@ class ProductServiceImplTest {
     void addViewCntSuccess() {
         //given
         Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Category category = categoryRepository.findById(CATEGORY_ID_FRUIT).get();
+        CategoryEntity categoryEntity = categoryJpaRepository.findById(CATEGORY_ID_FRUIT).get();
         ProductRequest productRequest = ProductRequest.builder()
             .categoryId(CATEGORY_ID_FRUIT)
             .mainTitle("메인 제목")
@@ -330,15 +331,16 @@ class ProductServiceImplTest {
             .build();
 
         Seller seller = sellerRepository.findByMember(member).get();
-        Product product = productRepository.save(Product.of(seller, category, productRequest));
+        ProductEntity productEntity = productJpaRepository.save(
+            ProductEntity.of(seller, categoryEntity, productRequest));
         //when
         MessageVo messageVo = productService.addViewCnt(AddViewCntRequest.builder()
-                .productId(product.getId()).build());
+                .productId(productEntity.getId()).build());
 
         //then
         assertThat(messageVo.message())
             .contains("조회수 증가 성공");
-        assertThat(product.getViewCnt())
+        assertThat(productEntity.getViewCnt())
             .isEqualTo(1);
     }
 }

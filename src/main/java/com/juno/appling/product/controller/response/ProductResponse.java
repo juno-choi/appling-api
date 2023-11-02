@@ -3,7 +3,7 @@ package com.juno.appling.product.controller.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.domain.entity.ProductEntity;
 import com.juno.appling.product.domain.vo.OptionVo;
 import com.juno.appling.product.enums.OptionStatus;
 import com.juno.appling.product.enums.ProductStatus;
@@ -45,31 +45,32 @@ public class ProductResponse {
     private CategoryResponse category;
     private List<OptionVo> optionList;
 
-    public static ProductResponse from(Product product) {
+    public static ProductResponse from(ProductEntity productEntity) {
         return ProductResponse.builder()
-            .productId(product.getId())
-            .mainTitle(product.getMainTitle())
-            .mainExplanation(product.getMainExplanation())
-            .productMainExplanation(product.getProductMainExplanation())
-            .productSubExplanation(product.getProductSubExplanation())
-            .originPrice(product.getOriginPrice())
-            .price(product.getPrice())
-            .purchaseInquiry(product.getPurchaseInquiry())
-            .origin(product.getOrigin())
-            .producer(product.getProducer())
-            .mainImage(product.getMainImage())
-            .image1(product.getImage1())
-            .image2(product.getImage2())
-            .image3(product.getImage3())
-            .viewCnt(product.getViewCnt())
-            .status(product.getStatus())
-            .type(product.getType())
-            .ea(product.getEa())
-            .createdAt(product.getCreateAt())
-            .modifiedAt(product.getModifiedAt())
-            .seller(SellerResponse.from(product.getSeller()))
-            .category(CategoryResponse.from(product))
-            .optionList(OptionVo.getVoList(product.getOptionList().stream().filter(o -> o.getStatus().equals(OptionStatus.NORMAL)).toList()))
+            .productId(productEntity.getId())
+            .mainTitle(productEntity.getMainTitle())
+            .mainExplanation(productEntity.getMainExplanation())
+            .productMainExplanation(productEntity.getProductMainExplanation())
+            .productSubExplanation(productEntity.getProductSubExplanation())
+            .originPrice(productEntity.getOriginPrice())
+            .price(productEntity.getPrice())
+            .purchaseInquiry(productEntity.getPurchaseInquiry())
+            .origin(productEntity.getOrigin())
+            .producer(productEntity.getProducer())
+            .mainImage(productEntity.getMainImage())
+            .image1(productEntity.getImage1())
+            .image2(productEntity.getImage2())
+            .image3(productEntity.getImage3())
+            .viewCnt(productEntity.getViewCnt())
+            .status(productEntity.getStatus())
+            .type(productEntity.getType())
+            .ea(productEntity.getEa())
+            .createdAt(productEntity.getCreateAt())
+            .modifiedAt(productEntity.getModifiedAt())
+            .seller(SellerResponse.from(productEntity.getSeller()))
+            .category(CategoryResponse.from(productEntity))
+            .optionList(OptionVo.getVoList(
+                productEntity.getOptionList().stream().filter(o -> o.getStatus().equals(OptionStatus.NORMAL)).toList()))
             .build();
     }
 }

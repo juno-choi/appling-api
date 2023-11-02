@@ -35,11 +35,11 @@ import com.juno.appling.order.domain.OrderItem;
 import com.juno.appling.order.infrastructure.DeliveryRepository;
 import com.juno.appling.order.infrastructure.OrderItemRepository;
 import com.juno.appling.order.infrastructure.OrderRepository;
-import com.juno.appling.product.domain.Option;
-import com.juno.appling.product.domain.Product;
-import com.juno.appling.product.infrastructure.CategoryRepository;
-import com.juno.appling.product.infrastructure.OptionRepository;
-import com.juno.appling.product.infrastructure.ProductRepository;
+import com.juno.appling.product.domain.entity.OptionEntity;
+import com.juno.appling.product.domain.entity.ProductEntity;
+import com.juno.appling.product.repository.CategoryJpaRepository;
+import com.juno.appling.product.repository.OptionJpaRepository;
+import com.juno.appling.product.repository.ProductJpaRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -74,13 +74,13 @@ class OrderControllerDocs extends RestdocsBaseTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryJpaRepository categoryJpaRepository;
 
     @Autowired
     private SellerRepository sellerRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductJpaRepository productJpaRepository;
 
     @Autowired
     private MemberAuthService memberAuthService;
@@ -92,7 +92,7 @@ class OrderControllerDocs extends RestdocsBaseTest {
     private OrderItemRepository orderItemRepository;
 
     @Autowired
-    private OptionRepository optionRepository;
+    private OptionJpaRepository optionJpaRepository;
 
     @Autowired
     private DeliveryRepository deliveryRepository;
@@ -107,9 +107,9 @@ class OrderControllerDocs extends RestdocsBaseTest {
         deliveryRepository.deleteAll();
         orderItemRepository.deleteAll();
         orderRepository.deleteAll();
-        optionRepository.deleteAll();
-        productRepository.deleteAll();
-        categoryRepository.deleteAll();
+        optionJpaRepository.deleteAll();
+        productJpaRepository.deleteAll();
+        categoryJpaRepository.deleteAll();
         sellerRepository.deleteAll();
         memberRepository.deleteAll();
     }
@@ -168,13 +168,13 @@ class OrderControllerDocs extends RestdocsBaseTest {
 
         Order order = orderRepository.save(Order.of(member, "테스트 상품"));
 
-        Product normalProduct = productRepository.findById(PRODUCT_ID_NORMAL).get();
-        Product optionProduct = productRepository.findById(PRODUCT_ID_APPLE).get();
+        ProductEntity normalProductEntity = productJpaRepository.findById(PRODUCT_ID_NORMAL).get();
+        ProductEntity optionProductEntity = productJpaRepository.findById(PRODUCT_ID_APPLE).get();
 
-        Option option1 = optionRepository.findById(PRODUCT_OPTION_ID_APPLE).get();
+        OptionEntity optionEntity1 = optionJpaRepository.findById(PRODUCT_OPTION_ID_APPLE).get();
 
-        orderItemRepository.save(OrderItem.of(order, normalProduct, null, 3));
-        orderItemRepository.save(OrderItem.of(order, optionProduct, option1, 5));
+        orderItemRepository.save(OrderItem.of(order, normalProductEntity, null, 3));
+        orderItemRepository.save(OrderItem.of(order, optionProductEntity, optionEntity1, 5));
 
         //when
         ResultActions perform = mock.perform(
@@ -247,13 +247,13 @@ class OrderControllerDocs extends RestdocsBaseTest {
         Order order = orderRepository.save(Order.of(member, "테스트 상품"));
         Long orderId = order.getId();
 
-        Product product1 = productRepository.findById(PRODUCT_ID_APPLE).get();
-        Product product2 = productRepository.findById(PRODUCT_ID_NORMAL).get();
+        ProductEntity productEntity1 = productJpaRepository.findById(PRODUCT_ID_APPLE).get();
+        ProductEntity productEntity2 = productJpaRepository.findById(PRODUCT_ID_NORMAL).get();
 
-        Option option1 = optionRepository.findById(PRODUCT_OPTION_ID_APPLE).get();
+        OptionEntity optionEntity1 = optionJpaRepository.findById(PRODUCT_OPTION_ID_APPLE).get();
 
-        orderItemRepository.save(OrderItem.of(order, product1, option1, 3));
-        orderItemRepository.save(OrderItem.of(order, product2, null, 5));
+        orderItemRepository.save(OrderItem.of(order, productEntity1, optionEntity1, 3));
+        orderItemRepository.save(OrderItem.of(order, productEntity2, null, 5));
 
         CompleteOrderRequest completeOrderRequest = CompleteOrderRequest.builder()
             .orderId(orderId)

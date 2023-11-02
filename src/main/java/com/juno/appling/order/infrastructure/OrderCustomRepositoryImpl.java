@@ -6,8 +6,8 @@ import com.juno.appling.order.domain.QOrder;
 import com.juno.appling.order.domain.QOrderItem;
 import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.enums.OrderStatus;
-import com.juno.appling.product.domain.QOption;
-import com.juno.appling.product.domain.QProduct;
+import com.juno.appling.product.domain.entity.QOptionEntity;
+import com.juno.appling.product.domain.entity.QProductEntity;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import java.util.List;
@@ -24,10 +24,10 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
 
     @Override
     public Page<OrderVo> findAllBySeller(Pageable pageable, String search, OrderStatus status, Seller seller) {
-        QProduct product = QProduct.product;
+        QProductEntity product = QProductEntity.productEntity;
         QOrder order = QOrder.order;
         QOrderItem orderItem = QOrderItem.orderItem;
-        QOption option = QOption.option;
+        QOptionEntity option = QOptionEntity.optionEntity;
 
         BooleanBuilder builder = new BooleanBuilder();
 

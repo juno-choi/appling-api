@@ -1,16 +1,16 @@
-package com.juno.appling.product.infrastructure;
+package com.juno.appling.product.repository;
 
 import com.juno.appling.product.controller.response.ProductResponse;
-import com.juno.appling.product.domain.Category;
+import com.juno.appling.product.domain.entity.CategoryEntity;
 import com.juno.appling.product.enums.ProductStatus;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface ProductCustomRepository {
+public interface ProductCustomJpaRepository {
 
     Page<ProductResponse> findAll(Pageable pageable, String search, ProductStatus productStatus,
-        Category category, Long memberId);
+        CategoryEntity categoryEntity, Long memberId);
 
     List<ProductResponse> findAllByIdList(List<Long> productIdList);
 

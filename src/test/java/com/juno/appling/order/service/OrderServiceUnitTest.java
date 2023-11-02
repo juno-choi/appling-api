@@ -24,11 +24,11 @@ import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.order.infrastructure.DeliveryRepository;
 import com.juno.appling.order.infrastructure.OrderItemRepository;
 import com.juno.appling.order.infrastructure.OrderRepository;
-import com.juno.appling.product.domain.Option;
-import com.juno.appling.product.domain.Product;
+import com.juno.appling.product.domain.entity.OptionEntity;
+import com.juno.appling.product.domain.entity.ProductEntity;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
-import com.juno.appling.product.infrastructure.ProductRepository;
+import com.juno.appling.product.repository.ProductJpaRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ class OrderServiceUnitTest {
     private OrderServiceImpl orderServiceImpl;
 
     @Mock
-    private ProductRepository productRepository;
+    private ProductJpaRepository productJpaRepository;
 
     @Mock
     private MemberUtil memberUtil;
@@ -109,18 +109,18 @@ class OrderServiceUnitTest {
         tempOrderDtoList.add(tempOrderDto2);
         TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
 
-        List<Product> productList = new ArrayList<>();
-        Product product1 = Product.builder()
+        List<ProductEntity> productEntityList = new ArrayList<>();
+        ProductEntity productEntity1 = ProductEntity.builder()
             .id(PRODUCT_ID_APPLE)
             .ea(10)
             .build();
-        Product product2 = Product.builder()
+        ProductEntity productEntity2 = ProductEntity.builder()
             .id(PRODUCT_ID_APPLE)
             .ea(10)
             .build();
-        productList.add(product1);
-        productList.add(product2);
-        given(productRepository.findAllById(any())).willReturn(productList);
+        productEntityList.add(productEntity1);
+        productEntityList.add(productEntity2);
+        given(productJpaRepository.findAllById(any())).willReturn(productEntityList);
 
         given(orderRepository.save(any())).willReturn(new Order(1L, null, null, new ArrayList<>(), null, null, null, null, null));
 
@@ -149,8 +149,8 @@ class OrderServiceUnitTest {
         tempOrderDtoList.add(tempOrderDto2);
         TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
 
-        List<Product> productList = new ArrayList<>();
-        Product product1 = Product.builder()
+        List<ProductEntity> productEntityList = new ArrayList<>();
+        ProductEntity productEntity1 = ProductEntity.builder()
             .id(PRODUCT_ID_APPLE)
             .mainTitle("상풍명1")
             .price(10000)
@@ -158,9 +158,9 @@ class OrderServiceUnitTest {
             .status(ProductStatus.NORMAL)
             .type(ProductType.OPTION)
             .build();
-        product1.addAllOptionsList(new ArrayList<>());
+        productEntity1.addAllOptionsList(new ArrayList<>());
 
-        Product product2 = Product.builder()
+        ProductEntity productEntity2 = ProductEntity.builder()
             .id(PRODUCT_ID_PEAR)
             .mainTitle("상풍명2")
             .price(10000)
@@ -168,9 +168,9 @@ class OrderServiceUnitTest {
             .ea(10)
             .build();
 
-        productList.add(product1);
-        productList.add(product2);
-        given(productRepository.findAllById(any())).willReturn(productList);
+        productEntityList.add(productEntity1);
+        productEntityList.add(productEntity2);
+        given(productJpaRepository.findAllById(any())).willReturn(productEntityList);
 
         given(orderRepository.save(any())).willReturn(new Order(1L, null, null, new ArrayList<>(), null, null, null, null, null));
 
@@ -198,24 +198,24 @@ class OrderServiceUnitTest {
         tempOrderDtoList.add(tempOrderDto2);
         TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
 
-        List<Product> productList = new ArrayList<>();
-        Product product1 = Product.builder()
+        List<ProductEntity> productEntityList = new ArrayList<>();
+        ProductEntity productEntity1 = ProductEntity.builder()
             .id(PRODUCT_ID_APPLE)
             .mainTitle("상풍명1")
             .price(10000)
             .ea(0)
             .status(ProductStatus.NORMAL)
             .build();
-        Product product2 = Product.builder()
+        ProductEntity productEntity2 = ProductEntity.builder()
             .id(PRODUCT_ID_PEAR)
             .mainTitle("상풍명2")
             .price(10000)
             .ea(0)
             .status(ProductStatus.NORMAL)
             .build();
-        productList.add(product1);
-        productList.add(product2);
-        given(productRepository.findAllById(any())).willReturn(productList);
+        productEntityList.add(productEntity1);
+        productEntityList.add(productEntity2);
+        given(productJpaRepository.findAllById(any())).willReturn(productEntityList);
 
         given(orderRepository.save(any())).willReturn(new Order(1L, null, null, new ArrayList<>(), null, null, null, null, null));
 
@@ -243,24 +243,24 @@ class OrderServiceUnitTest {
         tempOrderDtoList.add(tempOrderDto2);
         TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
 
-        List<Product> productList = new ArrayList<>();
-        Product product1 = Product.builder()
+        List<ProductEntity> productEntityList = new ArrayList<>();
+        ProductEntity productEntity1 = ProductEntity.builder()
             .id(PRODUCT_ID_APPLE)
             .mainTitle("상풍명1")
             .price(10000)
             .status(ProductStatus.NORMAL)
             .ea(10)
             .build();
-        Product product2 = Product.builder()
+        ProductEntity productEntity2 = ProductEntity.builder()
             .id(PRODUCT_ID_PEAR)
             .mainTitle("상풍명2")
             .price(10000)
             .status(ProductStatus.NORMAL)
             .ea(10)
             .build();
-        productList.add(product1);
-        productList.add(product2);
-        given(productRepository.findAllById(any())).willReturn(productList);
+        productEntityList.add(productEntity1);
+        productEntityList.add(productEntity2);
+        given(productJpaRepository.findAllById(any())).willReturn(productEntityList);
 
         given(orderRepository.save(any())).willReturn(new Order(1L, null, null, new ArrayList<>(), null, null, null, null, null));
 
@@ -337,7 +337,7 @@ class OrderServiceUnitTest {
             .recipientAddressDetail("수령인 상세 주소")
             .recipientTel("수령인 연락처")
             .build();
-        Product product = Product.builder()
+        ProductEntity productEntity = ProductEntity.builder()
                 .id(PRODUCT_ID_APPLE)
                 .mainTitle("상풍명1")
                 .price(10000)
@@ -347,7 +347,8 @@ class OrderServiceUnitTest {
 
         Order order = new Order(orderId, member, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now);
         List<OrderItem> orderItemList = order.getOrderItemList();
-        orderItemList.add(OrderItem.of(order, product, new Option("option1", 1000, 100, product), 1));
+        orderItemList.add(OrderItem.of(order,
+            productEntity, new OptionEntity("option1", 1000, 100, productEntity), 1));
 
         given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(order));
         given(memberUtil.getMember(any())).willReturn(member);

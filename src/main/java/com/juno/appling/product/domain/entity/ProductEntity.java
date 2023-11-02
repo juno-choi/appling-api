@@ -1,4 +1,4 @@
-package com.juno.appling.product.domain;
+package com.juno.appling.product.domain.entity;
 
 import com.juno.appling.member.domain.Seller;
 import com.juno.appling.product.controller.request.ProductRequest;
@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Product {
+@Table(name = "product")
+public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +45,7 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    private Category category;
+    private CategoryEntity category;
 
     private String mainTitle;
     private String mainExplanation;
@@ -66,13 +68,13 @@ public class Product {
     private LocalDateTime modifiedAt;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private List<Option> optionList = new ArrayList<>();
+    private List<OptionEntity> optionList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private ProductType type;
 
     @Builder
-    public Product(Long id, Seller seller, Category category, String mainTitle,
+    public ProductEntity(Long id, Seller seller, CategoryEntity category, String mainTitle,
         String mainExplanation,
         String productMainExplanation, String productSubExplanation, int originPrice, int price,
         String purchaseInquiry, String origin, String producer, String mainImage, String image1,
@@ -102,7 +104,7 @@ public class Product {
         this.type = type;
     }
 
-    private Product(Seller seller, Category category, ProductRequest productRequest) {
+    private ProductEntity(Seller seller, CategoryEntity category, ProductRequest productRequest) {
         LocalDateTime now = LocalDateTime.now();
         Integer ea = Optional.ofNullable(productRequest.getEa()).orElse(0);
         ProductStatus status = ProductStatus.valueOf(productRequest.getStatus().toUpperCase());
@@ -130,8 +132,8 @@ public class Product {
         this.modifiedAt = now;
     }
 
-    public static Product of(Seller member, Category category, ProductRequest productRequest) {
-        return new Product(member, category, productRequest);
+    public static ProductEntity of(Seller member, CategoryEntity categoryEntity, ProductRequest productRequest) {
+        return new ProductEntity(member, categoryEntity, productRequest);
     }
 
     public void put(PutProductRequest putProductRequest) {
@@ -159,27 +161,27 @@ public class Product {
         this.ea = ea;
     }
 
-    public void putCategory(Category category) {
-        this.category = category;
+    public void putCategory(CategoryEntity categoryEntity) {
+        this.category = categoryEntity;
     }
 
     public void addViewCnt() {
         this.viewCnt++;
     }
 
-    public void addOptionsList(Option option) {
-        this.optionList.add(option);
+    public void addOptionsList(OptionEntity optionEntity) {
+        this.optionList.add(optionEntity);
     }
 
 
-    public void addAllOptionsList(List<Option> options) {
-        this.optionList.addAll(options);
+    public void addAllOptionsList(List<OptionEntity> optionEntities) {
+        this.optionList.addAll(optionEntities);
     }
 
-    public void minusEa(int ea, Option option) {
+    public void minusEa(int ea, OptionEntity optionEntity) {
         if(this.type == ProductType.OPTION) {
-            List<Option> optionList = this.optionList;
-            optionList.stream().filter(o -> o.getId().equals(option.getId()))
+            List<OptionEntity> optionEntityList = this.optionList;
+            optionEntityList.stream().filter(o -> o.getId().equals(optionEntity.getId()))
                     .findFirst()
                     .ifPresent(o -> o.minusEa(ea)
             );

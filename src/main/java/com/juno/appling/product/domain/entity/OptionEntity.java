@@ -1,4 +1,4 @@
-package com.juno.appling.product.domain;
+package com.juno.appling.product.domain.entity;
 
 import com.juno.appling.product.controller.request.OptionRequest;
 import com.juno.appling.product.enums.OptionStatus;
@@ -28,7 +28,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "options")
-public class Option {
+public class OptionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "option_id")
@@ -44,9 +44,9 @@ public class Option {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private Product product;
+    private ProductEntity product;
 
-    public Option(String name, int extraPrice, int ea, Product product) {
+    public OptionEntity(String name, int extraPrice, int ea, ProductEntity product) {
         LocalDateTime now = LocalDateTime.now();
         this.name = name;
         this.extraPrice = extraPrice;
@@ -57,18 +57,19 @@ public class Option {
         this.product = product;
     }
 
-    public static Option of(Product product, OptionRequest optionRequest) {
-        Option option = new Option(optionRequest.getName(), optionRequest.getExtraPrice(), optionRequest.getEa(), product);
-        return option;
+    public static OptionEntity of(ProductEntity productEntity, OptionRequest optionRequest) {
+        OptionEntity optionEntity = new OptionEntity(optionRequest.getName(), optionRequest.getExtraPrice(), optionRequest.getEa(),
+            productEntity);
+        return optionEntity;
     }
 
-    public static List<Option> ofList(Product product, List<OptionRequest> saveRequestOptionList) {
-        List<Option> optionList = new ArrayList<>();
+    public static List<OptionEntity> ofList(ProductEntity productEntity, List<OptionRequest> saveRequestOptionList) {
+        List<OptionEntity> optionEntityList = new ArrayList<>();
         for (OptionRequest optionRequest : saveRequestOptionList) {
-            Option option = Option.of(product, optionRequest);
-            optionList.add(option);
+            OptionEntity optionEntity = OptionEntity.of(productEntity, optionRequest);
+            optionEntityList.add(optionEntity);
         }
-        return optionList;
+        return optionEntityList;
     }
 
     public void put(OptionRequest optionRequest) {

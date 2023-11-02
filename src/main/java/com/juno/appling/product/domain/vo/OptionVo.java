@@ -3,7 +3,7 @@ package com.juno.appling.product.domain.vo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.product.domain.Option;
+import com.juno.appling.product.domain.entity.OptionEntity;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,25 +23,25 @@ public class OptionVo {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public static List<OptionVo> getVoList(List<Option> optionList) {
+    public static List<OptionVo> getVoList(List<OptionEntity> optionEntityList) {
         List<OptionVo> optionVoList = new LinkedList<>();
-        for (Option option : optionList) {
-            optionVoList.add(new OptionVo(option));
+        for (OptionEntity optionEntity : optionEntityList) {
+            optionVoList.add(new OptionVo(optionEntity));
         }
         return optionVoList;
     }
 
-    public static OptionVo of(Option option) {
-        Optional<Option> optionalOption = Optional.ofNullable(option);
-        return optionalOption.isPresent() ? new OptionVo(option) : null;
+    public static OptionVo of(OptionEntity optionEntity) {
+        Optional<OptionEntity> optionalOption = Optional.ofNullable(optionEntity);
+        return optionalOption.isPresent() ? new OptionVo(optionEntity) : null;
     }
 
-    private OptionVo(Option option) {
-        this.optionId = option.getId();
-        this.name = option.getName();
-        this.extraPrice = option.getExtraPrice();
-        this.ea = option.getEa();
-        this.createdAt = option.getCreatedAt();
-        this.modifiedAt = option.getModifiedAt();
+    private OptionVo(OptionEntity optionEntity) {
+        this.optionId = optionEntity.getId();
+        this.name = optionEntity.getName();
+        this.extraPrice = optionEntity.getExtraPrice();
+        this.ea = optionEntity.getEa();
+        this.createdAt = optionEntity.getCreatedAt();
+        this.modifiedAt = optionEntity.getModifiedAt();
     }
 }

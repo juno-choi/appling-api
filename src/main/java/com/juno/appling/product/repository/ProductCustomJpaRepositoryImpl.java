@@ -1,14 +1,13 @@
-package com.juno.appling.product.infrastructure;
+package com.juno.appling.product.repository;
 
 import com.juno.appling.global.querydsl.QuerydslConfig;
 import com.juno.appling.product.controller.response.ProductResponse;
-import com.juno.appling.product.domain.Category;
-import com.juno.appling.product.domain.Product;
-import com.juno.appling.product.domain.QOption;
-import com.juno.appling.product.domain.QProduct;
+import com.juno.appling.product.domain.entity.CategoryEntity;
+import com.juno.appling.product.domain.entity.ProductEntity;
+import com.juno.appling.product.domain.entity.QOptionEntity;
+import com.juno.appling.product.domain.entity.QProductEntity;
 import com.juno.appling.product.enums.ProductStatus;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Projections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,21 +19,21 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class ProductCustomRepositoryImpl implements ProductCustomRepository {
+public class ProductCustomJpaRepositoryImpl implements ProductCustomJpaRepository {
 
     private final QuerydslConfig q;
 
 
     @Override
     public Page<ProductResponse> findAll(Pageable pageable, String search, ProductStatus productStatus,
-                                         Category category, Long memberId) {
-        QProduct product = QProduct.product;
-        QOption option = QOption.option;
+                                         CategoryEntity categoryEntity, Long memberId) {
+        QProductEntity product = QProductEntity.productEntity;
+        QOptionEntity option = QOptionEntity.optionEntity;
         BooleanBuilder builder = new BooleanBuilder();
 
         search = Optional.ofNullable(search).orElse("").trim();
         memberId = Optional.ofNullable(memberId).orElse(0L);
-        Optional<Category> optionalCategory = Optional.ofNullable(category);
+        Optional<CategoryEntity> optionalCategory = Optional.ofNullable(categoryEntity);
 
         if (!search.equals("")) {
             builder.and(product.mainTitle.contains(search));
@@ -43,11 +42,11 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
             builder.and(product.seller.member.id.eq(memberId));
         }
         if (optionalCategory.isPresent()) {
-            builder.and(product.category.eq(category));
+            builder.and(product.category.eq(categoryEntity));
         }
         builder.and(product.status.eq(productStatus));
 
-        List<Product> fetch = q.query()
+        List<ProductEntity> fetch = q.query()
             .selectFrom(product)
             .join(product.category).fetchJoin()
             .join(product.seller).fetchJoin()
@@ -68,11 +67,11 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
 
     @Override
     public List<ProductResponse> findAllByIdList(List<Long> productIdList) {
-        QProduct product = QProduct.product;
+        QProductEntity product = QProductEntity.productEntity;
         BooleanBuilder builder = new BooleanBuilder();
 
         builder.and(product.id.in(productIdList));
-        List<Product> fetch = q.query()
+        List<ProductEntity> fetch = q.query()
             .selectFrom(product)
             .where(builder)
             .fetch();
