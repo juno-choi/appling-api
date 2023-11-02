@@ -1,4 +1,4 @@
-package com.juno.appling.member.domain;
+package com.juno.appling.member.domain.entity;
 
 import com.juno.appling.member.enums.IntroduceStatus;
 import jakarta.persistence.Column;
@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Introduce {
+@Table(name = "introduce")
+public class IntroduceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +29,7 @@ public class Introduce {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")
-    private Seller seller;
+    private SellerEntity seller;
 
     private String subject;
     private String url;
@@ -38,7 +40,7 @@ public class Introduce {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Introduce(Seller seller, String subject, String url, IntroduceStatus status,
+    private IntroduceEntity(SellerEntity seller, String subject, String url, IntroduceStatus status,
         LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.seller = seller;
         this.subject = subject;
@@ -48,9 +50,9 @@ public class Introduce {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Introduce of(Seller seller, String subject, String url, IntroduceStatus status) {
+    public static IntroduceEntity of(SellerEntity sellerEntity, String subject, String url, IntroduceStatus status) {
         LocalDateTime now = LocalDateTime.now();
-        return new Introduce(seller, subject, url, status, now, now);
+        return new IntroduceEntity(sellerEntity, subject, url, status, now, now);
     }
 
     public void changeUrl(String url){

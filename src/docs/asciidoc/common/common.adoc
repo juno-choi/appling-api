@@ -38,12 +38,12 @@ include::{snippets}/common-controller-docs/upload-html/response-fields.adoc[]
 ### 📗 소개페이지 불러오기
 
 #### 🔵 REQUEST
-include::{snippets}/common-controller-docs/get-seller-introduce/http-request.adoc[]
+include::{snippets}/common-controller-docs/get-sellerEntity-introduceEntity/http-request.adoc[]
 
 #### 🔵 PATH PARAMETER
-include::{snippets}/common-controller-docs/get-seller-introduce/path-parameters.adoc[]
+include::{snippets}/common-controller-docs/get-sellerEntity-introduceEntity/path-parameters.adoc[]
 
 #### 🟢 RESPONSE
-include::{snippets}/common-controller-docs/get-seller-introduce/response-body.adoc[]
+include::{snippets}/common-controller-docs/get-sellerEntity-introduceEntity/response-body.adoc[]
 
 

@@ -2,9 +2,9 @@ package com.juno.appling.order.service;
 
 import com.github.dockerjava.api.exception.UnauthorizedException;
 import com.juno.appling.global.util.MemberUtil;
-import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.domain.Seller;
-import com.juno.appling.member.infrastruceture.SellerRepository;
+import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.member.domain.entity.SellerEntity;
+import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
@@ -52,13 +52,13 @@ public class OrderServiceImpl implements OrderService{
     private final OrderItemJpaRepository orderItemJpaRepository;
     private final DeliveryJpaRepository deliveryJpaRepository;
     private final MemberUtil memberUtil;
-    private final SellerRepository sellerRepository;
+    private final SellerJpaRepository sellerJpaRepository;
     private final OrderCustomJpaRepositoryImpl orderCustomRepositoryImpl;
 
     @Transactional
     @Override
     public PostTempOrderResponse postTempOrder(TempOrderRequest tempOrderRequest, HttpServletRequest request){
-        Member member = memberUtil.getMember(request);
+        MemberEntity memberEntity = memberUtil.getMember(request);
 
         /**
          * 1. 주문 발급
@@ -85,7 +85,7 @@ public class OrderServiceImpl implements OrderService{
             sb.append(productEntityList.size() -1);
             sb.append("개");
         }
-        OrderEntity saveOrderEntity = orderJpaRepository.save(OrderEntity.of(member, sb.toString()));
+        OrderEntity saveOrderEntity = orderJpaRepository.save(OrderEntity.of(memberEntity, sb.toString()));
 
         // 주문 상품 등록
         Map<Long, TempOrderDto> eaMap = new HashMap<>();
@@ -207,13 +207,13 @@ public class OrderServiceImpl implements OrderService{
      *                                  status is not TEMP
      */
     private OrderEntity checkOrder(HttpServletRequest request, Long orderId) {
-        Member member = memberUtil.getMember(request);
+        MemberEntity memberEntity = memberUtil.getMember(request);
         OrderEntity orderEntity = orderJpaRepository.findById(orderId).orElseThrow(() ->
                 new IllegalArgumentException("유효하지 않은 주문 번호입니다.")
         );
 
-        if(member.getId() != orderEntity.getMember().getId()) {
-            log.info("[getOrder] 유저가 주문한 번호가 아님! 요청한 user_id = {} , order_id = {}", member.getId(), orderEntity.getId());
+        if(memberEntity.getId() != orderEntity.getMemberEntity().getId()) {
+            log.info("[getOrder] 유저가 주문한 번호가 아님! 요청한 user_id = {} , order_id = {}", memberEntity.getId(), orderEntity.getId());
             throw new IllegalArgumentException("유효하지 않은 주문입니다.");
         }
 
@@ -226,8 +226,8 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public OrderResponse getOrderListBySeller(Pageable pageable, String search, String status, HttpServletRequest request) {
-        Member member = memberUtil.getMember(request);
-        Seller seller = sellerRepository.findByMember(member)
+        MemberEntity memberEntity = memberUtil.getMember(request);
+        SellerEntity sellerEntity = sellerJpaRepository.findByMember(memberEntity)
                 .orElseThrow(() -> new UnauthorizedException("잘못된 접근입니다."));
 
         /**
@@ -236,7 +236,8 @@ public class OrderServiceImpl implements OrderService{
          */
         OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase(Locale.ROOT));
 
-        Page<OrderVo> orderList = orderCustomRepositoryImpl.findAllBySeller(pageable, search, orderStatus, seller);
+        Page<OrderVo> orderList = orderCustomRepositoryImpl.findAllBySeller(pageable, search, orderStatus,
+            sellerEntity);
 
         return OrderResponse.from(orderList);
     }

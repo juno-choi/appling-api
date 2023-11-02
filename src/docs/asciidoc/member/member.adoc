@@ -3,183 +3,183 @@
 ### 📗 회원 정보 조회
 
 ==== 🔵 REQUEST
-include::{snippets}/member-controller-docs/member/http-request.adoc[]
+include::{snippets}/memberEntity-controller-docs/memberEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/member-controller-docs/member/request-headers.adoc[]
+include::{snippets}/memberEntity-controller-docs/memberEntity/request-headers.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/member-controller-docs/member/http-response.adoc[]
+include::{snippets}/memberEntity-controller-docs/memberEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/member-controller-docs/member/response-fields.adoc[]
+include::{snippets}/memberEntity-controller-docs/memberEntity/response-fields.adoc[]
 
 ### 📗 회원 정보 수정
 
 ==== 🔵 REQUEST
-include::{snippets}/member-controller-docs/patch-member/http-request.adoc[]
+include::{snippets}/memberEntity-controller-docs/patch-memberEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/member-controller-docs/patch-member/request-headers.adoc[]
+include::{snippets}/memberEntity-controller-docs/patch-memberEntity/request-headers.adoc[]
 
 ==== 🔵 REQUEST BODY
 
-include::{snippets}/member-controller-docs/patch-member/request-fields.adoc[]
+include::{snippets}/memberEntity-controller-docs/patch-memberEntity/request-fields.adoc[]
 
 ==== 🔵 REQUEST FIELD
 
-include::{snippets}/member-controller-docs/patch-member/request-fields.adoc[]
+include::{snippets}/memberEntity-controller-docs/patch-memberEntity/request-fields.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/member-controller-docs/patch-member/http-response.adoc[]
+include::{snippets}/memberEntity-controller-docs/patch-memberEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/member-controller-docs/patch-member/response-fields.adoc[]
+include::{snippets}/memberEntity-controller-docs/patch-memberEntity/response-fields.adoc[]
 
 
 
-### 📗 Seller 권한 신청
+### 📗 SellerEntity 권한 신청
 
 ==== 🔵 REQUEST
-include::{snippets}/member-controller-docs/post-seller/http-request.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-sellerEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/member-controller-docs/post-seller/request-headers.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-sellerEntity/request-headers.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/member-controller-docs/post-seller/http-response.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-sellerEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/member-controller-docs/post-seller/response-fields.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-sellerEntity/response-fields.adoc[]
 
 
-### 📗 Seller 권한 불러오기
+### 📗 SellerEntity 권한 불러오기
 
 ==== 🔵 REQUEST
-include::{snippets}/member-controller-docs/get-seller/http-request.adoc[]
+include::{snippets}/memberEntity-controller-docs/get-sellerEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/member-controller-docs/get-seller/request-headers.adoc[]
+include::{snippets}/memberEntity-controller-docs/get-sellerEntity/request-headers.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/member-controller-docs/get-seller/http-response.adoc[]
+include::{snippets}/memberEntity-controller-docs/get-sellerEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/member-controller-docs/get-seller/response-fields.adoc[]
+include::{snippets}/memberEntity-controller-docs/get-sellerEntity/response-fields.adoc[]
 
-### 📗 Seller 정보 수정
+### 📗 SellerEntity 정보 수정
 
 ==== 🔵 REQUEST
-include::{snippets}/member-controller-docs/put-seller/http-request.adoc[]
+include::{snippets}/memberEntity-controller-docs/put-sellerEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/member-controller-docs/put-seller/request-headers.adoc[]
+include::{snippets}/memberEntity-controller-docs/put-sellerEntity/request-headers.adoc[]
 
 ==== 🔵 REQUEST FIELD
 
-include::{snippets}/member-controller-docs/put-seller/request-fields.adoc[]
+include::{snippets}/memberEntity-controller-docs/put-sellerEntity/request-fields.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/member-controller-docs/put-seller/http-response.adoc[]
+include::{snippets}/memberEntity-controller-docs/put-sellerEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/member-controller-docs/put-seller/response-fields.adoc[]
+include::{snippets}/memberEntity-controller-docs/put-sellerEntity/response-fields.adoc[]
 
 
 ### 📗 수령인 정보 등록
 
 ==== 🔵 REQUEST
-include::{snippets}/member-controller-docs/post-recipient/http-request.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-recipientEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/member-controller-docs/post-recipient/request-headers.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-recipientEntity/request-headers.adoc[]
 
 ==== 🔵 REQUEST BODY
 
-include::{snippets}/member-controller-docs/post-recipient/request-body.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-recipientEntity/request-body.adoc[]
 
 ==== 🔵 REQUEST FIELD
 
-include::{snippets}/member-controller-docs/post-recipient/request-fields.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-recipientEntity/request-fields.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/member-controller-docs/post-recipient/http-response.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-recipientEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/member-controller-docs/post-recipient/response-fields.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-recipientEntity/response-fields.adoc[]
 
 
 ### 📗 수령인 정보 불러오기
 
 ==== 🔵 REQUEST
-include::{snippets}/member-controller-docs/get-recipient/http-request.adoc[]
+include::{snippets}/memberEntity-controller-docs/get-recipientEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/member-controller-docs/get-recipient/request-headers.adoc[]
+include::{snippets}/memberEntity-controller-docs/get-recipientEntity/request-headers.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/member-controller-docs/get-recipient/http-response.adoc[]
+include::{snippets}/memberEntity-controller-docs/get-recipientEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/member-controller-docs/get-recipient/response-fields.adoc[]
+include::{snippets}/memberEntity-controller-docs/get-recipientEntity/response-fields.adoc[]
 
 
 ### 📗 소개글 등록하기
 
 ==== 🔵 REQUEST
-include::{snippets}/member-controller-docs/post-seller-introduce/http-request.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-sellerEntity-introduceEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/member-controller-docs/post-seller-introduce/request-headers.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-sellerEntity-introduceEntity/request-headers.adoc[]
 
 ==== 🔵 REQUEST BODY
 
-include::{snippets}/member-controller-docs/post-seller-introduce/request-body.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-sellerEntity-introduceEntity/request-body.adoc[]
 
-include::{snippets}/member-controller-docs/post-seller-introduce/request-fields.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-sellerEntity-introduceEntity/request-fields.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/member-controller-docs/post-seller-introduce/http-response.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-sellerEntity-introduceEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/member-controller-docs/post-seller-introduce/response-fields.adoc[]
+include::{snippets}/memberEntity-controller-docs/post-sellerEntity-introduceEntity/response-fields.adoc[]
 
 
 ### 📗 소개글 불러오기
 
 ==== 🔵 REQUEST
-include::{snippets}/member-controller-docs/get-seller-introduce/http-request.adoc[]
+include::{snippets}/memberEntity-controller-docs/get-sellerEntity-introduceEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/member-controller-docs/get-seller-introduce/request-headers.adoc[]
+include::{snippets}/memberEntity-controller-docs/get-sellerEntity-introduceEntity/request-headers.adoc[]
 
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/member-controller-docs/get-seller-introduce/http-response.adoc[]
+include::{snippets}/memberEntity-controller-docs/get-sellerEntity-introduceEntity/http-response.adoc[]
 

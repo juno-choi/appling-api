@@ -1,4 +1,4 @@
-package com.juno.appling.member.domain;
+package com.juno.appling.member.domain.entity;
 
 import com.juno.appling.member.enums.MemberApplySellerStatus;
 import jakarta.persistence.Column;
@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -16,7 +17,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-public class MemberApplySeller {
+@Table(name = "member_apply_seller")
+public class MemberApplySellerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +34,7 @@ public class MemberApplySeller {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private MemberApplySeller(@NotNull Long memberId, MemberApplySellerStatus status,
+    private MemberApplySellerEntity(@NotNull Long memberId, MemberApplySellerStatus status,
         LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.memberId = memberId;
         this.status = status;
@@ -40,9 +42,9 @@ public class MemberApplySeller {
         this.modifiedAt = modifiedAt;
     }
 
-    public static MemberApplySeller of(Long memberId) {
+    public static MemberApplySellerEntity of(Long memberId) {
         LocalDateTime now = LocalDateTime.now();
-        return new MemberApplySeller(memberId, MemberApplySellerStatus.APPLY, now, now);
+        return new MemberApplySellerEntity(memberId, MemberApplySellerStatus.APPLY, now, now);
     }
 
     public void patchApplyStatus(MemberApplySellerStatus status) {

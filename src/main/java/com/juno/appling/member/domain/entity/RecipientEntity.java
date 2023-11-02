@@ -1,4 +1,4 @@
-package com.juno.appling.member.domain;
+package com.juno.appling.member.domain.entity;
 
 import com.juno.appling.member.controller.request.PostRecipientRequest;
 import com.juno.appling.member.enums.RecipientInfoStatus;
@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -20,7 +21,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Recipient {
+@Table(name = "recipient")
+public class RecipientEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +31,7 @@ public class Recipient {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private MemberEntity member;
 
     @NotNull
     private String name;
@@ -48,7 +50,7 @@ public class Recipient {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Recipient(Member member, @NotNull String name, @NotNull String zonecode,
+    private RecipientEntity(MemberEntity member, @NotNull String name, @NotNull String zonecode,
         @NotNull String address, @NotNull String addressDetail, @NotNull String tel, RecipientInfoStatus status,
         LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.member = member;
@@ -62,11 +64,11 @@ public class Recipient {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Recipient of(Member member, @NotNull String name, @NotNull String zonecode,
+    public static RecipientEntity of(MemberEntity memberEntity, @NotNull String name, @NotNull String zonecode,
         @NotNull String address, @NotNull String addressDetail, @NotNull String tel, RecipientInfoStatus status) {
         tel = tel.replaceAll("-", "");
         LocalDateTime now = LocalDateTime.now();
-        return new Recipient(member, name, zonecode, address, addressDetail, tel, status, now, now);
+        return new RecipientEntity(memberEntity, name, zonecode, address, addressDetail, tel, status, now, now);
     }
 
     public void put(PostRecipientRequest postRecipientRequestInfo) {

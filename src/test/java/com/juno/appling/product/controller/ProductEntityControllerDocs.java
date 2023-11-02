@@ -15,10 +15,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.juno.appling.RestdocsBaseTest;
-import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.domain.Seller;
-import com.juno.appling.member.infrastruceture.MemberRepository;
-import com.juno.appling.member.infrastruceture.SellerRepository;
+import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.member.domain.entity.SellerEntity;
+import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.product.controller.request.AddViewCntRequest;
 import com.juno.appling.product.controller.request.OptionRequest;
@@ -61,7 +61,7 @@ class ProductEntityControllerDocs extends RestdocsBaseTest {
     private MemberAuthService memberAuthService;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
     @Autowired
     private ProductJpaRepository productJpaRepository;
     @Autowired
@@ -71,7 +71,7 @@ class ProductEntityControllerDocs extends RestdocsBaseTest {
     private OptionJpaRepository optionJpaRepository;
 
     @Autowired
-    private SellerRepository sellerRepository;
+    private SellerJpaRepository sellerJpaRepository;
 
     private final static String PREFIX = "/api/product";
 
@@ -80,8 +80,8 @@ class ProductEntityControllerDocs extends RestdocsBaseTest {
         optionJpaRepository.deleteAll();
         productJpaRepository.deleteAll();
         categoryJpaRepository.deleteAll();
-        sellerRepository.deleteAll();
-        memberRepository.deleteAll();
+        sellerJpaRepository.deleteAll();
+        memberJpaRepository.deleteAll();
     }
     @Test
     @DisplayName(PREFIX + "(GET)")
@@ -89,7 +89,7 @@ class ProductEntityControllerDocs extends RestdocsBaseTest {
         //given
         String mainTitle = "검색";
 
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(SELLER_EMAIL).get();
         CategoryEntity categoryEntity = categoryJpaRepository.findById(CATEGORY_ID_FRUIT).get();
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = OptionRequest.builder()
@@ -141,12 +141,12 @@ class ProductEntityControllerDocs extends RestdocsBaseTest {
             .type("normal")
             .build();
 
-        Seller seller = sellerRepository.findByMember(member).get();
-        productJpaRepository.save(ProductEntity.of(seller, categoryEntity, productRequest2));
+        SellerEntity sellerEntity = sellerJpaRepository.findByMember(memberEntity).get();
+        productJpaRepository.save(ProductEntity.of(sellerEntity, categoryEntity, productRequest2));
 
         for (int i = 0; i < 25; i++) {
             ProductEntity productEntity = productJpaRepository.save(
-                ProductEntity.of(seller, categoryEntity, productRequest1));
+                ProductEntity.of(sellerEntity, categoryEntity, productRequest1));
             for (int j = 0; j < optionRequestList.size(); j++) {
                 OptionEntity optionEntity = optionJpaRepository.save(
                     OptionEntity.of(productEntity, optionRequestList.get(j)));
@@ -156,7 +156,7 @@ class ProductEntityControllerDocs extends RestdocsBaseTest {
 
         for (int i = 0; i < 10; i++) {
             ProductEntity productEntity = productJpaRepository.save(
-                ProductEntity.of(seller, categoryEntity, productRequest2));
+                ProductEntity.of(sellerEntity, categoryEntity, productRequest2));
             for (int j = 0; j < optionRequestList.size(); j++) {
                 OptionEntity optionEntity = optionJpaRepository.save(
                     OptionEntity.of(productEntity, optionRequestList.get(j)));
@@ -276,7 +276,7 @@ class ProductEntityControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/{id}")
     void getProduct() throws Exception {
         //given
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(SELLER_EMAIL).get();
         CategoryEntity categoryEntity = categoryJpaRepository.findById(CATEGORY_ID_FRUIT).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
@@ -307,9 +307,9 @@ class ProductEntityControllerDocs extends RestdocsBaseTest {
             .ea(10)
             .type("normal")
             .build();
-        Seller seller = sellerRepository.findByMember(member).get();
+        SellerEntity sellerEntity = sellerJpaRepository.findByMember(memberEntity).get();
         ProductEntity productEntity = productJpaRepository.save(
-            ProductEntity.of(seller, categoryEntity, productRequest));
+            ProductEntity.of(sellerEntity, categoryEntity, productRequest));
         //when
         ResultActions perform = mock.perform(
                 RestDocumentationRequestBuilders.get(PREFIX + "/{id}", productEntity.getId())
@@ -408,7 +408,7 @@ class ProductEntityControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/cnt")
     void addViewCnt() throws Exception {
         //given
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(SELLER_EMAIL).get();
         CategoryEntity categoryEntity = categoryJpaRepository.findById(CATEGORY_ID_FRUIT).get();
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = OptionRequest.builder()
@@ -439,9 +439,9 @@ class ProductEntityControllerDocs extends RestdocsBaseTest {
             .type("normal")
             .build();
 
-        Seller seller = sellerRepository.findByMember(member).get();
+        SellerEntity sellerEntity = sellerJpaRepository.findByMember(memberEntity).get();
         ProductEntity productEntity = productJpaRepository.save(
-            ProductEntity.of(seller, categoryEntity, productRequest));
+            ProductEntity.of(sellerEntity, categoryEntity, productRequest));
         //when
         ResultActions perform = mock.perform(
                 patch(PREFIX + "/cnt")
@@ -469,7 +469,7 @@ class ProductEntityControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/basket")
     void getProductBasket() throws Exception {
         //given
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(SELLER_EMAIL).get();
         CategoryEntity categoryEntity = categoryJpaRepository.findById(CATEGORY_ID_FRUIT).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
@@ -539,13 +539,13 @@ class ProductEntityControllerDocs extends RestdocsBaseTest {
             .type("normal")
             .build();
 
-        Seller seller = sellerRepository.findByMember(member).get();
+        SellerEntity sellerEntity = sellerJpaRepository.findByMember(memberEntity).get();
         ProductEntity productEntity1 = productJpaRepository.save(
-            ProductEntity.of(seller, categoryEntity, productRequest));
+            ProductEntity.of(sellerEntity, categoryEntity, productRequest));
         ProductEntity productEntity2 = productJpaRepository.save(
-            ProductEntity.of(seller, categoryEntity, productRequest2));
+            ProductEntity.of(sellerEntity, categoryEntity, productRequest2));
         ProductEntity productEntity3 = productJpaRepository.save(
-            ProductEntity.of(seller, categoryEntity, productRequest3));
+            ProductEntity.of(sellerEntity, categoryEntity, productRequest3));
 
         optionJpaRepository.save(new OptionEntity("옵션1", 1000, 100, productEntity1));
         optionJpaRepository.save(new OptionEntity("옵션2", 1000, 100, productEntity2));

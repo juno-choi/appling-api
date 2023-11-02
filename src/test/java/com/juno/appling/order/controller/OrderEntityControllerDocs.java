@@ -23,9 +23,9 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.juno.appling.RestdocsBaseTest;
-import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.infrastruceture.MemberRepository;
-import com.juno.appling.member.infrastruceture.SellerRepository;
+import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
@@ -71,13 +71,13 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 class OrderEntityControllerDocs extends RestdocsBaseTest {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     @Autowired
     private CategoryJpaRepository categoryJpaRepository;
 
     @Autowired
-    private SellerRepository sellerRepository;
+    private SellerJpaRepository sellerJpaRepository;
 
     @Autowired
     private ProductJpaRepository productJpaRepository;
@@ -110,8 +110,8 @@ class OrderEntityControllerDocs extends RestdocsBaseTest {
         optionJpaRepository.deleteAll();
         productJpaRepository.deleteAll();
         categoryJpaRepository.deleteAll();
-        sellerRepository.deleteAll();
-        memberRepository.deleteAll();
+        sellerJpaRepository.deleteAll();
+        memberJpaRepository.deleteAll();
     }
 
     @Test
@@ -164,9 +164,9 @@ class OrderEntityControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/temp/{order_id} (GET)")
     void getTempOrder() throws Exception {
         //given
-        Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(MEMBER_EMAIL).get();
 
-        OrderEntity orderEntity = orderJpaRepository.save(OrderEntity.of(member, "테스트 상품"));
+        OrderEntity orderEntity = orderJpaRepository.save(OrderEntity.of(memberEntity, "테스트 상품"));
 
         ProductEntity normalProductEntity = productJpaRepository.findById(PRODUCT_ID_NORMAL).get();
         ProductEntity optionProductEntity = productJpaRepository.findById(PRODUCT_ID_APPLE).get();
@@ -243,9 +243,9 @@ class OrderEntityControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/complete (PATCH)")
     void complete() throws Exception {
         //given
-        Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(MEMBER_EMAIL).get();
 
-        OrderEntity orderEntity = orderJpaRepository.save(OrderEntity.of(member, "테스트 상품"));
+        OrderEntity orderEntity = orderJpaRepository.save(OrderEntity.of(memberEntity, "테스트 상품"));
         Long orderId = orderEntity.getId();
 
         ProductEntity productEntity1 = productJpaRepository.findById(PRODUCT_ID_APPLE).get();

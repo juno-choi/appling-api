@@ -68,23 +68,23 @@ include::{snippets}/orderEntity-controller-docs/complete/http-response.adoc[]
 
 include::{snippets}/orderEntity-controller-docs/complete/response-fields.adoc[]
 
-### 📗 주문 내역 확인 (Seller)
+### 📗 주문 내역 확인 (SellerEntity)
 
 ==== 🔵 REQUEST
-include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-seller/http-request.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-sellerEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-seller/request-headers.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-sellerEntity/request-headers.adoc[]
 
 ==== 🔵 REQUEST PARAMETERS
 
-include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-seller/query-parameters.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-sellerEntity/query-parameters.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-seller/http-response.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-sellerEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-seller/response-fields.adoc[]
+include::{snippets}/orderEntity-controller-docs/get-orderEntity-by-sellerEntity/response-fields.adoc[]

@@ -3,7 +3,7 @@ package com.juno.appling.member.controller.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.domain.entity.MemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,11 +18,11 @@ public class JoinResponse {
     private String nickname;
     private String email;
 
-    public static JoinResponse from(Member saveMember) {
+    public static JoinResponse from(MemberEntity saveMemberEntity) {
         return JoinResponse.builder()
-            .name(saveMember.getName())
-            .nickname(saveMember.getNickname())
-            .email(saveMember.getEmail())
+            .name(saveMemberEntity.getName())
+            .nickname(saveMemberEntity.getNickname())
+            .email(saveMemberEntity.getEmail())
             .build();
     }
 }

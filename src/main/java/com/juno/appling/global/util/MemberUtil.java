@@ -1,8 +1,8 @@
 package com.juno.appling.global.util;
 
 import com.juno.appling.global.security.TokenProvider;
-import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.infrastruceture.MemberRepository;
+import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.member.repository.MemberJpaRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class MemberUtil {
     private final TokenProvider tokenProvider;
-    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberJpaRepository;
 
-    public Member getMember(HttpServletRequest request) {
+    public MemberEntity getMember(HttpServletRequest request) {
         String token = tokenProvider.resolveToken(request);
         Long memberId = tokenProvider.getMemberId(token);
-        return memberRepository.findById(memberId)
+        return memberJpaRepository.findById(memberId)
             .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
     }
 

@@ -19,10 +19,10 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.juno.appling.RestdocsBaseTest;
-import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.domain.Seller;
-import com.juno.appling.member.infrastruceture.MemberRepository;
-import com.juno.appling.member.infrastruceture.SellerRepository;
+import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.member.domain.entity.SellerEntity;
+import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.product.controller.request.OptionRequest;
 import com.juno.appling.product.controller.request.ProductRequest;
@@ -59,18 +59,18 @@ import org.springframework.transaction.annotation.Transactional;
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-class SellerProductControllerDocsEntity extends RestdocsBaseTest {
+class SellerEntityProductControllerDocsEntity extends RestdocsBaseTest {
 
     @Autowired
     private MemberAuthService memberAuthService;
     @Autowired
     private ProductJpaRepository productJpaRepository;
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
     @Autowired
     private CategoryJpaRepository categoryJpaRepository;
     @Autowired
-    private SellerRepository sellerRepository;
+    private SellerJpaRepository sellerJpaRepository;
 
     @Autowired
     private OptionJpaRepository optionJpaRepository;
@@ -82,15 +82,15 @@ class SellerProductControllerDocsEntity extends RestdocsBaseTest {
         optionJpaRepository.deleteAll();
         productJpaRepository.deleteAll();
         categoryJpaRepository.deleteAll();
-        sellerRepository.deleteAll();
-        memberRepository.deleteAll();
+        sellerJpaRepository.deleteAll();
+        memberJpaRepository.deleteAll();
     }
     @Test
     @DisplayName(PREFIX + "(GET)")
     void getProductList() throws Exception {
         //given
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Member member2 = memberRepository.findByEmail(SELLER2_EMAIL).get();
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(SELLER_EMAIL).get();
+        MemberEntity memberEntity2 = memberJpaRepository.findByEmail(SELLER2_EMAIL).get();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();
         OptionRequest optionRequest1 = OptionRequest.builder()
@@ -142,17 +142,17 @@ class SellerProductControllerDocsEntity extends RestdocsBaseTest {
             .build();
         CategoryEntity categoryEntity = categoryJpaRepository.findById(CATEGORY_ID_FRUIT).get();
 
-        Seller seller = sellerRepository.findByMember(member).get();
-        Seller seller2 = sellerRepository.findByMember(member2).get();
+        SellerEntity sellerEntity = sellerJpaRepository.findByMember(memberEntity).get();
+        SellerEntity sellerEntity2 = sellerJpaRepository.findByMember(memberEntity2).get();
 
-        productJpaRepository.save(ProductEntity.of(seller, categoryEntity, searchDto));
+        productJpaRepository.save(ProductEntity.of(sellerEntity, categoryEntity, searchDto));
 
         for (int i = 0; i < 25; i++) {
-            productJpaRepository.save(ProductEntity.of(seller2, categoryEntity, productRequest));
+            productJpaRepository.save(ProductEntity.of(sellerEntity2, categoryEntity, productRequest));
         }
 
         for (int i = 0; i < 10; i++) {
-            productJpaRepository.save(ProductEntity.of(seller, categoryEntity, searchDto));
+            productJpaRepository.save(ProductEntity.of(sellerEntity, categoryEntity, searchDto));
         }
         //when
         ResultActions perform = mock.perform(
@@ -274,7 +274,7 @@ class SellerProductControllerDocsEntity extends RestdocsBaseTest {
             .ea(10)
             .type("normal")
             .build();
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(SELLER_EMAIL).get();
         // when
         ResultActions perform = mock.perform(
             post(PREFIX)
@@ -403,7 +403,7 @@ class SellerProductControllerDocsEntity extends RestdocsBaseTest {
             .type("option")
             .optionList(optionRequestList)
             .build();
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(SELLER_EMAIL).get();
         // when
         ResultActions perform = mock.perform(
                 post(PREFIX)
@@ -509,7 +509,7 @@ class SellerProductControllerDocsEntity extends RestdocsBaseTest {
     @DisplayName(PREFIX + "(PUT/normal)")
     void putProduct() throws Exception {
         // given
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(SELLER_EMAIL).get();
         CategoryEntity categoryEntity = categoryJpaRepository.findById(CATEGORY_ID_FRUIT).get();
 
         ProductRequest productRequest = ProductRequest.builder()
@@ -531,9 +531,9 @@ class SellerProductControllerDocsEntity extends RestdocsBaseTest {
             .ea(10)
             .type("normal")
             .build();
-        Seller seller = sellerRepository.findByMember(member).get();
+        SellerEntity sellerEntity = sellerJpaRepository.findByMember(memberEntity).get();
         ProductEntity originalProductEntity = productJpaRepository.save(
-            ProductEntity.of(seller, categoryEntity, productRequest));
+            ProductEntity.of(sellerEntity, categoryEntity, productRequest));
         Long productId = originalProductEntity.getId();
         PutProductRequest putProductRequest = PutProductRequest.builder()
                 .productId(productId)
@@ -657,7 +657,7 @@ class SellerProductControllerDocsEntity extends RestdocsBaseTest {
     @Transactional
     void putProductByOption() throws Exception {
         // given
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(SELLER_EMAIL).get();
         CategoryEntity categoryEntity = categoryJpaRepository.findById(CATEGORY_ID_FRUIT).get();
 
         ProductRequest productRequest = ProductRequest.builder()
@@ -680,9 +680,9 @@ class SellerProductControllerDocsEntity extends RestdocsBaseTest {
             .type("option")
             .optionList(new ArrayList<>())
             .build();
-        Seller seller = sellerRepository.findByMember(member).get();
+        SellerEntity sellerEntity = sellerJpaRepository.findByMember(memberEntity).get();
         ProductEntity originalProductEntity = productJpaRepository.save(
-            ProductEntity.of(seller, categoryEntity, productRequest));
+            ProductEntity.of(sellerEntity, categoryEntity, productRequest));
         Long productId = originalProductEntity.getId();
 
         List<OptionRequest> optionRequestList = new ArrayList<>();

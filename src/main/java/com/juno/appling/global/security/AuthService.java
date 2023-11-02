@@ -1,8 +1,8 @@
 package com.juno.appling.global.security;
 
-import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.enums.Role;
-import com.juno.appling.member.infrastruceture.MemberRepository;
+import com.juno.appling.member.repository.MemberJpaRepository;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,16 +20,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService implements UserDetailsService {
 
-    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberJpaRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.debug("회원 인증 처리");
-        Member member = memberRepository.findByEmail(username).orElseThrow(() ->
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(username).orElseThrow(() ->
             new UsernameNotFoundException("유효하지 않은 회원입니다.")
         );
 
-        Role role = member.getRole();
+        Role role = memberEntity.getRole();
         Set<String> roleSet = new HashSet<>();
         String roleListToString = Role.valueOf(role.roleName).roleList;
         String[] roleList = roleListToString.split(",");
@@ -41,8 +41,8 @@ public class AuthService implements UserDetailsService {
         String[] roles = Arrays.copyOf(roleSet.toArray(), roleSet.size(), String[].class);
 
         return User.builder()
-            .username(String.valueOf(member.getId()))
-            .password(member.getPassword())
+            .username(String.valueOf(memberEntity.getId()))
+            .password(memberEntity.getPassword())
             .roles(roles)
             .build();
     }

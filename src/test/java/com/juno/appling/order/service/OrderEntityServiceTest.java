@@ -9,8 +9,8 @@ import static com.juno.appling.Base.PRODUCT_OPTION_ID_PEAR;
 import static com.juno.appling.Base.SELLER_LOGIN;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.juno.appling.member.infrastruceture.MemberRepository;
-import com.juno.appling.member.infrastruceture.SellerRepository;
+import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
@@ -60,10 +60,10 @@ class OrderEntityServiceTest {
     private OrderJpaRepository orderJpaRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     @Autowired
-    private SellerRepository sellerRepository;
+    private SellerJpaRepository sellerJpaRepository;
     @Autowired
     private OptionJpaRepository optionJpaRepository;
 
@@ -89,8 +89,8 @@ class OrderEntityServiceTest {
         optionJpaRepository.deleteAll();
         productJpaRepository.deleteAll();
         categoryJpaRepository.deleteAll();
-        sellerRepository.deleteAll();
-        memberRepository.deleteAll();
+        sellerJpaRepository.deleteAll();
+        memberJpaRepository.deleteAll();
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.juno.appling.member.domain;
+package com.juno.appling.member.domain.entity;
 
 import com.juno.appling.member.controller.request.PutSellerRequest;
 import jakarta.persistence.Column;
@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -19,7 +20,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Seller {
+@Table(name = "seller")
+public class SellerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +30,7 @@ public class Seller {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private MemberEntity member;
 
     @NotNull(message = "company 비어있을 수 없습니다.")
     @Column(unique = true)
@@ -49,7 +51,7 @@ public class Seller {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private Seller(Member member, @NotNull(message = "company 비어있을 수 없습니다.") String company,
+    private SellerEntity(MemberEntity member, @NotNull(message = "company 비어있을 수 없습니다.") String company,
         @NotNull(message = "tel 비어있을 수 없습니다.") String tel,
         @NotNull(message = "zonecode 비어있을 수 없습니다.") String zonecode,
         @NotNull(message = "address 비어있을 수 없습니다.") String address,
@@ -68,7 +70,7 @@ public class Seller {
         this.modifiedAt = modifiedAt;
     }
 
-    public Seller(Long sellerId, Member member, @NotNull(message = "company 비어있을 수 없습니다.") String company,
+    public SellerEntity(Long sellerId, MemberEntity member, @NotNull(message = "company 비어있을 수 없습니다.") String company,
         @NotNull(message = "tel 비어있을 수 없습니다.") String tel,
         @NotNull(message = "zonecode 비어있을 수 없습니다.") String zonecode,
         @NotNull(message = "address 비어있을 수 없습니다.") String address,
@@ -88,7 +90,7 @@ public class Seller {
         this.modifiedAt = now;
     }
 
-    public static Seller of(Member member,
+    public static SellerEntity of(MemberEntity memberEntity,
         @NotNull(message = "company 비어있을 수 없습니다.") String company,
         @NotNull(message = "tel 비어있을 수 없습니다.") String tel,
         @NotNull(message = "zonecode 비어있을 수 없습니다.") String zonecode,
@@ -97,7 +99,7 @@ public class Seller {
         @NotNull(message = "email 비어있을 수 없습니다.") String email) {
         LocalDateTime now = LocalDateTime.now();
         tel = tel.replaceAll("-", "");
-        return new Seller(member, company, tel, zonecode, address, addressDetail, email, now, now);
+        return new SellerEntity(memberEntity, company, tel, zonecode, address, addressDetail, email, now, now);
     }
 
     public void put(PutSellerRequest dto) {

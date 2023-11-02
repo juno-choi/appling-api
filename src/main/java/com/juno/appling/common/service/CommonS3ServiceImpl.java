@@ -3,7 +3,7 @@ package com.juno.appling.common.service;
 import com.juno.appling.common.controller.response.UploadResponse;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.global.security.TokenProvider;
-import com.juno.appling.member.infrastruceture.MemberRepository;
+import com.juno.appling.member.repository.MemberJpaRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,14 +21,14 @@ public class CommonS3ServiceImpl implements CommonS3Service {
     private final TokenProvider tokenProvider;
     private final S3Service s3Service;
     private final Environment env;
-    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberJpaRepository;
 
     @Override
     public UploadResponse s3UploadFile(List<MultipartFile> files, String pathFormat,
                                        HttpServletRequest request) {
         Long memberId = tokenProvider.getMemberId(request);
 
-        memberRepository.findById(memberId)
+        memberJpaRepository.findById(memberId)
             .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
 
         String s3Url = env.getProperty("cloud.s3.url");

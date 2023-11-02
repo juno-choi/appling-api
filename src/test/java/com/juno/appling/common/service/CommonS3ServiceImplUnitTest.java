@@ -8,9 +8,9 @@ import static org.mockito.BDDMockito.given;
 import com.juno.appling.common.controller.response.UploadResponse;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.global.security.TokenProvider;
-import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.enums.Role;
-import com.juno.appling.member.infrastruceture.MemberRepository;
+import com.juno.appling.member.repository.MemberJpaRepository;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -40,7 +40,7 @@ class CommonS3ServiceImplUnitTest {
     @Mock
     private TokenProvider tokenProvider;
     @Mock
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
     @Mock
     private S3Service s3Service;
 
@@ -79,9 +79,9 @@ class CommonS3ServiceImplUnitTest {
         //given
 
         LocalDateTime now = LocalDateTime.now();
-        Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030",
+        MemberEntity memberEntity = new MemberEntity(1L, "email@mail.com", "password", "nickname", "name", "19941030",
             Role.SELLER, null, null, now, now);
-        given(memberRepository.findById(any())).willReturn(Optional.of(member));
+        given(memberJpaRepository.findById(any())).willReturn(Optional.of(memberEntity));
         given(env.getProperty(anyString())).willReturn(s3Url);
         List<String> list = new LinkedList<>();
         list.add(fileName1);
@@ -113,9 +113,9 @@ class CommonS3ServiceImplUnitTest {
     void uploadHtmlSuccess1() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030",
+        MemberEntity memberEntity = new MemberEntity(1L, "email@mail.com", "password", "nickname", "name", "19941030",
             Role.SELLER, null, null, now, now);
-        given(memberRepository.findById(any())).willReturn(Optional.of(member));
+        given(memberJpaRepository.findById(any())).willReturn(Optional.of(memberEntity));
         given(env.getProperty(anyString())).willReturn(s3Url);
         List<String> list = new LinkedList<>();
         list.add(fileName1);

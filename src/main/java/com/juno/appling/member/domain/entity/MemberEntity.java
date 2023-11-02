@@ -1,4 +1,4 @@
-package com.juno.appling.member.domain;
+package com.juno.appling.member.domain.entity;
 
 import com.juno.appling.member.controller.request.JoinRequest;
 import com.juno.appling.member.enums.Role;
@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -23,7 +24,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Member {
+@Table(name = "member")
+public class MemberEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,12 +55,12 @@ public class Member {
     private Status status;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Recipient> recipientList = new LinkedList<>();
+    private List<RecipientEntity> recipientList = new LinkedList<>();
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public Member(@NotNull String email, @NotNull String password, @NotNull String nickname,
+    public MemberEntity(@NotNull String email, @NotNull String password, @NotNull String nickname,
         @NotNull String name, String birth, Role role, String snsId, SnsJoinType snsType,
         Status status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.email = email;
@@ -74,7 +76,7 @@ public class Member {
         this.modifiedAt = modifiedAt;
     }
 
-    public Member(Long id, @NotNull String email, @NotNull String password,
+    public MemberEntity(Long id, @NotNull String email, @NotNull String password,
         @NotNull String nickname, @NotNull String name, String birth, Role role, String snsId,
         SnsJoinType snsType, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
@@ -90,16 +92,16 @@ public class Member {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Member of(JoinRequest joinRequest) {
+    public static MemberEntity of(JoinRequest joinRequest) {
         LocalDateTime now = LocalDateTime.now();
-        return new Member(joinRequest.getEmail(), joinRequest.getPassword(), joinRequest.getNickname(),
+        return new MemberEntity(joinRequest.getEmail(), joinRequest.getPassword(), joinRequest.getNickname(),
             joinRequest.getName(), joinRequest.getBirth(), Role.MEMBER, null, null, Status.NORMAL, now,
             now);
     }
 
-    public static Member of(JoinRequest joinRequest, String snsId, SnsJoinType snsType) {
+    public static MemberEntity of(JoinRequest joinRequest, String snsId, SnsJoinType snsType) {
         LocalDateTime now = LocalDateTime.now();
-        return new Member(joinRequest.getEmail(), joinRequest.getPassword(), joinRequest.getNickname(),
+        return new MemberEntity(joinRequest.getEmail(), joinRequest.getPassword(), joinRequest.getNickname(),
             joinRequest.getName(), joinRequest.getBirth(), Role.MEMBER, snsId, snsType, Status.NORMAL, now,
             now);
     }

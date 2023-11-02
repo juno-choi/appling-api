@@ -1,6 +1,6 @@
 package com.juno.appling.product.domain.entity;
 
-import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.domain.entity.SellerEntity;
 import com.juno.appling.product.controller.request.ProductRequest;
 import com.juno.appling.product.controller.request.PutProductRequest;
 import com.juno.appling.product.enums.ProductStatus;
@@ -41,7 +41,7 @@ public class ProductEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")
-    private Seller seller;
+    private SellerEntity seller;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -74,7 +74,7 @@ public class ProductEntity {
     private ProductType type;
 
     @Builder
-    public ProductEntity(Long id, Seller seller, CategoryEntity category, String mainTitle,
+    public ProductEntity(Long id, SellerEntity seller, CategoryEntity category, String mainTitle,
         String mainExplanation,
         String productMainExplanation, String productSubExplanation, int originPrice, int price,
         String purchaseInquiry, String origin, String producer, String mainImage, String image1,
@@ -104,7 +104,7 @@ public class ProductEntity {
         this.type = type;
     }
 
-    private ProductEntity(Seller seller, CategoryEntity category, ProductRequest productRequest) {
+    private ProductEntity(SellerEntity seller, CategoryEntity category, ProductRequest productRequest) {
         LocalDateTime now = LocalDateTime.now();
         Integer ea = Optional.ofNullable(productRequest.getEa()).orElse(0);
         ProductStatus status = ProductStatus.valueOf(productRequest.getStatus().toUpperCase());
@@ -132,7 +132,7 @@ public class ProductEntity {
         this.modifiedAt = now;
     }
 
-    public static ProductEntity of(Seller member, CategoryEntity categoryEntity, ProductRequest productRequest) {
+    public static ProductEntity of(SellerEntity member, CategoryEntity categoryEntity, ProductRequest productRequest) {
         return new ProductEntity(member, categoryEntity, productRequest);
     }
 

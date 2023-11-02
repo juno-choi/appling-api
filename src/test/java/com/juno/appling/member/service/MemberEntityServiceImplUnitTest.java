@@ -17,14 +17,14 @@ import com.juno.appling.member.controller.request.PostIntroduceRequest;
 import com.juno.appling.member.controller.request.PostRecipientRequest;
 import com.juno.appling.member.controller.request.PostSellerRequest;
 import com.juno.appling.member.controller.request.PutSellerRequest;
-import com.juno.appling.member.domain.Introduce;
-import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.domain.entity.IntroduceEntity;
+import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.member.domain.entity.SellerEntity;
 import com.juno.appling.member.enums.IntroduceStatus;
-import com.juno.appling.member.infrastruceture.IntroduceRepository;
-import com.juno.appling.member.infrastruceture.MemberApplySellerRepository;
-import com.juno.appling.member.infrastruceture.MemberRepository;
-import com.juno.appling.member.infrastruceture.SellerRepository;
+import com.juno.appling.member.repository.IntroduceJpaRepository;
+import com.juno.appling.member.repository.MemberApplySellerJpaRepository;
+import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.repository.SellerJpaRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
@@ -39,26 +39,26 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 
 @ExtendWith({MockitoExtension.class})
-class MemberServiceImplUnitTest {
+class MemberEntityServiceImplUnitTest {
 
     @InjectMocks
     private MemberServiceImpl memberService;
 
     @Mock
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
     @Mock
-    private MemberApplySellerRepository memberApplySellerRepository;
+    private MemberApplySellerJpaRepository memberApplySellerJpaRepository;
     @Mock
     private TokenProvider tokenProvider;
     @Mock
-    private SellerRepository sellerRepository;
+    private SellerJpaRepository sellerJpaRepository;
 
     @Mock
     private S3Service s3Service;
     @Mock
     private Environment env;
     @Mock
-    private IntroduceRepository introduceRepository;
+    private IntroduceJpaRepository introduceJpaRepository;
 
     HttpServletRequest request = new MockHttpServletRequest();
 
@@ -132,11 +132,11 @@ class MemberServiceImplUnitTest {
             .nickname("nick")
             .birth("19941030")
             .build();
-        Member member = Member.of(joinRequest);
-        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        MemberEntity memberEntity = MemberEntity.of(joinRequest);
+        given(memberJpaRepository.findById(anyLong())).willReturn(Optional.of(memberEntity));
 
-        given(sellerRepository.findByMember(any())).willReturn(Optional.of(
-                Seller.of(member, "회사명", "010-1234-1233", "1234", "회사 주소", "상세 주소","email@mail.com")));
+        given(sellerJpaRepository.findByMember(any())).willReturn(Optional.of(
+                SellerEntity.of(memberEntity, "회사명", "010-1234-1233", "1234", "회사 주소", "상세 주소","email@mail.com")));
         // when
         Throwable throwable = catchThrowable(() -> memberService.postSeller(sellerDto, request));
         // then
@@ -164,10 +164,11 @@ class MemberServiceImplUnitTest {
             .nickname("nick")
             .birth("19941030")
             .build();
-        Member member = Member.of(joinRequest);
-        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
-        Seller seller = Seller.of(member, "회사명", "010-1234-1233", "1234", "회사 주소", "상세 주소", "email@mail.com");
-        given(sellerRepository.findByCompany(anyString())).willReturn(Optional.ofNullable(seller));
+        MemberEntity memberEntity = MemberEntity.of(joinRequest);
+        given(memberJpaRepository.findById(anyLong())).willReturn(Optional.of(memberEntity));
+        SellerEntity sellerEntity = SellerEntity.of(memberEntity, "회사명", "010-1234-1233", "1234", "회사 주소", "상세 주소", "email@mail.com");
+        given(sellerJpaRepository.findByCompany(anyString())).willReturn(Optional.ofNullable(
+            sellerEntity));
         // when
         Throwable throwable = catchThrowable(() -> memberService.postSeller(sellerDto, request));
         // then
@@ -200,8 +201,8 @@ class MemberServiceImplUnitTest {
             .nickname("nick")
             .birth("19941030")
             .build();
-        Member member = Member.of(joinRequest);
-        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        MemberEntity memberEntity = MemberEntity.of(joinRequest);
+        given(memberJpaRepository.findById(anyLong())).willReturn(Optional.of(memberEntity));
         // when
         Throwable throwable = catchThrowable(() -> memberService.putSeller(sellerDto, request));
         // then
@@ -232,8 +233,8 @@ class MemberServiceImplUnitTest {
             .nickname("nick")
             .birth("19941030")
             .build();
-        Member member = Member.of(joinRequest);
-        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        MemberEntity memberEntity = MemberEntity.of(joinRequest);
+        given(memberJpaRepository.findById(anyLong())).willReturn(Optional.of(memberEntity));
         // when
         Throwable throwable = catchThrowable(() -> memberService.getSeller(request));
         // then
@@ -266,8 +267,8 @@ class MemberServiceImplUnitTest {
             .nickname("nick")
             .birth("19941030")
             .build();
-        Member member = Member.of(joinRequest);
-        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        MemberEntity memberEntity = MemberEntity.of(joinRequest);
+        given(memberJpaRepository.findById(anyLong())).willReturn(Optional.of(memberEntity));
         PostIntroduceRequest postIntroduceRequest = PostIntroduceRequest.builder().subject("제목").url("https://s3.com/html/test1.html").build();
         // when
         Throwable throwable = catchThrowable(
@@ -289,13 +290,13 @@ class MemberServiceImplUnitTest {
             .nickname("nick")
             .birth("19941030")
             .build();
-        Member member = Member.of(joinRequest);
-        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        MemberEntity memberEntity = MemberEntity.of(joinRequest);
+        given(memberJpaRepository.findById(anyLong())).willReturn(Optional.of(memberEntity));
         PostIntroduceRequest postIntroduceRequest = PostIntroduceRequest.builder().subject("제목").url("https://s3.com/html/test1.html").build();
-        Seller seller = Seller.of(member, "compnay", "01012341234", "123", "address", "상세 주소","mail@mail.com");
-        given(sellerRepository.findByMember(member)).willReturn(Optional.of(seller));
-        Introduce introduce = Introduce.of(seller, "subject", "url", IntroduceStatus.USE);
-        given(introduceRepository.findBySeller(any())).willReturn(Optional.of(introduce));
+        SellerEntity sellerEntity = SellerEntity.of(memberEntity, "compnay", "01012341234", "123", "address", "상세 주소","mail@mail.com");
+        given(sellerJpaRepository.findByMember(memberEntity)).willReturn(Optional.of(sellerEntity));
+        IntroduceEntity introduceEntity = IntroduceEntity.of(sellerEntity, "subject", "url", IntroduceStatus.USE);
+        given(introduceJpaRepository.findBySeller(any())).willReturn(Optional.of(introduceEntity));
         // when
         MessageVo messageVo = memberService.postIntroduce(postIntroduceRequest, request);
         // then
@@ -314,10 +315,10 @@ class MemberServiceImplUnitTest {
             .nickname("nick")
             .birth("19941030")
             .build();
-        Member member = Member.of(joinRequest);
-        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
-        given(sellerRepository.findByMember(any())).willReturn(
-                Optional.of(Seller.of(member, "", "", "", "", "", "")));
+        MemberEntity memberEntity = MemberEntity.of(joinRequest);
+        given(memberJpaRepository.findById(anyLong())).willReturn(Optional.of(memberEntity));
+        given(sellerJpaRepository.findByMember(any())).willReturn(
+                Optional.of(SellerEntity.of(memberEntity, "", "", "", "", "", "")));
         // when
         Throwable throwable = catchThrowable(() -> memberService.getIntroduce(request));
         // then
@@ -337,14 +338,14 @@ class MemberServiceImplUnitTest {
             .birth("19941030")
             .build();
         String html = "<html></html>";
-        Member member = Member.of(joinRequest);
-        Seller seller = Seller.of(member, "", "", "", "", "", "");
+        MemberEntity memberEntity = MemberEntity.of(joinRequest);
+        SellerEntity sellerEntity = SellerEntity.of(memberEntity, "", "", "", "", "", "");
 
         given(tokenProvider.getMemberId(request)).willReturn(0L);
-        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
-        given(sellerRepository.findByMember(any())).willReturn(Optional.of(seller));
-        given(introduceRepository.findBySeller(any())).willReturn(Optional.of(
-                Introduce.of(seller, "subject",
+        given(memberJpaRepository.findById(anyLong())).willReturn(Optional.of(memberEntity));
+        given(sellerJpaRepository.findByMember(any())).willReturn(Optional.of(sellerEntity));
+        given(introduceJpaRepository.findBySeller(any())).willReturn(Optional.of(
+                IntroduceEntity.of(sellerEntity, "subject",
                         "https://appling-s3-bucket.s3.ap-northeast-2.amazonaws.com/html/1/20230815/172623_0.html",
                         IntroduceStatus.USE)));
         given(env.getProperty(eq("cloud.s3.bucket"))).willReturn("s3-bucket");

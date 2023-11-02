@@ -14,12 +14,12 @@ import com.juno.appling.member.controller.request.PatchMemberRequest;
 import com.juno.appling.member.controller.request.PutSellerRequest;
 import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.controller.response.RecipientListResponse;
-import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.domain.Recipient;
-import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.member.domain.entity.RecipientEntity;
+import com.juno.appling.member.domain.entity.SellerEntity;
 import com.juno.appling.member.enums.RecipientInfoStatus;
-import com.juno.appling.member.infrastruceture.MemberRepository;
-import com.juno.appling.member.infrastruceture.SellerRepository;
+import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.repository.SellerJpaRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,26 +43,26 @@ import org.springframework.transaction.annotation.Transactional;
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional(readOnly = true)
 @Execution(ExecutionMode.CONCURRENT)
-public class MemberServiceImplTest {
+public class MemberEntityServiceImplTest {
 
     @Autowired
     private MemberService memberService;
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     @Autowired
     private MemberAuthService memberAuthService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
-    private SellerRepository sellerRepository;
+    private SellerJpaRepository sellerJpaRepository;
 
     MockHttpServletRequest request = new MockHttpServletRequest();
 
     @AfterEach
     void cleanup() {
-        memberRepository.deleteAll();
-        sellerRepository.deleteAll();
+        memberJpaRepository.deleteAll();
+        sellerJpaRepository.deleteAll();
     }
 
     @Test
@@ -83,7 +83,7 @@ public class MemberServiceImplTest {
             .birth("19991010")
             .build();
         joinRequest.passwordEncoder(passwordEncoder);
-        memberRepository.save(Member.of(joinRequest));
+        memberJpaRepository.save(MemberEntity.of(joinRequest));
         LoginRequest loginRequest = LoginRequest.builder().email(email).password(password).build();
         LoginResponse login = memberAuthService.login(loginRequest);
         request.removeHeader(AUTHORIZATION);
@@ -105,16 +105,16 @@ public class MemberServiceImplTest {
     @DisplayName("수령인 정보 불러오기 성공")
     void getRecipientList() throws Exception {
         // given
-        Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(MEMBER_EMAIL).get();
 
-        Recipient recipient1 = Recipient.of(member, "수령인1", "1234", "주소", "상세주소", "01012341234",
+        RecipientEntity recipientEntity1 = RecipientEntity.of(memberEntity, "수령인1", "1234", "주소", "상세주소", "01012341234",
             RecipientInfoStatus.NORMAL);
         Thread.sleep(10L);
-        Recipient recipient2 = Recipient.of(member, "수령인2", "1234", "주소2", "상세주소", "01012341234",
+        RecipientEntity recipientEntity2 = RecipientEntity.of(memberEntity, "수령인2", "1234", "주소2", "상세주소", "01012341234",
             RecipientInfoStatus.NORMAL);
 
-        member.getRecipientList().add(recipient1);
-        member.getRecipientList().add(recipient2);
+        memberEntity.getRecipientList().add(recipientEntity1);
+        memberEntity.getRecipientList().add(recipientEntity2);
 
         request.removeHeader(AUTHORIZATION);
         request.addHeader(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken());
@@ -124,7 +124,7 @@ public class MemberServiceImplTest {
         assertThat(recipient.getList()
             .get(0)
             .getName()
-        ).isEqualTo(recipient2.getName());
+        ).isEqualTo(recipientEntity2.getName());
 
     }
 
@@ -149,9 +149,9 @@ public class MemberServiceImplTest {
         MessageVo messageVo = memberService.putSeller(putSellerRequest, request);
         // then
         assertThat(messageVo.message()).contains("수정 성공");
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Seller seller = sellerRepository.findByMember(member).get();
-        assertThat(seller.getCompany()).isEqualTo(changeCompany);
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(SELLER_EMAIL).get();
+        SellerEntity sellerEntity = sellerJpaRepository.findByMember(memberEntity).get();
+        assertThat(sellerEntity.getCompany()).isEqualTo(changeCompany);
 
     }
 }

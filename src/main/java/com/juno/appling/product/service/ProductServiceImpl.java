@@ -2,10 +2,10 @@ package com.juno.appling.product.service;
 
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.global.security.TokenProvider;
-import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.domain.Seller;
-import com.juno.appling.member.infrastruceture.MemberRepository;
-import com.juno.appling.member.infrastruceture.SellerRepository;
+import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.member.domain.entity.SellerEntity;
+import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.product.controller.request.AddViewCntRequest;
 import com.juno.appling.product.controller.request.OptionRequest;
 import com.juno.appling.product.controller.request.ProductRequest;
@@ -43,10 +43,10 @@ public class ProductServiceImpl implements ProductService{
 
     private final ProductJpaRepository productJpaRepository;
     private final ProductCustomJpaRepositoryImpl productCustomRepositoryImpl;
-    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberJpaRepository;
     private final TokenProvider tokenProvider;
     private final CategoryJpaRepository categoryJpaRepository;
-    private final SellerRepository sellerRepository;
+    private final SellerJpaRepository sellerJpaRepository;
     private final OptionJpaRepository optionJpaRepository;
 
     @Transactional
@@ -58,11 +58,11 @@ public class ProductServiceImpl implements ProductService{
         );
         ProductType type = ProductType.valueOf(productRequest.getType().toUpperCase(Locale.ROOT));
 
-        Member member = getMember(request);
-        Seller seller = sellerRepository.findByMember(member)
+        MemberEntity memberEntity = getMember(request);
+        SellerEntity sellerEntity = sellerJpaRepository.findByMember(memberEntity)
             .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 판매자입니다."));
         ProductEntity productEntity = productJpaRepository.save(
-            ProductEntity.of(seller, categoryEntity, productRequest));
+            ProductEntity.of(sellerEntity, categoryEntity, productRequest));
 
 
         if(type == ProductType.NORMAL) {
@@ -80,10 +80,10 @@ public class ProductServiceImpl implements ProductService{
         return ProductResponse.from(productEntity);
     }
 
-    private Member getMember(HttpServletRequest request) {
+    private MemberEntity getMember(HttpServletRequest request) {
         String token = tokenProvider.resolveToken(request);
         Long memberId = tokenProvider.getMemberId(token);
-        return memberRepository.findById(memberId)
+        return memberJpaRepository.findById(memberId)
             .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
     }
 

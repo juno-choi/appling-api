@@ -20,13 +20,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.global.s3.S3Service;
-import com.juno.appling.member.domain.Introduce;
-import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.domain.entity.IntroduceEntity;
+import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.member.domain.entity.SellerEntity;
 import com.juno.appling.member.enums.IntroduceStatus;
-import com.juno.appling.member.infrastruceture.IntroduceRepository;
-import com.juno.appling.member.infrastruceture.MemberRepository;
-import com.juno.appling.member.infrastruceture.SellerRepository;
+import com.juno.appling.member.repository.IntroduceJpaRepository;
+import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.product.repository.CategoryJpaRepository;
 import java.nio.charset.StandardCharsets;
@@ -65,11 +65,11 @@ class CommonControllerDocs extends RestdocsBaseTest {
     private MemberAuthService memberAuthService;
 
     @Autowired
-    private SellerRepository sellerRepository;
+    private SellerJpaRepository sellerJpaRepository;
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
     @Autowired
-    private IntroduceRepository introduceRepository;
+    private IntroduceJpaRepository introduceJpaRepository;
 
     @Autowired
     private CategoryJpaRepository categoryJpaRepository;
@@ -82,9 +82,9 @@ class CommonControllerDocs extends RestdocsBaseTest {
     @AfterEach
     void cleanup() {
         categoryJpaRepository.deleteAll();
-        introduceRepository.deleteAll();
-        sellerRepository.deleteAll();
-        memberRepository.deleteAll();
+        introduceJpaRepository.deleteAll();
+        sellerJpaRepository.deleteAll();
+        memberJpaRepository.deleteAll();
     }
     @Test
     @DisplayName(PREFIX + "/image")
@@ -162,9 +162,9 @@ class CommonControllerDocs extends RestdocsBaseTest {
     @DisplayName(PREFIX + "/introduce (GET)")
     void getSellerIntroduce() throws Exception {
         //given
-        Member member = memberRepository.findByEmail(SELLER_EMAIL).get();
-        Seller seller = sellerRepository.findByMember(member).get();
-        introduceRepository.save(Introduce.of(seller, "", "https://appling-s3-bucket.s3.ap-northeast-2.amazonaws.com/html/1/20230815/172623_0.html", IntroduceStatus.USE));
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(SELLER_EMAIL).get();
+        SellerEntity sellerEntity = sellerJpaRepository.findByMember(memberEntity).get();
+        introduceJpaRepository.save(IntroduceEntity.of(sellerEntity, "", "https://appling-s3-bucket.s3.ap-northeast-2.amazonaws.com/html/1/20230815/172623_0.html", IntroduceStatus.USE));
 
         given(s3Service.getObject(anyString(), anyString())).willReturn("<!doctype html>\n" +
                 "<html>\n" +
@@ -182,7 +182,7 @@ class CommonControllerDocs extends RestdocsBaseTest {
                 "</html>");
         //when
         ResultActions resultActions = mock.perform(
-                get(PREFIX + "/introduce/{seller_id}", seller.getId())
+                get(PREFIX + "/introduce/{seller_id}", sellerEntity.getId())
         );
         //then
         resultActions.andExpect(status().is2xxSuccessful());

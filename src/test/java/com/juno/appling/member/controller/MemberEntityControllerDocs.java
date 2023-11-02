@@ -31,14 +31,14 @@ import com.juno.appling.member.controller.request.PostRecipientRequest;
 import com.juno.appling.member.controller.request.PostSellerRequest;
 import com.juno.appling.member.controller.request.PutSellerRequest;
 import com.juno.appling.member.controller.response.LoginResponse;
-import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.domain.Recipient;
+import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.member.domain.entity.RecipientEntity;
 import com.juno.appling.member.enums.RecipientInfoStatus;
 import com.juno.appling.member.enums.Role;
-import com.juno.appling.member.infrastruceture.IntroduceRepository;
-import com.juno.appling.member.infrastruceture.MemberRepository;
-import com.juno.appling.member.infrastruceture.RecipientRepository;
-import com.juno.appling.member.infrastruceture.SellerRepository;
+import com.juno.appling.member.repository.IntroduceJpaRepository;
+import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.repository.RecipientJpaRepository;
+import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.member.service.MemberService;
 import com.juno.appling.product.repository.CategoryJpaRepository;
@@ -69,23 +69,23 @@ import org.springframework.transaction.annotation.Transactional;
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-class MemberControllerDocs extends RestdocsBaseTest {
+class MemberEntityControllerDocs extends RestdocsBaseTest {
 
     @Autowired
     private MemberAuthService memberAuthService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
     @Autowired
     private MemberService memberService;
     @Autowired
-    private RecipientRepository recipientRepository;
+    private RecipientJpaRepository recipientJpaRepository;
 
     @Autowired
-    private IntroduceRepository introduceRepository;
+    private IntroduceJpaRepository introduceJpaRepository;
     @Autowired
-    private SellerRepository sellerRepository;
+    private SellerJpaRepository sellerJpaRepository;
 
     @Autowired
     private CategoryJpaRepository categoryJpaRepository;
@@ -97,10 +97,10 @@ class MemberControllerDocs extends RestdocsBaseTest {
     @AfterEach
     void cleanup() {
         categoryJpaRepository.deleteAll();
-        recipientRepository.deleteAll();
-        introduceRepository.deleteAll();
-        sellerRepository.deleteAll();
-        memberRepository.deleteAll();
+        recipientJpaRepository.deleteAll();
+        introduceJpaRepository.deleteAll();
+        sellerJpaRepository.deleteAll();
+        memberJpaRepository.deleteAll();
     }
 
 
@@ -153,7 +153,7 @@ class MemberControllerDocs extends RestdocsBaseTest {
             .birth("19941030")
             .build();
         joinRequest.passwordEncoder(passwordEncoder);
-        memberRepository.save(Member.of(joinRequest));
+        memberJpaRepository.save(MemberEntity.of(joinRequest));
         LoginRequest loginRequest = LoginRequest.builder().email(email).password(password).build();
         LoginResponse loginResponse = memberAuthService.login(loginRequest);
 
@@ -296,7 +296,7 @@ class MemberControllerDocs extends RestdocsBaseTest {
             .build();
 
         joinRequest.passwordEncoder(passwordEncoder);
-        memberRepository.save(Member.of(joinRequest));
+        memberJpaRepository.save(MemberEntity.of(joinRequest));
         LoginRequest loginRequest = LoginRequest.builder().email(email).password(password).build();
         LoginResponse loginResponse = memberAuthService.login(loginRequest);
 
@@ -386,17 +386,17 @@ class MemberControllerDocs extends RestdocsBaseTest {
     @Transactional
     void getRecipient() throws Exception {
         //given
-        Member member = memberRepository.findByEmail(MEMBER_EMAIL).get();
+        MemberEntity memberEntity = memberJpaRepository.findByEmail(MEMBER_EMAIL).get();
 
-        Recipient recipient1 = Recipient.of(member, "수령인1", "1234", "주소", "상세 주소", "01012341234",
+        RecipientEntity recipientEntity1 = RecipientEntity.of(memberEntity, "수령인1", "1234", "주소", "상세 주소", "01012341234",
             RecipientInfoStatus.NORMAL);
-        Recipient recipient2 = Recipient.of(member, "수령인2", "1234", "주소2", "상세 주소", "01012341234",
+        RecipientEntity recipientEntity2 = RecipientEntity.of(memberEntity, "수령인2", "1234", "주소2", "상세 주소", "01012341234",
             RecipientInfoStatus.NORMAL);
-        Recipient saveRecipient1 = recipientRepository.save(recipient1);
-        Recipient saveRecipient2 = recipientRepository.save(recipient2);
+        RecipientEntity saveRecipient1Entity = recipientJpaRepository.save(recipientEntity1);
+        RecipientEntity saveRecipient2Entity = recipientJpaRepository.save(recipientEntity2);
 
-        member.getRecipientList().add(saveRecipient1);
-        member.getRecipientList().add(saveRecipient2);
+        memberEntity.getRecipientList().add(saveRecipient1Entity);
+        memberEntity.getRecipientList().add(saveRecipient2Entity);
 
         //when
         ResultActions resultActions = mock.perform(

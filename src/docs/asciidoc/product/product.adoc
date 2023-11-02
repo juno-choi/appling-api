@@ -10,44 +10,44 @@ link:/index.html#_이미지_업로드[이미지 등록]
 ### 📗 상품 등록 (일반)
 
 ==== 🔵 REQUEST
-include::{snippets}/seller-productEntity-controller-docs/post-productEntity/http-request.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/post-productEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/seller-productEntity-controller-docs/post-productEntity/request-headers.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/post-productEntity/request-headers.adoc[]
 
 ==== 🔵 REQUEST FIELD
 
-include::{snippets}/seller-productEntity-controller-docs/post-productEntity/request-fields.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/post-productEntity/request-fields.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/seller-productEntity-controller-docs/post-productEntity/http-response.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/post-productEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/seller-productEntity-controller-docs/post-productEntity/response-fields.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/post-productEntity/response-fields.adoc[]
 
 ### 📗 상품 등록 (옵션)
 
 ==== 🔵 REQUEST
-include::{snippets}/seller-productEntity-controller-docs/post-optionEntity-productEntity/http-request.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/post-optionEntity-productEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/seller-productEntity-controller-docs/post-optionEntity-productEntity/request-headers.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/post-optionEntity-productEntity/request-headers.adoc[]
 
 ==== 🔵 REQUEST FIELD
 
-include::{snippets}/seller-productEntity-controller-docs/post-optionEntity-productEntity/request-fields.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/post-optionEntity-productEntity/request-fields.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/seller-productEntity-controller-docs/post-optionEntity-productEntity/http-response.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/post-optionEntity-productEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/seller-productEntity-controller-docs/post-optionEntity-productEntity/response-fields.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/post-optionEntity-productEntity/response-fields.adoc[]
 
 
 ### 📗 카테고리 리스트
@@ -67,45 +67,45 @@ include::{snippets}/productEntity-controller-docs/get-categoryEntity-list/respon
 ### 📗 상품 수정 (일반)
 
 ==== 🔵 REQUEST
-include::{snippets}/seller-productEntity-controller-docs/put-productEntity/http-request.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/put-productEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/seller-productEntity-controller-docs/put-productEntity/request-headers.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/put-productEntity/request-headers.adoc[]
 
 ==== 🔵 REQUEST FIELD
 
-include::{snippets}/seller-productEntity-controller-docs/put-productEntity/request-fields.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/put-productEntity/request-fields.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/seller-productEntity-controller-docs/put-productEntity/http-response.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/put-productEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/seller-productEntity-controller-docs/put-productEntity/response-fields.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/put-productEntity/response-fields.adoc[]
 
 
 ### 📗 상품 수정 (옵션)
 
 ==== 🔵 REQUEST
-include::{snippets}/seller-productEntity-controller-docs/put-productEntity-by-optionEntity/http-request.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/put-productEntity-by-optionEntity/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/seller-productEntity-controller-docs/put-productEntity-by-optionEntity/request-headers.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/put-productEntity-by-optionEntity/request-headers.adoc[]
 
 ==== 🔵 REQUEST FIELD
 
-include::{snippets}/seller-productEntity-controller-docs/put-productEntity-by-optionEntity/request-fields.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/put-productEntity-by-optionEntity/request-fields.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/seller-productEntity-controller-docs/put-productEntity-by-optionEntity/http-response.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/put-productEntity-by-optionEntity/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/seller-productEntity-controller-docs/put-productEntity-by-optionEntity/response-fields.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/put-productEntity-by-optionEntity/response-fields.adoc[]
 
 
 ### 📗 상품 검색
@@ -125,26 +125,26 @@ include::{snippets}/productEntity-controller-docs/get-productEntity-list/http-re
 
 include::{snippets}/productEntity-controller-docs/get-productEntity-list/response-fields.adoc[]
 
-### 📗 상품 검색 (Seller 전용)
+### 📗 상품 검색 (SellerEntity 전용)
 
 ==== 🔵 REQUEST
-include::{snippets}/seller-productEntity-controller-docs/get-productEntity-list/http-request.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/get-productEntity-list/http-request.adoc[]
 
 ==== 🔵 REQUEST HEADER
 
-include::{snippets}/seller-productEntity-controller-docs/get-productEntity-list/request-headers.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/get-productEntity-list/request-headers.adoc[]
 
 ==== 🔵 REQUEST FIELD
 
-include::{snippets}/seller-productEntity-controller-docs/get-productEntity-list/query-parameters.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/get-productEntity-list/query-parameters.adoc[]
 
 ==== 🟢 RESPONSE
 
-include::{snippets}/seller-productEntity-controller-docs/get-productEntity-list/http-response.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/get-productEntity-list/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
-include::{snippets}/seller-productEntity-controller-docs/get-productEntity-list/response-fields.adoc[]
+include::{snippets}/sellerEntity-productEntity-controller-docs/get-productEntity-list/response-fields.adoc[]
 
 
 ### 📗 상품 상세

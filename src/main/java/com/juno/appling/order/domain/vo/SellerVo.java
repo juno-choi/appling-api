@@ -3,7 +3,7 @@ package com.juno.appling.order.domain.vo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.domain.entity.SellerEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,8 +28,8 @@ public class SellerVo {
     @NotNull
     String tel;
 
-    public static SellerVo of(Seller seller) {
-        return new SellerVo(seller.getId(),seller.getEmail() , seller.getCompany(),
-            seller.getZonecode(), seller.getAddress(), seller.getAddressDetail(), seller.getTel());
+    public static SellerVo of(SellerEntity sellerEntity) {
+        return new SellerVo(sellerEntity.getId(), sellerEntity.getEmail() , sellerEntity.getCompany(),
+            sellerEntity.getZonecode(), sellerEntity.getAddress(), sellerEntity.getAddressDetail(), sellerEntity.getTel());
     }
 }

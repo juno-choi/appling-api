@@ -1,7 +1,7 @@
 package com.juno.appling.order.repository;
 
 import com.juno.appling.global.querydsl.QuerydslConfig;
-import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.domain.entity.SellerEntity;
 import com.juno.appling.order.domain.entity.QOrderEntity;
 import com.juno.appling.order.domain.entity.QOrderItemEntity;
 import com.juno.appling.order.domain.vo.OrderVo;
@@ -23,7 +23,7 @@ public class OrderCustomJpaRepositoryImpl implements OrderCustomJpaRepository {
     private final QuerydslConfig q;
 
     @Override
-    public Page<OrderVo> findAllBySeller(Pageable pageable, String search, OrderStatus status, Seller seller) {
+    public Page<OrderVo> findAllBySeller(Pageable pageable, String search, OrderStatus status, SellerEntity sellerEntity) {
         QProductEntity product = QProductEntity.productEntity;
         QOrderEntity order = QOrderEntity.orderEntity;
         QOrderItemEntity orderItem = QOrderItemEntity.orderItemEntity;
@@ -32,7 +32,7 @@ public class OrderCustomJpaRepositoryImpl implements OrderCustomJpaRepository {
         BooleanBuilder builder = new BooleanBuilder();
 
         builder.and(order.status.eq(OrderStatus.COMPLETE));
-        builder.and(product.seller.id.eq(seller.getId()));
+        builder.and(product.seller.id.eq(sellerEntity.getId()));
 
         List<OrderVo> content = q.query().select(Projections.constructor(OrderVo.class,
                     order

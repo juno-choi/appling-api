@@ -1,6 +1,6 @@
 package com.juno.appling.order.domain.entity;
 
-import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.order.enums.OrderStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,7 +39,7 @@ public class OrderEntity {
     @NotAudited
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private MemberEntity memberEntity;
 
     private String orderNumber;
 
@@ -59,17 +59,17 @@ public class OrderEntity {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private OrderEntity(Member member, OrderStatus status, String orderName, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.member = member;
+    private OrderEntity(MemberEntity memberEntity, OrderStatus status, String orderName, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        this.memberEntity = memberEntity;
         this.status = status;
         this.orderName = orderName;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
 
-    public static OrderEntity of(Member member, String orderName){
+    public static OrderEntity of(MemberEntity memberEntity, String orderName){
         LocalDateTime now = LocalDateTime.now();
-        return new OrderEntity(member, OrderStatus.TEMP, orderName, now, now);
+        return new OrderEntity(memberEntity, OrderStatus.TEMP, orderName, now, now);
     }
 
     public void statusComplete() {

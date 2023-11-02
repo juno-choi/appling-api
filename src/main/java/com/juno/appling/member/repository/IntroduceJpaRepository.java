@@ -1,0 +1,11 @@
+package com.juno.appling.member.repository;
+
+import com.juno.appling.member.domain.entity.IntroduceEntity;
+import com.juno.appling.member.domain.entity.SellerEntity;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface IntroduceJpaRepository extends JpaRepository<IntroduceEntity, Long> {
+
+    Optional<IntroduceEntity> findBySeller(SellerEntity SellerEntity);
+}

@@ -11,10 +11,10 @@ import com.juno.appling.member.controller.response.JoinResponse;
 import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.controller.response.kakao.KakaoLoginResponse;
 import com.juno.appling.member.controller.response.kakao.KakaoMemberResponse;
-import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.enums.Role;
 import com.juno.appling.member.enums.SnsJoinType;
-import com.juno.appling.member.infrastruceture.MemberRepository;
+import com.juno.appling.member.repository.MemberJpaRepository;
 import io.jsonwebtoken.Claims;
 import java.util.Arrays;
 import java.util.Date;
@@ -46,7 +46,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Transactional(readOnly = true)
 public class MemberAuthServiceImpl implements MemberAuthService{
 
-    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberJpaRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
@@ -64,15 +64,15 @@ public class MemberAuthServiceImpl implements MemberAuthService{
     @Override
     public JoinResponse join(JoinRequest joinRequest) {
         joinRequest.passwordEncoder(passwordEncoder);
-        Optional<Member> findMember = memberRepository.findByEmail(joinRequest.getEmail());
+        Optional<MemberEntity> findMember = memberJpaRepository.findByEmail(joinRequest.getEmail());
         if (findMember.isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 회원입니다.");
         }
 
-        Member saveMember = memberRepository.save(Member.of(joinRequest));
+        MemberEntity saveMemberEntity = memberJpaRepository.save(MemberEntity.of(joinRequest));
         myMailSender.send("애플링 가족이 되신걸 환영해요!", "<html><h1>애플링 회원 가입에 감사드립니다.</h1></html>",
-            saveMember.getEmail());
-        return JoinResponse.from(saveMember);
+            saveMemberEntity.getEmail());
+        return JoinResponse.from(saveMemberEntity);
     }
 
     @Override
@@ -106,18 +106,18 @@ public class MemberAuthServiceImpl implements MemberAuthService{
         long now = (new Date()).getTime();
         Date accessTokenExpired = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
 
-        Member member = memberRepository.findById(Long.parseLong(sub)).orElseThrow(() ->
+        MemberEntity memberEntity = memberJpaRepository.findById(Long.parseLong(sub)).orElseThrow(() ->
             new IllegalArgumentException("유효하지 않은 회원입니다.")
         );
 
-        Role role = Role.valueOf(member.getRole().roleName);
+        Role role = Role.valueOf(memberEntity.getRole().roleName);
         String[] roleSplitList = role.roleList.split(",");
         List<String> trimRoleList = Arrays.stream(roleSplitList)
             .map(r -> String.format("ROLE_%s", r.trim())).toList();
         String roleList = trimRoleList.toString().replace("[", "").replace("]", "")
             .replace(" ", "");
 
-        String accessToken = tokenProvider.createAccessToken(String.valueOf(member.getId()),
+        String accessToken = tokenProvider.createAccessToken(String.valueOf(memberEntity.getId()),
             roleList, accessTokenExpired);
 
         Authentication authentication = tokenProvider.getAuthentication(accessToken);
@@ -192,8 +192,8 @@ public class MemberAuthServiceImpl implements MemberAuthService{
 
         String email = info.kakao_account.email;
         String snsId = String.valueOf(info.id);
-        Optional<Member> findMember = memberRepository.findByEmail(email);
-        Member member;
+        Optional<MemberEntity> findMember = memberJpaRepository.findByEmail(email);
+        MemberEntity memberEntity;
         if (findMember.isEmpty()) {
             // 회원 가입 진행
             JoinRequest joinRequest = JoinRequest.builder()
@@ -204,14 +204,14 @@ public class MemberAuthServiceImpl implements MemberAuthService{
                 .build();
 
             joinRequest.passwordEncoder(passwordEncoder);
-            member = memberRepository.save(Member.of(joinRequest, snsId, SnsJoinType.KAKAO));
+            memberEntity = memberJpaRepository.save(MemberEntity.of(joinRequest, snsId, SnsJoinType.KAKAO));
             myMailSender.send("애플링 가족이 되신걸 환영해요!", "<html><h1>애플링 회원 가입에 감사드립니다.</h1></html>",
-                member.getEmail());
+                memberEntity.getEmail());
         } else {
-            member = findMember.get();
+            memberEntity = findMember.get();
         }
 
-        Role role = Role.valueOf(member.getRole().roleName);
+        Role role = Role.valueOf(memberEntity.getRole().roleName);
         String[] roleSplitList = role.roleList.split(",");
         List<SimpleGrantedAuthority> grantedList = new LinkedList<>();
         for (String r : roleSplitList) {

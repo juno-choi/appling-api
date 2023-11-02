@@ -3,7 +3,7 @@ package com.juno.appling.product.controller.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.domain.entity.SellerEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,15 +30,15 @@ public class SellerResponse {
     @NotNull
     String tel;
 
-    public static SellerResponse from(Seller seller) {
+    public static SellerResponse from(SellerEntity sellerEntity) {
         return SellerResponse.builder()
-            .sellerId(seller.getId())
-            .email(seller.getEmail())
-            .company(seller.getCompany())
-            .zonecode(seller.getZonecode())
-            .address(seller.getAddress())
-            .addressDetail(seller.getAddressDetail())
-            .tel(seller.getTel())
+            .sellerId(sellerEntity.getId())
+            .email(sellerEntity.getEmail())
+            .company(sellerEntity.getCompany())
+            .zonecode(sellerEntity.getZonecode())
+            .address(sellerEntity.getAddress())
+            .addressDetail(sellerEntity.getAddressDetail())
+            .tel(sellerEntity.getTel())
             .build();
     }
 }

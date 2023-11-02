@@ -3,7 +3,7 @@ package com.juno.appling.order.domain.vo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.domain.entity.MemberEntity;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,12 +17,12 @@ public class MemberVo {
     private String name;
     private String birth;
 
-    public static MemberVo fromMemberEntity(Member member){
+    public static MemberVo fromMemberEntity(MemberEntity memberEntity){
         return MemberVo.builder()
-            .email(member.getEmail())
-            .name(member.getName())
-            .nickname(member.getNickname())
-            .birth(member.getBirth())
+            .email(memberEntity.getEmail())
+            .name(memberEntity.getName())
+            .nickname(memberEntity.getNickname())
+            .birth(memberEntity.getBirth())
             .build();
     }
 }

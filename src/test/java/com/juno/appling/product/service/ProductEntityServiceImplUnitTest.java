@@ -10,11 +10,11 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import com.juno.appling.global.security.TokenProvider;
-import com.juno.appling.member.domain.Member;
-import com.juno.appling.member.domain.Seller;
+import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.member.domain.entity.SellerEntity;
 import com.juno.appling.member.enums.Role;
-import com.juno.appling.member.infrastruceture.MemberRepository;
-import com.juno.appling.member.infrastruceture.SellerRepository;
+import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.product.controller.request.AddViewCntRequest;
 import com.juno.appling.product.controller.request.OptionRequest;
 import com.juno.appling.product.controller.request.ProductRequest;
@@ -54,11 +54,11 @@ class ProductEntityServiceImplUnitTest {
     @Mock
     private TokenProvider tokenProvider;
     @Mock
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
     @Mock
     private CategoryJpaRepository categoryJpaRepository;
     @Mock
-    private SellerRepository sellerRepository;
+    private SellerJpaRepository sellerJpaRepository;
 
     @Mock
     private ProductCustomJpaRepositoryImpl productCustomRepositoryImpl;
@@ -105,13 +105,13 @@ class ProductEntityServiceImplUnitTest {
 
         given(tokenProvider.resolveToken(any())).willReturn("token");
         LocalDateTime now = LocalDateTime.now();
-        Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030",
+        MemberEntity memberEntity = new MemberEntity(1L, "email@mail.com", "password", "nickname", "name", "19941030",
             Role.SELLER, null, null, now, now);
-        Seller seller = Seller.of(member, "회사명", "01012344321", "1234", "회사 주소", "상세 주소", "mail@mail.com");
-        given(memberRepository.findById(any())).willReturn(Optional.of(member));
-        given(sellerRepository.findByMember(any())).willReturn(Optional.of(seller));
+        SellerEntity sellerEntity = SellerEntity.of(memberEntity, "회사명", "01012344321", "1234", "회사 주소", "상세 주소", "mail@mail.com");
+        given(memberJpaRepository.findById(any())).willReturn(Optional.of(memberEntity));
+        given(sellerJpaRepository.findByMember(any())).willReturn(Optional.of(sellerEntity));
         given(productJpaRepository.save(any())).willReturn(
-            ProductEntity.of(seller, categoryEntity, productRequest));
+            ProductEntity.of(sellerEntity, categoryEntity, productRequest));
         given(categoryJpaRepository.findById(anyLong())).willReturn(Optional.of(new CategoryEntity()));
         //when
         ProductResponse productResponse = productService.postProduct(productRequest, request);
@@ -159,13 +159,13 @@ class ProductEntityServiceImplUnitTest {
 
         given(tokenProvider.resolveToken(any())).willReturn("token");
         LocalDateTime now = LocalDateTime.now();
-        Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030",
+        MemberEntity memberEntity = new MemberEntity(1L, "email@mail.com", "password", "nickname", "name", "19941030",
                 Role.SELLER, null, null, now, now);
-        Seller seller = Seller.of(member, "회사명", "01012344321", "1234", "회사 주소", "상세 주소", "mail@mail.com");
-        given(memberRepository.findById(any())).willReturn(Optional.of(member));
-        given(sellerRepository.findByMember(any())).willReturn(Optional.of(seller));
+        SellerEntity sellerEntity = SellerEntity.of(memberEntity, "회사명", "01012344321", "1234", "회사 주소", "상세 주소", "mail@mail.com");
+        given(memberJpaRepository.findById(any())).willReturn(Optional.of(memberEntity));
+        given(sellerJpaRepository.findByMember(any())).willReturn(Optional.of(sellerEntity));
         given(productJpaRepository.save(any())).willReturn(
-            ProductEntity.of(seller, categoryEntity, productRequest));
+            ProductEntity.of(sellerEntity, categoryEntity, productRequest));
         given(categoryJpaRepository.findById(anyLong())).willReturn(Optional.of(new CategoryEntity()));
         //when
         ProductResponse productResponse = productService.postProduct(productRequest, request);
@@ -309,13 +309,13 @@ class ProductEntityServiceImplUnitTest {
         optionRequestList.add(optionRequest2);
         LocalDateTime now = LocalDateTime.now();
 
-        Member member = new Member(1L, "email@mail.com", "password", "nickname", "name", "19941030",
+        MemberEntity memberEntity = new MemberEntity(1L, "email@mail.com", "password", "nickname", "name", "19941030",
             Role.SELLER, null, null, now, now);
-        Seller seller = Seller.of(member, "회사명", "01012344321", "1234", "회사 주소", "상세 주소", "mail@mail.com");
+        SellerEntity sellerEntity = SellerEntity.of(memberEntity, "회사명", "01012344321", "1234", "회사 주소", "상세 주소", "mail@mail.com");
         CategoryEntity categoryEntity = new CategoryEntity();
         ProductEntity productEntity = ProductEntity.builder()
             .id(PRODUCT_ID_APPLE)
-            .seller(seller)
+            .seller(sellerEntity)
             .category(categoryEntity)
             .mainTitle("메인 제목")
             .mainExplanation("메인 설명")

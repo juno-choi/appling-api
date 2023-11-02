@@ -4,7 +4,7 @@ package com.juno.appling.member.controller.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.enums.Role;
 import com.juno.appling.member.enums.SnsJoinType;
 import com.juno.appling.member.enums.Status;
@@ -29,17 +29,17 @@ public class MemberResponse {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public static MemberResponse from(Member member) {
+    public static MemberResponse from(MemberEntity memberEntity) {
         return MemberResponse.builder()
-                .memberId(member.getId())
-                .email(member.getEmail())
-                .nickname(member.getNickname())
-                .name(member.getName())
-                .role(member.getRole())
-                .snsType(member.getSnsType())
-                .status(member.getStatus())
-                .createdAt(member.getCreatedAt())
-                .modifiedAt(member.getModifiedAt())
+                .memberId(memberEntity.getId())
+                .email(memberEntity.getEmail())
+                .nickname(memberEntity.getNickname())
+                .name(memberEntity.getName())
+                .role(memberEntity.getRole())
+                .snsType(memberEntity.getSnsType())
+                .status(memberEntity.getStatus())
+                .createdAt(memberEntity.getCreatedAt())
+                .modifiedAt(memberEntity.getModifiedAt())
                 .build();
     }
 }

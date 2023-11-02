@@ -10,9 +10,9 @@ import static org.mockito.BDDMockito.given;
 
 import com.github.dockerjava.api.exception.UnauthorizedException;
 import com.juno.appling.global.util.MemberUtil;
-import com.juno.appling.member.domain.Member;
+import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.enums.Role;
-import com.juno.appling.member.infrastruceture.SellerRepository;
+import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
@@ -64,7 +64,7 @@ class OrderEntityServiceUnitTest {
     private DeliveryJpaRepository deliveryJpaRepository;
 
     @Mock
-    private SellerRepository sellerRepository;
+    private SellerJpaRepository sellerJpaRepository;
 
     private MockHttpServletRequest request = new MockHttpServletRequest();
 
@@ -289,10 +289,11 @@ class OrderEntityServiceUnitTest {
         Long orderId = 1L;
         Long memberId = 1L;
         LocalDateTime now = LocalDateTime.now();
-        Member member1 = new Member(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
-        Member member2 = new Member(2L, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
-        given(memberUtil.getMember(any())).willReturn(member1);
-        given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(new OrderEntity(orderId, member2, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now)));
+        MemberEntity memberEntity1 = new MemberEntity(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        MemberEntity memberEntity2 = new MemberEntity(2L, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        given(memberUtil.getMember(any())).willReturn(memberEntity1);
+        given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(new OrderEntity(orderId,
+            memberEntity2, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now)));
         //when
         //then
         assertThatThrownBy(() -> orderServiceImpl.getTempOrder(orderId, request))
@@ -307,9 +308,10 @@ class OrderEntityServiceUnitTest {
         Long orderId = 1L;
         Long memberId = 1L;
         LocalDateTime now = LocalDateTime.now();
-        Member member1 = new Member(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
-        given(memberUtil.getMember(any())).willReturn(member1);
-        given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(new OrderEntity(orderId, member1, null, new ArrayList<>(), null, OrderStatus.ORDER, "", now, now)));
+        MemberEntity memberEntity1 = new MemberEntity(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        given(memberUtil.getMember(any())).willReturn(memberEntity1);
+        given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(new OrderEntity(orderId,
+            memberEntity1, null, new ArrayList<>(), null, OrderStatus.ORDER, "", now, now)));
         //when
         //then
         assertThatThrownBy(() -> orderServiceImpl.getTempOrder(orderId, request))
@@ -323,7 +325,7 @@ class OrderEntityServiceUnitTest {
         //given
         Long orderId = 1L;
         LocalDateTime now = LocalDateTime.now();
-        Member member = new Member(1L, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        MemberEntity memberEntity = new MemberEntity(1L, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
         CompleteOrderRequest completeOrderRequest = CompleteOrderRequest.builder()
             .orderId(orderId)
             .ownerName("주문자")
@@ -345,13 +347,13 @@ class OrderEntityServiceUnitTest {
                 .ea(10)
                 .build();
 
-        OrderEntity orderEntity = new OrderEntity(orderId, member, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now);
+        OrderEntity orderEntity = new OrderEntity(orderId, memberEntity, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now);
         List<OrderItemEntity> orderItemEntityList = orderEntity.getOrderItemList();
         orderItemEntityList.add(OrderItemEntity.of(orderEntity,
             productEntity, new OptionEntity("option1", 1000, 100, productEntity), 1));
 
         given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(orderEntity));
-        given(memberUtil.getMember(any())).willReturn(member);
+        given(memberUtil.getMember(any())).willReturn(memberEntity);
         //when
         CompleteOrderResponse completeOrderResponse = orderServiceImpl.completeOrder(completeOrderRequest, request);
         //then
@@ -363,7 +365,7 @@ class OrderEntityServiceUnitTest {
         //given
         Long orderId = 1L;
         LocalDateTime now = LocalDateTime.now();
-        Member member = new Member(1L, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        MemberEntity memberEntity = new MemberEntity(1L, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
         CompleteOrderRequest completeOrderRequest = CompleteOrderRequest.builder()
             .orderId(orderId)
             .ownerName("주문자")
@@ -377,8 +379,9 @@ class OrderEntityServiceUnitTest {
             .recipientAddressDetail("수령인 상세 주소")
             .recipientTel("수령인 연락처")
             .build();
-        given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(new OrderEntity(orderId, member, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now)));
-        given(memberUtil.getMember(any())).willReturn(member);
+        given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(new OrderEntity(orderId,
+            memberEntity, null, new ArrayList<>(), null, OrderStatus.TEMP, "", now, now)));
+        given(memberUtil.getMember(any())).willReturn(memberEntity);
         //when
         CompleteOrderResponse completeOrderResponse = orderServiceImpl.completeOrder(completeOrderRequest, request);
         //then
@@ -391,9 +394,9 @@ class OrderEntityServiceUnitTest {
         //given
         Long memberId = 1L;
         LocalDateTime now = LocalDateTime.now();
-        Member member1 = new Member(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
-        given(memberUtil.getMember(any())).willReturn(member1);
-        given(sellerRepository.findByMember(any(Member.class))).willReturn(Optional.ofNullable(null));
+        MemberEntity memberEntity1 = new MemberEntity(memberId, "emial@mail.com", "password", "nickname", "name", "19991030", Role.SELLER, null, null, now, now);
+        given(memberUtil.getMember(any())).willReturn(memberEntity1);
+        given(sellerJpaRepository.findByMember(any(MemberEntity.class))).willReturn(Optional.ofNullable(null));
         //when
         //then
         assertThatThrownBy(() -> orderServiceImpl.getOrderListBySeller(Pageable.ofSize(10), "", "COMPLETE", request))
