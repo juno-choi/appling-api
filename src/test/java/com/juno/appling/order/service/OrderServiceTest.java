@@ -49,7 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional(readOnly = true)
 @Execution(ExecutionMode.CONCURRENT)
-class OrderEntityServiceTest {
+class OrderServiceTest {
     @Autowired
     private OrderService orderService;
 

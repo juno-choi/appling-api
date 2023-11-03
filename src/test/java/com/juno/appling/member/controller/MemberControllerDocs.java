@@ -69,7 +69,7 @@ import org.springframework.transaction.annotation.Transactional;
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-class MemberEntityControllerDocs extends RestdocsBaseTest {
+class MemberControllerDocs extends RestdocsBaseTest {
 
     @Autowired
     private MemberAuthService memberAuthService;

@@ -107,8 +107,9 @@ public class OrderServiceImpl implements OrderService{
             checkEa(p.getMainTitle(), productEa, ea);
 
             OrderItemEntity orderItemEntity = orderItemJpaRepository.save(
-                OrderItemEntity.of(saveOrderEntity, p, optionEntity, ea));
-            saveOrderEntity.getOrderItemList().add(orderItemEntity);
+                OrderItemEntity.of(saveOrderEntity, p, optionEntity, ea)
+            );
+            saveOrderEntity.addOrderItem(orderItemEntity);
         }
 
         return PostTempOrderResponse.builder().orderId(saveOrderEntity.getId()).build();
@@ -209,7 +210,7 @@ public class OrderServiceImpl implements OrderService{
                 new IllegalArgumentException("유효하지 않은 주문 번호입니다.")
         );
 
-        if(memberEntity.getId() != orderEntity.getMemberEntity().getId()) {
+        if(memberEntity.getId() != orderEntity.getMember().getId()) {
             log.info("[getOrder] 유저가 주문한 번호가 아님! 요청한 user_id = {} , order_id = {}", memberEntity.getId(), orderEntity.getId());
             throw new IllegalArgumentException("유효하지 않은 주문입니다.");
         }

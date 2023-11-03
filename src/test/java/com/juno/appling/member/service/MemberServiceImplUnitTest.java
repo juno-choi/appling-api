@@ -39,7 +39,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 
 @ExtendWith({MockitoExtension.class})
-class MemberEntityServiceImplUnitTest {
+class MemberServiceImplUnitTest {
 
     @InjectMocks
     private MemberServiceImpl memberService;

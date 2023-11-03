@@ -68,7 +68,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-class OrderEntityControllerDocs extends RestdocsBaseTest {
+class OrderControllerDocs extends RestdocsBaseTest {
 
     @Autowired
     private MemberJpaRepository memberJpaRepository;

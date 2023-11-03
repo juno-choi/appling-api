@@ -25,7 +25,7 @@ public class OrderVo {
         this.orderNumber = orderEntity.getOrderNumber();
         this.createdAt = orderEntity.getCreatedAt();
         this.modifiedAt = orderEntity.getModifiedAt();
-        this.member = MemberVo.fromMemberEntity(orderEntity.getMemberEntity());
+        this.member = MemberVo.fromMemberEntity(orderEntity.getMember());
         this.orderItemList = orderEntity.getOrderItemList().stream().map(OrderItemVo::from).toList();
         this.delivery = orderEntity.getDeliveryList().stream().map(DeliveryVo::fromDeliveryEntity).toList().size() > 0 ? orderEntity.getDeliveryList().stream().map(DeliveryVo::fromDeliveryEntity).toList().get(0) : null;
     }

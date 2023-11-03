@@ -55,7 +55,7 @@ import org.springframework.test.web.servlet.ResultActions;
 })
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-class ProductEntityControllerDocs extends RestdocsBaseTest {
+class ProductControllerDocs extends RestdocsBaseTest {
 
     @Autowired
     private MemberAuthService memberAuthService;
