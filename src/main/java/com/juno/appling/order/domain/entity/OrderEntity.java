@@ -1,6 +1,8 @@
 package com.juno.appling.order.domain.entity;
 
 import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.member.domain.model.Member;
+import com.juno.appling.order.domain.model.Order;
 import com.juno.appling.order.enums.OrderStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +19,9 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +31,7 @@ import org.hibernate.envers.NotAudited;
 @Audited
 @Entity
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "ORDERS")
 public class OrderEntity {
 
@@ -39,7 +43,7 @@ public class OrderEntity {
     @NotAudited
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private MemberEntity memberEntity;
+    private MemberEntity member;
 
     private String orderNumber;
 
@@ -59,8 +63,43 @@ public class OrderEntity {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private OrderEntity(MemberEntity memberEntity, OrderStatus status, String orderName, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.memberEntity = memberEntity;
+    public static OrderEntity from(Order order) {
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.id = order.getId();
+        orderEntity.member = MemberEntity.from(
+            Optional.ofNullable(
+                order.getMember())
+                .orElse(Member.builder().build()
+            )
+        );
+        orderEntity.orderNumber = order.getOrderNumber();
+        orderEntity.orderItemList = Optional.ofNullable(order.getOrderItemList()).orElse(new ArrayList<>()).stream().map(OrderItemEntity::from).collect(
+            Collectors.toList());
+        orderEntity.deliveryList = Optional.ofNullable(order.getDeliveryList()).orElse(new ArrayList<>()).stream().map(DeliveryEntity::from).collect(
+            Collectors.toList());
+        orderEntity.status = order.getStatus();
+        orderEntity.orderName = order.getOrderName();
+        orderEntity.createdAt = order.getCreatedAt();
+        orderEntity.modifiedAt = order.getModifiedAt();
+        return orderEntity;
+    }
+
+    public Order toModel(){
+        return Order.builder()
+            .id(id)
+            .member(member.toModel())
+            .orderNumber(orderNumber)
+            .orderItemList(orderItemList.stream().map(OrderItemEntity::toModel).collect(Collectors.toList()))
+            .deliveryList(deliveryList.stream().map(DeliveryEntity::toModel).collect(Collectors.toList()))
+            .status(status)
+            .orderName(orderName)
+            .createdAt(createdAt)
+            .modifiedAt(modifiedAt)
+            .build();
+    }
+
+    private OrderEntity(MemberEntity member, OrderStatus status, String orderName, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        this.member = member;
         this.status = status;
         this.orderName = orderName;
         this.createdAt = createdAt;
@@ -79,5 +118,10 @@ public class OrderEntity {
 
     public void orderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
+    }
+
+
+    public void addOrderItem(OrderItemEntity orderItemEntity) {
+        this.orderItemList.add(orderItemEntity);
     }
 }

@@ -47,7 +47,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @ExtendWith({MockitoExtension.class})
-class MemberEntityAuthServiceImplUnitTest {
+class MemberAuthServiceImplUnitTest {
 
     @InjectMocks
     private MemberAuthServiceImpl memberAuthService;

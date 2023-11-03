@@ -43,7 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional(readOnly = true)
 @Execution(ExecutionMode.CONCURRENT)
-public class MemberEntityServiceImplTest {
+public class MemberServiceImplTest {
 
     @Autowired
     private MemberService memberService;
