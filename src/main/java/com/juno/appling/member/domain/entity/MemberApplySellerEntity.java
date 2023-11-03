@@ -1,5 +1,6 @@
 package com.juno.appling.member.domain.entity;
 
+import com.juno.appling.member.domain.model.MemberApplySeller;
 import com.juno.appling.member.enums.MemberApplySellerStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,6 +43,25 @@ public class MemberApplySellerEntity {
         this.modifiedAt = modifiedAt;
     }
 
+    public static MemberApplySellerEntity from(MemberApplySeller memberApplySeller) {
+        MemberApplySellerEntity memberApplySellerEntity = new MemberApplySellerEntity();
+        memberApplySellerEntity.id = memberApplySeller.getId();
+        memberApplySellerEntity.memberId = memberApplySeller.getMemberId();
+        memberApplySellerEntity.status = memberApplySeller.getStatus();
+        memberApplySellerEntity.createdAt = memberApplySeller.getCreatedAt();
+        memberApplySellerEntity.modifiedAt = memberApplySeller.getModifiedAt();
+        return memberApplySellerEntity;
+    }
+
+    public MemberApplySeller toModel(){
+        return MemberApplySeller.builder()
+            .id(id)
+            .memberId(memberId)
+            .status(status)
+            .createdAt(createdAt)
+            .modifiedAt(modifiedAt)
+            .build();
+    }
     public static MemberApplySellerEntity of(Long memberId) {
         LocalDateTime now = LocalDateTime.now();
         return new MemberApplySellerEntity(memberId, MemberApplySellerStatus.APPLY, now, now);
