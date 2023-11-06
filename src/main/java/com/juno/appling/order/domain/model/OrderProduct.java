@@ -35,7 +35,6 @@ public class OrderProduct {
     private Long viewCnt;
     private ProductStatus status;
     private int ea;
-    private List<OrderOption> optionList = new ArrayList<>();
     private ProductType type;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -61,8 +60,6 @@ public class OrderProduct {
             .viewCnt(product.getViewCnt())
             .status(product.getStatus())
             .ea(product.getEa())
-            .optionList(
-                Optional.ofNullable(product.getOptionList()).orElse(new ArrayList<>()).stream().map(OrderOption::create).toList())
             .type(product.getType())
             .createdAt(product.getCreatedAt())
             .modifiedAt(product.getModifiedAt())

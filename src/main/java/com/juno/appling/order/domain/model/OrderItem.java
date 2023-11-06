@@ -5,9 +5,10 @@ import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.product.domain.model.Option;
 import com.juno.appling.product.domain.model.Product;
 import com.juno.appling.product.enums.ProductType;
-import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -29,7 +30,7 @@ public class OrderItem {
 
     public static OrderItem create(Order order, Product product, TempOrderDto tempOrderDto) {
         ProductType type = product.getType();
-        OrderItem orderItem = null;
+        OrderItem orderItem;
         if(type == ProductType.NORMAL) {
             int ea = tempOrderDto.getEa();
 
@@ -45,7 +46,28 @@ public class OrderItem {
                 .modifiedAt(LocalDateTime.now())
                 .build();
         }else {
+            Option option = product.getOptionList().stream().filter(
+                    o -> o.getId().equals(tempOrderDto.getOptionId())
+            ).findFirst().orElseThrow(
+                () -> new IllegalArgumentException(
+                    "유효하지 않은 옵션입니다. option id = " + tempOrderDto.getOptionId()
+                )
+            );
+
+            OrderOption orderOption = OrderOption.create(option, order);
+            int optionPrice = product.getPrice() + option.getExtraPrice();
             orderItem = OrderItem.builder()
+                .order(order)
+                .product(product)
+                .orderProduct(OrderProduct.create(product))
+                .option(option)
+                .orderOption(orderOption)
+                .status(OrderItemStatus.TEMP)
+                .ea(tempOrderDto.getEa())
+                .productPrice(optionPrice)
+                .productTotalPrice(optionPrice * tempOrderDto.getEa())
+                .createdAt(LocalDateTime.now())
+                .modifiedAt(LocalDateTime.now())
                 .build();
         }
 

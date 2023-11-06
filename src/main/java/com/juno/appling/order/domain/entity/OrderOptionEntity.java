@@ -2,23 +2,14 @@ package com.juno.appling.order.domain.entity;
 
 import com.juno.appling.order.domain.model.OrderOption;
 import com.juno.appling.product.enums.OptionStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -46,7 +37,6 @@ public class OrderOptionEntity {
     public static OrderOptionEntity from(OrderOption orderOption) {
         OrderOptionEntity orderOptionEntity = new OrderOptionEntity();
         orderOptionEntity.id = orderOption.getId();
-        orderOptionEntity.orderProduct = OrderProductEntity.from(orderOption.getOrderProduct());
         orderOptionEntity.name = orderOption.getName();
         orderOptionEntity.extraPrice = orderOption.getExtraPrice();
         orderOptionEntity.ea = orderOption.getEa();
@@ -59,7 +49,6 @@ public class OrderOptionEntity {
     public OrderOption toModel(){
         return OrderOption.builder()
             .id(id)
-            .orderProduct(orderProduct.toModel())
             .name(name)
             .extraPrice(extraPrice)
             .ea(ea)

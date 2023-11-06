@@ -67,10 +67,6 @@ public class OrderProductEntity {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    @OneToMany(mappedBy = "orderProduct", fetch = FetchType.LAZY)
-    @NotAudited
-    private List<OrderOptionEntity> optionList = new ArrayList<>();
-
     @Enumerated(EnumType.STRING)
     private ProductType type;
 
@@ -95,7 +91,6 @@ public class OrderProductEntity {
         orderProductEntity.viewCnt = orderProduct.getViewCnt();
         orderProductEntity.status = orderProduct.getStatus();
         orderProductEntity.ea = orderProduct.getEa();
-        orderProductEntity.optionList = orderProduct.getOptionList().stream().map(OrderOptionEntity::from).toList();
         orderProductEntity.type = orderProduct.getType();
         orderProductEntity.createdAt = orderProduct.getCreatedAt();
         orderProductEntity.modifiedAt = orderProduct.getModifiedAt();
@@ -122,7 +117,6 @@ public class OrderProductEntity {
         viewCnt = orderProduct.getViewCnt();
         status = orderProduct.getStatus();
         ea = orderProduct.getEa();
-        optionList = orderProduct.getOptionList().stream().map(OrderOptionEntity::from).toList();
         type = orderProduct.getType();
         createdAt = orderProduct.getCreatedAt();
         modifiedAt = orderProduct.getModifiedAt();

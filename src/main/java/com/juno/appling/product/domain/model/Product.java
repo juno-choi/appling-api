@@ -1,5 +1,6 @@
 package com.juno.appling.product.domain.model;
 
+import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
 import lombok.Builder;
@@ -68,13 +69,19 @@ public class Product {
         this.modifiedAt = modifiedAt;
     }
 
-    public void checkInStock(int ea) {
+    public void checkInStock(TempOrderDto tempOrderDto) {
+        int ea = tempOrderDto.getEa();
         if (this.type == ProductType.NORMAL) {
             if (this.ea < ea) {
                 throw new IllegalArgumentException(String.format("재고가 부족합니다! 현재 재고 = %s개", this.ea));
             }
-        } else {
-            throw new IllegalArgumentException(String.format("상품의 상태를 확인해주세요. product type = %s", this.type));
+        } else if (this.type == ProductType.OPTION) {
+            Long optionId = tempOrderDto.getOptionId();
+            Option option = this.optionList.stream()
+                .filter(o -> o.getId().equals(optionId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(String.format("유효하지 않은 옵션입니다. option id = %s", optionId)));
+            option.checkInStock(tempOrderDto);
         }
     }
 }

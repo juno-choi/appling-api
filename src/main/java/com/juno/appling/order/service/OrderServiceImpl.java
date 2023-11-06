@@ -93,9 +93,10 @@ public class OrderServiceImpl implements OrderService{
 
         for(TempOrderDto tod : requestOrderProductList){
             Product p = eaMap.get(tod.getProductId());
+
             // 재고 체크
-            p.checkInStock(tod.getEa());
-            OrderItem orderItem = OrderItem.create(order, p, tod);
+            p.checkInStock(tod);
+            OrderItem orderItem = OrderItem.create(order, p,  tod);
             orderItemRepository.save(orderItem);
         }
 

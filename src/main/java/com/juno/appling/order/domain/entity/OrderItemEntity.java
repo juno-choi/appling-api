@@ -2,26 +2,17 @@ package com.juno.appling.order.domain.entity;
 
 import com.juno.appling.order.domain.model.OrderItem;
 import com.juno.appling.order.enums.OrderItemStatus;
-import com.juno.appling.product.enums.ProductType;
 import com.juno.appling.product.domain.entity.OptionEntity;
 import com.juno.appling.product.domain.entity.ProductEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import com.juno.appling.product.enums.ProductType;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -76,26 +67,46 @@ public class OrderItemEntity {
         orderItemEntity.id = orderItem.getId();
         orderItemEntity.order = OrderEntity.from(orderItem.getOrder());
         orderItemEntity.product = ProductEntity.from(orderItem.getProduct());
-        orderItemEntity.option = OptionEntity.from(orderItem.getOption());
         orderItemEntity.orderProduct = OrderProductEntity.from(orderItem.getOrderProduct());
-        orderItemEntity.orderOption = OrderOptionEntity.from(orderItem.getOrderOption());
         orderItemEntity.status = orderItem.getStatus();
         orderItemEntity.ea = orderItem.getEa();
         orderItemEntity.productPrice = orderItem.getProductPrice();
         orderItemEntity.productTotalPrice = orderItem.getProductTotalPrice();
         orderItemEntity.createdAt = orderItem.getCreatedAt();
         orderItemEntity.modifiedAt = orderItem.getModifiedAt();
+
+        ProductType type = orderItemEntity.product.getType();
+        if(type == ProductType.OPTION) {
+            orderItemEntity.option = OptionEntity.from(orderItem.getOption());
+            orderItemEntity.orderOption = OrderOptionEntity.from(orderItem.getOrderOption());
+        }
+
         return orderItemEntity;
     }
 
     public OrderItem toModel() {
+        ProductType type = product.getType();
+        if(type == ProductType.OPTION) {
+            return OrderItem.builder()
+                    .id(id)
+                    .order(order.toModel())
+                    .product(product.toModel())
+                    .option(option.toModel())
+                    .orderProduct(orderProduct.toModel())
+                    .orderOption(orderOption.toModel())
+                    .status(status)
+                    .ea(ea)
+                    .productPrice(productPrice)
+                    .productTotalPrice(productTotalPrice)
+                    .createdAt(createdAt)
+                    .modifiedAt(modifiedAt)
+                    .build();
+        }
         return OrderItem.builder()
             .id(id)
             .order(order.toModel())
             .product(product.toModel())
-            .option(option.toModel())
             .orderProduct(orderProduct.toModel())
-            .orderOption(orderOption.toModel())
             .status(status)
             .ea(ea)
             .productPrice(productPrice)
