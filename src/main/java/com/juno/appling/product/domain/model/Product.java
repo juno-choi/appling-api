@@ -2,11 +2,12 @@ package com.juno.appling.product.domain.model;
 
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
+import lombok.Builder;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Builder;
-import lombok.Getter;
 
 @Getter
 public class Product {
@@ -29,10 +30,10 @@ public class Product {
     private Long viewCnt;
     private ProductStatus status;
     private int ea;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
     private List<Option> optionList = new ArrayList<>();
     private ProductType type;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
     @Builder
     public Product(Long id, Seller seller, Category category, String mainTitle,
@@ -61,9 +62,19 @@ public class Product {
         this.viewCnt = viewCnt;
         this.status = status;
         this.ea = ea;
+        this.type = type;
+        this.optionList = optionList;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
-        this.optionList = optionList;
-        this.type = type;
+    }
+
+    public void checkInStock(int ea) {
+        if (this.type == ProductType.NORMAL) {
+            if (this.ea < ea) {
+                throw new IllegalArgumentException(String.format("재고가 부족합니다! 현재 재고 = %s개", this.ea));
+            }
+        } else {
+            throw new IllegalArgumentException(String.format("상품의 상태를 확인해주세요. product type = %s", this.type));
+        }
     }
 }
