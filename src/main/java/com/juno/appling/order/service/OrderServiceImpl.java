@@ -5,6 +5,8 @@ import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.order.domain.entity.DeliveryEntity;
 import com.juno.appling.order.domain.entity.OrderItemEntity;
+import com.juno.appling.order.domain.model.Order;
+import com.juno.appling.order.domain.model.OrderItem;
 import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
@@ -23,6 +25,7 @@ import com.juno.appling.order.repository.OrderItemJpaRepository;
 import com.juno.appling.order.repository.OrderJpaRepository;
 import com.juno.appling.product.domain.entity.OptionEntity;
 import com.juno.appling.product.domain.entity.ProductEntity;
+import com.juno.appling.product.domain.model.Product;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
 import com.juno.appling.product.repository.ProductJpaRepository;
@@ -64,6 +67,8 @@ public class OrderServiceImpl implements OrderService{
          * 1. 주문 발급
          * 2. 주문 상품 등록
          * 3. 판매자 리스트 등록
+         * 4. 상품 타입 체크
+         * 4. 재고 확인
          */
 
         // 주문 발급
@@ -91,25 +96,10 @@ public class OrderServiceImpl implements OrderService{
 
         for(TempOrderDto tod : requestOrderProductList){
             ProductEntity p = eaMap.get(tod.getProductId());
-
-            if(p.getStatus() != ProductStatus.NORMAL){
-                throw new IllegalArgumentException("상품 상태가 유효하지 않습니다.");
-            }
-
-            Long optionId = tod.getOptionId();
-            // 옵션이 없을 경우 exception 처리
-            OptionEntity optionEntity = p.getType() == ProductType.OPTION ? p.getOptionList().stream().filter(o -> o.getId().equals(optionId))
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("optionId가 유효하지 않습니다.")) : null;
-
-            // 재고 확인
-            int ea = tod.getEa();
-            int productEa = p.getType() == ProductType.OPTION ? optionEntity.getEa() : p.getEa();
-            checkEa(p.getMainTitle(), productEa, ea);
-
-            OrderItemEntity orderItemEntity = orderItemJpaRepository.save(
-                OrderItemEntity.of(saveOrderEntity, p, optionEntity, ea)
-            );
-            saveOrderEntity.addOrderItem(orderItemEntity);
+            Product product = p.toModel();
+            Order order = saveOrderEntity.toModel();
+            ProductType type = product.getType();
+            OrderItem.create(order, product, tod);
         }
 
         return PostTempOrderResponse.builder().orderId(saveOrderEntity.getId()).build();
@@ -182,7 +172,7 @@ public class OrderServiceImpl implements OrderService{
         // 배송 정보 등록
         for(OrderItemEntity oi : orderItemEntityList){
             deliveryJpaRepository.save(DeliveryEntity.of(orderEntity, oi, completeOrderRequest));
-            oi.statusComplete();
+//            oi.statusComplete();
         }
         orderEntity.statusComplete();
 

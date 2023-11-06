@@ -24,6 +24,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 @Audited
 @Entity
@@ -38,10 +39,12 @@ public class OrderProductEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")
+    @NotAudited
     private SellerEntity seller;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
+    @NotAudited
     private CategoryEntity category;
 
     private String mainTitle;
@@ -64,7 +67,8 @@ public class OrderProductEntity {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    @OneToMany(mappedBy = "order_product", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "orderProduct", fetch = FetchType.LAZY)
+    @NotAudited
     private List<OrderOptionEntity> optionList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

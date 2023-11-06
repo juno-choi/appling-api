@@ -333,8 +333,8 @@ class OrderServiceUnitTest {
             .modifiedAt(now)
             .build());
         List<OrderItemEntity> orderItemEntityList = new ArrayList<>();
-        OrderItemEntity option1 = OrderItemEntity.of(orderEntity,productEntity, new OptionEntity("option1", 1000, 100, productEntity), 1);
-        orderItemEntityList.add(option1);
+//        OrderItemEntity option1 = OrderItemEntity.of(orderEntity,productEntity, new OptionEntity("option1", 1000, 100, productEntity), 1);
+//        orderItemEntityList.add(option1);
 
         given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(orderEntity));
         given(memberUtil.getMember(any())).willReturn(memberEntity);

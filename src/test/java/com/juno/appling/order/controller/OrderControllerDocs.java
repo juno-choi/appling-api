@@ -173,9 +173,9 @@ class OrderControllerDocs extends RestdocsBaseTest {
 
         OptionEntity optionEntity1 = optionJpaRepository.findById(PRODUCT_OPTION_ID_APPLE).get();
 
-        orderItemJpaRepository.save(OrderItemEntity.of(orderEntity, normalProductEntity, null, 3));
-        orderItemJpaRepository.save(
-            OrderItemEntity.of(orderEntity, optionProductEntity, optionEntity1, 5));
+//        orderItemJpaRepository.save(OrderItemEntity.of(orderEntity, normalProductEntity, null, 3));
+//        orderItemJpaRepository.save(
+//            OrderItemEntity.of(orderEntity, optionProductEntity, optionEntity1, 5));
 
         //when
         ResultActions perform = mock.perform(
@@ -253,8 +253,8 @@ class OrderControllerDocs extends RestdocsBaseTest {
 
         OptionEntity optionEntity1 = optionJpaRepository.findById(PRODUCT_OPTION_ID_APPLE).get();
 
-        orderItemJpaRepository.save(OrderItemEntity.of(orderEntity, productEntity1, optionEntity1, 3));
-        orderItemJpaRepository.save(OrderItemEntity.of(orderEntity, productEntity2, null, 5));
+//        orderItemJpaRepository.save(OrderItemEntity.of(orderEntity, productEntity1, optionEntity1, 3));
+//        orderItemJpaRepository.save(OrderItemEntity.of(orderEntity, productEntity2, null, 5));
 
         CompleteOrderRequest completeOrderRequest = CompleteOrderRequest.builder()
             .orderId(orderId)

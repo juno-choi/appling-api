@@ -50,6 +50,16 @@ public class OrderItemEntity {
     @NotAudited
     private OptionEntity option;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_product_id")
+    @NotAudited
+    private OrderProductEntity orderProduct;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_option_id")
+    @NotAudited
+    private OrderOptionEntity orderOption;
+
     @Enumerated(EnumType.STRING)
     private OrderItemStatus status;
 
@@ -67,6 +77,8 @@ public class OrderItemEntity {
         orderItemEntity.order = OrderEntity.from(orderItem.getOrder());
         orderItemEntity.product = ProductEntity.from(orderItem.getProduct());
         orderItemEntity.option = OptionEntity.from(orderItem.getOption());
+        orderItemEntity.orderProduct = OrderProductEntity.from(orderItem.getOrderProduct());
+        orderItemEntity.orderOption = OrderOptionEntity.from(orderItem.getOrderOption());
         orderItemEntity.status = orderItem.getStatus();
         orderItemEntity.ea = orderItem.getEa();
         orderItemEntity.productPrice = orderItem.getProductPrice();
@@ -82,6 +94,8 @@ public class OrderItemEntity {
             .order(order.toModel())
             .product(product.toModel())
             .option(option.toModel())
+            .orderProduct(orderProduct.toModel())
+            .orderOption(orderOption.toModel())
             .status(status)
             .ea(ea)
             .productPrice(productPrice)
@@ -89,31 +103,5 @@ public class OrderItemEntity {
             .createdAt(createdAt)
             .modifiedAt(modifiedAt)
             .build();
-    }
-
-    private OrderItemEntity(OrderEntity order, ProductEntity product, OptionEntity option, OrderItemStatus status, int ea,
-                      int productPrice, int productTotalPrice, LocalDateTime createdAt,
-                      LocalDateTime modifiedAt) {
-        this.order = order;
-        this.product = product;
-        this.option = option;
-        this.status = status;
-        this.ea = ea;
-        this.productPrice = productPrice;
-        this.productTotalPrice = productTotalPrice;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-    }
-
-    public static OrderItemEntity of(OrderEntity order, ProductEntity product, OptionEntity option, int ea) {
-        LocalDateTime now = LocalDateTime.now();
-        int price = product.getType() == ProductType.OPTION ? product.getPrice() + option.getExtraPrice() : product.getPrice();
-
-        return new OrderItemEntity(order, product, option, OrderItemStatus.TEMP, ea, price, price * ea, now, now);
-    }
-
-    public void statusComplete() {
-        this.status = OrderItemStatus.ORDER;
-        this.modifiedAt = LocalDateTime.now();
     }
 }
