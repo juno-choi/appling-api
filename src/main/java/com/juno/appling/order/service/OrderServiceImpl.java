@@ -7,6 +7,7 @@ import com.juno.appling.order.domain.entity.DeliveryEntity;
 import com.juno.appling.order.domain.entity.OrderItemEntity;
 import com.juno.appling.order.domain.model.Order;
 import com.juno.appling.order.domain.model.OrderItem;
+import com.juno.appling.order.port.OrderItemRepository;
 import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
@@ -58,6 +59,8 @@ public class OrderServiceImpl implements OrderService{
     private final SellerJpaRepository sellerJpaRepository;
     private final OrderCustomJpaRepositoryImpl orderCustomRepositoryImpl;
 
+    private final OrderItemRepository orderItemRepository;
+
     @Transactional
     @Override
     public PostTempOrderResponse postTempOrder(TempOrderRequest tempOrderRequest, HttpServletRequest request){
@@ -96,10 +99,8 @@ public class OrderServiceImpl implements OrderService{
 
         for(TempOrderDto tod : requestOrderProductList){
             ProductEntity p = eaMap.get(tod.getProductId());
-            Product product = p.toModel();
-            Order order = saveOrderEntity.toModel();
-            ProductType type = product.getType();
-            OrderItem.create(order, product, tod);
+            OrderItem orderItem = OrderItem.create(saveOrderEntity.toModel(), p.toModel(), tod);
+            orderItemRepository.save(orderItem);
         }
 
         return PostTempOrderResponse.builder().orderId(saveOrderEntity.getId()).build();
