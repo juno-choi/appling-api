@@ -3,12 +3,6 @@ package com.juno.appling.order.service;
 import com.github.dockerjava.api.exception.UnauthorizedException;
 import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.order.domain.entity.DeliveryEntity;
-import com.juno.appling.order.domain.entity.OrderItemEntity;
-import com.juno.appling.order.domain.model.Order;
-import com.juno.appling.order.domain.model.OrderItem;
-import com.juno.appling.order.port.OrderItemRepository;
-import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
@@ -17,34 +11,33 @@ import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.controller.response.TempOrderResponse;
+import com.juno.appling.order.domain.entity.DeliveryEntity;
 import com.juno.appling.order.domain.entity.OrderEntity;
+import com.juno.appling.order.domain.entity.OrderItemEntity;
+import com.juno.appling.order.domain.model.OrderItem;
 import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.enums.OrderStatus;
+import com.juno.appling.order.port.OrderItemRepository;
 import com.juno.appling.order.repository.DeliveryJpaRepository;
 import com.juno.appling.order.repository.OrderCustomJpaRepositoryImpl;
-import com.juno.appling.order.repository.OrderItemJpaRepository;
 import com.juno.appling.order.repository.OrderJpaRepository;
 import com.juno.appling.product.domain.entity.OptionEntity;
 import com.juno.appling.product.domain.entity.ProductEntity;
-import com.juno.appling.product.domain.model.Product;
-import com.juno.appling.product.enums.ProductStatus;
+import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.product.enums.ProductType;
 import com.juno.appling.product.repository.ProductJpaRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +46,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderServiceImpl implements OrderService{
     private final ProductJpaRepository productJpaRepository;
     private final OrderJpaRepository orderJpaRepository;
-    private final OrderItemJpaRepository orderItemJpaRepository;
     private final DeliveryJpaRepository deliveryJpaRepository;
     private final MemberUtil memberUtil;
     private final SellerJpaRepository sellerJpaRepository;
@@ -99,6 +91,8 @@ public class OrderServiceImpl implements OrderService{
 
         for(TempOrderDto tod : requestOrderProductList){
             ProductEntity p = eaMap.get(tod.getProductId());
+            // 재고 체크
+
             OrderItem orderItem = OrderItem.create(saveOrderEntity.toModel(), p.toModel(), tod);
             orderItemRepository.save(orderItem);
         }

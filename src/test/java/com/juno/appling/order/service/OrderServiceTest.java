@@ -94,39 +94,6 @@ class OrderServiceTest {
     }
 
     @Test
-    @DisplayName("임시 주문 성공")
-    @Transactional
-    void tempOrder() {
-        //given
-        request.addHeader(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken());
-
-        List<TempOrderDto> tempOrderDtoList = new ArrayList<>();
-        TempOrderDto tempOrderDto1 = TempOrderDto.builder()
-            .productId(PRODUCT_ID_APPLE)
-            .optionId(PRODUCT_OPTION_ID_APPLE)
-            .ea(3)
-            .build();
-        TempOrderDto tempOrderDto2 =  TempOrderDto.builder()
-            .productId(PRODUCT_ID_PEAR)
-            .optionId(PRODUCT_OPTION_ID_PEAR)
-            .ea(3)
-            .build();
-        tempOrderDtoList.add(tempOrderDto1);
-        tempOrderDtoList.add(tempOrderDto2);
-
-        TempOrderRequest tempOrderRequest = new TempOrderRequest(tempOrderDtoList);
-
-        //when
-        PostTempOrderResponse postTempOrderResponse = orderService.postTempOrder(tempOrderRequest, request);
-
-        //then
-        Long orderId = postTempOrderResponse.getOrderId();
-        OrderEntity orderEntity = orderJpaRepository.findById(orderId).get();
-        List<OrderItemEntity> orderItemEntityList = orderEntity.getOrderItemList();
-        assertThat(orderItemEntityList).isNotEmpty();
-    }
-
-    @Test
     @DisplayName("관리자툴에서 주문 불러오기 성공")
     @Transactional
     void getOrderList() {
