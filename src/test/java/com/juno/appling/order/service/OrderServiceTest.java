@@ -108,7 +108,7 @@ class OrderServiceTest {
         //when
         PostTempOrderResponse postTempOrderResponse = orderService.postTempOrder(tempOrderRequest, request);
         //then
-
+        assertThat(postTempOrderResponse.getOrderId()).isGreaterThan(0);
     }
 
     @Test

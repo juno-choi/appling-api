@@ -39,23 +39,4 @@ public class OrderItemVo {
     private CategoryVo category;
     private OptionVo option;
 
-    public static OrderItemVo from(OrderItemEntity orderItemEntity) {
-        return new OrderItemVo(orderItemEntity.getProduct().getId(), orderItemEntity.getEa(),
-            orderItemEntity.getProduct().getMainTitle(),
-            orderItemEntity.getProduct().getMainExplanation(),
-            orderItemEntity.getProduct().getProductMainExplanation(),
-            orderItemEntity.getProduct().getProductSubExplanation(),
-            orderItemEntity.getProduct().getOriginPrice(), orderItemEntity.getProduct().getPrice(),
-            orderItemEntity.getProduct().getPurchaseInquiry(),
-            orderItemEntity.getProduct().getOrigin(), orderItemEntity.getProduct().getProducer(),
-            orderItemEntity.getProduct().getMainImage(), orderItemEntity.getProduct().getImage1(),
-            orderItemEntity.getProduct().getImage2(), orderItemEntity.getProduct().getImage3(),
-            orderItemEntity.getProduct().getViewCnt(), orderItemEntity.getProduct().getStatus(),
-            orderItemEntity.getProduct().getCreatedAt(), orderItemEntity.getModifiedAt(),
-            SellerVo.of(orderItemEntity.getProduct().getSeller()),
-            CategoryVo.of(orderItemEntity.getProduct().getCategory()),
-            OptionVo.of(orderItemEntity.getOption())
-        );
-
-    }
 }

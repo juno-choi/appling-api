@@ -22,16 +22,4 @@ public class TempOrderResponse {
     private List<OrderItemVo> orderItemList;
 
 
-    public static TempOrderResponse from(OrderEntity orderEntity) {
-        List<OrderItemEntity> itemList = orderEntity.getOrderItemList();
-        List<OrderItemVo> orderItemVoList = new ArrayList<>();
-        for(OrderItemEntity o : itemList){
-            orderItemVoList.add(OrderItemVo.from(o));
-        }
-
-        return TempOrderResponse.builder()
-            .orderId(orderEntity.getId())
-            .orderItemList(orderItemVoList)
-            .build();
-    }
 }

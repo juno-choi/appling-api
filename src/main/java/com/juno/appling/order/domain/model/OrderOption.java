@@ -6,12 +6,12 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
 public class OrderOption {
     private Long id;
-    private Order order;
     private String name;
     private int extraPrice;
     private int ea;
@@ -19,10 +19,13 @@ public class OrderOption {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public static OrderOption create(Option option, Order order) {
+    public static OrderOption create(List<Option> optionList, Long targetId) {
+        Option option = optionList.stream().filter(o -> o.getId().equals(targetId)).findFirst().orElseThrow(
+                () -> new IllegalArgumentException("유효하지 않은 옵션입니다. option id = " + targetId)
+        );
+
         return OrderOption.builder()
             .id(option.getId())
-            .order(order)
             .name(option.getName())
             .extraPrice(option.getExtraPrice())
             .ea(option.getEa())

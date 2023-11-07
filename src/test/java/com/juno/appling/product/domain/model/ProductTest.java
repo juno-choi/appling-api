@@ -32,7 +32,7 @@ class ProductTest {
                 .hasMessageContaining(String.valueOf(ea));
     }
     @Test
-    @DisplayName("정의되지 않은 상품 type 실패")
+    @DisplayName("유효하지 않은 옵션 상품 실패")
     void checkInStockFail2(){
         int ea = 100;
         Product product = Product.builder()

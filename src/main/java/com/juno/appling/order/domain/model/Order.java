@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,5 +39,18 @@ public class Order {
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
                 .build();
+    }
+
+    public void createOrderNumber() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        StringBuilder orderNumberBuilder = new StringBuilder();
+        orderNumberBuilder.append("ORDER");
+        orderNumberBuilder.append("-");
+        orderNumberBuilder.append(now.format(formatter));
+        orderNumberBuilder.append("-");
+        orderNumberBuilder.append(id);
+
+        this.orderNumber = orderNumberBuilder.toString();
     }
 }

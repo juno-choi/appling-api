@@ -7,7 +7,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
 
 import java.time.LocalDateTime;
 
@@ -22,10 +21,6 @@ public class OrderOptionEntity {
     @Column(name = "order_option_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_product_id")
-    @NotAudited
-    private OrderProductEntity orderProduct;
     private String name;
     private int extraPrice;
     private int ea;

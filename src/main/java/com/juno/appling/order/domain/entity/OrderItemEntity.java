@@ -2,8 +2,6 @@ package com.juno.appling.order.domain.entity;
 
 import com.juno.appling.order.domain.model.OrderItem;
 import com.juno.appling.order.enums.OrderItemStatus;
-import com.juno.appling.product.domain.entity.OptionEntity;
-import com.juno.appling.product.domain.entity.ProductEntity;
 import com.juno.appling.product.enums.ProductType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -32,16 +30,6 @@ public class OrderItemEntity {
     private OrderEntity order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    @NotAudited
-    private ProductEntity product;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "option_id")
-    @NotAudited
-    private OptionEntity option;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_product_id")
     @NotAudited
     private OrderProductEntity orderProduct;
@@ -66,7 +54,6 @@ public class OrderItemEntity {
         OrderItemEntity orderItemEntity = new OrderItemEntity();
         orderItemEntity.id = orderItem.getId();
         orderItemEntity.order = OrderEntity.from(orderItem.getOrder());
-        orderItemEntity.product = ProductEntity.from(orderItem.getProduct());
         orderItemEntity.orderProduct = OrderProductEntity.from(orderItem.getOrderProduct());
         orderItemEntity.status = orderItem.getStatus();
         orderItemEntity.ea = orderItem.getEa();
@@ -75,9 +62,8 @@ public class OrderItemEntity {
         orderItemEntity.createdAt = orderItem.getCreatedAt();
         orderItemEntity.modifiedAt = orderItem.getModifiedAt();
 
-        ProductType type = orderItemEntity.product.getType();
+        ProductType type = orderItemEntity.orderProduct.getType();
         if(type == ProductType.OPTION) {
-            orderItemEntity.option = OptionEntity.from(orderItem.getOption());
             orderItemEntity.orderOption = OrderOptionEntity.from(orderItem.getOrderOption());
         }
 
@@ -85,13 +71,11 @@ public class OrderItemEntity {
     }
 
     public OrderItem toModel() {
-        ProductType type = product.getType();
+        ProductType type = orderProduct.getType();
         if(type == ProductType.OPTION) {
             return OrderItem.builder()
                     .id(id)
                     .order(order.toModel())
-                    .product(product.toModel())
-                    .option(option.toModel())
                     .orderProduct(orderProduct.toModel())
                     .orderOption(orderOption.toModel())
                     .status(status)
@@ -105,7 +89,6 @@ public class OrderItemEntity {
         return OrderItem.builder()
             .id(id)
             .order(order.toModel())
-            .product(product.toModel())
             .orderProduct(orderProduct.toModel())
             .status(status)
             .ea(ea)

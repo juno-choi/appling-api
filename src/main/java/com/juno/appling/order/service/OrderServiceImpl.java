@@ -13,13 +13,19 @@ import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.controller.response.TempOrderResponse;
 import com.juno.appling.order.domain.model.Order;
+import com.juno.appling.order.domain.model.OrderItem;
+import com.juno.appling.order.domain.model.OrderOption;
+import com.juno.appling.order.domain.model.OrderProduct;
 import com.juno.appling.order.domain.vo.OrderVo;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.order.port.OrderItemRepository;
+import com.juno.appling.order.port.OrderOptionRepository;
+import com.juno.appling.order.port.OrderProductRepository;
+import com.juno.appling.order.port.OrderRepository;
 import com.juno.appling.order.repository.OrderCustomJpaRepositoryImpl;
-import com.juno.appling.order.repository.OrderJpaRepository;
 import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.product.domain.model.Product;
+import com.juno.appling.product.enums.ProductType;
 import com.juno.appling.product.port.ProductRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +35,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -38,12 +43,14 @@ import java.util.Locale;
 @Transactional(readOnly = true)
 public class OrderServiceImpl implements OrderService{
     private final MemberUtil memberUtil;
-    private final OrderJpaRepository orderJpaRepository;
     private final SellerJpaRepository sellerJpaRepository;
     private final OrderCustomJpaRepositoryImpl orderCustomRepositoryImpl;
 
-    private final OrderItemRepository orderItemRepository;
+    private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
+    private final OrderProductRepository orderProductRepository;
+    private final OrderOptionRepository orderOptionRepository;
+    private final OrderItemRepository orderItemRepository;
 
     @Transactional
     @Override
@@ -62,8 +69,44 @@ public class OrderServiceImpl implements OrderService{
         List<Long> productIdList = tempOrderRequest.getOrderList().stream().mapToLong(TempOrderDto::getProductId).boxed().toList();
         List<Product> productList = productRepository.findAllById(productIdList);
         // 주문 상품 등록
-        Order.create(member, productList);
-        return PostTempOrderResponse.builder().orderId(1L).build();
+        Order createOrder = Order.create(member, productList);
+        Order order = orderRepository.save(createOrder);
+
+        // orderProduct orderOption 등록
+        Map<Long, Product> productMap = new HashMap<>();
+        for (Product product : productList) {
+            productMap.put(product.getId(), product);
+        }
+
+        List<OrderProduct> orderProductList = new ArrayList<>();
+        List<OrderOption> orderOptionList= new ArrayList<>();
+        List<OrderItem> orderItemList = new LinkedList<>();
+        for (TempOrderDto tempOrderDto : tempOrderRequest.getOrderList()) {
+            Product product = productMap.get(tempOrderDto.getProductId());
+
+            //재고 확인
+            product.checkInStock(tempOrderDto);
+
+            //OrderProduct 생성
+            OrderProduct createOrderProduct = OrderProduct.create(product);
+            OrderProduct orderProduct = orderProductRepository.save(createOrderProduct);
+            //OrderOption 생성
+            OrderOption orderOption = null;
+            if(product.getType() == ProductType.OPTION){
+                Long optionId = tempOrderDto.getOptionId();
+                OrderOption createOrderOption = OrderOption.create(product.getOptionList(), optionId);
+                orderOption = orderOptionRepository.save(createOrderOption);
+            }
+
+            //OrderItem 생성
+            OrderItem orderItem = OrderItem.create(order, orderProduct, orderOption, tempOrderDto.getEa());
+            orderItemList.add(orderItem);
+        }
+
+        orderItemRepository.saveAll(orderItemList);
+        order.createOrderNumber();
+        orderRepository.save(order);
+        return PostTempOrderResponse.builder().orderId(order.getId()).build();
     }
 
     @Override

@@ -1,17 +1,14 @@
 package com.juno.appling.order.domain.model;
 
-import com.juno.appling.order.domain.entity.OrderOptionEntity;
 import com.juno.appling.product.domain.model.Category;
 import com.juno.appling.product.domain.model.Product;
 import com.juno.appling.product.domain.model.Seller;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
