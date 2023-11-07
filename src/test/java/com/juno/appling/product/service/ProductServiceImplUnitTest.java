@@ -344,7 +344,6 @@ class ProductEntityServiceImplUnitTest {
             .status(OptionStatus.NORMAL)
             .createdAt(now)
             .modifiedAt(now)
-            .product(productEntity.toModel())
             .build();
         OptionEntity optionEntity = OptionEntity.from(optionBuild);
         productEntity.addOptionsList(optionEntity);
