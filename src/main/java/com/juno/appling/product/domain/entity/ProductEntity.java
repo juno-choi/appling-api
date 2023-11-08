@@ -37,9 +37,11 @@ public class ProductEntity {
     private String mainTitle;
     private String mainExplanation;
     private String productMainExplanation;
+    @Column(columnDefinition = "TEXT")
     private String productSubExplanation;
     private int originPrice;
     private int price;
+    @Column(columnDefinition = "TEXT")
     private String purchaseInquiry;
     private String origin;
     private String producer;
