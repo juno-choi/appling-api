@@ -3,26 +3,16 @@ package com.juno.appling.product.domain.entity;
 import com.juno.appling.product.controller.request.OptionRequest;
 import com.juno.appling.product.domain.model.Option;
 import com.juno.appling.product.enums.OptionStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
@@ -53,10 +43,9 @@ public class OptionEntity {
         optionEntity.name = option.getName();
         optionEntity.extraPrice = option.getExtraPrice();
         optionEntity.ea = option.getEa();
+        optionEntity.status = option.getStatus();
         optionEntity.createdAt = option.getCreatedAt();
         optionEntity.modifiedAt = option.getModifiedAt();
-        optionEntity.status = option.getStatus();
-        optionEntity.product = ProductEntity.from(option.getProduct());
         return optionEntity;
     }
 
@@ -69,7 +58,6 @@ public class OptionEntity {
             .status(status)
             .createdAt(createdAt)
             .modifiedAt(modifiedAt)
-            .product(product.toModel())
             .build();
     }
 

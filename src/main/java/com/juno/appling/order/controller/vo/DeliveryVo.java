@@ -1,4 +1,4 @@
-package com.juno.appling.order.domain.vo;
+package com.juno.appling.order.controller.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;

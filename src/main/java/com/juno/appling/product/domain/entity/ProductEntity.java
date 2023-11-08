@@ -5,27 +5,14 @@ import com.juno.appling.product.controller.request.PutProductRequest;
 import com.juno.appling.product.domain.model.Product;
 import com.juno.appling.product.enums.ProductStatus;
 import com.juno.appling.product.enums.ProductType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import java.util.stream.Collectors;
 
 @Getter
 @Entity
@@ -101,6 +88,34 @@ public class ProductEntity {
     }
 
     public Product toModel() {
+        if(type == ProductType.OPTION) {
+            return Product.builder()
+                    .id(id)
+                    .seller(seller.toModel())
+                    .category(category.toModel())
+                    .mainTitle(mainTitle)
+                    .mainExplanation(mainExplanation)
+                    .productMainExplanation(productMainExplanation)
+                    .productSubExplanation(productSubExplanation)
+                    .originPrice(originPrice)
+                    .price(price)
+                    .purchaseInquiry(purchaseInquiry)
+                    .origin(origin)
+                    .producer(producer)
+                    .mainImage(mainImage)
+                    .image1(image1)
+                    .image2(image2)
+                    .image3(image3)
+                    .viewCnt(viewCnt)
+                    .status(status)
+                    .ea(ea)
+                    .createdAt(createdAt)
+                    .modifiedAt(modifiedAt)
+                    .type(type)
+                    .optionList(optionList.stream().map(OptionEntity::toModel).collect(Collectors.toList()))
+                    .build();
+        }
+
         return Product.builder()
             .id(id)
             .seller(seller.toModel())

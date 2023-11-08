@@ -3,25 +3,14 @@ package com.juno.appling.order.domain.entity;
 import com.juno.appling.order.domain.model.OrderItem;
 import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.product.enums.ProductType;
-import com.juno.appling.product.domain.entity.OptionEntity;
-import com.juno.appling.product.domain.entity.ProductEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -41,14 +30,14 @@ public class OrderItemEntity {
     private OrderEntity order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "order_product_id")
     @NotAudited
-    private ProductEntity product;
+    private OrderProductEntity orderProduct;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "option_id")
+    @JoinColumn(name = "order_option_id")
     @NotAudited
-    private OptionEntity option;
+    private OrderOptionEntity orderOption;
 
     @Enumerated(EnumType.STRING)
     private OrderItemStatus status;
@@ -65,23 +54,40 @@ public class OrderItemEntity {
         OrderItemEntity orderItemEntity = new OrderItemEntity();
         orderItemEntity.id = orderItem.getId();
         orderItemEntity.order = OrderEntity.from(orderItem.getOrder());
-        orderItemEntity.product = ProductEntity.from(orderItem.getProduct());
-        orderItemEntity.option = OptionEntity.from(orderItem.getOption());
+        orderItemEntity.orderProduct = OrderProductEntity.from(orderItem.getOrderProduct());
         orderItemEntity.status = orderItem.getStatus();
         orderItemEntity.ea = orderItem.getEa();
         orderItemEntity.productPrice = orderItem.getProductPrice();
         orderItemEntity.productTotalPrice = orderItem.getProductTotalPrice();
         orderItemEntity.createdAt = orderItem.getCreatedAt();
         orderItemEntity.modifiedAt = orderItem.getModifiedAt();
+
+        ProductType type = orderItemEntity.orderProduct.getType();
+        if(type == ProductType.OPTION) {
+            orderItemEntity.orderOption = OrderOptionEntity.from(orderItem.getOrderOption());
+        }
+
         return orderItemEntity;
     }
 
     public OrderItem toModel() {
+        ProductType type = orderProduct.getType();
+        if(type == ProductType.OPTION) {
+            return OrderItem.builder()
+                    .id(id)
+                    .orderProduct(orderProduct.toModel())
+                    .orderOption(orderOption.toModel())
+                    .status(status)
+                    .ea(ea)
+                    .productPrice(productPrice)
+                    .productTotalPrice(productTotalPrice)
+                    .createdAt(createdAt)
+                    .modifiedAt(modifiedAt)
+                    .build();
+        }
         return OrderItem.builder()
             .id(id)
-            .order(order.toModel())
-            .product(product.toModel())
-            .option(option.toModel())
+            .orderProduct(orderProduct.toModel())
             .status(status)
             .ea(ea)
             .productPrice(productPrice)
@@ -89,31 +95,5 @@ public class OrderItemEntity {
             .createdAt(createdAt)
             .modifiedAt(modifiedAt)
             .build();
-    }
-
-    private OrderItemEntity(OrderEntity order, ProductEntity product, OptionEntity option, OrderItemStatus status, int ea,
-                      int productPrice, int productTotalPrice, LocalDateTime createdAt,
-                      LocalDateTime modifiedAt) {
-        this.order = order;
-        this.product = product;
-        this.option = option;
-        this.status = status;
-        this.ea = ea;
-        this.productPrice = productPrice;
-        this.productTotalPrice = productTotalPrice;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-    }
-
-    public static OrderItemEntity of(OrderEntity order, ProductEntity product, OptionEntity option, int ea) {
-        LocalDateTime now = LocalDateTime.now();
-        int price = product.getType() == ProductType.OPTION ? product.getPrice() + option.getExtraPrice() : product.getPrice();
-
-        return new OrderItemEntity(order, product, option, OrderItemStatus.TEMP, ea, price, price * ea, now, now);
-    }
-
-    public void statusComplete() {
-        this.status = OrderItemStatus.ORDER;
-        this.modifiedAt = LocalDateTime.now();
     }
 }
