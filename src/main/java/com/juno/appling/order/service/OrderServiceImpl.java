@@ -78,8 +78,6 @@ public class OrderServiceImpl implements OrderService{
             productMap.put(product.getId(), product);
         }
 
-        List<OrderProduct> orderProductList = new ArrayList<>();
-        List<OrderOption> orderOptionList= new ArrayList<>();
         List<OrderItem> orderItemList = new LinkedList<>();
         for (TempOrderDto tempOrderDto : tempOrderRequest.getOrderList()) {
             Product product = productMap.get(tempOrderDto.getProductId());

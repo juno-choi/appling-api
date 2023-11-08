@@ -39,7 +39,6 @@ class OrderItemTest {
         OrderProduct orderProduct = OrderProduct.builder()
                 .type(ProductType.NORMAL)
                 .price(1000)
-                .ea(10)
                 .build();
 
         int ea = 2;
@@ -74,12 +73,10 @@ class OrderItemTest {
         OrderProduct orderProduct = OrderProduct.builder()
                 .type(ProductType.OPTION)
                 .price(1000)
-                .ea(0)
                 .build();
 
         OrderOption orderOption = OrderOption.builder()
                 .extraPrice(100)
-                .ea(10)
                 .build();
 
         int ea = 3;
@@ -118,7 +115,6 @@ class OrderItemTest {
             .orderProduct(OrderProduct.builder()
                 .type(ProductType.NORMAL)
                 .price(1000)
-                .ea(10)
                 .build())
             .build();
         //when

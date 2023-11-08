@@ -31,7 +31,6 @@ public class OrderProduct {
     private String image3;
     private Long viewCnt;
     private ProductStatus status;
-    private int ea;
     private ProductType type;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -56,7 +55,6 @@ public class OrderProduct {
             .image3(product.getImage3())
             .viewCnt(product.getViewCnt())
             .status(product.getStatus())
-            .ea(product.getEa())
             .type(product.getType())
             .createdAt(product.getCreatedAt())
             .modifiedAt(product.getModifiedAt())

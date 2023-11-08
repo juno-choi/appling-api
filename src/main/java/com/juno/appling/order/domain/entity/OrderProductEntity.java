@@ -51,7 +51,6 @@ public class OrderProductEntity {
     private Long viewCnt;
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
-    private int ea;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
@@ -78,36 +77,10 @@ public class OrderProductEntity {
         orderProductEntity.image3 = orderProduct.getImage3();
         orderProductEntity.viewCnt = orderProduct.getViewCnt();
         orderProductEntity.status = orderProduct.getStatus();
-        orderProductEntity.ea = orderProduct.getEa();
         orderProductEntity.type = orderProduct.getType();
         orderProductEntity.createdAt = orderProduct.getCreatedAt();
         orderProductEntity.modifiedAt = orderProduct.getModifiedAt();
         return orderProductEntity;
-    }
-
-    public void put(OrderProduct orderProduct) {
-        id = orderProduct.getId();
-        seller = SellerEntity.from(orderProduct.getSeller());
-        category = CategoryEntity.from(orderProduct.getCategory());
-        mainTitle = orderProduct.getMainTitle();
-        mainExplanation = orderProduct.getMainExplanation();
-        productMainExplanation = orderProduct.getProductMainExplanation();
-        productSubExplanation = orderProduct.getProductSubExplanation();
-        originPrice = orderProduct.getOriginPrice();
-        price = orderProduct.getPrice();
-        purchaseInquiry = orderProduct.getPurchaseInquiry();
-        origin = orderProduct.getOrigin();
-        producer = orderProduct.getProducer();
-        mainImage = orderProduct.getMainImage();
-        image1 = orderProduct.getImage1();
-        image2 = orderProduct.getImage2();
-        image3 = orderProduct.getImage3();
-        viewCnt = orderProduct.getViewCnt();
-        status = orderProduct.getStatus();
-        ea = orderProduct.getEa();
-        type = orderProduct.getType();
-        createdAt = orderProduct.getCreatedAt();
-        modifiedAt = orderProduct.getModifiedAt();
     }
 
     public OrderProduct toModel() {
@@ -130,7 +103,6 @@ public class OrderProductEntity {
             .image3(image3)
             .viewCnt(viewCnt)
             .status(status)
-            .ea(ea)
             .createdAt(createdAt)
             .modifiedAt(modifiedAt)
             .type(type)

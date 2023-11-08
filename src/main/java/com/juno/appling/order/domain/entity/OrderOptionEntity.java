@@ -23,7 +23,6 @@ public class OrderOptionEntity {
 
     private String name;
     private int extraPrice;
-    private int ea;
     @Enumerated(EnumType.STRING)
     private OptionStatus status;
     private LocalDateTime createdAt;
@@ -34,7 +33,6 @@ public class OrderOptionEntity {
         orderOptionEntity.id = orderOption.getId();
         orderOptionEntity.name = orderOption.getName();
         orderOptionEntity.extraPrice = orderOption.getExtraPrice();
-        orderOptionEntity.ea = orderOption.getEa();
         orderOptionEntity.status = orderOption.getStatus();
         orderOptionEntity.createdAt = orderOption.getCreatedAt();
         orderOptionEntity.modifiedAt = orderOption.getModifiedAt();
@@ -46,7 +44,6 @@ public class OrderOptionEntity {
             .id(id)
             .name(name)
             .extraPrice(extraPrice)
-            .ea(ea)
             .status(status)
             .createdAt(createdAt)
             .modifiedAt(modifiedAt)

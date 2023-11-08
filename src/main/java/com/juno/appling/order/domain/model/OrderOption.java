@@ -14,7 +14,6 @@ public class OrderOption {
     private Long id;
     private String name;
     private int extraPrice;
-    private int ea;
     private OptionStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -28,7 +27,6 @@ public class OrderOption {
             .id(option.getId())
             .name(option.getName())
             .extraPrice(option.getExtraPrice())
-            .ea(option.getEa())
             .status(option.getStatus())
             .createdAt(option.getCreatedAt())
             .modifiedAt(option.getModifiedAt())
