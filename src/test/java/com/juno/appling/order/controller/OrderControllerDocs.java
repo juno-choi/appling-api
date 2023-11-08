@@ -35,6 +35,8 @@ import com.juno.appling.order.domain.entity.OrderItemEntity;
 import com.juno.appling.order.repository.DeliveryJpaRepository;
 import com.juno.appling.order.repository.OrderItemJpaRepository;
 import com.juno.appling.order.repository.OrderJpaRepository;
+import com.juno.appling.order.repository.OrderOptionJpaRepository;
+import com.juno.appling.order.repository.OrderProductJpaRepository;
 import com.juno.appling.product.domain.entity.OptionEntity;
 import com.juno.appling.product.domain.entity.ProductEntity;
 import com.juno.appling.product.repository.CategoryJpaRepository;
@@ -97,6 +99,12 @@ class OrderControllerDocs extends RestdocsBaseTest {
     @Autowired
     private DeliveryJpaRepository deliveryJpaRepository;
 
+    @Autowired
+    private OrderProductJpaRepository orderProductJpaRepository;
+
+    @Autowired
+    private OrderOptionJpaRepository orderOptionJpaRepository;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
 
@@ -106,6 +114,8 @@ class OrderControllerDocs extends RestdocsBaseTest {
     void cleanup() {
         deliveryJpaRepository.deleteAll();
         orderItemJpaRepository.deleteAll();
+        orderProductJpaRepository.deleteAll();
+        orderOptionJpaRepository.deleteAll();
         orderJpaRepository.deleteAll();
         optionJpaRepository.deleteAll();
         productJpaRepository.deleteAll();
@@ -173,9 +183,6 @@ class OrderControllerDocs extends RestdocsBaseTest {
 
         OptionEntity optionEntity1 = optionJpaRepository.findById(PRODUCT_OPTION_ID_APPLE).get();
 
-//        orderItemJpaRepository.save(OrderItemEntity.of(orderEntity, normalProductEntity, null, 3));
-//        orderItemJpaRepository.save(
-//            OrderItemEntity.of(orderEntity, optionProductEntity, optionEntity1, 5));
 
         //when
         ResultActions perform = mock.perform(

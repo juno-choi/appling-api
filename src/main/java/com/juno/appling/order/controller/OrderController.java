@@ -7,7 +7,7 @@ import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
-import com.juno.appling.order.controller.response.TempOrderResponse;
+import com.juno.appling.order.controller.response.OrderInfoResponse;
 import com.juno.appling.order.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +34,9 @@ public class OrderController {
     }
 
     @GetMapping("/temp/{order_id}")
-    public ResponseEntity<Api<TempOrderResponse>> getTempOrder(@PathVariable(name = "order_id") Long orderId, HttpServletRequest request) {
+    public ResponseEntity<Api<OrderInfoResponse>> getOrderInfo(@PathVariable(name = "order_id") Long orderId, HttpServletRequest request) {
         return ResponseEntity.ok(
-            new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getTempOrder(orderId, request))
+            new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderInfo(orderId, request))
         );
     }
 

@@ -38,4 +38,18 @@ public class OrderItem {
                 .modifiedAt(LocalDateTime.now())
                 .build();
     }
+
+    public OrderItem getResponse() {
+        return OrderItem.builder()
+            .id(id)
+            .orderProduct(orderProduct)
+            .orderOption(orderOption)
+            .status(status)
+            .ea(ea)
+            .productPrice(productPrice)
+            .productTotalPrice(productTotalPrice)
+            .createdAt(createdAt)
+            .modifiedAt(modifiedAt)
+            .build();
+    }
 }

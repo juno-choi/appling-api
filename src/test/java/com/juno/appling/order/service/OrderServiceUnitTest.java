@@ -6,8 +6,6 @@ import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.enums.MemberRole;
 import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
-import com.juno.appling.order.controller.request.TempOrderDto;
-import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.domain.entity.OrderEntity;
 import com.juno.appling.order.domain.entity.OrderItemEntity;
@@ -18,7 +16,6 @@ import com.juno.appling.order.repository.OrderItemJpaRepository;
 import com.juno.appling.order.repository.OrderJpaRepository;
 import com.juno.appling.product.domain.entity.ProductEntity;
 import com.juno.appling.product.enums.ProductStatus;
-import com.juno.appling.product.enums.ProductType;
 import com.juno.appling.product.repository.ProductJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +32,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.juno.appling.Base.PRODUCT_ID_APPLE;
-import static com.juno.appling.Base.PRODUCT_ID_PEAR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -75,7 +71,7 @@ class OrderServiceUnitTest {
         given(orderJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(null));
         //when
         //then
-        assertThatThrownBy(() -> orderServiceImpl.getTempOrder(0L, request))
+        assertThatThrownBy(() -> orderServiceImpl.getOrderInfo(0L, request))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유효하지 않은 주문 번호");
     }
@@ -102,7 +98,7 @@ class OrderServiceUnitTest {
         ));
         //when
         //then
-        assertThatThrownBy(() -> orderServiceImpl.getTempOrder(orderId, request))
+        assertThatThrownBy(() -> orderServiceImpl.getOrderInfo(orderId, request))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유효하지 않은 주문");
     }

@@ -53,4 +53,11 @@ public class Order {
 
         this.orderNumber = orderNumberBuilder.toString();
     }
+
+    public void checkOrder(Member member) {
+        if (!this.member.getId().equals(member.getId())) {
+            throw new IllegalArgumentException("유효하지 않은 주문입니다.");
+        }
+    }
+
 }
