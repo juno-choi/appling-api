@@ -16,7 +16,7 @@ import com.juno.appling.order.domain.model.Order;
 import com.juno.appling.order.domain.model.OrderItem;
 import com.juno.appling.order.domain.model.OrderOption;
 import com.juno.appling.order.domain.model.OrderProduct;
-import com.juno.appling.order.domain.vo.OrderVo;
+import com.juno.appling.order.controller.vo.OrderVo;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.order.port.OrderItemRepository;
 import com.juno.appling.order.port.OrderOptionRepository;

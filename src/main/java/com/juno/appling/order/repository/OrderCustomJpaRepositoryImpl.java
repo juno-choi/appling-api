@@ -5,7 +5,7 @@ import com.juno.appling.order.domain.entity.QOrderEntity;
 import com.juno.appling.order.domain.entity.QOrderItemEntity;
 import com.juno.appling.order.domain.entity.QOrderOptionEntity;
 import com.juno.appling.order.domain.entity.QOrderProductEntity;
-import com.juno.appling.order.domain.vo.OrderVo;
+import com.juno.appling.order.controller.vo.OrderVo;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.entity.SellerEntity;
 import com.querydsl.core.BooleanBuilder;
