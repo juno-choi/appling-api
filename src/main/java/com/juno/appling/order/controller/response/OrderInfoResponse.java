@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.juno.appling.order.domain.model.Order;
 import com.juno.appling.order.domain.model.OrderItem;
-import com.juno.appling.order.domain.model.OrderProduct;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -18,12 +18,12 @@ import lombok.Getter;
 @Builder
 public class OrderInfoResponse {
     private Long orderId;
-    private List<OrderItem> orderItemList;
+    private List<OrderItemResponse> orderItemList;
 
     public static OrderInfoResponse create(Order order) {
         return OrderInfoResponse.builder()
             .orderId(order.getId())
-            .orderItemList(order.getOrderItemList().stream().map(OrderItem::getResponse).toList())
+            .orderItemList(order.getOrderItemList().stream().map(OrderItem::toResponse).toList())
             .build();
     }
 }

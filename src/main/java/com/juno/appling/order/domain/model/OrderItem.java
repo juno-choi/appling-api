@@ -1,5 +1,6 @@
 package com.juno.appling.order.domain.model;
 
+import com.juno.appling.order.controller.response.OrderItemResponse;
 import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.product.enums.ProductType;
 import lombok.Builder;
@@ -39,17 +40,17 @@ public class OrderItem {
                 .build();
     }
 
-    public OrderItem getResponse() {
-        return OrderItem.builder()
-            .id(id)
-            .orderProduct(orderProduct)
-            .orderOption(orderOption)
-            .status(status)
-            .ea(ea)
-            .productPrice(productPrice)
-            .productTotalPrice(productTotalPrice)
-            .createdAt(createdAt)
-            .modifiedAt(modifiedAt)
-            .build();
+    public OrderItemResponse toResponse() {
+        return OrderItemResponse.builder()
+                .orderItemId(id)
+                .orderProduct(orderProduct.toResponse())
+                .orderOption(orderOption == null ? null : orderOption.toResponse())
+                .status(status)
+                .ea(ea)
+                .productPrice(productPrice)
+                .productTotalPrice(productTotalPrice)
+                .createdAt(createdAt)
+                .modifiedAt(modifiedAt)
+                .build();
     }
 }

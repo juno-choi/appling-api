@@ -1,14 +1,13 @@
 package com.juno.appling.order.controller.response;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.juno.appling.order.domain.model.Order;
 import com.juno.appling.order.domain.model.OrderItem;
 import com.juno.appling.order.domain.model.OrderProduct;
-import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 class OrderInfoResponseTest {
 
@@ -38,6 +37,6 @@ class OrderInfoResponseTest {
         //when
         OrderInfoResponse orderInfoResponse = OrderInfoResponse.create(order);
         //then
-        Assertions.assertThat(orderInfoResponse.getOrderItemList().get(0).getOrderProduct().getId()).isEqualTo(2L);
+        Assertions.assertThat(orderInfoResponse.getOrderItemList().get(0).getOrderProduct().getOrderProductId()).isEqualTo(2L);
     }
 }

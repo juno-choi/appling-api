@@ -1,5 +1,6 @@
 package com.juno.appling.order.domain.model;
 
+import com.juno.appling.order.controller.response.OrderOptionResponse;
 import com.juno.appling.product.domain.model.Option;
 import com.juno.appling.product.enums.OptionStatus;
 import lombok.Builder;
@@ -30,6 +31,17 @@ public class OrderOption {
             .status(option.getStatus())
             .createdAt(option.getCreatedAt())
             .modifiedAt(option.getModifiedAt())
+            .build();
+    }
+
+    public OrderOptionResponse toResponse() {
+        return OrderOptionResponse.builder()
+            .orderOptionId(id)
+            .name(name)
+            .extraPrice(extraPrice)
+            .status(status)
+            .createdAt(createdAt)
+            .modifiedAt(modifiedAt)
             .build();
     }
 }

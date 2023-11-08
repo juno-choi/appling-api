@@ -1,5 +1,6 @@
 package com.juno.appling.order.domain.model;
 
+import com.juno.appling.order.controller.response.OrderProductResponse;
 import com.juno.appling.product.domain.model.Category;
 import com.juno.appling.product.domain.model.Product;
 import com.juno.appling.product.domain.model.Seller;
@@ -59,5 +60,31 @@ public class OrderProduct {
             .createdAt(product.getCreatedAt())
             .modifiedAt(product.getModifiedAt())
             .build();
+    }
+
+    public OrderProductResponse toResponse() {
+        return OrderProductResponse.builder()
+                .orderProductId(id)
+                .seller(seller.toResponse())
+                .category(category.toResponse())
+                .mainTitle(mainTitle)
+                .mainExplanation(mainExplanation)
+                .productMainExplanation(productMainExplanation)
+                .productSubExplanation(productSubExplanation)
+                .originPrice(originPrice)
+                .price(price)
+                .purchaseInquiry(purchaseInquiry)
+                .origin(origin)
+                .producer(producer)
+                .mainImage(mainImage)
+                .image1(image1)
+                .image2(image2)
+                .image3(image3)
+                .viewCnt(viewCnt)
+                .status(status)
+                .type(type)
+                .createdAt(createdAt)
+                .modifiedAt(modifiedAt)
+                .build();
     }
 }

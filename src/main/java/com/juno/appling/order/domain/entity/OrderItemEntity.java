@@ -75,7 +75,6 @@ public class OrderItemEntity {
         if(type == ProductType.OPTION) {
             return OrderItem.builder()
                     .id(id)
-                    .order(order.toModel())
                     .orderProduct(orderProduct.toModel())
                     .orderOption(orderOption.toModel())
                     .status(status)
@@ -88,7 +87,6 @@ public class OrderItemEntity {
         }
         return OrderItem.builder()
             .id(id)
-            .order(order.toModel())
             .orderProduct(orderProduct.toModel())
             .status(status)
             .ea(ea)
