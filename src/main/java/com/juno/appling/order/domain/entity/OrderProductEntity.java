@@ -25,6 +25,8 @@ public class OrderProductEntity {
     @Column(name = "order_product_id")
     private Long id;
 
+    private Long productId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")
     @NotAudited
@@ -60,6 +62,7 @@ public class OrderProductEntity {
     public static OrderProductEntity from(OrderProduct orderProduct) {
         OrderProductEntity orderProductEntity = new OrderProductEntity();
         orderProductEntity.id = orderProduct.getId();
+        orderProductEntity.productId = orderProduct.getProductId();
         orderProductEntity.seller = SellerEntity.from(orderProduct.getSeller());
         orderProductEntity.category = CategoryEntity.from(orderProduct.getCategory());
         orderProductEntity.mainTitle = orderProduct.getMainTitle();
@@ -86,6 +89,7 @@ public class OrderProductEntity {
     public OrderProduct toModel() {
         return OrderProduct.builder()
             .id(id)
+            .productId(productId)
             .seller(seller.toModel())
             .category(category.toModel())
             .mainTitle(mainTitle)

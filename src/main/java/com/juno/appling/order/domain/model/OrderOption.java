@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 public class OrderOption {
     private Long id;
+    private Long optionId;
     private String name;
     private int extraPrice;
     private OptionStatus status;
@@ -26,6 +27,7 @@ public class OrderOption {
 
         return OrderOption.builder()
             .id(option.getId())
+            .optionId(option.getId())
             .name(option.getName())
             .extraPrice(option.getExtraPrice())
             .status(option.getStatus())

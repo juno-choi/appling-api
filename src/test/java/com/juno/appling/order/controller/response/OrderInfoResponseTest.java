@@ -43,6 +43,6 @@ class OrderInfoResponseTest {
         //when
         OrderInfoResponse orderInfoResponse = OrderInfoResponse.create(order);
         //then
-        Assertions.assertThat(orderInfoResponse.getOrderItemList().get(0).getOrderProduct().getOrderProductId()).isEqualTo(2L);
+        Assertions.assertThat(orderInfoResponse.getOrderItemList().get(0).getProduct().getOrderProductId()).isEqualTo(2L);
     }
 }
