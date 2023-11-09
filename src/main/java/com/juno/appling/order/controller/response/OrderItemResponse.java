@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 @Builder
 public class OrderItemResponse {
     private Long orderItemId;
-    private OrderProductResponse orderProduct;
-    private OrderOptionResponse orderOption;
+    private OrderProductResponse product;
+    private OrderOptionResponse option;
     private OrderItemStatus status;
     private int ea;
     private int productPrice;

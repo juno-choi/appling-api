@@ -20,7 +20,7 @@ public class OrderOptionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_option_id")
     private Long id;
-
+    private Long optionId;
     private String name;
     private int extraPrice;
     @Enumerated(EnumType.STRING)
@@ -31,6 +31,7 @@ public class OrderOptionEntity {
     public static OrderOptionEntity from(OrderOption orderOption) {
         OrderOptionEntity orderOptionEntity = new OrderOptionEntity();
         orderOptionEntity.id = orderOption.getId();
+        orderOptionEntity.optionId = orderOption.getId();
         orderOptionEntity.name = orderOption.getName();
         orderOptionEntity.extraPrice = orderOption.getExtraPrice();
         orderOptionEntity.status = orderOption.getStatus();
@@ -42,6 +43,7 @@ public class OrderOptionEntity {
     public OrderOption toModel(){
         return OrderOption.builder()
             .id(id)
+            .optionId(optionId)
             .name(name)
             .extraPrice(extraPrice)
             .status(status)

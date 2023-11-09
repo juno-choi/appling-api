@@ -43,8 +43,8 @@ public class OrderItem {
     public OrderItemResponse toResponse() {
         return OrderItemResponse.builder()
                 .orderItemId(id)
-                .orderProduct(orderProduct.toResponse())
-                .orderOption(orderOption == null ? null : orderOption.toResponse())
+                .product(orderProduct.toResponse())
+                .option(orderOption == null ? null : orderOption.toResponse())
                 .status(status)
                 .ea(ea)
                 .productPrice(productPrice)
