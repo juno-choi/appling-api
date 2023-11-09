@@ -38,7 +38,7 @@ public class OrderOption {
 
     public OrderOptionResponse toResponse() {
         return OrderOptionResponse.builder()
-            .orderOptionId(id)
+            .optionId(optionId)
             .name(name)
             .extraPrice(extraPrice)
             .status(status)

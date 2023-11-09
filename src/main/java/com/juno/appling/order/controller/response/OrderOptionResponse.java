@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Builder
 public class OrderOptionResponse {
-    private Long orderOptionId;
     private Long optionId;
     private String name;
     private int extraPrice;
