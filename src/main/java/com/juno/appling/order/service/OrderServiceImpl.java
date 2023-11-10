@@ -3,8 +3,10 @@ package com.juno.appling.order.service;
 import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.model.Member;
 import com.juno.appling.member.repository.SellerJpaRepository;
+import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
+import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.OrderInfoResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.domain.model.Order;
@@ -128,18 +130,18 @@ public class OrderServiceImpl implements OrderService{
      * @param  request                HTTP 요청 객체
      * @return                        완료된 주문 응답 객체
      */
-//    @Transactional
-//    @Override
-//    public CompleteOrderResponse completeOrder(CompleteOrderRequest completeOrderRequest, HttpServletRequest request){
-//        /**
-//         * 주문 정보를 update 해야됨!
-//         * 1. 주문 상태 변경
-//         * 2. 주문자, 수령자 정보 등록
-//         * 3. 주문 번호 만들기
-//         */
-//
-//        return CompleteOrderResponse.from(null);
-//    }
+    @Transactional
+    @Override
+    public CompleteOrderResponse completeOrder(CompleteOrderRequest completeOrderRequest, HttpServletRequest request){
+        /**
+         * 주문 정보를 update 해야됨!
+         * 1. 주문 상태 변경
+         * 2. 주문자, 수령자 정보 등록
+         * 3. 주문 번호 만들기
+         */
+
+        return CompleteOrderResponse.from(null);
+    }
 //
 //
 //    @Override
