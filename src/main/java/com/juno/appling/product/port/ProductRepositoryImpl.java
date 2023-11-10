@@ -19,4 +19,17 @@ public class ProductRepositoryImpl implements ProductRepository {
                 .map(ProductEntity::toModel)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Product findById(Long productId) {
+        ProductEntity productEntity = productJpaRepository.findById(productId).orElseThrow(
+            () -> new IllegalArgumentException("유효하지 않은 상품입니다.")
+        );
+        return productEntity.toModel();
+    }
+
+    @Override
+    public Product save(Product product) {
+        return productJpaRepository.save(ProductEntity.from(product)).toModel();
+    }
 }

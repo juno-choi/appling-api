@@ -85,4 +85,23 @@ public class Product {
         }
     }
 
+    public void checkInStock(int ea, Long optionId) {
+        if (this.type == ProductType.NORMAL) {
+            if (this.ea < ea) {
+                throw new IllegalArgumentException(String.format("재고가 부족합니다! 현재 재고 = %s개", this.ea));
+            }
+        } else if (this.type == ProductType.OPTION) {
+            Option option = this.optionList.stream()
+                    .filter(o -> o.getId().equals(optionId))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException(String.format("유효하지 않은 옵션입니다. option id = %s", optionId)));
+            option.checkInStock(ea);
+        }
+    }
+
+    public void minusEa(int ea) {
+        if (this.type == ProductType.NORMAL) {
+            this.ea -= ea;
+        }
+    }
 }

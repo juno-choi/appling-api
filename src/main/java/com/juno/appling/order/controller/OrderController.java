@@ -2,7 +2,9 @@ package com.juno.appling.order.controller;
 
 import com.juno.appling.global.base.Api;
 import com.juno.appling.global.base.ResultCode;
+import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderRequest;
+import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.OrderInfoResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.service.OrderService;
@@ -35,12 +37,12 @@ public class OrderController {
         );
     }
 
-//    @PatchMapping("/complete")
-//    public ResponseEntity<Api<CompleteOrderResponse>> completeOrder(@RequestBody @Validated CompleteOrderRequest completeOrderRequest, HttpServletRequest request, BindingResult bindingResult) {
-//        return ResponseEntity.ok(
-//            new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.completeOrder(completeOrderRequest, request))
-//        );
-//    }
+    @PatchMapping("/complete")
+    public ResponseEntity<Api<CompleteOrderResponse>> completeOrder(@RequestBody @Validated CompleteOrderRequest completeOrderRequest, HttpServletRequest request, BindingResult bindingResult) {
+        return ResponseEntity.ok(
+            new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.completeOrder(completeOrderRequest, request))
+        );
+    }
 //
 //    @GetMapping("/seller")
 //    public ResponseEntity<Api<OrderResponse>> getOrderBySeller(
