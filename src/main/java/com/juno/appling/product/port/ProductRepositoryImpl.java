@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -18,5 +19,13 @@ public class ProductRepositoryImpl implements ProductRepository {
         return productJpaRepository.findAllById(ids).stream()
                 .map(ProductEntity::toModel)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Product findById(Long productId) {
+        ProductEntity productEntity = productJpaRepository.findById(productId).orElseThrow(
+            () -> new IllegalArgumentException("유효하지 않은 상품입니다.")
+        );
+        return productEntity.toModel();
     }
 }

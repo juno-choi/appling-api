@@ -97,7 +97,6 @@ public class OrderServiceImpl implements OrderService{
         }
 
         orderItemRepository.saveAll(orderItemList);
-        order.createOrderNumber();
         orderRepository.save(order);
         return PostTempOrderResponse.builder().orderId(order.getId()).build();
     }
@@ -135,10 +134,31 @@ public class OrderServiceImpl implements OrderService{
     public CompleteOrderResponse completeOrder(CompleteOrderRequest completeOrderRequest, HttpServletRequest request){
         /**
          * 주문 정보를 update 해야됨!
-         * 1. 주문 상태 변경
-         * 2. 주문자, 수령자 정보 등록
-         * 3. 주문 번호 만들기
+         *
+         * 재고 확인
+         * 상품 재고 마이너스 처리
+         * 배송 정보 등록
+         * 주문과 주문 상품 상태 수정
+         * 주문 번호 생성
          */
+
+        // 주문 확인
+        Long orderId = completeOrderRequest.getOrderId();
+        Order order = orderRepository.findById(orderId);
+        order.checkOrder(memberUtil.getMember(request).toModel());
+
+        // 재고 확인
+        order.getOrderItemList().forEach(orderItem -> {
+            OrderProduct orderProduct = orderItem.getOrderProduct();
+            Long productId = orderProduct.getProductId();
+            Product product = productRepository.findById(productId);
+            int ea = orderItem.getEa();
+            Long optionId = orderItem.getOrderOption() == null ? null : orderItem.getOrderOption().getId();
+            product.checkInStock(ea, optionId);
+        });
+
+
+        order.createOrderNumber();
 
         return CompleteOrderResponse.from(null);
     }

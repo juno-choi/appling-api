@@ -3,8 +3,10 @@ package com.juno.appling.order.service;
 import com.juno.appling.member.repository.MemberJpaRepository;
 import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
+import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
+import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.repository.DeliveryJpaRepository;
 import com.juno.appling.order.repository.OrderItemJpaRepository;
@@ -12,6 +14,7 @@ import com.juno.appling.order.repository.OrderJpaRepository;
 import com.juno.appling.product.repository.CategoryJpaRepository;
 import com.juno.appling.product.repository.OptionJpaRepository;
 import com.juno.appling.product.repository.ProductJpaRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,6 +34,7 @@ import java.util.List;
 
 import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
 import static com.juno.appling.Base.*;
+import static com.juno.appling.OrderBase.ORDER_FIRST_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -107,6 +111,21 @@ class OrderServiceTest {
         PostTempOrderResponse postTempOrderResponse = orderService.postTempOrder(tempOrderRequest, request);
         //then
         assertThat(postTempOrderResponse.getOrderId()).isGreaterThan(0);
+    }
+
+    @Test
+    @DisplayName("주문 완료")
+    void completeOrder() {
+        //given
+        request.addHeader(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken());
+        CompleteOrderRequest completeOrderRequest = CompleteOrderRequest.builder()
+                .orderId(ORDER_FIRST_ID)
+                .build();
+        //when
+        CompleteOrderResponse completeOrderResponse = orderService.completeOrder(completeOrderRequest, request);
+
+        //then
+        Assertions.assertThat(completeOrderResponse.getOrderNumber()).isNotNull();
     }
 
 //    @Test
