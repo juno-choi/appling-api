@@ -2,24 +2,18 @@ package com.juno.appling.order.service;
 
 import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.model.Member;
-import com.juno.appling.member.repository.SellerJpaRepository;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.OrderInfoResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
-import com.juno.appling.order.domain.model.Order;
-import com.juno.appling.order.domain.model.OrderItem;
-import com.juno.appling.order.domain.model.OrderOption;
-import com.juno.appling.order.domain.model.OrderProduct;
-import com.juno.appling.order.port.OrderItemRepository;
-import com.juno.appling.order.port.OrderOptionRepository;
-import com.juno.appling.order.port.OrderProductRepository;
-import com.juno.appling.order.port.OrderRepository;
-import com.juno.appling.order.repository.OrderCustomJpaRepositoryImpl;
+import com.juno.appling.order.domain.model.*;
+import com.juno.appling.order.port.*;
+import com.juno.appling.product.domain.model.Option;
 import com.juno.appling.product.domain.model.Product;
 import com.juno.appling.product.enums.ProductType;
+import com.juno.appling.product.port.OptionRepository;
 import com.juno.appling.product.port.ProductRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -38,14 +32,13 @@ import java.util.Map;
 @Transactional(readOnly = true)
 public class OrderServiceImpl implements OrderService{
     private final MemberUtil memberUtil;
-    private final SellerJpaRepository sellerJpaRepository;
-    private final OrderCustomJpaRepositoryImpl orderCustomRepositoryImpl;
-
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
+    private final OptionRepository optionRepository;
     private final OrderProductRepository orderProductRepository;
     private final OrderOptionRepository orderOptionRepository;
     private final OrderItemRepository orderItemRepository;
+    private final DeliveryRepository deliveryRepository;
 
     @Transactional
     @Override
@@ -152,13 +145,25 @@ public class OrderServiceImpl implements OrderService{
             OrderProduct orderProduct = orderItem.getOrderProduct();
             Long productId = orderProduct.getProductId();
             Product product = productRepository.findById(productId);
+            ProductType type = product.getType();
+
             int ea = orderItem.getEa();
-            Long optionId = orderItem.getOrderOption() == null ? null : orderItem.getOrderOption().getId();
-            product.checkInStock(ea, optionId);
+            Long optionId = orderItem.getOrderOption() == null ? null : orderItem.getOrderOption().getOptionId();
 
             // 상품 마이너스 처리
-            product.minusEa(ea);
-            productRepository.save(product);
+            if (type == ProductType.NORMAL) {
+                product.checkInStock(ea, optionId);
+                product.minusEa(ea);
+                productRepository.save(product);
+            } else if (type == ProductType.OPTION) {
+                Option option = optionRepository.findById(optionId);
+                option.checkInStock(ea);
+                option.minusEa(ea);
+                optionRepository.save(option);
+            }
+
+            // 배송 정보 등록
+            deliveryRepository.save(Delivery.create(completeOrderRequest, orderItem, order));
         });
 
         order.complete();

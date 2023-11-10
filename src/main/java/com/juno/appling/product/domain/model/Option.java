@@ -30,4 +30,8 @@ public class Option {
             throw new IllegalArgumentException(String.format("재고가 부족합니다! 현재 재고 = %s개", this.ea));
         }
     }
+
+    public void minusEa(int ea) {
+        this.ea -= ea;
+    }
 }

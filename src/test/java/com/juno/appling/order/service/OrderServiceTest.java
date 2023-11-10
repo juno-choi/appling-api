@@ -120,6 +120,14 @@ class OrderServiceTest {
         request.addHeader(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken());
         CompleteOrderRequest completeOrderRequest = CompleteOrderRequest.builder()
                 .orderId(ORDER_FIRST_ID)
+                .ownerAddress("주소")
+                .ownerAddressDetail("상세 주소")
+                .ownerName("주문자")
+                .ownerTel("01012341234")
+                .recipientAddress("수령인 주소")
+                .recipientAddressDetail("수령인 상세 주소")
+                .recipientName("수령인")
+                .recipientTel("01012341234")
                 .build();
         //when
         CompleteOrderResponse completeOrderResponse = orderService.completeOrder(completeOrderRequest, request);
