@@ -155,12 +155,17 @@ public class OrderServiceImpl implements OrderService{
             int ea = orderItem.getEa();
             Long optionId = orderItem.getOrderOption() == null ? null : orderItem.getOrderOption().getId();
             product.checkInStock(ea, optionId);
+
+            // 상품 마이너스 처리
+            product.minusEa(ea);
+            productRepository.save(product);
         });
 
-
+        order.complete();
         order.createOrderNumber();
+        orderRepository.save(order);
 
-        return CompleteOrderResponse.from(null);
+        return CompleteOrderResponse.from(order);
     }
 //
 //

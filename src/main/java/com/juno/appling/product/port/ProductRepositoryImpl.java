@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -27,5 +26,10 @@ public class ProductRepositoryImpl implements ProductRepository {
             () -> new IllegalArgumentException("유효하지 않은 상품입니다.")
         );
         return productEntity.toModel();
+    }
+
+    @Override
+    public Product save(Product product) {
+        return productJpaRepository.save(ProductEntity.from(product)).toModel();
     }
 }

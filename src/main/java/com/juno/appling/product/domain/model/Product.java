@@ -98,4 +98,8 @@ public class Product {
             option.checkInStock(ea);
         }
     }
+
+    public void minusEa(int ea) {
+        this.ea -= ea;
+    }
 }
