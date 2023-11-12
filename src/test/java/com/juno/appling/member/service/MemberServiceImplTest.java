@@ -19,7 +19,7 @@ import com.juno.appling.member.domain.entity.RecipientEntity;
 import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.enums.RecipientInfoStatus;
 import com.juno.appling.member.repository.MemberJpaRepository;
-import com.juno.appling.member.repository.SellerJpaRepository;
+import com.juno.appling.product.repository.SellerJpaRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -28,8 +28,8 @@ public class SellerVo {
     @NotNull
     String tel;
 
-    public static SellerVo of(SellerEntity sellerEntity) {
-        return new SellerVo(sellerEntity.getId(), sellerEntity.getEmail() , sellerEntity.getCompany(),
-            sellerEntity.getZonecode(), sellerEntity.getAddress(), sellerEntity.getAddressDetail(), sellerEntity.getTel());
+    public static SellerVo of(SellerEntity seller) {
+        return new SellerVo(seller.getId(), seller.getEmail() , seller.getCompany(),
+            seller.getZonecode(), seller.getAddress(), seller.getAddressDetail(), seller.getTel());
     }
 }

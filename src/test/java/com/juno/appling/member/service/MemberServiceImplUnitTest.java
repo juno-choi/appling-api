@@ -24,7 +24,7 @@ import com.juno.appling.member.enums.IntroduceStatus;
 import com.juno.appling.member.repository.IntroduceJpaRepository;
 import com.juno.appling.member.repository.MemberApplySellerJpaRepository;
 import com.juno.appling.member.repository.MemberJpaRepository;
-import com.juno.appling.member.repository.SellerJpaRepository;
+import com.juno.appling.product.repository.SellerJpaRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;

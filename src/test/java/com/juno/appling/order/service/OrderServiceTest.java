@@ -1,7 +1,7 @@
 package com.juno.appling.order.service;
 
 import com.juno.appling.member.repository.MemberJpaRepository;
-import com.juno.appling.member.repository.SellerJpaRepository;
+import com.juno.appling.product.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;

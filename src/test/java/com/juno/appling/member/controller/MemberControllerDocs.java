@@ -38,7 +38,7 @@ import com.juno.appling.member.enums.RecipientInfoStatus;
 import com.juno.appling.member.repository.IntroduceJpaRepository;
 import com.juno.appling.member.repository.MemberJpaRepository;
 import com.juno.appling.member.repository.RecipientJpaRepository;
-import com.juno.appling.member.repository.SellerJpaRepository;
+import com.juno.appling.product.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.member.service.MemberService;
 import com.juno.appling.product.repository.CategoryJpaRepository;

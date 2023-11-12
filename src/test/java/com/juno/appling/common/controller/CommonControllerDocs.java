@@ -26,7 +26,7 @@ import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.enums.IntroduceStatus;
 import com.juno.appling.member.repository.IntroduceJpaRepository;
 import com.juno.appling.member.repository.MemberJpaRepository;
-import com.juno.appling.member.repository.SellerJpaRepository;
+import com.juno.appling.product.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.product.repository.CategoryJpaRepository;
 import java.nio.charset.StandardCharsets;
