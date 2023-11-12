@@ -7,24 +7,28 @@ import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.OrderInfoResponse;
+import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
+import com.juno.appling.order.controller.vo.OrderVo;
 import com.juno.appling.order.domain.model.*;
+import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.order.port.*;
 import com.juno.appling.product.domain.model.Option;
 import com.juno.appling.product.domain.model.Product;
+import com.juno.appling.product.domain.model.Seller;
 import com.juno.appling.product.enums.ProductType;
 import com.juno.appling.product.port.OptionRepository;
 import com.juno.appling.product.port.ProductRepository;
+import com.juno.appling.product.port.SellerRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +43,7 @@ public class OrderServiceImpl implements OrderService{
     private final OrderOptionRepository orderOptionRepository;
     private final OrderItemRepository orderItemRepository;
     private final DeliveryRepository deliveryRepository;
+    private final SellerRepository sellerRepository;
 
     @Transactional
     @Override
@@ -172,23 +177,20 @@ public class OrderServiceImpl implements OrderService{
 
         return CompleteOrderResponse.from(order);
     }
-//
-//
-//    @Override
-//    public OrderResponse getOrderListBySeller(Pageable pageable, String search, String status, HttpServletRequest request) {
-//        MemberEntity memberEntity = memberUtil.getMember(request);
-//        SellerEntity sellerEntity = sellerJpaRepository.findByMember(memberEntity)
-//                .orElseThrow(() -> new UnauthorizedException("잘못된 접근입니다."));
-//
-//        /**
-//         * 1. order item 중 seller product가 있는 리스트 불러오기
-//         * 2. response data 만들기
-//         */
-//        OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase(Locale.ROOT));
-//
-//        Page<OrderVo> orderList = orderCustomRepositoryImpl.findAllBySeller(pageable, search, orderStatus,
-//            sellerEntity);
-//
-//        return OrderResponse.from(orderList);
-//    }
+
+
+    @Override
+    public OrderResponse getOrderListBySeller(Pageable pageable, String search, String status, HttpServletRequest request) {
+
+        /**
+         * member로 seller 정보 가져오기
+         * 주문 정보를 seller id로 가져오기
+         */
+        Member member = memberUtil.getMember(request).toModel();
+        OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase(Locale.ROOT));
+        Seller seller = sellerRepository.findByMember(member);
+        Page<OrderVo> orderPage = orderRepository.findAllBySeller(pageable, search, orderStatus, seller);
+
+        return OrderResponse.from(orderPage);
+    }
 }

@@ -1,4 +1,4 @@
-package com.juno.appling.member.repository;
+package com.juno.appling.product.repository;
 
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.product.domain.entity.SellerEntity;

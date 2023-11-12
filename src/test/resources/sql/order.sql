@@ -23,7 +23,3 @@ VALUES(1, 1, 2, 300, 600, 'TEMP', null, 1, '2023-11-07 22:29:38.583188', '2023-1
 INSERT INTO order_item
 (order_item_id, order_id, ea, product_price, product_total_price, status, order_option_id, order_product_id, created_at, modified_at)
 VALUES(2, 1, 3, 1000, 100, 'TEMP', 1, 2, '2023-11-07 22:29:38.583188', '2023-11-07 22:29:38.583204');
-
---INSERT INTO delivery
---(delivery_id, created_at, modified_at, owner_address, owner_address_detail, owner_name, owner_tel, owner_zonecode, recipient_address, recipient_address_detail, recipient_name, recipient_tel, recipient_zonecode, status, order_id, order_item_id)
---VALUES(1, '2023-09-26 15:09:27.363409000', '2023-09-26 15:09:27.363409000', '주문자 주소', '주문자 상세 주소', '주문자명', '01012341234', '123-12', '수령인 주소', '수령인 상세 주소', '수령인명', '01043124321', '321-21', 'COMPLETE', 1, 1);
