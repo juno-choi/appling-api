@@ -1,5 +1,7 @@
 package com.juno.appling.order.port;
 
+import com.juno.appling.member.domain.entity.MemberEntity;
+import com.juno.appling.member.domain.model.Member;
 import com.juno.appling.order.controller.vo.OrderVo;
 import com.juno.appling.order.domain.entity.OrderEntity;
 import com.juno.appling.order.domain.model.Order;
@@ -33,7 +35,8 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public Page<OrderVo> findAllBySeller(Pageable pageable, String search, OrderStatus status, Seller seller) {
-        return orderCustomJpaRepository.findAllBySeller(pageable, search, status, SellerEntity.from(seller));
+    public Page<OrderVo> findAll(Pageable pageable, String search, OrderStatus status, Seller seller, Member member) {
+        return orderCustomJpaRepository.findAll(pageable, search, status, SellerEntity.from(seller), MemberEntity.from(member));
     }
+
 }

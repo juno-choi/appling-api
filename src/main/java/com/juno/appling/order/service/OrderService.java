@@ -14,4 +14,6 @@ public interface OrderService {
     OrderInfoResponse getOrderInfo(Long orderId, HttpServletRequest request);
     CompleteOrderResponse completeOrder(CompleteOrderRequest completeOrderRequest, HttpServletRequest request);
     OrderResponse getOrderListBySeller(Pageable pageable, String search, String status, HttpServletRequest request);
+
+    OrderResponse getOrderListByMember(Pageable pageable, String search, String status, HttpServletRequest request);
 }

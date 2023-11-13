@@ -34,7 +34,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional(readOnly = true)
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
     private final MemberUtil memberUtil;
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
@@ -189,7 +189,16 @@ public class OrderServiceImpl implements OrderService{
         Member member = memberUtil.getMember(request).toModel();
         OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase(Locale.ROOT));
         Seller seller = sellerRepository.findByMember(member);
-        Page<OrderVo> orderPage = orderRepository.findAllBySeller(pageable, search, orderStatus, seller);
+        Page<OrderVo> orderPage = orderRepository.findAll(pageable, search, orderStatus, seller, null);
+
+        return OrderResponse.from(orderPage);
+    }
+
+    @Override
+    public OrderResponse getOrderListByMember(Pageable pageable, String search, String status, HttpServletRequest request) {
+        Member member = memberUtil.getMember(request).toModel();
+        OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase(Locale.ROOT));
+        Page<OrderVo> orderPage = orderRepository.findAll(pageable, search, orderStatus, null, member);
 
         return OrderResponse.from(orderPage);
     }
