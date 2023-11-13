@@ -62,6 +62,9 @@ public class MemberEntity {
     private LocalDateTime modifiedAt;
 
     public static MemberEntity from(Member member) {
+        if(member == null) {
+            return null;
+        }
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.id = member.getId();
         memberEntity.email = member.getEmail();

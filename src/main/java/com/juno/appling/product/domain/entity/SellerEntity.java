@@ -54,6 +54,9 @@ public class SellerEntity {
     private LocalDateTime modifiedAt;
 
     public static SellerEntity from(Seller seller) {
+        if(seller == null) {
+            return null;
+        }
         SellerEntity sellerEntity = new SellerEntity();
         sellerEntity.id = seller.getId();
         sellerEntity.member = MemberEntity.from(seller.getMember());

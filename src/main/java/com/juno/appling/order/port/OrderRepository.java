@@ -1,5 +1,6 @@
 package com.juno.appling.order.port;
 
+import com.juno.appling.member.domain.model.Member;
 import com.juno.appling.order.controller.vo.OrderVo;
 import com.juno.appling.order.domain.model.Order;
 import com.juno.appling.order.enums.OrderStatus;
@@ -12,5 +13,5 @@ public interface OrderRepository {
 
     Order findById(Long orderId);
 
-    Page<OrderVo> findAllBySeller(Pageable pageable, String search, OrderStatus status, Seller seller);
+    Page<OrderVo> findAll(Pageable pageable, String search, OrderStatus status, Seller seller, Member member);
 }

@@ -88,3 +88,24 @@ include::{snippets}/order-controller-docs/get-order-by-seller/http-response.adoc
 ==== 🟢 RESPONSE FIELD
 
 include::{snippets}/order-controller-docs/get-order-by-seller/response-fields.adoc[]
+
+### 📗 주문 내역 확인 (member)
+
+==== 🔵 REQUEST
+include::{snippets}/order-controller-docs/get-order-by-member/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/order-controller-docs/get-order-by-member/request-headers.adoc[]
+
+==== 🔵 REQUEST PARAMETERS
+
+include::{snippets}/order-controller-docs/get-order-by-member/query-parameters.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/order-controller-docs/get-order-by-member/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/order-controller-docs/get-order-by-member/response-fields.adoc[]
