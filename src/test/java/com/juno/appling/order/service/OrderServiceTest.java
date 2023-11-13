@@ -1,6 +1,7 @@
 package com.juno.appling.order.service;
 
 import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.order.controller.response.OrderDetailResponse;
 import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.product.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
@@ -150,5 +151,17 @@ class OrderServiceTest {
             request);
         //then
         assertThat(complete.getTotalElements()).isGreaterThan(0);
+    }
+
+    @Test
+    @DisplayName("관리자툴에서 주문 상세 불러오기 성공")
+    @Transactional
+    void getOrderDetail() {
+        //given
+        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
+        //when
+        Pageable pageable = Pageable.ofSize(10);
+        OrderDetailResponse orderDetail = orderService.getOrderDetail(ORDER_FIRST_ID, request);
+        //then
     }
 }

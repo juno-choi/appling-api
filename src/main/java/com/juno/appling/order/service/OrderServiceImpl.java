@@ -5,10 +5,7 @@ import com.juno.appling.member.domain.model.Member;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
-import com.juno.appling.order.controller.response.CompleteOrderResponse;
-import com.juno.appling.order.controller.response.OrderInfoResponse;
-import com.juno.appling.order.controller.response.OrderResponse;
-import com.juno.appling.order.controller.response.PostTempOrderResponse;
+import com.juno.appling.order.controller.response.*;
 import com.juno.appling.order.controller.vo.OrderVo;
 import com.juno.appling.order.domain.model.*;
 import com.juno.appling.order.enums.OrderStatus;
@@ -201,5 +198,12 @@ public class OrderServiceImpl implements OrderService {
         Page<OrderVo> orderPage = orderRepository.findAll(pageable, search, orderStatus, null, member);
 
         return OrderResponse.from(orderPage);
+    }
+
+    @Override
+    public OrderDetailResponse getOrderDetail(Long orderId, HttpServletRequest request) {
+        Member member = memberUtil.getMember(request).toModel();
+        Order order = orderRepository.findById(orderId);
+        return null;
     }
 }
