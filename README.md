@@ -1,16 +1,16 @@
 # 🍎 Appling API
 
-👉 [서버 실행 후 문서 url](http://localhost:8000/docs.html)
+👉 [서버 실행 후 문서 url](http://localhost:8000/api/docs/index.html)
 
 👉 `port` 8000
 
-👉 [소나큐브](http://39.118.30.247:9000/)
+[//]: # (👉 [소나큐브]&#40;http://39.118.30.247:9000/&#41;)
 
-`id` visitor
+[//]: # (`id` visitor)
 
-`pw` qwer1234
+[//]: # (`pw` qwer1234)
 
-[dev 서버](http://3.34.1.129:5173/)
+[애플링 front 서버](http://appling.me)
 
 ---
 
