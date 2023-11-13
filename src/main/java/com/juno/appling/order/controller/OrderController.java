@@ -8,6 +8,7 @@ import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.OrderInfoResponse;
 import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
+import com.juno.appling.order.controller.vo.OrderVo;
 import com.juno.appling.order.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +59,13 @@ public class OrderController {
         );
     }
 
+    @GetMapping("/seller/{order_id}")
+    public ResponseEntity<Api<OrderVo>> getOrderDetailBySeller(@PathVariable (name = "order_id") Long orderId, HttpServletRequest request) {
+        return ResponseEntity.ok(
+                new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderDetailBySeller(orderId, request))
+        );
+    }
+
     @GetMapping("/member")
     public ResponseEntity<Api<OrderResponse>> getOrderByMember(
             @PageableDefault(size = 10, page = 0) Pageable pageable,
@@ -66,6 +74,13 @@ public class OrderController {
             HttpServletRequest request) {
         return ResponseEntity.ok(
                 new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderListByMember(pageable, search, status, request))
+        );
+    }
+
+    @GetMapping("/member/{order_id}")
+    public ResponseEntity<Api<OrderVo>> getOrderDetailByMember(@PathVariable (name = "order_id") Long orderId, HttpServletRequest request) {
+        return ResponseEntity.ok(
+                new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderDetailByMember(orderId, request))
         );
     }
 }

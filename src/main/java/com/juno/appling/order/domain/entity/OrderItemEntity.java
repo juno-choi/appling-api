@@ -51,6 +51,9 @@ public class OrderItemEntity {
     private LocalDateTime modifiedAt;
 
     public static OrderItemEntity from(OrderItem orderItem) {
+        if(orderItem == null) {
+            return null;
+        }
         OrderItemEntity orderItemEntity = new OrderItemEntity();
         orderItemEntity.id = orderItem.getId();
         orderItemEntity.order = OrderEntity.from(orderItem.getOrder());
