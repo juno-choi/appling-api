@@ -464,4 +464,85 @@ class OrderControllerDocs extends RestdocsBaseTest {
                 )
         ));
     }
+
+    @Test
+    @DisplayName(PREFIX + "/member/{order_id} (GET)")
+    @SqlGroup({
+            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    })
+    void getOrderDetailByMember() throws Exception {
+        //given
+        //when
+        ResultActions perform = mock.perform(
+                get(PREFIX + "/member/{order_id}", ORDER_FIRST_ID)
+                        .header(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken())
+        );
+        //then
+        perform.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token (MEMBER 권한 이상)")
+                ),
+                pathParameters(
+                        parameterWithName("order_id").description("주문 id")
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.order_id").description("주문 ID").type(JsonFieldType.NUMBER),
+                        fieldWithPath("data.order_number").description("주문 번호").type(JsonFieldType.STRING),
+                        fieldWithPath("data..created_at").description("주문 생성 일자").type(JsonFieldType.STRING),
+                        fieldWithPath("data.modified_at").description("주문 수정 일자").type(JsonFieldType.STRING),
+                        fieldWithPath("data.member.email").description("회원 이메일").type(JsonFieldType.STRING),
+                        fieldWithPath("data.member.nickname").description("회원 닉네임").type(JsonFieldType.STRING),
+                        fieldWithPath("data.member.name").description("회원 이름").type(JsonFieldType.STRING),
+                        fieldWithPath("data.member.birth").description("회원 생년월일").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].product_id").description("상품 ID").type(JsonFieldType.NUMBER),
+                        fieldWithPath("data.order_item_list[].product_main_explanation").description("상품 메인 설명").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].product_sub_explanation").description("상품 보조 설명").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].ea").description("상품 개수").type(JsonFieldType.NUMBER),
+                        fieldWithPath("data.order_item_list[].main_title").description("상품 제목").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].main_explanation").description("상품 메인 설명").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].origin_price").description("원래 가격").type(JsonFieldType.NUMBER),
+                        fieldWithPath("data.order_item_list[].price").description("가격").type(JsonFieldType.NUMBER),
+                        fieldWithPath("data.order_item_list[].purchase_inquiry").description("취급방법").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].origin").description("원산지").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].producer").description("공급자").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].main_image").description("상품 메인 이미지 URL").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].image1").description("이미지1").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].image2").description("이미지2").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].image3").description("이미지3").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].view_cnt").description("조회수").type(JsonFieldType.NUMBER),
+                        fieldWithPath("data.order_item_list[].status").description("상품 상태").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].created_at").description("상품 생성일").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].modified_at").description("상품 수정일").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].seller.seller_id").description("판매자 id").type(JsonFieldType.NUMBER),
+                        fieldWithPath("data.order_item_list[].seller.email").description("판매자 이메일").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].seller.company").description("판매자 회사명").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].seller.zonecode").description("판매자 우편번호").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].seller.address").description("판매자 주소").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].seller.address_detail").description("판매자 상세주소").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].seller.tel").description("판매자 전화번호").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].category.category_id").description("카테고리 ID").type(JsonFieldType.NUMBER),
+                        fieldWithPath("data.order_item_list[].category.name").description("카테고리 이름").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].category.created_at").description("카테고리 생성일").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].category.modified_at").description("카테고리 수정일").type(JsonFieldType.STRING),
+                        fieldWithPath("data.order_item_list[].option.option_id").description("옵션 ID").type(JsonFieldType.NUMBER).optional(),
+                        fieldWithPath("data.order_item_list[].option.name").description("옵션 이름").type(JsonFieldType.STRING).optional(),
+                        fieldWithPath("data.order_item_list[].option.extra_price").description("옵션 추가 가격").type(JsonFieldType.NUMBER).optional(),
+                        fieldWithPath("data.order_item_list[].option.ea").description("옵션 개수").type(JsonFieldType.NUMBER).optional(),
+                        fieldWithPath("data.order_item_list[].option.created_at").description("옵션 생성일").type(JsonFieldType.STRING).optional(),
+                        fieldWithPath("data.order_item_list[].option.modified_at").description("옵션 수정일").type(JsonFieldType.STRING).optional(),
+                        fieldWithPath("data.delivery.owner_name").description("주문자 이름").type(JsonFieldType.STRING),
+                        fieldWithPath("data.delivery.owner_zonecode").description("주문자 우편번호").type(JsonFieldType.STRING),
+                        fieldWithPath("data.delivery.owner_address").description("주문자 주소").type(JsonFieldType.STRING),
+                        fieldWithPath("data.delivery.owner_address_detail").description("주문자 상세주소").type(JsonFieldType.STRING),
+                        fieldWithPath("data.delivery.owner_tel").description("주문자 전화번호").type(JsonFieldType.STRING),
+                        fieldWithPath("data.delivery.recipient_name").description("수령인 이름").type(JsonFieldType.STRING),
+                        fieldWithPath("data.delivery.recipient_zonecode").description("수령인 우편번호").type(JsonFieldType.STRING),
+                        fieldWithPath("data.delivery.recipient_address").description("수령인 주소").type(JsonFieldType.STRING),
+                        fieldWithPath("data.delivery.recipient_address_detail").description("수령인 상세주소").type(JsonFieldType.STRING),
+                        fieldWithPath("data.delivery.recipient_tel").description("수령인 전화번호").type(JsonFieldType.STRING)
+                )
+        ));
+    }
 }
