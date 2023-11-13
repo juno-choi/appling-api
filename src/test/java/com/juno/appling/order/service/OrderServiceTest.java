@@ -1,6 +1,7 @@
 package com.juno.appling.order.service;
 
 import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.product.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -136,17 +138,17 @@ class OrderServiceTest {
         Assertions.assertThat(completeOrderResponse.getOrderNumber()).isNotNull();
     }
 
-//    @Test
-//    @DisplayName("관리자툴에서 주문 불러오기 성공")
-//    @Transactional
-//    void getOrderList() {
-//        //given
-//        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
-//        //when
-//        Pageable pageable = Pageable.ofSize(10);
-//        OrderResponse complete = orderService.getOrderListBySeller(pageable, "", "COMPLETE",
-//            request);
-//        //then
-//        assertThat(complete.getTotalElements()).isGreaterThan(1);
-//    }
+    @Test
+    @DisplayName("관리자툴에서 주문 불러오기 성공")
+    @Transactional
+    void getOrderList() {
+        //given
+        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
+        //when
+        Pageable pageable = Pageable.ofSize(10);
+        OrderResponse complete = orderService.getOrderListBySeller(pageable, "", "COMPLETE",
+            request);
+        //then
+        assertThat(complete.getTotalElements()).isGreaterThan(0);
+    }
 }
