@@ -72,8 +72,6 @@ public class DeliveryEntity {
     public Delivery toModel() {
         return Delivery.builder()
             .id(id)
-            .order(order.toModel())
-            .orderItem(orderItem.toModel())
             .status(status)
             .ownerName(ownerName)
             .ownerZonecode(ownerZonecode)

@@ -7,6 +7,7 @@ import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.*;
 import com.juno.appling.order.controller.vo.OrderVo;
+import com.juno.appling.order.domain.entity.OrderEntity;
 import com.juno.appling.order.domain.model.*;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.order.port.*;
@@ -201,9 +202,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDetailResponse getOrderDetail(Long orderId, HttpServletRequest request) {
+    public OrderVo getOrderDetailByMember(Long orderId, HttpServletRequest request) {
         Member member = memberUtil.getMember(request).toModel();
         Order order = orderRepository.findById(orderId);
-        return null;
+        order.checkOrder(member);
+        return new OrderVo(OrderEntity.from(order));
     }
 }
