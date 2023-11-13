@@ -166,4 +166,18 @@ class OrderServiceTest {
         //then
         assertThat(orderDetail).isNotNull();
     }
+
+    @Test
+    @DisplayName("관리자툴에서 주문 상세 불러오기 성공")
+    @SqlGroup({
+            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    })
+    void getOrderDetailBySeller() {
+        //given
+        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
+        //when
+        OrderVo orderDetail = orderService.getOrderDetailBySeller(ORDER_FIRST_ID, request);
+        //then
+        assertThat(orderDetail).isNotNull();
+    }
 }
