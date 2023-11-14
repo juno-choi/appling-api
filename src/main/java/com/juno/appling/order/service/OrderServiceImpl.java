@@ -218,6 +218,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public void cancelOrder(CancelOrderRequest cancelOrderRequest, HttpServletRequest request) {
         Member member = memberUtil.getMember(request).toModel();
         Order order = orderRepository.findById(cancelOrderRequest.getOrderId());

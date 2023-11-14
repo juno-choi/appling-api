@@ -637,6 +637,7 @@ class OrderControllerDocs extends RestdocsBaseTest {
         ResultActions perform = mock.perform(
                 patch(PREFIX + "/member/cancel")
                         .header(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken())
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(cancelOrderRequest))
         );
         //then

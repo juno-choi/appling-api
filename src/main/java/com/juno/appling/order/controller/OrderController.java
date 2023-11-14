@@ -87,7 +87,7 @@ public class OrderController {
     }
 
     @PatchMapping("/member/cancel")
-    public ResponseEntity<Api<MessageVo>> cancelOrder(CancelOrderRequest cancelOrderRequest, HttpServletRequest request) {
+    public ResponseEntity<Api<MessageVo>> cancelOrder(@RequestBody @Validated CancelOrderRequest cancelOrderRequest, HttpServletRequest request) {
         orderService.cancelOrder(cancelOrderRequest, request);
         return ResponseEntity.ok(
                 new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, MessageVo.builder().message("주문이 취소되었습니다.").build())
