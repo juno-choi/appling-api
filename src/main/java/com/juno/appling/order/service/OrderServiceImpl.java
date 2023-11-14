@@ -215,4 +215,13 @@ public class OrderServiceImpl implements OrderService {
         order.checkOrder(member);
         return new OrderVo(OrderEntity.from(order));
     }
+
+    @Override
+    public void cancelOrder(Long orderId, HttpServletRequest request) {
+        Member member = memberUtil.getMember(request).toModel();
+        Order order = orderRepository.findById(orderId);
+        order.checkOrder(member);
+        order.cancel();
+        orderRepository.save(order);
+    }
 }
