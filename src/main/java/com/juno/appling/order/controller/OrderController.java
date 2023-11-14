@@ -1,7 +1,9 @@
 package com.juno.appling.order.controller;
 
 import com.juno.appling.global.base.Api;
+import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.global.base.ResultCode;
+import com.juno.appling.order.controller.request.CancelOrderRequest;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
@@ -81,6 +83,14 @@ public class OrderController {
     public ResponseEntity<Api<OrderVo>> getOrderDetailByMember(@PathVariable (name = "order_id") Long orderId, HttpServletRequest request) {
         return ResponseEntity.ok(
                 new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderDetailByMember(orderId, request))
+        );
+    }
+
+    @PatchMapping("/member/cancel")
+    public ResponseEntity<Api<MessageVo>> cancelOrder(@RequestBody @Validated CancelOrderRequest cancelOrderRequest, HttpServletRequest request) {
+        orderService.cancelOrder(cancelOrderRequest, request);
+        return ResponseEntity.ok(
+                new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, MessageVo.builder().message("주문이 취소되었습니다.").build())
         );
     }
 }

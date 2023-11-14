@@ -2,6 +2,7 @@ package com.juno.appling.order.service;
 
 import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.model.Member;
+import com.juno.appling.order.controller.request.CancelOrderRequest;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
@@ -214,5 +215,19 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId);
         order.checkOrder(member);
         return new OrderVo(OrderEntity.from(order));
+    }
+
+    @Override
+    @Transactional
+    public void cancelOrder(CancelOrderRequest cancelOrderRequest, HttpServletRequest request) {
+        Member member = memberUtil.getMember(request).toModel();
+        Order order = orderRepository.findById(cancelOrderRequest.getOrderId());
+        order.checkOrder(member);
+        order.cancel();
+        orderRepository.save(order);
+
+        List<OrderItem> orderItemList = order.getOrderItemList();
+        orderItemList.forEach(orderItem -> orderItem.cancel());
+        orderItemRepository.saveAll(orderItemList);
     }
 }

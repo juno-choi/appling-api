@@ -2,6 +2,7 @@ package com.juno.appling.order.domain.model;
 
 import com.juno.appling.member.domain.model.Member;
 import com.juno.appling.member.enums.MemberRole;
+import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.enums.ProductType;
 import org.junit.jupiter.api.DisplayName;
@@ -85,4 +86,16 @@ class OrderItemTest {
         assertThat(orderItem.getProductTotalPrice()).isEqualTo((orderProduct.getPrice() + orderOption.getExtraPrice()) * ea);
     }
 
+    @Test
+    @DisplayName("order item 취소 성공")
+    void cancel(){
+        //given
+        OrderItem orderItem = OrderItem.builder()
+                .status(OrderItemStatus.TEMP)
+                .build();
+        //when
+        orderItem.cancel();
+        //then
+        assertThat(orderItem.getStatus()).isEqualTo(OrderItemStatus.CANCEL);
+    }
 }

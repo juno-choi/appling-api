@@ -154,3 +154,24 @@ include::{snippets}/order-controller-docs/get-order-detail-by-member/http-respon
 ==== 🟢 RESPONSE FIELD
 
 include::{snippets}/order-controller-docs/get-order-detail-by-member/response-fields.adoc[]
+
+### 📗 주문 취소 (member)
+
+==== 🔵 REQUEST
+include::{snippets}/order-controller-docs/cancel-order/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/order-controller-docs/cancel-order/request-headers.adoc[]
+
+==== 🔵 REQUEST BODY
+
+include::{snippets}/order-controller-docs/cancel-order/request-body.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/order-controller-docs/cancel-order/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/order-controller-docs/cancel-order/response-fields.adoc[]
