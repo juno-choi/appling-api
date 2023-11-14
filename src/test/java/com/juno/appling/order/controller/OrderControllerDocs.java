@@ -3,6 +3,7 @@ package com.juno.appling.order.controller;
 import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.order.controller.request.CancelOrderRequest;
 import com.juno.appling.product.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
@@ -623,6 +624,33 @@ class OrderControllerDocs extends RestdocsBaseTest {
                         fieldWithPath("data.delivery.recipient_address").description("수령인 주소").type(JsonFieldType.STRING),
                         fieldWithPath("data.delivery.recipient_address_detail").description("수령인 상세주소").type(JsonFieldType.STRING),
                         fieldWithPath("data.delivery.recipient_tel").description("수령인 전화번호").type(JsonFieldType.STRING)
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName(PREFIX + "/member/cancel (PATCH)")
+    void cancelOrder() throws Exception {
+        //given
+        CancelOrderRequest cancelOrderRequest = CancelOrderRequest.builder().orderId(ORDER_FIRST_ID).build();
+        //when
+        ResultActions perform = mock.perform(
+                patch(PREFIX + "/member/cancel")
+                        .header(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken())
+                        .content(objectMapper.writeValueAsString(cancelOrderRequest))
+        );
+        //then
+        perform.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token (MEMBER 권한 이상)")
+                ),
+                requestFields(
+                        fieldWithPath("order_id").description("주문 id").type(JsonFieldType.NUMBER)
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.message").type(JsonFieldType.STRING).description("결과 메세지")
                 )
         ));
     }

@@ -1,9 +1,11 @@
 package com.juno.appling.order.service;
 
 import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.order.controller.request.CancelOrderRequest;
 import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.controller.vo.OrderVo;
 import com.juno.appling.order.domain.entity.OrderEntity;
+import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
@@ -189,9 +191,11 @@ class OrderServiceTest {
         //given
         request.addHeader(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken());
         OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
+        CancelOrderRequest cancelOrderRequest = CancelOrderRequest.builder().orderId(ORDER_FIRST_ID).build();
         //when
-        orderService.cancelOrder(ORDER_FIRST_ID, request);
+        orderService.cancelOrder(cancelOrderRequest, request);
         //then
         assertThat(orderEntity.getStatus()).isEqualTo(OrderStatus.CANCEL);
+        orderEntity.getOrderItemList().forEach(orderItemEntity -> assertThat(orderItemEntity.getStatus()).isEqualTo(OrderItemStatus.CANCEL));
     }
 }
