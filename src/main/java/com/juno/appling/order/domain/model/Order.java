@@ -63,4 +63,8 @@ public class Order {
     public void complete() {
         this.status = OrderStatus.COMPLETE;
     }
+
+    public void cancel() {
+        this.status = OrderStatus.CANCEL;
+    }
 }
