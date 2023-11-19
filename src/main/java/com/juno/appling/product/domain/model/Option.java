@@ -1,6 +1,7 @@
 package com.juno.appling.product.domain.model;
 
 import com.juno.appling.order.controller.request.TempOrderDto;
+import com.juno.appling.product.domain.entity.ProductEntity;
 import com.juno.appling.product.enums.OptionStatus;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +15,7 @@ public class Option {
     private String name;
     private int extraPrice;
     private int ea;
+    private ProductEntity product;
     private OptionStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
