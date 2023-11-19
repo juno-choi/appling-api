@@ -44,6 +44,7 @@ public class OptionEntity {
         optionEntity.extraPrice = option.getExtraPrice();
         optionEntity.ea = option.getEa();
         optionEntity.status = option.getStatus();
+        optionEntity.product = option.getProduct();
         optionEntity.createdAt = option.getCreatedAt();
         optionEntity.modifiedAt = option.getModifiedAt();
         return optionEntity;
@@ -56,6 +57,7 @@ public class OptionEntity {
             .extraPrice(extraPrice)
             .ea(ea)
             .status(status)
+            .product(product)
             .createdAt(createdAt)
             .modifiedAt(modifiedAt)
             .build();

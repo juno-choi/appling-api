@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 public class Delivery {
     private Long id;
     private Order order;
-    private OrderItem orderItem;
     private DeliveryStatus status;
 
     private String ownerName;
@@ -30,10 +29,9 @@ public class Delivery {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public static Delivery create(CompleteOrderRequest completeOrderRequest, OrderItem orderItem, Order order) {
+    public static Delivery create(CompleteOrderRequest completeOrderRequest, Order order) {
         return Delivery.builder()
                 .order(order)
-                .orderItem(orderItem)
                 .status(DeliveryStatus.TEMP)
                 .ownerName(completeOrderRequest.getOwnerName())
                 .ownerZonecode(completeOrderRequest.getOwnerZonecode())

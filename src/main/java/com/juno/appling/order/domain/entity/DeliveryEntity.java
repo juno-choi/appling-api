@@ -26,10 +26,6 @@ public class DeliveryEntity {
     @JoinColumn(name = "order_id")
     private OrderEntity order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_item_id")
-    private OrderItemEntity orderItem;
-
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
 
@@ -49,10 +45,13 @@ public class DeliveryEntity {
     private LocalDateTime modifiedAt;
 
     public static DeliveryEntity from(Delivery delivery) {
+        if(delivery == null) {
+            return null;
+        }
+
         DeliveryEntity deliveryEntity = new DeliveryEntity();
         deliveryEntity.id = delivery.getId();
         deliveryEntity.order = OrderEntity.from(delivery.getOrder());
-        deliveryEntity.orderItem = OrderItemEntity.from(delivery.getOrderItem());
         deliveryEntity.status = delivery.getStatus();
         deliveryEntity.ownerName = delivery.getOwnerName();
         deliveryEntity.ownerZonecode = delivery.getOwnerZonecode();
@@ -72,6 +71,7 @@ public class DeliveryEntity {
     public Delivery toModel() {
         return Delivery.builder()
             .id(id)
+            .order(order.toModel())
             .status(status)
             .ownerName(ownerName)
             .ownerZonecode(ownerZonecode)

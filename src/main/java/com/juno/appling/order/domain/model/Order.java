@@ -18,7 +18,7 @@ public class Order {
     private Member member;
     private String orderNumber;
     private List<OrderItem> orderItemList;
-    private List<Delivery> deliveryList;
+    private Delivery delivery;
     private OrderStatus status;
     private String orderName;
     private LocalDateTime createdAt;

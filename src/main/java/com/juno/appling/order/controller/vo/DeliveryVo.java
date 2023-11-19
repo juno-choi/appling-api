@@ -25,6 +25,9 @@ public class DeliveryVo {
     private String recipientTel;
 
     public static DeliveryVo fromDeliveryEntity(DeliveryEntity deliveryEntity) {
+        if(deliveryEntity == null) {
+            return null;
+        }
         return DeliveryVo.builder()
             .ownerName(deliveryEntity.getOwnerName())
             .ownerZonecode(deliveryEntity.getOwnerZonecode())
