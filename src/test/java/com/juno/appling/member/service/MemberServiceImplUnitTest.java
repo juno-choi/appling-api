@@ -1,32 +1,18 @@
 package com.juno.appling.member.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.global.security.TokenProvider;
-import com.juno.appling.member.controller.request.JoinRequest;
-import com.juno.appling.member.controller.request.PatchMemberRequest;
-import com.juno.appling.member.controller.request.PostIntroduceRequest;
-import com.juno.appling.member.controller.request.PostRecipientRequest;
-import com.juno.appling.member.controller.request.PostSellerRequest;
-import com.juno.appling.member.controller.request.PutSellerRequest;
-import com.juno.appling.product.domain.entity.IntroduceEntity;
+import com.juno.appling.member.controller.request.*;
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.enums.IntroduceStatus;
 import com.juno.appling.member.repository.IntroduceJpaRepository;
 import com.juno.appling.member.repository.MemberApplySellerJpaRepository;
 import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.product.domain.entity.IntroduceEntity;
+import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.product.repository.SellerJpaRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,6 +22,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
 import org.springframework.mock.web.MockHttpServletRequest;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.given;
 
 
 @ExtendWith({MockitoExtension.class})
@@ -300,7 +293,7 @@ class MemberServiceImplUnitTest {
         // when
         MessageVo messageVo = memberService.postIntroduce(postIntroduceRequest, request);
         // then
-        assertThat(messageVo.message()).contains("성공");
+        assertThat(messageVo.getMessage()).contains("성공");
     }
 
     @Test

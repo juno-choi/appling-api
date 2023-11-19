@@ -1,18 +1,8 @@
 package com.juno.appling.product.service;
 
-import static com.juno.appling.Base.CATEGORY_ID_FRUIT;
-import static com.juno.appling.Base.CATEGORY_ID_VEGETABLE;
-import static com.juno.appling.Base.SELLER2_EMAIL;
-import static com.juno.appling.Base.SELLER_EMAIL;
-import static com.juno.appling.Base.SELLER_LOGIN;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.repository.MemberJpaRepository;
-import com.juno.appling.product.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.product.controller.request.AddViewCntRequest;
 import com.juno.appling.product.controller.request.ProductRequest;
@@ -21,9 +11,10 @@ import com.juno.appling.product.controller.response.ProductListResponse;
 import com.juno.appling.product.controller.response.ProductResponse;
 import com.juno.appling.product.domain.entity.CategoryEntity;
 import com.juno.appling.product.domain.entity.ProductEntity;
+import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.product.repository.CategoryJpaRepository;
 import com.juno.appling.product.repository.ProductJpaRepository;
-import java.util.Optional;
+import com.juno.appling.product.repository.SellerJpaRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +30,12 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+import static com.juno.appling.Base.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SqlGroup({
@@ -338,7 +335,7 @@ class ProductServiceImplTest {
                 .productId(productEntity.getId()).build());
 
         //then
-        assertThat(messageVo.message())
+        assertThat(messageVo.getMessage())
             .contains("조회수 증가 성공");
         assertThat(productEntity.getViewCnt())
             .isEqualTo(1);

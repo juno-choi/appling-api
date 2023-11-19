@@ -1,12 +1,5 @@
 package com.juno.appling.member.service;
 
-import static com.juno.appling.Base.MEMBER_EMAIL;
-import static com.juno.appling.Base.MEMBER_LOGIN;
-import static com.juno.appling.Base.SELLER_EMAIL;
-import static com.juno.appling.Base.SELLER_LOGIN;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.member.controller.request.JoinRequest;
 import com.juno.appling.member.controller.request.LoginRequest;
@@ -16,9 +9,9 @@ import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.controller.response.RecipientListResponse;
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.domain.entity.RecipientEntity;
-import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.enums.RecipientInfoStatus;
 import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.product.repository.SellerJpaRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,6 +28,10 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.juno.appling.Base.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SqlGroup({
@@ -98,7 +95,7 @@ public class MemberServiceImplTest {
         // when
         MessageVo messageVo = memberService.patchMember(patchMemberRequest, request);
         // then
-        assertThat(messageVo.message()).contains("회원 정보 수정 성공");
+        assertThat(messageVo.getMessage()).contains("회원 정보 수정 성공");
     }
 
     @Test
@@ -148,7 +145,7 @@ public class MemberServiceImplTest {
         // when
         MessageVo messageVo = memberService.putSeller(putSellerRequest, request);
         // then
-        assertThat(messageVo.message()).contains("수정 성공");
+        assertThat(messageVo.getMessage()).contains("수정 성공");
         MemberEntity memberEntity = memberJpaRepository.findByEmail(SELLER_EMAIL).get();
         SellerEntity sellerEntity = sellerJpaRepository.findByMember(memberEntity).get();
         assertThat(sellerEntity.getCompany()).isEqualTo(changeCompany);

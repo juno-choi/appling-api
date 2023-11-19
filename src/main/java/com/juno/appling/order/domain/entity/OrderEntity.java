@@ -41,8 +41,9 @@ public class OrderEntity {
     private List<OrderItemEntity> orderItemList = new ArrayList<>();
 
     @NotAudited
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-    private List<DeliveryEntity> deliveryList = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "delivery_id")
+    private DeliveryEntity delivery;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
@@ -67,8 +68,7 @@ public class OrderEntity {
         orderEntity.orderNumber = order.getOrderNumber();
         orderEntity.orderItemList = Optional.ofNullable(order.getOrderItemList()).orElse(new ArrayList<>()).stream().map(OrderItemEntity::from).collect(
             Collectors.toList());
-        orderEntity.deliveryList = Optional.ofNullable(order.getDeliveryList()).orElse(new ArrayList<>()).stream().map(DeliveryEntity::from).collect(
-            Collectors.toList());
+        orderEntity.delivery = DeliveryEntity.from(order.getDelivery());
         orderEntity.status = order.getStatus();
         orderEntity.orderName = order.getOrderName();
         orderEntity.createdAt = order.getCreatedAt();
@@ -82,7 +82,7 @@ public class OrderEntity {
             .member(member.toModel())
             .orderNumber(orderNumber)
             .orderItemList(orderItemList.stream().map(OrderItemEntity::toModel).collect(Collectors.toList()))
-            .deliveryList(deliveryList.stream().map(DeliveryEntity::toModel).collect(Collectors.toList()))
+            .delivery(delivery == null ? null : delivery.toModel())
             .status(status)
             .orderName(orderName)
             .createdAt(createdAt)
