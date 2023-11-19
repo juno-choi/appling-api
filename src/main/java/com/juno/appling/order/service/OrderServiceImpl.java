@@ -6,9 +6,10 @@ import com.juno.appling.order.controller.request.CancelOrderRequest;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
-import com.juno.appling.order.controller.response.*;
-import com.juno.appling.order.controller.vo.OrderVo;
-import com.juno.appling.order.domain.entity.OrderEntity;
+import com.juno.appling.order.controller.response.CompleteOrderResponse;
+import com.juno.appling.order.controller.response.OrderInfoResponse;
+import com.juno.appling.order.controller.response.OrderResponse;
+import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.domain.model.*;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.order.port.*;
@@ -152,7 +153,7 @@ public class OrderServiceImpl implements OrderService {
             ProductType type = product.getType();
 
             int ea = orderItem.getEa();
-            Long optionId = orderItem.getOrderOption() == null ? null : orderItem.getOrderOption().getOptionId();
+            Long optionId = orderItem.getOrderProduct().getOrderOption() == null ? null : orderItem.getOrderProduct().getOrderOption().getOptionId();
 
             // 상품 마이너스 처리
             if (type == ProductType.NORMAL) {
@@ -188,34 +189,34 @@ public class OrderServiceImpl implements OrderService {
         Member member = memberUtil.getMember(request).toModel();
         OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase(Locale.ROOT));
         Seller seller = sellerRepository.findByMember(member);
-        Page<OrderVo> orderPage = orderRepository.findAll(pageable, search, orderStatus, seller, null);
+        Page<Order> orderPage = orderRepository.findAll(pageable, search, orderStatus, seller, null);
 
         return OrderResponse.from(orderPage);
     }
 
-    @Override
-    public OrderVo getOrderDetailBySeller(Long orderId, HttpServletRequest request) {
-        Member member = memberUtil.getMember(request).toModel();
-        Seller seller = sellerRepository.findByMember(member);
-        OrderVo order = orderRepository.findByIdAndSeller(orderId, seller);
-        return order;
-    }
-
-    @Override
-    public OrderResponse getOrderListByMember(Pageable pageable, String search, String status, HttpServletRequest request) {
-        Member member = memberUtil.getMember(request).toModel();
-        OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase(Locale.ROOT));
-        Page<OrderVo> orderPage = orderRepository.findAll(pageable, search, orderStatus, null, member);
-        return OrderResponse.from(orderPage);
-    }
-
-    @Override
-    public OrderVo getOrderDetailByMember(Long orderId, HttpServletRequest request) {
-        Member member = memberUtil.getMember(request).toModel();
-        Order order = orderRepository.findById(orderId);
-        order.checkOrder(member);
-        return new OrderVo(OrderEntity.from(order));
-    }
+//    @Override
+//    public OrderVo getOrderDetailBySeller(Long orderId, HttpServletRequest request) {
+//        Member member = memberUtil.getMember(request).toModel();
+//        Seller seller = sellerRepository.findByMember(member);
+//        OrderVo order = orderRepository.findByIdAndSeller(orderId, seller);
+//        return order;
+//    }
+//
+//    @Override
+//    public OrderResponse getOrderListByMember(Pageable pageable, String search, String status, HttpServletRequest request) {
+//        Member member = memberUtil.getMember(request).toModel();
+//        OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase(Locale.ROOT));
+//        Page<OrderVo> orderPage = orderRepository.findAll(pageable, search, orderStatus, null, member);
+//        return OrderResponse.from(orderPage);
+//    }
+//
+//    @Override
+//    public OrderVo getOrderDetailByMember(Long orderId, HttpServletRequest request) {
+//        Member member = memberUtil.getMember(request).toModel();
+//        Order order = orderRepository.findById(orderId);
+//        order.checkOrder(member);
+//        return new OrderVo(OrderEntity.from(order));
+//    }
 
     @Override
     @Transactional

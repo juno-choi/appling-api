@@ -18,6 +18,7 @@ public class OrderProduct {
     private Long productId;
     private Seller seller;
     private Category category;
+    private OrderOption orderOption;
     private String mainTitle;
     private String mainExplanation;
     private String productMainExplanation;
@@ -62,6 +63,10 @@ public class OrderProduct {
             .createdAt(product.getCreatedAt())
             .modifiedAt(product.getModifiedAt())
             .build();
+    }
+
+    public void addOption(OrderOption orderOption) {
+        this.orderOption = orderOption;
     }
 
     public OrderProductResponse toResponse() {

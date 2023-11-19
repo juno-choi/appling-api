@@ -14,7 +14,6 @@ public class OrderItem {
     private Long id;
     private Order order;
     private OrderProduct orderProduct;
-    private OrderOption orderOption;
     private OrderItemStatus status;
     private int ea;
     private int productPrice;
@@ -30,7 +29,6 @@ public class OrderItem {
         return OrderItem.builder()
                 .order(order)
                 .orderProduct(orderProduct)
-                .orderOption(orderOption)
                 .status(OrderItemStatus.TEMP)
                 .ea(ea)
                 .productPrice(price)
@@ -49,7 +47,6 @@ public class OrderItem {
                 .productTotalPrice(productTotalPrice)
                 .createdAt(createdAt)
                 .modifiedAt(modifiedAt)
-                .option(orderOption == null ? null : orderOption.toResponse())
                 .seller(orderProduct.getSeller().toResponse())
                 .category(orderProduct.getCategory().toResponse())
                 .mainTitle(orderProduct.getMainTitle())

@@ -37,6 +37,11 @@ public class OrderProductEntity {
     @NotAudited
     private CategoryEntity category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_option_id")
+    @NotAudited
+    private OrderOptionEntity orderOption;
+
     private String mainTitle;
     private String mainExplanation;
     private String productMainExplanation;
@@ -65,6 +70,7 @@ public class OrderProductEntity {
         orderProductEntity.productId = orderProduct.getProductId();
         orderProductEntity.seller = SellerEntity.from(orderProduct.getSeller());
         orderProductEntity.category = CategoryEntity.from(orderProduct.getCategory());
+        orderProductEntity.orderOption = OrderOptionEntity.from(orderProduct.getOrderOption());
         orderProductEntity.mainTitle = orderProduct.getMainTitle();
         orderProductEntity.mainExplanation = orderProduct.getMainExplanation();
         orderProductEntity.productMainExplanation = orderProduct.getProductMainExplanation();
@@ -92,6 +98,7 @@ public class OrderProductEntity {
             .productId(productId)
             .seller(seller.toModel())
             .category(category.toModel())
+            .orderOption(orderOption == null ? null : orderOption.toModel())
             .mainTitle(mainTitle)
             .mainExplanation(mainExplanation)
             .productMainExplanation(productMainExplanation)

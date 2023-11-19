@@ -2,7 +2,6 @@ package com.juno.appling.order.port;
 
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.domain.model.Member;
-import com.juno.appling.order.controller.vo.OrderVo;
 import com.juno.appling.order.domain.entity.OrderEntity;
 import com.juno.appling.order.domain.model.Order;
 import com.juno.appling.order.enums.OrderStatus;
@@ -35,15 +34,15 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public Page<OrderVo> findAll(Pageable pageable, String search, OrderStatus status, Seller seller, Member member) {
+    public Page<Order> findAll(Pageable pageable, String search, OrderStatus status, Seller seller, Member member) {
         return orderCustomJpaRepository.findAll(pageable, search, status, SellerEntity.from(seller), MemberEntity.from(member));
     }
 
-    @Override
-    public OrderVo findByIdAndSeller(Long orderId, Seller seller) {
-        return orderCustomJpaRepository.findByIdAndSeller(orderId, SellerEntity.from(seller)).orElseThrow(
-            () -> new IllegalArgumentException("유효하지 않은 주문 번호입니다.")
-        );
-    }
+//    @Override
+//    public OrderVo findByIdAndSeller(Long orderId, Seller seller) {
+//        return orderCustomJpaRepository.findByIdAndSeller(orderId, SellerEntity.from(seller)).orElseThrow(
+//            () -> new IllegalArgumentException("유효하지 않은 주문 번호입니다.")
+//        );
+//    }
 
 }
