@@ -22,7 +22,8 @@ public class OrderItem {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public static OrderItem create(Order order, OrderProduct orderProduct, OrderOption orderOption, int ea) {
+    public static OrderItem create(Order order, OrderProduct orderProduct, int ea) {
+        OrderOption orderOption = orderProduct.getOrderOption();
         int price = orderProduct.getType() == ProductType.OPTION ? orderProduct.getPrice() + orderOption.getExtraPrice() : orderProduct.getPrice();
         int totalPrice = price * ea;
 
