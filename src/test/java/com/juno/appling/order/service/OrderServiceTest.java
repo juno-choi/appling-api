@@ -2,7 +2,7 @@ package com.juno.appling.order.service;
 
 import com.juno.appling.member.repository.MemberJpaRepository;
 import com.juno.appling.order.controller.request.CancelOrderRequest;
-import com.juno.appling.order.controller.response.OrderResponse;
+import com.juno.appling.order.controller.response.OrderListResponse;
 import com.juno.appling.order.domain.entity.OrderEntity;
 import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.order.enums.OrderStatus;
@@ -150,7 +150,7 @@ class OrderServiceTest {
         request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
         //when
         Pageable pageable = Pageable.ofSize(10);
-        OrderResponse complete = orderService.getOrderListBySeller(pageable, "", "COMPLETE",
+        OrderListResponse complete = orderService.getOrderListBySeller(pageable, "", "COMPLETE",
             request);
         //then
         assertThat(complete.getTotalElements()).isGreaterThan(0);

@@ -8,7 +8,7 @@ import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.OrderInfoResponse;
-import com.juno.appling.order.controller.response.OrderResponse;
+import com.juno.appling.order.controller.response.OrderListResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.domain.model.*;
 import com.juno.appling.order.enums.OrderStatus;
@@ -181,7 +181,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public OrderResponse getOrderListBySeller(Pageable pageable, String search, String status, HttpServletRequest request) {
+    public OrderListResponse getOrderListBySeller(Pageable pageable, String search, String status, HttpServletRequest request) {
 
         /**
          * member로 seller 정보 가져오기
@@ -192,7 +192,7 @@ public class OrderServiceImpl implements OrderService {
         Seller seller = sellerRepository.findByMember(member);
         Page<Order> orderPage = orderRepository.findAll(pageable, search, orderStatus, seller, null);
 
-        return OrderResponse.from(orderPage);
+        return OrderListResponse.from(orderPage);
     }
 
 //    @Override

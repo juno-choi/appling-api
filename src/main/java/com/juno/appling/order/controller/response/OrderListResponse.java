@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Builder
-public class OrderResponse {
+public class OrderListResponse {
     private int totalPage;
     private Long totalElements;
     private int numberOfElements;
@@ -24,8 +24,8 @@ public class OrderResponse {
     private Boolean empty;
     private List<Order> list;
 
-    public static OrderResponse from(Page<Order> orderPage) {
-        return OrderResponse.builder()
+    public static OrderListResponse from(Page<Order> orderPage) {
+        return OrderListResponse.builder()
                 .totalPage(orderPage.getTotalPages())
                 .totalElements(orderPage.getTotalElements())
                 .numberOfElements(orderPage.getNumberOfElements())
