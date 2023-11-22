@@ -80,16 +80,16 @@ public class OrderServiceImpl implements OrderService {
 
             //OrderProduct 생성
             OrderProduct createOrderProduct = OrderProduct.create(product);
-            OrderProduct orderProduct = orderProductRepository.save(createOrderProduct);
+
             //OrderOption 생성
             OrderOption orderOption = null;
             if(product.getType() == ProductType.OPTION){
                 Long optionId = tempOrderDto.getOptionId();
                 OrderOption createOrderOption = OrderOption.create(product.getOptionList(), optionId);
                 orderOption = orderOptionRepository.save(createOrderOption);
-                orderProduct.addOption(orderOption);
+                createOrderProduct.addOption(orderOption);
             }
-
+            OrderProduct orderProduct = orderProductRepository.save(createOrderProduct);
             //OrderItem 생성
             OrderItem orderItem = OrderItem.create(order, orderProduct, tempOrderDto.getEa());
             orderItemList.add(orderItem);

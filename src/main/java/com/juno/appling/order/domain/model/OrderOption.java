@@ -26,7 +26,6 @@ public class OrderOption {
         );
 
         return OrderOption.builder()
-            .id(option.getId())
             .optionId(option.getId())
             .name(option.getName())
             .extraPrice(option.getExtraPrice())
