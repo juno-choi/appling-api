@@ -42,7 +42,7 @@ class OrderItemTest {
         int ea = 2;
 
         //when
-        OrderItem orderItem = OrderItem.create(order, orderProduct, null, ea);
+        OrderItem orderItem = OrderItem.create(order, orderProduct, ea);
         
         //then
         assertThat(orderItem.getProductTotalPrice()).isEqualTo(orderProduct.getPrice() * ea);
@@ -68,19 +68,21 @@ class OrderItemTest {
                 .orderName("주문번호")
                 .build();
 
-        OrderProduct orderProduct = OrderProduct.builder()
-                .type(ProductType.OPTION)
-                .price(1000)
-                .build();
-
         OrderOption orderOption = OrderOption.builder()
                 .extraPrice(100)
                 .build();
 
+        OrderProduct orderProduct = OrderProduct.builder()
+                .type(ProductType.OPTION)
+                .orderOption(orderOption)
+                .price(1000)
+                .build();
+
+
         int ea = 3;
 
         //when
-        OrderItem orderItem = OrderItem.create(order, orderProduct, orderOption, ea);
+        OrderItem orderItem = OrderItem.create(order, orderProduct, ea);
 
         //then
         assertThat(orderItem.getProductTotalPrice()).isEqualTo((orderProduct.getPrice() + orderOption.getExtraPrice()) * ea);
