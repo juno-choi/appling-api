@@ -41,7 +41,7 @@ public class OrderEntity {
     private List<OrderItemEntity> orderItemList = new ArrayList<>();
 
     @NotAudited
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "delivery_id")
     private DeliveryEntity delivery;
 

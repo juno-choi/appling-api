@@ -170,10 +170,11 @@ public class OrderServiceImpl implements OrderService {
 
             // 배송 정보 등록
         });
-        deliveryRepository.save(Delivery.create(completeOrderRequest, order));
+        Delivery delivery = deliveryRepository.save(Delivery.create(completeOrderRequest));
 
         order.complete();
         order.createOrderNumber();
+        order.delivery(delivery);
         orderRepository.save(order);
 
         return CompleteOrderResponse.from(order);

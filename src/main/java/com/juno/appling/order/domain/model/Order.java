@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Builder
@@ -72,14 +73,18 @@ public class Order {
     public OrderResponse toResponse() {
         return OrderResponse.builder()
                 .orderId(id)
-                .member(member.toResponse())
+                .member(member.toResponseForOthers())
                 .orderNumber(orderNumber)
-                .orderItemList(orderItemList.stream().map(OrderItem::toResponse).toList())
-//                .delivery(delivery)
+                .orderItemList(orderItemList.stream().map(OrderItem::toResponse).collect(Collectors.toList()))
+                .delivery(delivery == null ? null : delivery.toResponse())
                 .status(status)
                 .orderName(orderName)
                 .createdAt(createdAt)
                 .modifiedAt(modifiedAt)
                 .build();
+    }
+
+    public void delivery(Delivery delivery) {
+        this.delivery = delivery;
     }
 }

@@ -10,6 +10,7 @@ import lombok.Getter;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -31,7 +32,7 @@ public class OrderListResponse {
                 .numberOfElements(orderPage.getNumberOfElements())
                 .last(orderPage.isLast())
                 .empty(orderPage.isEmpty())
-                .list(orderPage.getContent().stream().map(Order::toResponse).toList())
+                .list(orderPage.getContent().stream().map(Order::toResponse).collect(Collectors.toList()))
                 .build();
     }
 }

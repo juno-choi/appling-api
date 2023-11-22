@@ -27,6 +27,7 @@ public class OrderCustomJpaRepositoryImpl implements OrderCustomJpaRepository {
         QOrderItemEntity orderItem = QOrderItemEntity.orderItemEntity;
         QOrderProductEntity orderProduct = QOrderProductEntity.orderProductEntity;
         QOrderOptionEntity orderOption = QOrderOptionEntity.orderOptionEntity;
+        QDeliveryEntity delivery = QDeliveryEntity.deliveryEntity;
 
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -46,8 +47,9 @@ public class OrderCustomJpaRepositoryImpl implements OrderCustomJpaRepository {
                 .join(orderItem).on(order.id.eq(orderItem.order.id)).fetchJoin()
                 .join(orderProduct).on(orderProduct.id.eq(orderItem.orderProduct.id)).fetchJoin()
                 .leftJoin(orderOption).on(orderOption.id.eq(orderItem.orderProduct.orderOption.id)).fetchJoin()
+                .leftJoin(delivery).on(order.delivery.id.eq(delivery.id)).fetchJoin()
                 .where(builder)
-                .orderBy(order.createdAt.desc())
+                .orderBy(order.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -56,9 +58,10 @@ public class OrderCustomJpaRepositoryImpl implements OrderCustomJpaRepository {
 
         Long total = q.query()
                 .from(order)
-                .join(orderItem).on(order.id.eq(orderItem.order.id))
-                .join(orderProduct).on(orderProduct.id.eq(orderItem.orderProduct.id))
-                .leftJoin(orderOption).on(orderProduct.orderOption.id.eq(orderOption.id))
+                .join(orderItem).on(order.id.eq(orderItem.order.id)).fetchJoin()
+                .join(orderProduct).on(orderProduct.id.eq(orderItem.orderProduct.id)).fetchJoin()
+                .leftJoin(orderOption).on(orderOption.id.eq(orderItem.orderProduct.orderOption.id)).fetchJoin()
+                .leftJoin(delivery).on(order.delivery.id.eq(delivery.id)).fetchJoin()
                 .where(builder).stream().count();
 
         return new PageImpl<>(content, pageable, total);

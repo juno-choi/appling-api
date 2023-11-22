@@ -1,6 +1,7 @@
 package com.juno.appling.order.domain.model;
 
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
+import com.juno.appling.order.controller.response.DeliveryResponse;
 import com.juno.appling.order.enums.DeliveryStatus;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,6 @@ import java.time.LocalDateTime;
 @Builder
 public class Delivery {
     private Long id;
-    private Order order;
     private DeliveryStatus status;
 
     private String ownerName;
@@ -29,9 +29,8 @@ public class Delivery {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public static Delivery create(CompleteOrderRequest completeOrderRequest, Order order) {
+    public static Delivery create(CompleteOrderRequest completeOrderRequest) {
         return Delivery.builder()
-                .order(order)
                 .status(DeliveryStatus.TEMP)
                 .ownerName(completeOrderRequest.getOwnerName())
                 .ownerZonecode(completeOrderRequest.getOwnerZonecode())
@@ -45,6 +44,25 @@ public class Delivery {
                 .recipientTel(completeOrderRequest.getRecipientTel())
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
+                .build();
+    }
+
+    public DeliveryResponse toResponse() {
+        return DeliveryResponse.builder()
+                .deliveryId(id)
+                .status(status)
+                .ownerName(ownerName)
+                .ownerZonecode(ownerZonecode)
+                .ownerAddress(ownerAddress)
+                .ownerAddressDetail(ownerAddressDetail)
+                .ownerTel(ownerTel)
+                .recipientName(recipientName)
+                .recipientZonecode(recipientZonecode)
+                .recipientAddress(recipientAddress)
+                .recipientAddressDetail(recipientAddressDetail)
+                .recipientTel(recipientTel)
+                .createdAt(createdAt)
+                .modifiedAt(modifiedAt)
                 .build();
     }
 }
