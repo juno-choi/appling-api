@@ -7,7 +7,7 @@ import com.juno.appling.order.controller.request.CancelOrderRequest;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
-import com.juno.appling.order.controller.response.OrderInfoResponse;
+import com.juno.appling.order.controller.response.TempOrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,7 +33,7 @@ public class OrderController {
     }
 
     @GetMapping("/temp/{order_id}")
-    public ResponseEntity<Api<OrderInfoResponse>> getOrderInfo(@PathVariable(name = "order_id") Long orderId, HttpServletRequest request) {
+    public ResponseEntity<Api<TempOrderResponse>> getOrderInfo(@PathVariable(name = "order_id") Long orderId, HttpServletRequest request) {
         return ResponseEntity.ok(
             new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderInfo(orderId, request))
         );

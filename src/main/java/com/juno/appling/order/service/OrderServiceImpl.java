@@ -7,7 +7,7 @@ import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
-import com.juno.appling.order.controller.response.OrderInfoResponse;
+import com.juno.appling.order.controller.response.TempOrderResponse;
 import com.juno.appling.order.controller.response.OrderListResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.domain.model.*;
@@ -101,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderInfoResponse getOrderInfo(Long orderId, HttpServletRequest request){
+    public TempOrderResponse getOrderInfo(Long orderId, HttpServletRequest request){
         /**
          * order id와 member 정보로 임시 정보를 불러옴
          *
@@ -115,7 +115,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId);
         order.checkOrder(member);
 
-        return OrderInfoResponse.create(order);
+        return TempOrderResponse.create(order);
     }
 
     /**
