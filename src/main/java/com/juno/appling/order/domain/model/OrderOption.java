@@ -30,8 +30,8 @@ public class OrderOption {
             .name(option.getName())
             .extraPrice(option.getExtraPrice())
             .status(option.getStatus())
-            .createdAt(option.getCreatedAt())
-            .modifiedAt(option.getModifiedAt())
+            .createdAt(LocalDateTime.now())
+            .modifiedAt(LocalDateTime.now())
             .build();
     }
 

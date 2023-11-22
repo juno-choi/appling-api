@@ -60,8 +60,8 @@ public class OrderProduct {
             .viewCnt(product.getViewCnt())
             .status(product.getStatus())
             .type(product.getType())
-            .createdAt(product.getCreatedAt())
-            .modifiedAt(product.getModifiedAt())
+            .createdAt(LocalDateTime.now())
+            .modifiedAt(LocalDateTime.now())
             .build();
     }
 
