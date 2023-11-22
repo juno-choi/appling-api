@@ -1,6 +1,7 @@
 package com.juno.appling.order.domain.model;
 
 import com.juno.appling.member.domain.model.Member;
+import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.model.Product;
 import lombok.Builder;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Builder
@@ -66,5 +68,23 @@ public class Order {
 
     public void cancel() {
         this.status = OrderStatus.CANCEL;
+    }
+
+    public OrderResponse toResponse() {
+        return OrderResponse.builder()
+                .orderId(id)
+                .member(member.toResponseForOthers())
+                .orderNumber(orderNumber)
+                .orderItemList(orderItemList.stream().map(OrderItem::toResponse).collect(Collectors.toList()))
+                .delivery(delivery == null ? null : delivery.toResponse())
+                .status(status)
+                .orderName(orderName)
+                .createdAt(createdAt)
+                .modifiedAt(modifiedAt)
+                .build();
+    }
+
+    public void delivery(Delivery delivery) {
+        this.delivery = delivery;
     }
 }

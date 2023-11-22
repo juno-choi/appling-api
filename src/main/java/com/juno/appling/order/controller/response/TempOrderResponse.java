@@ -16,14 +16,14 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Builder
-public class OrderInfoResponse {
+public class TempOrderResponse {
     private Long orderId;
-    private List<OrderItemResponse> orderItemList;
+    private List<TempOrderItemResponse> orderItemList;
 
-    public static OrderInfoResponse create(Order order) {
-        return OrderInfoResponse.builder()
+    public static TempOrderResponse create(Order order) {
+        return TempOrderResponse.builder()
             .orderId(order.getId())
-            .orderItemList(order.getOrderItemList().stream().map(OrderItem::toResponse).toList())
+            .orderItemList(order.getOrderItemList().stream().map(OrderItem::toTempResponse).toList())
             .build();
     }
 }

@@ -26,13 +26,12 @@ public class OrderOption {
         );
 
         return OrderOption.builder()
-            .id(option.getId())
             .optionId(option.getId())
             .name(option.getName())
             .extraPrice(option.getExtraPrice())
             .status(option.getStatus())
-            .createdAt(option.getCreatedAt())
-            .modifiedAt(option.getModifiedAt())
+            .createdAt(LocalDateTime.now())
+            .modifiedAt(LocalDateTime.now())
             .build();
     }
 

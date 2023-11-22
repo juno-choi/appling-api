@@ -29,9 +29,12 @@ public class OrderOptionEntity {
     private LocalDateTime modifiedAt;
 
     public static OrderOptionEntity from(OrderOption orderOption) {
+        if(orderOption == null) {
+            return null;
+        }
         OrderOptionEntity orderOptionEntity = new OrderOptionEntity();
         orderOptionEntity.id = orderOption.getId();
-        orderOptionEntity.optionId = orderOption.getId();
+        orderOptionEntity.optionId = orderOption.getOptionId();
         orderOptionEntity.name = orderOption.getName();
         orderOptionEntity.extraPrice = orderOption.getExtraPrice();
         orderOptionEntity.status = orderOption.getStatus();

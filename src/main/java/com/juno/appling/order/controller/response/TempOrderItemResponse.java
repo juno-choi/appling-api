@@ -3,7 +3,6 @@ package com.juno.appling.order.controller.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.juno.appling.order.domain.model.OrderProduct;
 import com.juno.appling.product.controller.response.CategoryResponse;
 import com.juno.appling.product.controller.response.SellerResponse;
 import com.juno.appling.product.enums.ProductStatus;
@@ -19,12 +18,8 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Builder
-public class OrderProductResponse {
-    private Long orderProductId;
+public class TempOrderItemResponse {
     private Long productId;
-    private SellerResponse seller;
-    private CategoryResponse category;
-    private OrderOptionResponse option;
     private String mainTitle;
     private String mainExplanation;
     private String productMainExplanation;
@@ -41,7 +36,13 @@ public class OrderProductResponse {
     private Long viewCnt;
     private ProductStatus status;
     private ProductType type;
+    private OrderOptionResponse option;
+    private SellerResponse seller;
+    private CategoryResponse category;
+    private int ea;
+    private int productPrice;
+    private int productTotalPrice;
+
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-
 }

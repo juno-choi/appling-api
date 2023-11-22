@@ -2,7 +2,6 @@ package com.juno.appling.order.domain.entity;
 
 import com.juno.appling.order.domain.model.OrderItem;
 import com.juno.appling.order.enums.OrderItemStatus;
-import com.juno.appling.product.enums.ProductType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -34,11 +33,6 @@ public class OrderItemEntity {
     @NotAudited
     private OrderProductEntity orderProduct;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_option_id")
-    @NotAudited
-    private OrderOptionEntity orderOption;
-
     @Enumerated(EnumType.STRING)
     private OrderItemStatus status;
 
@@ -64,30 +58,10 @@ public class OrderItemEntity {
         orderItemEntity.productTotalPrice = orderItem.getProductTotalPrice();
         orderItemEntity.createdAt = orderItem.getCreatedAt();
         orderItemEntity.modifiedAt = orderItem.getModifiedAt();
-
-        ProductType type = orderItemEntity.orderProduct.getType();
-        if(type == ProductType.OPTION) {
-            orderItemEntity.orderOption = OrderOptionEntity.from(orderItem.getOrderOption());
-        }
-
         return orderItemEntity;
     }
 
     public OrderItem toModel() {
-        ProductType type = orderProduct.getType();
-        if(type == ProductType.OPTION) {
-            return OrderItem.builder()
-                    .id(id)
-                    .orderProduct(orderProduct.toModel())
-                    .orderOption(orderOption.toModel())
-                    .status(status)
-                    .ea(ea)
-                    .productPrice(productPrice)
-                    .productTotalPrice(productTotalPrice)
-                    .createdAt(createdAt)
-                    .modifiedAt(modifiedAt)
-                    .build();
-        }
         return OrderItem.builder()
             .id(id)
             .orderProduct(orderProduct.toModel())

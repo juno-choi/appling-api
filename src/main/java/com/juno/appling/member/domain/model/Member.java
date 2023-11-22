@@ -1,13 +1,15 @@
 package com.juno.appling.member.domain.model;
 
-import com.juno.appling.member.enums.MemberStatus;
+import com.juno.appling.member.controller.response.MemberResponse;
 import com.juno.appling.member.enums.MemberRole;
+import com.juno.appling.member.enums.MemberStatus;
 import com.juno.appling.member.enums.SnsJoinType;
+import lombok.Builder;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
-import lombok.Builder;
-import lombok.Getter;
 
 @Getter
 public class Member {
@@ -43,5 +45,28 @@ public class Member {
         this.recipientList = recipientList;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
+    }
+
+    public MemberResponse toResponse(){
+        return MemberResponse.builder()
+            .memberId(id)
+            .email(email)
+            .nickname(nickname)
+            .name(name)
+            .role(role)
+            .snsType(snsType)
+            .status(status)
+            .createdAt(createdAt)
+            .modifiedAt(modifiedAt)
+            .build();
+    }
+
+    public MemberResponse toResponseForOthers(){
+        return MemberResponse.builder()
+                .email(email)
+                .nickname(nickname)
+                .name(name)
+                .status(status)
+                .build();
     }
 }

@@ -1,6 +1,7 @@
 package com.juno.appling.order.domain.model;
 
 import com.juno.appling.order.controller.response.OrderItemResponse;
+import com.juno.appling.order.controller.response.TempOrderItemResponse;
 import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.product.enums.ProductType;
 import lombok.Builder;
@@ -14,7 +15,6 @@ public class OrderItem {
     private Long id;
     private Order order;
     private OrderProduct orderProduct;
-    private OrderOption orderOption;
     private OrderItemStatus status;
     private int ea;
     private int productPrice;
@@ -23,14 +23,14 @@ public class OrderItem {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public static OrderItem create(Order order, OrderProduct orderProduct, OrderOption orderOption, int ea) {
+    public static OrderItem create(Order order, OrderProduct orderProduct, int ea) {
+        OrderOption orderOption = orderProduct.getOrderOption();
         int price = orderProduct.getType() == ProductType.OPTION ? orderProduct.getPrice() + orderOption.getExtraPrice() : orderProduct.getPrice();
         int totalPrice = price * ea;
 
         return OrderItem.builder()
                 .order(order)
                 .orderProduct(orderProduct)
-                .orderOption(orderOption)
                 .status(OrderItemStatus.TEMP)
                 .ea(ea)
                 .productPrice(price)
@@ -40,8 +40,8 @@ public class OrderItem {
                 .build();
     }
 
-    public OrderItemResponse toResponse() {
-        return OrderItemResponse.builder()
+    public TempOrderItemResponse toTempResponse() {
+        return TempOrderItemResponse.builder()
                 .productId(orderProduct.getProductId())
                 .status(orderProduct.getStatus())
                 .ea(ea)
@@ -49,9 +49,9 @@ public class OrderItem {
                 .productTotalPrice(productTotalPrice)
                 .createdAt(createdAt)
                 .modifiedAt(modifiedAt)
-                .option(orderOption == null ? null : orderOption.toResponse())
                 .seller(orderProduct.getSeller().toResponse())
                 .category(orderProduct.getCategory().toResponse())
+                .option(orderProduct.getOrderOption() == null ? null : orderProduct.getOrderOption().toResponse())
                 .mainTitle(orderProduct.getMainTitle())
                 .mainExplanation(orderProduct.getMainExplanation())
                 .productMainExplanation(orderProduct.getProductMainExplanation())
@@ -67,6 +67,19 @@ public class OrderItem {
                 .image3(orderProduct.getImage3())
                 .viewCnt(orderProduct.getViewCnt())
                 .type(orderProduct.getType())
+                .build();
+    }
+
+    public OrderItemResponse toResponse() {
+        return OrderItemResponse.builder()
+                .orderItemId(id)
+                .orderProduct(orderProduct.toResponse())
+                .status(status)
+                .ea(ea)
+                .productPrice(productPrice)
+                .productTotalPrice(productTotalPrice)
+                .createdAt(createdAt)
+                .modifiedAt(modifiedAt)
                 .build();
     }
 

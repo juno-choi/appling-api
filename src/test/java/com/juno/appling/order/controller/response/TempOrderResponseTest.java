@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-class OrderInfoResponseTest {
+class TempOrderResponseTest {
 
     @Test
     @DisplayName("OrderInfoResponse create에 성공")
@@ -43,8 +43,8 @@ class OrderInfoResponseTest {
             ))
             .build();
         //when
-        OrderInfoResponse orderInfoResponse = OrderInfoResponse.create(order);
+        TempOrderResponse tempOrderResponse = TempOrderResponse.create(order);
         //then
-        Assertions.assertThat(orderInfoResponse.getOrderItemList().get(0).getProductId()).isEqualTo(2L);
+        Assertions.assertThat(tempOrderResponse.getOrderItemList().get(0).getProductId()).isEqualTo(2L);
     }
 }
