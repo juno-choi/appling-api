@@ -1,6 +1,6 @@
 package com.juno.appling.order.domain.model;
 
-import com.juno.appling.order.controller.response.OrderItemResponse;
+import com.juno.appling.order.controller.response.TempOrderItemResponse;
 import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.product.enums.ProductType;
 import lombok.Builder;
@@ -39,8 +39,8 @@ public class OrderItem {
                 .build();
     }
 
-    public OrderItemResponse toResponse() {
-        return OrderItemResponse.builder()
+    public TempOrderItemResponse toTempResponse() {
+        return TempOrderItemResponse.builder()
                 .productId(orderProduct.getProductId())
                 .status(orderProduct.getStatus())
                 .ea(ea)
@@ -50,6 +50,7 @@ public class OrderItem {
                 .modifiedAt(modifiedAt)
                 .seller(orderProduct.getSeller().toResponse())
                 .category(orderProduct.getCategory().toResponse())
+                .option(orderProduct.getOrderOption() == null ? null : orderProduct.getOrderOption().toResponse())
                 .mainTitle(orderProduct.getMainTitle())
                 .mainExplanation(orderProduct.getMainExplanation())
                 .productMainExplanation(orderProduct.getProductMainExplanation())

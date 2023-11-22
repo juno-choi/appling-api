@@ -18,12 +18,12 @@ import java.util.List;
 @Builder
 public class TempOrderResponse {
     private Long orderId;
-    private List<OrderItemResponse> orderItemList;
+    private List<TempOrderItemResponse> orderItemList;
 
     public static TempOrderResponse create(Order order) {
         return TempOrderResponse.builder()
             .orderId(order.getId())
-            .orderItemList(order.getOrderItemList().stream().map(OrderItem::toResponse).toList())
+            .orderItemList(order.getOrderItemList().stream().map(OrderItem::toTempResponse).toList())
             .build();
     }
 }
