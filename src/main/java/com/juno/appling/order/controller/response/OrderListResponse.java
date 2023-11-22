@@ -22,7 +22,7 @@ public class OrderListResponse {
     private int numberOfElements;
     private Boolean last;
     private Boolean empty;
-    private List<Order> list;
+    private List<OrderResponse> list;
 
     public static OrderListResponse from(Page<Order> orderPage) {
         return OrderListResponse.builder()
@@ -31,7 +31,7 @@ public class OrderListResponse {
                 .numberOfElements(orderPage.getNumberOfElements())
                 .last(orderPage.isLast())
                 .empty(orderPage.isEmpty())
-                .list(orderPage.getContent())
+                .list(orderPage.getContent().stream().map(Order::toResponse).toList())
                 .build();
     }
 }

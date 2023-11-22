@@ -38,14 +38,14 @@ public class OrderCustomJpaRepositoryImpl implements OrderCustomJpaRepository {
             builder.and(order.member.id.eq(memberEntity.getId()));
         }
 
-        if(search != null || !search.equals("")) {
+        if(search != null && !search.isBlank()) {
             builder.and(orderProduct.mainTitle.contains(search));
         }
 
         List<OrderEntity> fetch = q.query().selectFrom(order)
-                .join(orderItem).on(order.id.eq(orderItem.order.id))
-                .join(orderProduct).on(orderProduct.id.eq(orderItem.orderProduct.id))
-                .leftJoin(orderOption).on(orderProduct.orderOption.id.eq(orderOption.id))
+                .join(orderItem).on(order.id.eq(orderItem.order.id)).fetchJoin()
+                .join(orderProduct).on(orderProduct.id.eq(orderItem.orderProduct.id)).fetchJoin()
+                .leftJoin(orderOption).on(orderOption.id.eq(orderItem.orderProduct.orderOption.id)).fetchJoin()
                 .where(builder)
                 .orderBy(order.createdAt.desc())
                 .offset(pageable.getOffset())

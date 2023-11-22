@@ -1,5 +1,6 @@
 package com.juno.appling.order.domain.model;
 
+import com.juno.appling.order.controller.response.OrderItemResponse;
 import com.juno.appling.order.controller.response.TempOrderItemResponse;
 import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.product.enums.ProductType;
@@ -66,6 +67,19 @@ public class OrderItem {
                 .image3(orderProduct.getImage3())
                 .viewCnt(orderProduct.getViewCnt())
                 .type(orderProduct.getType())
+                .build();
+    }
+
+    public OrderItemResponse toResponse() {
+        return OrderItemResponse.builder()
+                .orderItemId(id)
+                .orderProduct(orderProduct.toResponse())
+                .status(status)
+                .ea(ea)
+                .productPrice(productPrice)
+                .productTotalPrice(productTotalPrice)
+                .createdAt(createdAt)
+                .modifiedAt(modifiedAt)
                 .build();
     }
 
