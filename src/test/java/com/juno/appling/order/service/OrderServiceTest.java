@@ -144,14 +144,26 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("관리자툴에서 주문 불러오기 성공")
-    @Transactional
-    void getOrderList() {
+    void getOrderListBySeller() {
         //given
         request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
         //when
         Pageable pageable = Pageable.ofSize(10);
         OrderListResponse complete = orderService.getOrderListBySeller(pageable, "", "COMPLETE",
             request);
+        //then
+        assertThat(complete.getTotalElements()).isGreaterThan(0);
+    }
+
+    @Test
+    @DisplayName("사용자 주문 불러오기 성공")
+    void getOrderListByMember() {
+        //given
+        request.addHeader(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken());
+        //when
+        Pageable pageable = Pageable.ofSize(10);
+        OrderListResponse complete = orderService.getOrderListByMember(pageable, "", "COMPLETE",
+                request);
         //then
         assertThat(complete.getTotalElements()).isGreaterThan(0);
     }
