@@ -11,7 +11,8 @@ import java.util.Optional;
 
 public interface OrderCustomJpaRepository {
 
-    Page<Order> findAll(Pageable pageable, String search, OrderStatus status, SellerEntity sellerEntity, MemberEntity memberEntity);
+    Page<Order> findAllBySeller(Pageable pageable, String search, OrderStatus status, SellerEntity sellerEntity);
+    Page<Order> findAllByMember(Pageable pageable, String search, OrderStatus status, MemberEntity memberEntity);
 
     Optional<Order> findByIdAndSeller(Long orderId, SellerEntity from);
 }
