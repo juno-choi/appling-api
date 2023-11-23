@@ -38,11 +38,11 @@ public class OrderRepositoryImpl implements OrderRepository {
         return orderCustomJpaRepository.findAll(pageable, search, status, SellerEntity.from(seller), MemberEntity.from(member));
     }
 
-//    @Override
-//    public OrderVo findByIdAndSeller(Long orderId, Seller seller) {
-//        return orderCustomJpaRepository.findByIdAndSeller(orderId, SellerEntity.from(seller)).orElseThrow(
-//            () -> new IllegalArgumentException("유효하지 않은 주문 번호입니다.")
-//        );
-//    }
+    @Override
+    public Order findByIdAndSeller(Long orderId, Seller seller) {
+        return orderCustomJpaRepository.findByIdAndSeller(orderId, SellerEntity.from(seller)).orElseThrow(
+            () -> new IllegalArgumentException("유효하지 않은 주문 번호입니다.")
+        );
+    }
 
 }

@@ -3,6 +3,7 @@ package com.juno.appling.order.service;
 import com.juno.appling.member.repository.MemberJpaRepository;
 import com.juno.appling.order.controller.request.CancelOrderRequest;
 import com.juno.appling.order.controller.response.OrderListResponse;
+import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.domain.entity.OrderEntity;
 import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.order.enums.OrderStatus;
@@ -181,20 +182,20 @@ class OrderServiceTest {
 //        //then
 //        assertThat(orderDetail).isNotNull();
 //    }
-//
-//    @Test
-//    @DisplayName("관리자툴에서 주문 상세 불러오기 성공")
-//    @SqlGroup({
-//            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-//    })
-//    void getOrderDetailBySeller() {
-//        //given
-//        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
-//        //when
-//        OrderVo orderDetail = orderService.getOrderDetailBySeller(ORDER_FIRST_ID, request);
-//        //then
-//        assertThat(orderDetail).isNotNull();
-//    }
+
+    @Test
+    @DisplayName("관리자툴에서 주문 상세 불러오기 성공")
+    @SqlGroup({
+            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    })
+    void getOrderDetailBySeller() {
+        //given
+        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
+        //when
+        OrderResponse orderDetail = orderService.getOrderDetailBySeller(ORDER_FIRST_ID, request);
+        //then
+        assertThat(orderDetail).isNotNull();
+    }
 
     @Test
     @DisplayName("주문 취소 성공")
