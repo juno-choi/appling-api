@@ -169,19 +169,19 @@ class OrderServiceTest {
         assertThat(complete.getTotalElements()).isGreaterThan(0);
     }
 
-//    @Test
-//    @DisplayName("관리자툴에서 주문 상세 불러오기 성공")
-//    @SqlGroup({
-//            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-//    })
-//    void getOrderDetailByMember() {
-//        //given
-//        request.addHeader(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken());
-//        //when
-//        OrderVo orderDetail = orderService.getOrderDetailByMember(ORDER_FIRST_ID, request);
-//        //then
-//        assertThat(orderDetail).isNotNull();
-//    }
+    @Test
+    @DisplayName("관리자툴에서 주문 상세 불러오기 성공")
+    @SqlGroup({
+            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    })
+    void getOrderDetailByMember() {
+        //given
+        request.addHeader(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken());
+        //when
+        OrderResponse orderDetail = orderService.getOrderDetailByMember(ORDER_FIRST_ID, request);
+        //then
+        assertThat(orderDetail).isNotNull();
+    }
 
     @Test
     @DisplayName("관리자툴에서 주문 상세 불러오기 성공")

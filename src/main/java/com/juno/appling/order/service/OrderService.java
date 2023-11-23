@@ -16,7 +16,7 @@ public interface OrderService {
 
     OrderResponse getOrderDetailBySeller(Long orderId, HttpServletRequest request);
 
-//    OrderResponse getOrderDetailByMember(Long orderId, HttpServletRequest request);
+    OrderResponse getOrderDetailByMember(Long orderId, HttpServletRequest request);
 
     void cancelOrder(CancelOrderRequest cancelOrderRequest, HttpServletRequest request);
 }

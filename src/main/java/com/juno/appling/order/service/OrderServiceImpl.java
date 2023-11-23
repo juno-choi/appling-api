@@ -208,14 +208,14 @@ public class OrderServiceImpl implements OrderService {
         Page<Order> orderPage = orderRepository.findAll(pageable, search, orderStatus, null, member);
         return OrderListResponse.from(orderPage);
     }
-//
-//    @Override
-//    public OrderVo getOrderDetailByMember(Long orderId, HttpServletRequest request) {
-//        Member member = memberUtil.getMember(request).toModel();
-//        Order order = orderRepository.findById(orderId);
-//        order.checkOrder(member);
-//        return new OrderVo(OrderEntity.from(order));
-//    }
+
+    @Override
+    public OrderResponse getOrderDetailByMember(Long orderId, HttpServletRequest request) {
+        Member member = memberUtil.getMember(request).toModel();
+        Order order = orderRepository.findById(orderId);
+        order.checkOrder(member);
+        return OrderResponse.from(order);
+    }
 
     @Override
     @Transactional
