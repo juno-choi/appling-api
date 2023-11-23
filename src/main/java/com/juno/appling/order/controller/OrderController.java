@@ -69,14 +69,14 @@ public class OrderController {
     }
 
 
-//    @GetMapping("/seller/{order_id}")
-//    public ResponseEntity<Api<OrderVo>> getOrderDetailBySeller(@PathVariable (name = "order_id") Long orderId, HttpServletRequest request) {
-//        return ResponseEntity.ok(
-//                new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderDetailBySeller(orderId, request))
-//        );
-//    }
-//
-//
+    @GetMapping("/seller/{order_id}")
+    public ResponseEntity<Api<OrderResponse>> getOrderDetailBySeller(@PathVariable (name = "order_id") Long orderId, HttpServletRequest request) {
+        return ResponseEntity.ok(
+                new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderDetailBySeller(orderId, request))
+        );
+    }
+
+
 //    @GetMapping("/member/{order_id}")
 //    public ResponseEntity<Api<OrderVo>> getOrderDetailByMember(@PathVariable (name = "order_id") Long orderId, HttpServletRequest request) {
 //        return ResponseEntity.ok(
