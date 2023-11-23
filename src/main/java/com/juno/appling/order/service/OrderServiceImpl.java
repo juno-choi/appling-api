@@ -186,9 +186,9 @@ public class OrderServiceImpl implements OrderService {
          * 주문 정보를 seller id로 가져오기
          */
         Member member = memberUtil.getMember(request).toModel();
-        OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase(Locale.ROOT));
         Seller seller = sellerRepository.findByMember(member);
-        Page<Order> orderPage = orderRepository.findAll(pageable, search, orderStatus, seller, null);
+        OrderStatus orderStatus = status == null ? null : OrderStatus.valueOf(status.toUpperCase(Locale.ROOT));
+        Page<Order> orderPage = orderRepository.findAllBySeller(pageable, search, orderStatus, seller);
 
         return OrderListResponse.from(orderPage);
     }
@@ -204,8 +204,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderListResponse getOrderListByMember(Pageable pageable, String search, String status, HttpServletRequest request) {
         Member member = memberUtil.getMember(request).toModel();
-        OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase(Locale.ROOT));
-        Page<Order> orderPage = orderRepository.findAll(pageable, search, orderStatus, null, member);
+        OrderStatus orderStatus = status == null ? null : OrderStatus.valueOf(status.toUpperCase(Locale.ROOT));
+        Page<Order> orderPage = orderRepository.findAllByMember(pageable, search, orderStatus, member);
         return OrderListResponse.from(orderPage);
     }
 

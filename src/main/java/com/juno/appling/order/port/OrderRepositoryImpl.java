@@ -34,8 +34,13 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public Page<Order> findAll(Pageable pageable, String search, OrderStatus status, Seller seller, Member member) {
-        return orderCustomJpaRepository.findAll(pageable, search, status, SellerEntity.from(seller), MemberEntity.from(member));
+    public Page<Order> findAllBySeller(Pageable pageable, String search, OrderStatus status, Seller seller) {
+        return orderCustomJpaRepository.findAllBySeller(pageable, search, status, SellerEntity.from(seller));
+    }
+
+    @Override
+    public Page<Order> findAllByMember(Pageable pageable, String search, OrderStatus status, Member member) {
+        return orderCustomJpaRepository.findAllByMember(pageable, search, status, MemberEntity.from(member));
     }
 
     @Override
