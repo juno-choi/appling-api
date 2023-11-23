@@ -7,9 +7,11 @@ import com.juno.appling.product.domain.entity.SellerEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public interface OrderCustomJpaRepository {
 
     Page<Order> findAll(Pageable pageable, String search, OrderStatus status, SellerEntity sellerEntity, MemberEntity memberEntity);
 
-//    Optional<OrderVo> findByIdAndSeller(Long orderId, SellerEntity from);
+    Optional<Order> findByIdAndSeller(Long orderId, SellerEntity from);
 }

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.juno.appling.member.controller.response.MemberResponse;
+import com.juno.appling.order.domain.model.Order;
+import com.juno.appling.order.domain.model.OrderItem;
 import com.juno.appling.order.enums.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +13,7 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
@@ -28,4 +31,17 @@ public class OrderResponse {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
+    public static OrderResponse from(Order order) {
+        return OrderResponse.builder()
+                .orderId(order.getId())
+                .member(order.getMember().toResponseForOthers())
+                .orderNumber(order.getOrderNumber())
+                .orderItemList(order.getOrderItemList().stream().map(OrderItem::toResponse).collect(Collectors.toList()))
+                .delivery(order.getDelivery().toResponse())
+                .status(order.getStatus())
+                .orderName(order.getOrderName())
+                .createdAt(order.getCreatedAt())
+                .modifiedAt(order.getModifiedAt())
+                .build();
+    }
 }

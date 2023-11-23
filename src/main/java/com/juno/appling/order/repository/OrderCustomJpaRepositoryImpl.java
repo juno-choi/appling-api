@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -67,24 +68,24 @@ public class OrderCustomJpaRepositoryImpl implements OrderCustomJpaRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
-//    @Override
-//    public Optional<OrderVo> findByIdAndSeller(Long orderId, SellerEntity sellerEntity) {
-//        QOrderEntity order = QOrderEntity.orderEntity;
-//        QOrderItemEntity orderItem = QOrderItemEntity.orderItemEntity;
-//        QOrderProductEntity orderProduct = QOrderProductEntity.orderProductEntity;
-//        QOrderOptionEntity orderOption = QOrderOptionEntity.orderOptionEntity;
-//
-//        BooleanBuilder builder = new BooleanBuilder();
-//        builder.and(order.id.eq(orderId));
-//        builder.and(orderProduct.seller.id.eq(sellerEntity.getId()));
-//
-//        OrderEntity fetch = q.query().selectFrom(order)
-//                .join(orderItem).on(order.id.eq(orderItem.order.id)).fetchJoin()
-//                .join(orderProduct).on(orderProduct.id.eq(orderItem.orderProduct.id)).fetchJoin()
-//                .leftJoin(orderOption).on(orderItem.orderOption.id.eq(orderOption.id)).fetchJoin()
-//                .where(builder)
-//                .fetchFirst();
-//
-//        return Optional.ofNullable(new OrderVo(fetch));
-//    }
+    @Override
+    public Optional<Order> findByIdAndSeller(Long orderId, SellerEntity sellerEntity) {
+        QOrderEntity order = QOrderEntity.orderEntity;
+        QOrderItemEntity orderItem = QOrderItemEntity.orderItemEntity;
+        QOrderProductEntity orderProduct = QOrderProductEntity.orderProductEntity;
+        QOrderOptionEntity orderOption = QOrderOptionEntity.orderOptionEntity;
+
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(order.id.eq(orderId));
+        builder.and(orderProduct.seller.id.eq(sellerEntity.getId()));
+
+        OrderEntity fetch = q.query().selectFrom(order)
+                .join(orderItem).on(order.id.eq(orderItem.order.id)).fetchJoin()
+                .join(orderProduct).on(orderProduct.id.eq(orderItem.orderProduct.id)).fetchJoin()
+                .leftJoin(orderOption).on(orderProduct.orderOption.id.eq(orderOption.id)).fetchJoin()
+                .where(builder)
+                .fetchFirst();
+
+        return Optional.ofNullable(fetch.toModel());
+    }
 }

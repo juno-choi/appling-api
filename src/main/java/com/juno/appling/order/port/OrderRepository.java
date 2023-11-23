@@ -14,5 +14,7 @@ public interface OrderRepository {
 
     Page<Order> findAll(Pageable pageable, String search, OrderStatus status, Seller seller, Member member);
 
+    Order findByIdAndSeller(Long orderId, Seller seller);
+
 //    OrderVo findByIdAndSeller(Long orderId, Seller seller);
 }

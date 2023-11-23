@@ -12,9 +12,9 @@
 - link:#_주문_내역_확인_seller[주문 내역 확인 - seller 용]
 - link:#_주문_내역_확인_member[주문 내역 확인 - member 용]
 
-// 3. 주문 상세 확인 (2023.11.13)
-// - link:#_주문_상세_확인_seller[주문 상세 확인 - seller 용]
-// - link:#_주문_상세_확인_member[주문 상세 확인 - member 용]
+3. 주문 상세 확인 (2023.11.13)
+- link:#_주문_상세_확인_seller[주문 상세 확인 - seller 용]
+- link:#_주문_상세_확인_member[주문 상세 확인 - member 용]
 
 4. 주문 취소 (2023.11.14)
 - link:#_주문_취소_member[주문 취소 - member 용]
