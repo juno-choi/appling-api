@@ -10,8 +10,8 @@
 
 2. 주문 내역 확인 (2023.10.30)
 - link:#_주문_내역_확인_seller[주문 내역 확인 - seller 용]
-// - link:#_주문_내역_확인_member[주문 내역 확인 - member 용]
-//
+- link:#_주문_내역_확인_member[주문 내역 확인 - member 용]
+
 // 3. 주문 상세 확인 (2023.11.13)
 // - link:#_주문_상세_확인_seller[주문 상세 확인 - seller 용]
 // - link:#_주문_상세_확인_member[주문 상세 확인 - member 용]

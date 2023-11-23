@@ -56,7 +56,19 @@ public class OrderController {
             new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderListBySeller(pageable, search, status, request))
         );
     }
-//
+
+    @GetMapping("/member")
+    public ResponseEntity<Api<OrderListResponse>> getOrderByMember(
+            @PageableDefault(size = 10, page = 0) Pageable pageable,
+            @RequestParam(required = false, name = "search") String search,
+            @RequestParam(required = false, name = "status", defaultValue = "complete") String status,
+            HttpServletRequest request) {
+        return ResponseEntity.ok(
+                new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderListByMember(pageable, search, status, request))
+        );
+    }
+
+
 //    @GetMapping("/seller/{order_id}")
 //    public ResponseEntity<Api<OrderVo>> getOrderDetailBySeller(@PathVariable (name = "order_id") Long orderId, HttpServletRequest request) {
 //        return ResponseEntity.ok(
@@ -64,16 +76,6 @@ public class OrderController {
 //        );
 //    }
 //
-//    @GetMapping("/member")
-//    public ResponseEntity<Api<OrderResponse>> getOrderByMember(
-//            @PageableDefault(size = 10, page = 0) Pageable pageable,
-//            @RequestParam(required = false, name = "search") String search,
-//            @RequestParam(required = false, name = "status", defaultValue = "complete") String status,
-//            HttpServletRequest request) {
-//        return ResponseEntity.ok(
-//                new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderListByMember(pageable, search, status, request))
-//        );
-//    }
 //
 //    @GetMapping("/member/{order_id}")
 //    public ResponseEntity<Api<OrderVo>> getOrderDetailByMember(@PathVariable (name = "order_id") Long orderId, HttpServletRequest request) {
