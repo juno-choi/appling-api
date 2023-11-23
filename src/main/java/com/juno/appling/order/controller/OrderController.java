@@ -77,12 +77,12 @@ public class OrderController {
     }
 
 
-//    @GetMapping("/member/{order_id}")
-//    public ResponseEntity<Api<OrderVo>> getOrderDetailByMember(@PathVariable (name = "order_id") Long orderId, HttpServletRequest request) {
-//        return ResponseEntity.ok(
-//                new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderDetailByMember(orderId, request))
-//        );
-//    }
+    @GetMapping("/member/{order_id}")
+    public ResponseEntity<Api<OrderResponse>> getOrderDetailByMember(@PathVariable (name = "order_id") Long orderId, HttpServletRequest request) {
+        return ResponseEntity.ok(
+                new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, orderService.getOrderDetailByMember(orderId, request))
+        );
+    }
 
     @PatchMapping("/member/cancel")
     public ResponseEntity<Api<MessageVo>> cancelOrder(@RequestBody @Validated CancelOrderRequest cancelOrderRequest, HttpServletRequest request) {
