@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   appling:
-    container_name: appling
+    container_name: ${CONTAINER_NAME}
     build: .
     ports:
       - ${API_PORT}:8000
