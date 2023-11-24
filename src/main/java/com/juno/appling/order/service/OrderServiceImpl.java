@@ -230,4 +230,17 @@ public class OrderServiceImpl implements OrderService {
         orderItemList.forEach(orderItem -> orderItem.cancel());
         orderItemRepository.saveAll(orderItemList);
     }
+
+    @Override
+    public void cancelOrderBySeller(CancelOrderRequest cancelOrderRequest, HttpServletRequest request) {
+        Member member = memberUtil.getMember(request).toModel();
+        Seller seller = sellerRepository.findByMember(member);
+        Order order = orderRepository.findByIdAndSeller(cancelOrderRequest.getOrderId(), seller);
+        order.cancel();
+        orderRepository.save(order);
+
+        List<OrderItem> orderItemList = order.getOrderItemList();
+        orderItemList.forEach(orderItem -> orderItem.cancel());
+        orderItemRepository.saveAll(orderItemList);
+    }
 }

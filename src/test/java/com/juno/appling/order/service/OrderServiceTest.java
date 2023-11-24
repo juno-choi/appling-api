@@ -202,11 +202,25 @@ class OrderServiceTest {
     void cancelOrder() {
         //given
         request.addHeader(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken());
-        OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
         CancelOrderRequest cancelOrderRequest = CancelOrderRequest.builder().orderId(ORDER_FIRST_ID).build();
         //when
         orderService.cancelOrder(cancelOrderRequest, request);
         //then
+        OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
+        assertThat(orderEntity.getStatus()).isEqualTo(OrderStatus.CANCEL);
+        orderEntity.getOrderItemList().forEach(orderItemEntity -> assertThat(orderItemEntity.getStatus()).isEqualTo(OrderItemStatus.CANCEL));
+    }
+
+    @Test
+    @DisplayName("주문 취소 성공 by Seller")
+    void cancelOrderBySeller() {
+        //given
+        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
+        CancelOrderRequest cancelOrderRequest = CancelOrderRequest.builder().orderId(ORDER_FIRST_ID).build();
+        //when
+        orderService.cancelOrderBySeller(cancelOrderRequest, request);
+        //then
+        OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
         assertThat(orderEntity.getStatus()).isEqualTo(OrderStatus.CANCEL);
         orderEntity.getOrderItemList().forEach(orderItemEntity -> assertThat(orderItemEntity.getStatus()).isEqualTo(OrderItemStatus.CANCEL));
     }
