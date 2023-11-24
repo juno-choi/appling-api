@@ -1,10 +1,10 @@
-package com.juno.appling.product.port;
+package com.juno.appling.product.domain.repository;
 
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.domain.model.Member;
 import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.product.domain.model.Seller;
-import com.juno.appling.product.repository.SellerJpaRepository;
+import com.juno.appling.product.port.SellerJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,8 @@
-package com.juno.appling.product.port;
+package com.juno.appling.product.domain.repository;
 
 import com.juno.appling.product.domain.entity.OptionEntity;
 import com.juno.appling.product.domain.model.Option;
-import com.juno.appling.product.repository.OptionJpaRepository;
+import com.juno.appling.product.port.OptionJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

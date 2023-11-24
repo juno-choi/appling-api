@@ -3,7 +3,7 @@ package com.juno.appling.common.service;
 import com.juno.appling.common.controller.response.UploadResponse;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.global.security.TokenProvider;
-import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.port.MemberJpaRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

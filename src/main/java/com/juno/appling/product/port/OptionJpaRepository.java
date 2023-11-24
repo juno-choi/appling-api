@@ -1,4 +1,4 @@
-package com.juno.appling.product.repository;
+package com.juno.appling.product.port;
 
 import com.juno.appling.product.domain.entity.OptionEntity;
 import com.juno.appling.product.domain.entity.ProductEntity;

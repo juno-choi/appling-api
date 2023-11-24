@@ -2,7 +2,7 @@ package com.juno.appling.global.security;
 
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.enums.MemberRole;
-import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.port.MemberJpaRepository;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

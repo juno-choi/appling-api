@@ -1,4 +1,4 @@
-package com.juno.appling.product.port;
+package com.juno.appling.product.domain.repository;
 
 import com.juno.appling.product.domain.model.Product;
 

@@ -1,8 +1,8 @@
-package com.juno.appling.product.port;
+package com.juno.appling.product.domain.repository;
 
 import com.juno.appling.product.domain.entity.ProductEntity;
 import com.juno.appling.product.domain.model.Product;
-import com.juno.appling.product.repository.ProductJpaRepository;
+import com.juno.appling.product.port.ProductJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

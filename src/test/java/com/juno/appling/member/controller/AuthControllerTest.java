@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.member.controller.request.JoinRequest;
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.port.MemberJpaRepository;
 import java.nio.charset.StandardCharsets;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

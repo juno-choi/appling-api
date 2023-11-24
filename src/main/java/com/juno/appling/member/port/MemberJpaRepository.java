@@ -1,4 +1,4 @@
-package com.juno.appling.member.repository;
+package com.juno.appling.member.port;
 
 import com.juno.appling.member.domain.entity.MemberEntity;
 import java.util.Optional;
