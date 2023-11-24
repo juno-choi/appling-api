@@ -1,4 +1,4 @@
-package com.juno.appling.order.port;
+package com.juno.appling.order.domain.repository;
 
 import com.juno.appling.order.domain.model.Delivery;
 

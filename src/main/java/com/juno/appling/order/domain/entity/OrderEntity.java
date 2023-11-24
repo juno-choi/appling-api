@@ -66,8 +66,8 @@ public class OrderEntity {
             )
         );
         orderEntity.orderNumber = order.getOrderNumber();
-        orderEntity.orderItemList = Optional.ofNullable(order.getOrderItemList()).orElse(new ArrayList<>()).stream().map(OrderItemEntity::from).collect(
-            Collectors.toList());
+        orderEntity.orderItemList = Optional.ofNullable(order.getOrderItemList())
+                .orElse(new ArrayList<>()).stream().map(OrderItemEntity::from).collect(Collectors.toList());
         orderEntity.delivery = DeliveryEntity.from(order.getDelivery());
         orderEntity.status = order.getStatus();
         orderEntity.orderName = order.getOrderName();
@@ -88,32 +88,5 @@ public class OrderEntity {
             .createdAt(createdAt)
             .modifiedAt(modifiedAt)
             .build();
-    }
-
-    private OrderEntity(MemberEntity member, OrderStatus status, String orderName, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.member = member;
-        this.status = status;
-        this.orderName = orderName;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-    }
-
-    public static OrderEntity of(MemberEntity memberEntity, String orderName){
-        LocalDateTime now = LocalDateTime.now();
-        return new OrderEntity(memberEntity, OrderStatus.TEMP, orderName, now, now);
-    }
-
-    public void statusComplete() {
-        this.status = OrderStatus.COMPLETE;
-        this.modifiedAt = LocalDateTime.now();
-    }
-
-    public void orderNumber(String orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
-
-    public void addOrderItem(OrderItemEntity orderItemEntity) {
-        this.orderItemList.add(orderItemEntity);
     }
 }

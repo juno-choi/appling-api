@@ -1,4 +1,4 @@
-package com.juno.appling.order.repository;
+package com.juno.appling.order.port;
 
 import com.juno.appling.global.querydsl.QuerydslConfig;
 import com.juno.appling.member.domain.entity.MemberEntity;

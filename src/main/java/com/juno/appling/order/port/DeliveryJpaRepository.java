@@ -1,4 +1,4 @@
-package com.juno.appling.order.repository;
+package com.juno.appling.order.port;
 
 import com.juno.appling.order.domain.entity.DeliveryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

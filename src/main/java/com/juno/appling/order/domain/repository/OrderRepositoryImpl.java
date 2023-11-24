@@ -1,12 +1,12 @@
-package com.juno.appling.order.port;
+package com.juno.appling.order.domain.repository;
 
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.domain.model.Member;
 import com.juno.appling.order.domain.entity.OrderEntity;
 import com.juno.appling.order.domain.model.Order;
 import com.juno.appling.order.enums.OrderStatus;
-import com.juno.appling.order.repository.OrderCustomJpaRepository;
-import com.juno.appling.order.repository.OrderJpaRepository;
+import com.juno.appling.order.port.OrderCustomJpaRepository;
+import com.juno.appling.order.port.OrderJpaRepository;
 import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.product.domain.model.Seller;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.juno.appling.order.repository;
+package com.juno.appling.order.port;
 
 import com.juno.appling.order.domain.entity.OrderEntity;
 import com.juno.appling.product.domain.entity.SellerEntity;

@@ -1,8 +1,8 @@
-package com.juno.appling.order.port;
+package com.juno.appling.order.domain.repository;
 
 import com.juno.appling.order.domain.entity.OrderOptionEntity;
 import com.juno.appling.order.domain.model.OrderOption;
-import com.juno.appling.order.repository.OrderOptionJpaRepository;
+import com.juno.appling.order.port.OrderOptionJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

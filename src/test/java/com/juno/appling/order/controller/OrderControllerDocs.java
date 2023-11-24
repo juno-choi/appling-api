@@ -4,13 +4,14 @@ import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.repository.MemberJpaRepository;
 import com.juno.appling.order.controller.request.CancelOrderRequest;
+import com.juno.appling.order.domain.model.Order;
+import com.juno.appling.order.port.*;
 import com.juno.appling.product.repository.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.domain.entity.OrderEntity;
-import com.juno.appling.order.repository.*;
 import com.juno.appling.product.repository.CategoryJpaRepository;
 import com.juno.appling.product.repository.OptionJpaRepository;
 import com.juno.appling.product.repository.ProductJpaRepository;
@@ -229,8 +230,11 @@ class OrderControllerDocs extends RestdocsBaseTest {
     void complete() throws Exception {
         //given
         MemberEntity memberEntity = memberJpaRepository.findByEmail(MEMBER_EMAIL).get();
-
-        OrderEntity orderEntity = orderJpaRepository.save(OrderEntity.of(memberEntity, "테스트 상품"));
+        Order order = Order.builder()
+                .member(memberEntity.toModel())
+                .orderName("테스트 상품")
+                .build();
+        OrderEntity orderEntity = orderJpaRepository.save(OrderEntity.from(order));
         Long orderId = orderEntity.getId();
 
         CompleteOrderRequest completeOrderRequest = CompleteOrderRequest.builder()
