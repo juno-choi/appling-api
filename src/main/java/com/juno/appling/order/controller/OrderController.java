@@ -91,4 +91,12 @@ public class OrderController {
                 new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, MessageVo.builder().message("주문이 취소되었습니다.").build())
         );
     }
+
+    @PatchMapping("/seller/cancel")
+    public ResponseEntity<Api<MessageVo>> cancelOrderBySeller(@RequestBody @Validated CancelOrderRequest cancelOrderRequest, HttpServletRequest request) {
+        orderService.cancelOrderBySeller(cancelOrderRequest, request);
+        return ResponseEntity.ok(
+                new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, MessageVo.builder().message("주문이 취소되었습니다.").build())
+        );
+    }
 }

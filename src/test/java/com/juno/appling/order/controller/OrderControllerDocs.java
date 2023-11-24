@@ -312,6 +312,34 @@ class OrderControllerDocs extends RestdocsBaseTest {
         ));
     }
 
+    @Test
+    @DisplayName(PREFIX + "/seller/cancel (PATCH)")
+    void cancelOrderBySeller() throws Exception {
+        //given
+        CancelOrderRequest cancelOrderRequest = CancelOrderRequest.builder().orderId(ORDER_FIRST_ID).build();
+        //when
+        ResultActions perform = mock.perform(
+                patch(PREFIX + "/seller/cancel")
+                        .header(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(cancelOrderRequest))
+        );
+        //then
+        perform.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token (MEMBER 권한 이상)")
+                ),
+                requestFields(
+                        fieldWithPath("order_id").description("주문 id").type(JsonFieldType.NUMBER)
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.message").type(JsonFieldType.STRING).description("결과 메세지")
+                )
+        ));
+    }
+
 
     @Test
     @SqlGroup({

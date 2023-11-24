@@ -155,6 +155,29 @@ include::{snippets}/order-controller-docs/get-order-detail-by-member/http-respon
 
 include::{snippets}/order-controller-docs/get-order-detail-by-member/response-fields.adoc[]
 
+
+### 📗 주문 취소 (seller)
+
+==== 🔵 REQUEST
+include::{snippets}/order-controller-docs/cancel-order-by-seller/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/order-controller-docs/cancel-order-by-seller/request-headers.adoc[]
+
+==== 🔵 REQUEST BODY
+
+include::{snippets}/order-controller-docs/cancel-order-by-seller/request-body.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/order-controller-docs/cancel-order-by-seller/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/order-controller-docs/cancel-order-by-seller/response-fields.adoc[]
+
+
 ### 📗 주문 취소 (member)
 
 ==== 🔵 REQUEST
