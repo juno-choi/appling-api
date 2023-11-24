@@ -8,15 +8,15 @@ import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.*;
 import com.juno.appling.order.domain.model.*;
+import com.juno.appling.order.domain.repository.*;
 import com.juno.appling.order.enums.OrderStatus;
-import com.juno.appling.order.port.*;
 import com.juno.appling.product.domain.model.Option;
 import com.juno.appling.product.domain.model.Product;
 import com.juno.appling.product.domain.model.Seller;
 import com.juno.appling.product.enums.ProductType;
-import com.juno.appling.product.port.OptionRepository;
-import com.juno.appling.product.port.ProductRepository;
-import com.juno.appling.product.port.SellerRepository;
+import com.juno.appling.product.domain.repository.OptionRepository;
+import com.juno.appling.product.domain.repository.ProductRepository;
+import com.juno.appling.product.domain.repository.SellerRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -223,6 +223,20 @@ public class OrderServiceImpl implements OrderService {
         Member member = memberUtil.getMember(request).toModel();
         Order order = orderRepository.findById(cancelOrderRequest.getOrderId());
         order.checkOrder(member);
+        order.cancel();
+        orderRepository.save(order);
+
+        List<OrderItem> orderItemList = order.getOrderItemList();
+        orderItemList.forEach(orderItem -> orderItem.cancel());
+        orderItemRepository.saveAll(orderItemList);
+    }
+
+    @Override
+    @Transactional
+    public void cancelOrderBySeller(CancelOrderRequest cancelOrderRequest, HttpServletRequest request) {
+        Member member = memberUtil.getMember(request).toModel();
+        Seller seller = sellerRepository.findByMember(member);
+        Order order = orderRepository.findByIdAndSeller(cancelOrderRequest.getOrderId(), seller);
         order.cancel();
         orderRepository.save(order);
 

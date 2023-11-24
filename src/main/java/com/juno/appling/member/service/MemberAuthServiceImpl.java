@@ -14,7 +14,7 @@ import com.juno.appling.member.controller.response.kakao.KakaoMemberResponse;
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.enums.MemberRole;
 import com.juno.appling.member.enums.SnsJoinType;
-import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.port.MemberJpaRepository;
 import io.jsonwebtoken.Claims;
 import java.util.Arrays;
 import java.util.Date;

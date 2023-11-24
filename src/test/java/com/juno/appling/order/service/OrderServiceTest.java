@@ -1,25 +1,25 @@
 package com.juno.appling.order.service;
 
-import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.port.MemberJpaRepository;
 import com.juno.appling.order.controller.request.CancelOrderRequest;
 import com.juno.appling.order.controller.response.OrderListResponse;
 import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.domain.entity.OrderEntity;
 import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.order.enums.OrderStatus;
-import com.juno.appling.product.repository.SellerJpaRepository;
+import com.juno.appling.product.port.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
-import com.juno.appling.order.repository.DeliveryJpaRepository;
-import com.juno.appling.order.repository.OrderItemJpaRepository;
-import com.juno.appling.order.repository.OrderJpaRepository;
-import com.juno.appling.product.repository.CategoryJpaRepository;
-import com.juno.appling.product.repository.OptionJpaRepository;
-import com.juno.appling.product.repository.ProductJpaRepository;
+import com.juno.appling.order.port.DeliveryJpaRepository;
+import com.juno.appling.order.port.OrderItemJpaRepository;
+import com.juno.appling.order.port.OrderJpaRepository;
+import com.juno.appling.product.port.CategoryJpaRepository;
+import com.juno.appling.product.port.OptionJpaRepository;
+import com.juno.appling.product.port.ProductJpaRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -202,11 +202,25 @@ class OrderServiceTest {
     void cancelOrder() {
         //given
         request.addHeader(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken());
-        OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
         CancelOrderRequest cancelOrderRequest = CancelOrderRequest.builder().orderId(ORDER_FIRST_ID).build();
         //when
         orderService.cancelOrder(cancelOrderRequest, request);
         //then
+        OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
+        assertThat(orderEntity.getStatus()).isEqualTo(OrderStatus.CANCEL);
+        orderEntity.getOrderItemList().forEach(orderItemEntity -> assertThat(orderItemEntity.getStatus()).isEqualTo(OrderItemStatus.CANCEL));
+    }
+
+    @Test
+    @DisplayName("주문 취소 성공 by Seller")
+    void cancelOrderBySeller() {
+        //given
+        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
+        CancelOrderRequest cancelOrderRequest = CancelOrderRequest.builder().orderId(ORDER_FIRST_ID).build();
+        //when
+        orderService.cancelOrderBySeller(cancelOrderRequest, request);
+        //then
+        OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
         assertThat(orderEntity.getStatus()).isEqualTo(OrderStatus.CANCEL);
         orderEntity.getOrderItemList().forEach(orderItemEntity -> assertThat(orderItemEntity.getStatus()).isEqualTo(OrderItemStatus.CANCEL));
     }

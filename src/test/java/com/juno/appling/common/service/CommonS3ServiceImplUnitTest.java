@@ -10,7 +10,7 @@ import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.global.security.TokenProvider;
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.enums.MemberRole;
-import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.port.MemberJpaRepository;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.LinkedList;

@@ -2,18 +2,19 @@ package com.juno.appling.order.controller;
 
 import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.member.domain.entity.MemberEntity;
-import com.juno.appling.member.repository.MemberJpaRepository;
+import com.juno.appling.member.port.MemberJpaRepository;
 import com.juno.appling.order.controller.request.CancelOrderRequest;
-import com.juno.appling.product.repository.SellerJpaRepository;
+import com.juno.appling.order.domain.model.Order;
+import com.juno.appling.order.port.*;
+import com.juno.appling.product.port.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderDto;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.domain.entity.OrderEntity;
-import com.juno.appling.order.repository.*;
-import com.juno.appling.product.repository.CategoryJpaRepository;
-import com.juno.appling.product.repository.OptionJpaRepository;
-import com.juno.appling.product.repository.ProductJpaRepository;
+import com.juno.appling.product.port.CategoryJpaRepository;
+import com.juno.appling.product.port.OptionJpaRepository;
+import com.juno.appling.product.port.ProductJpaRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -229,8 +230,11 @@ class OrderControllerDocs extends RestdocsBaseTest {
     void complete() throws Exception {
         //given
         MemberEntity memberEntity = memberJpaRepository.findByEmail(MEMBER_EMAIL).get();
-
-        OrderEntity orderEntity = orderJpaRepository.save(OrderEntity.of(memberEntity, "테스트 상품"));
+        Order order = Order.builder()
+                .member(memberEntity.toModel())
+                .orderName("테스트 상품")
+                .build();
+        OrderEntity orderEntity = orderJpaRepository.save(OrderEntity.from(order));
         Long orderId = orderEntity.getId();
 
         CompleteOrderRequest completeOrderRequest = CompleteOrderRequest.builder()
@@ -289,6 +293,34 @@ class OrderControllerDocs extends RestdocsBaseTest {
         ResultActions perform = mock.perform(
                 patch(PREFIX + "/member/cancel")
                         .header(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(cancelOrderRequest))
+        );
+        //then
+        perform.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token (MEMBER 권한 이상)")
+                ),
+                requestFields(
+                        fieldWithPath("order_id").description("주문 id").type(JsonFieldType.NUMBER)
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.message").type(JsonFieldType.STRING).description("결과 메세지")
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName(PREFIX + "/seller/cancel (PATCH)")
+    void cancelOrderBySeller() throws Exception {
+        //given
+        CancelOrderRequest cancelOrderRequest = CancelOrderRequest.builder().orderId(ORDER_FIRST_ID).build();
+        //when
+        ResultActions perform = mock.perform(
+                patch(PREFIX + "/seller/cancel")
+                        .header(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(cancelOrderRequest))
         );
