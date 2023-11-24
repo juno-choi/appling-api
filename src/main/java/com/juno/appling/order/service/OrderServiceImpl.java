@@ -232,6 +232,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public void cancelOrderBySeller(CancelOrderRequest cancelOrderRequest, HttpServletRequest request) {
         Member member = memberUtil.getMember(request).toModel();
         Seller seller = sellerRepository.findByMember(member);
