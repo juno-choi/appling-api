@@ -6,7 +6,7 @@ services:
     ports:
       - ${API_PORT}:8000
     environment:
-      - server.profile=prod
+      - server.profile=${API_PROFILE}
       - TZ=Asia/Seoul
       - db.url=${MYSQL_URL}
       - db.username=juno
