@@ -4,11 +4,11 @@ services:
     container_name: appling
     build: .
     ports:
-      - 8000:8000
+      - ${API_PORT}:8000
     environment:
       - server.profile=prod
       - TZ=Asia/Seoul
-      - db.url=jdbc:mysql://master/appling
+      - db.url=${MYSQL_URL}
       - db.username=juno
       - db.password=password
       - s3.id=${S3_ID}
