@@ -82,7 +82,7 @@ class OrderTest {
     void cancel() {
         //given
         Order order = Order.builder()
-                .status(OrderStatus.ORDER)
+                .status(OrderStatus.ORDERED)
                 .orderName("테스트 주문")
                 .build();
         //when

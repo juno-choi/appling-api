@@ -5,6 +5,7 @@ import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.port.MemberJpaRepository;
 import com.juno.appling.order.controller.request.CancelOrderRequest;
 import com.juno.appling.order.domain.model.Order;
+import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.order.port.*;
 import com.juno.appling.product.port.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
@@ -355,7 +356,7 @@ class OrderControllerDocs extends RestdocsBaseTest {
                 .param("search", "")
                 .param("page", "0")
                 .param("size", "5")
-                .param("status", "complete")
+                .param("status", OrderStatus.ORDERED.name())
         );
         //then
         perform.andDo(docs.document(
@@ -366,7 +367,7 @@ class OrderControllerDocs extends RestdocsBaseTest {
                 parameterWithName("search").description("검색어").optional(),
                 parameterWithName("page").description("페이지 (기본값 0)").optional(),
                 parameterWithName("size").description("페이지 크기 (기본값 10)").optional(),
-                parameterWithName("status").description("상태값  (TEMP : 임시, COMPLETE : 완료)").optional()
+                parameterWithName("status").description("상태값  (TEMP : 임시 / ORDERED : 주문완료 / CANCEL : 취소 / PROCESSING : 주문확인, 상품준비중 / CONFIRM : 배송완료, 발송완료)").optional()
             ),
             responseFields(
                 fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
@@ -465,7 +466,7 @@ class OrderControllerDocs extends RestdocsBaseTest {
                         .param("search", "")
                         .param("page", "0")
                         .param("size", "5")
-                        .param("status", "complete")
+                        .param("status", OrderStatus.ORDERED.name())
         );
         //then
         perform.andDo(docs.document(
@@ -476,7 +477,7 @@ class OrderControllerDocs extends RestdocsBaseTest {
                         parameterWithName("search").description("검색어").optional(),
                         parameterWithName("page").description("페이지 (기본값 0)").optional(),
                         parameterWithName("size").description("페이지 크기 (기본값 10)").optional(),
-                        parameterWithName("status").description("상태값  (TEMP : 임시, COMPLETE : 완료)").optional()
+                        parameterWithName("status").description("상태값  (TEMP : 임시 / ORDERED : 주문완료 / CANCEL : 취소 / PROCESSING : 주문확인, 상품준비중 / CONFIRM : 배송완료, 발송완료)").optional()
                 ),
                 responseFields(
                         fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),

@@ -2,7 +2,6 @@ package com.juno.appling.order.domain.model;
 
 import com.juno.appling.member.domain.model.Member;
 import com.juno.appling.order.controller.response.OrderResponse;
-import com.juno.appling.order.domain.entity.OrderEntity;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.domain.model.Product;
 import lombok.Builder;
@@ -65,7 +64,7 @@ public class Order {
     }
 
     public void complete() {
-        this.status = OrderStatus.COMPLETE;
+        this.status = OrderStatus.PROCESSING;
     }
 
     public void cancel() {
