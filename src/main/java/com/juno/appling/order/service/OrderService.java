@@ -1,9 +1,6 @@
 package com.juno.appling.order.service;
 
-import com.juno.appling.order.controller.request.CancelOrderRequest;
-import com.juno.appling.order.controller.request.CompleteOrderRequest;
-import com.juno.appling.order.controller.request.ProcessingOrderRequest;
-import com.juno.appling.order.controller.request.TempOrderRequest;
+import com.juno.appling.order.controller.request.*;
 import com.juno.appling.order.controller.response.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,4 +20,5 @@ public interface OrderService {
     void cancelOrderBySeller(CancelOrderRequest cancelOrderRequest, HttpServletRequest request);
 
     void processingOrder(ProcessingOrderRequest processingOrderRequest, HttpServletRequest request);
+    void confirmOrder(ConfirmOrderRequest confirmOrderRequest, HttpServletRequest request);
 }

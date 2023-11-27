@@ -90,4 +90,9 @@ public class OrderItem {
     public void processing() {
         this.status = OrderItemStatus.PROCESSING;
     }
+
+
+    public void confirm() {
+        this.status = OrderItemStatus.CONFIRM;
+    }
 }

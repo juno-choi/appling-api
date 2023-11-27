@@ -243,6 +243,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public void processingOrder(ProcessingOrderRequest processingOrderRequest, HttpServletRequest request) {
         Member member = memberUtil.getMember(request).toModel();
         Seller seller = sellerRepository.findByMember(member);
@@ -252,6 +253,20 @@ public class OrderServiceImpl implements OrderService {
 
         List<OrderItem> orderItemList = order.getOrderItemList();
         orderItemList.forEach(orderItem -> orderItem.processing());
+        orderItemRepository.saveAll(orderItemList);
+    }
+
+    @Override
+    @Transactional
+    public void confirmOrder(ConfirmOrderRequest confirmOrderRequest, HttpServletRequest request) {
+        Member member = memberUtil.getMember(request).toModel();
+        Seller seller = sellerRepository.findByMember(member);
+        Order order = orderRepository.findByIdAndSeller(confirmOrderRequest.getOrderId(), seller);
+        order.confirm();
+        orderRepository.save(order);
+
+        List<OrderItem> orderItemList = order.getOrderItemList();
+        orderItemList.forEach(orderItem -> orderItem.confirm());
         orderItemRepository.saveAll(orderItemList);
     }
 }

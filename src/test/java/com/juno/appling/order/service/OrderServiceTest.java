@@ -5,6 +5,9 @@ import com.juno.appling.order.controller.request.*;
 import com.juno.appling.order.controller.response.OrderListResponse;
 import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.domain.entity.OrderEntity;
+import com.juno.appling.order.domain.entity.OrderItemEntity;
+import com.juno.appling.order.domain.model.Order;
+import com.juno.appling.order.domain.model.OrderItem;
 import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.port.SellerJpaRepository;
@@ -34,6 +37,7 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
@@ -249,5 +253,30 @@ class OrderServiceTest {
         OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
         assertThat(orderEntity.getStatus()).isEqualTo(OrderStatus.PROCESSING);
         orderEntity.getOrderItemList().forEach(orderItemEntity -> assertThat(orderItemEntity.getStatus()).isEqualTo(OrderItemStatus.PROCESSING));
+    }
+
+    @Test
+    @DisplayName("주문 확인, 상품 준비중 성공 by Seller")
+    @SqlGroup({
+            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    })
+    void confirmOrder() {
+        //given
+        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
+        OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
+        Order order = orderEntity.toModel();
+        order.processing();
+        orderJpaRepository.save(OrderEntity.from(order));
+        order.getOrderItemList().forEach(orderItem -> {
+            orderItem.processing();
+            orderItemJpaRepository.save(OrderItemEntity.from(orderItem));
+        });
+
+        ConfirmOrderRequest confirmOrderRequest = ConfirmOrderRequest.builder().orderId(ORDER_FIRST_ID).build();
+        //when
+        orderService.confirmOrder(confirmOrderRequest, request);
+        //then
+        assertThat(orderEntity.getStatus()).isEqualTo(OrderStatus.CONFIRM);
+        orderEntity.getOrderItemList().forEach(orderItemEntity -> assertThat(orderItemEntity.getStatus()).isEqualTo(OrderItemStatus.CONFIRM));
     }
 }

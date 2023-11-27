@@ -3,10 +3,7 @@ package com.juno.appling.order.controller;
 import com.juno.appling.global.base.Api;
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.global.base.ResultCode;
-import com.juno.appling.order.controller.request.CancelOrderRequest;
-import com.juno.appling.order.controller.request.CompleteOrderRequest;
-import com.juno.appling.order.controller.request.ProcessingOrderRequest;
-import com.juno.appling.order.controller.request.TempOrderRequest;
+import com.juno.appling.order.controller.request.*;
 import com.juno.appling.order.controller.response.*;
 import com.juno.appling.order.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -104,6 +101,14 @@ public class OrderController {
     @PatchMapping("/seller/processing")
     public ResponseEntity<Api<MessageVo>> processingOrder(@RequestBody @Validated ProcessingOrderRequest processingOrderRequest, HttpServletRequest request) {
         orderService.processingOrder(processingOrderRequest, request);
+        return ResponseEntity.ok(
+                new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, MessageVo.builder().message("주문 상태가 변경되었습니다.").build())
+        );
+    }
+
+    @PatchMapping("/seller/confirm")
+    public ResponseEntity<Api<MessageVo>> confirmOrder(@RequestBody @Validated ConfirmOrderRequest confirmOrderRequest, HttpServletRequest request) {
+        orderService.confirmOrder(confirmOrderRequest, request);
         return ResponseEntity.ok(
                 new Api<>(ResultCode.SUCCESS.code, ResultCode.SUCCESS.message, MessageVo.builder().message("주문 상태가 변경되었습니다.").build())
         );
