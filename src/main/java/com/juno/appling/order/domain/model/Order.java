@@ -77,6 +77,13 @@ public class Order {
         this.status = OrderStatus.PROCESSING;
     }
 
+    public void confirm() {
+        if(this.status != OrderStatus.PROCESSING){
+            throw new IllegalArgumentException("상품 준비중만 발송/배송완료으로 변경이 가능합니다.");
+        }
+        this.status = OrderStatus.CONFIRM;
+    }
+
     public void cancel() {
         if(this.status != OrderStatus.ORDERED){
             throw new IllegalArgumentException("주문이 이미 진행되었습니다.");

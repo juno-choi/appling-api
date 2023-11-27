@@ -4,6 +4,7 @@ public enum OrderItemStatus {
     TEMP,
     ORDERED,
     PROCESSING,
+    CONFIRM,
     CANCEL,
 
 }
