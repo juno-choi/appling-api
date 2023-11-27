@@ -70,6 +70,13 @@ public class Order {
         this.status = OrderStatus.ORDERED;
     }
 
+    public void processing() {
+        if(this.status != OrderStatus.ORDERED){
+            throw new IllegalArgumentException("주문 완료만 상품준비중으로 변경이 가능합니다.");
+        }
+        this.status = OrderStatus.PROCESSING;
+    }
+
     public void cancel() {
         if(this.status != OrderStatus.ORDERED){
             throw new IllegalArgumentException("주문이 이미 진행되었습니다.");
