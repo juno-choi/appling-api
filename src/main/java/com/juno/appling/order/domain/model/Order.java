@@ -64,6 +64,9 @@ public class Order {
     }
 
     public void ordered() {
+        if(this.status != OrderStatus.TEMP){
+            throw new IllegalArgumentException("임시 주문만 주문상태로 변경이 가능합니다.");
+        }
         this.status = OrderStatus.ORDERED;
     }
 
