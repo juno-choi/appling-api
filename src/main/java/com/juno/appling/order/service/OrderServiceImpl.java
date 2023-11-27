@@ -169,7 +169,7 @@ public class OrderServiceImpl implements OrderService {
         });
         Delivery delivery = deliveryRepository.save(Delivery.create(completeOrderRequest));
 
-        order.complete();
+        order.ordered();
         order.createOrderNumber();
         order.delivery(delivery);
         orderRepository.save(order);
