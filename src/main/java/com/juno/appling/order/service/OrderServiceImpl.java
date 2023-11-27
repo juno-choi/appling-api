@@ -2,10 +2,7 @@ package com.juno.appling.order.service;
 
 import com.juno.appling.global.util.MemberUtil;
 import com.juno.appling.member.domain.model.Member;
-import com.juno.appling.order.controller.request.CancelOrderRequest;
-import com.juno.appling.order.controller.request.CompleteOrderRequest;
-import com.juno.appling.order.controller.request.TempOrderDto;
-import com.juno.appling.order.controller.request.TempOrderRequest;
+import com.juno.appling.order.controller.request.*;
 import com.juno.appling.order.controller.response.*;
 import com.juno.appling.order.domain.model.*;
 import com.juno.appling.order.domain.repository.*;
@@ -242,6 +239,19 @@ public class OrderServiceImpl implements OrderService {
 
         List<OrderItem> orderItemList = order.getOrderItemList();
         orderItemList.forEach(orderItem -> orderItem.cancel());
+        orderItemRepository.saveAll(orderItemList);
+    }
+
+    @Override
+    public void processingOrder(ProcessingOrderRequest processingOrderRequest, HttpServletRequest request) {
+        Member member = memberUtil.getMember(request).toModel();
+        Seller seller = sellerRepository.findByMember(member);
+        Order order = orderRepository.findByIdAndSeller(processingOrderRequest.getOrderId(), seller);
+        order.processing();
+        orderRepository.save(order);
+
+        List<OrderItem> orderItemList = order.getOrderItemList();
+        orderItemList.forEach(orderItem -> orderItem.processing());
         orderItemRepository.saveAll(orderItemList);
     }
 }

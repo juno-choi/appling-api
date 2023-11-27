@@ -2,6 +2,7 @@ package com.juno.appling.order.service;
 
 import com.juno.appling.order.controller.request.CancelOrderRequest;
 import com.juno.appling.order.controller.request.CompleteOrderRequest;
+import com.juno.appling.order.controller.request.ProcessingOrderRequest;
 import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,4 +21,6 @@ public interface OrderService {
 
     void cancelOrder(CancelOrderRequest cancelOrderRequest, HttpServletRequest request);
     void cancelOrderBySeller(CancelOrderRequest cancelOrderRequest, HttpServletRequest request);
+
+    void processingOrder(ProcessingOrderRequest processingOrderRequest, HttpServletRequest request);
 }
