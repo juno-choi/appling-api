@@ -86,4 +86,8 @@ public class OrderItem {
     public void cancel() {
         this.status = OrderItemStatus.CANCEL;
     }
+
+    public void processing() {
+        this.status = OrderItemStatus.PROCESSING;
+    }
 }

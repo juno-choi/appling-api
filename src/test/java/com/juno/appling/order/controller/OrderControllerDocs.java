@@ -233,6 +233,7 @@ class OrderControllerDocs extends RestdocsBaseTest {
         MemberEntity memberEntity = memberJpaRepository.findByEmail(MEMBER_EMAIL).get();
         Order order = Order.builder()
                 .member(memberEntity.toModel())
+                .status(OrderStatus.TEMP)
                 .orderName("테스트 상품")
                 .build();
         OrderEntity orderEntity = orderJpaRepository.save(OrderEntity.from(order));
@@ -287,6 +288,9 @@ class OrderControllerDocs extends RestdocsBaseTest {
 
     @Test
     @DisplayName(PREFIX + "/member/cancel (PATCH)")
+    @SqlGroup({
+            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    })
     void cancelOrder() throws Exception {
         //given
         CancelOrderRequest cancelOrderRequest = CancelOrderRequest.builder().orderId(ORDER_FIRST_ID).build();
@@ -315,6 +319,9 @@ class OrderControllerDocs extends RestdocsBaseTest {
 
     @Test
     @DisplayName(PREFIX + "/seller/cancel (PATCH)")
+    @SqlGroup({
+            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    })
     void cancelOrderBySeller() throws Exception {
         //given
         CancelOrderRequest cancelOrderRequest = CancelOrderRequest.builder().orderId(ORDER_FIRST_ID).build();
@@ -754,6 +761,37 @@ class OrderControllerDocs extends RestdocsBaseTest {
                         fieldWithPath("data.order_item_list[].order_product.option.created_at").description("옵션 생성일").type(JsonFieldType.STRING).optional(),
                         fieldWithPath("data.order_item_list[].order_product.option.modified_at").description("옵션 수정일").type(JsonFieldType.STRING).optional(),
                         fieldWithPath("data.order_item_list[].order_product.option.status").description("옵션 상태").type(JsonFieldType.STRING).optional()
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName(PREFIX + "/seller/processing (PATCH)")
+    @SqlGroup({
+            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    })
+    void processingOrder() throws Exception {
+        //given
+        CancelOrderRequest cancelOrderRequest = CancelOrderRequest.builder().orderId(ORDER_FIRST_ID).build();
+        //when
+        ResultActions perform = mock.perform(
+                patch(PREFIX + "/seller/processing")
+                        .header(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(cancelOrderRequest))
+        );
+        //then
+        perform.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token (SELLER 권한 이상)")
+                ),
+                requestFields(
+                        fieldWithPath("order_id").description("주문 id").type(JsonFieldType.NUMBER)
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.message").type(JsonFieldType.STRING).description("결과 메세지")
                 )
         ));
     }

@@ -1,7 +1,7 @@
 package com.juno.appling.order.service;
 
 import com.juno.appling.member.port.MemberJpaRepository;
-import com.juno.appling.order.controller.request.CancelOrderRequest;
+import com.juno.appling.order.controller.request.*;
 import com.juno.appling.order.controller.response.OrderListResponse;
 import com.juno.appling.order.controller.response.OrderResponse;
 import com.juno.appling.order.domain.entity.OrderEntity;
@@ -9,9 +9,6 @@ import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.product.port.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
-import com.juno.appling.order.controller.request.CompleteOrderRequest;
-import com.juno.appling.order.controller.request.TempOrderDto;
-import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.port.DeliveryJpaRepository;
@@ -145,6 +142,9 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("관리자툴에서 주문 불러오기 성공")
+    @SqlGroup({
+            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    })
     void getOrderListBySeller() {
         //given
         request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
@@ -158,6 +158,9 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("사용자 주문 불러오기 성공")
+    @SqlGroup({
+            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    })
     void getOrderListByMember() {
         //given
         request.addHeader(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken());
@@ -199,6 +202,9 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("주문 취소 성공")
+    @SqlGroup({
+            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    })
     void cancelOrder() {
         //given
         request.addHeader(AUTHORIZATION, "Bearer " + MEMBER_LOGIN.getAccessToken());
@@ -213,6 +219,9 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("주문 취소 성공 by Seller")
+    @SqlGroup({
+            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    })
     void cancelOrderBySeller() {
         //given
         request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
@@ -223,5 +232,22 @@ class OrderServiceTest {
         OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
         assertThat(orderEntity.getStatus()).isEqualTo(OrderStatus.CANCEL);
         orderEntity.getOrderItemList().forEach(orderItemEntity -> assertThat(orderItemEntity.getStatus()).isEqualTo(OrderItemStatus.CANCEL));
+    }
+
+    @Test
+    @DisplayName("주문 확인, 상품 준비중 성공 by Seller")
+    @SqlGroup({
+            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    })
+    void processingOrder() {
+        //given
+        request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
+        ProcessingOrderRequest processingOrderRequest = ProcessingOrderRequest.builder().orderId(ORDER_FIRST_ID).build();
+        //when
+        orderService.processingOrder(processingOrderRequest, request);
+        //then
+        OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
+        assertThat(orderEntity.getStatus()).isEqualTo(OrderStatus.PROCESSING);
+        orderEntity.getOrderItemList().forEach(orderItemEntity -> assertThat(orderItemEntity.getStatus()).isEqualTo(OrderItemStatus.PROCESSING));
     }
 }

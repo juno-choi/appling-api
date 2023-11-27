@@ -93,7 +93,7 @@ class OrderTest {
 
     @Test
     @DisplayName("주문 상태가 이미 진행중으로 넘어가서 주문 취소 실패")
-    void orderedFail1() {
+    void cancelFail1() {
         //given
         Order order = Order.builder()
                 .status(OrderStatus.PROCESSING)
@@ -104,5 +104,35 @@ class OrderTest {
         assertThatThrownBy(() -> order.cancel())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("주문이 이미 진행되었습니다.");
+    }
+
+    @Test
+    @DisplayName("주문 상태가 이미 주문으로 넘어가서 주문 실패")
+    void orderedFail1() {
+        //given
+        Order order = Order.builder()
+                .status(OrderStatus.ORDERED)
+                .orderName("테스트 주문")
+                .build();
+        //when
+        //then
+        assertThatThrownBy(() -> order.ordered())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("임시 주문만 주문상태");
+    }
+
+    @Test
+    @DisplayName("주문 완료가 아니면 상품 준비중, 주문확인 상태로 넘어가는데 실패")
+    void processingFail1() {
+        //given
+        Order order = Order.builder()
+                .status(OrderStatus.CANCEL)
+                .orderName("테스트 주문")
+                .build();
+        //when
+        //then
+        assertThatThrownBy(() -> order.processing())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("주문 완료만 상품준비중");
     }
 }
