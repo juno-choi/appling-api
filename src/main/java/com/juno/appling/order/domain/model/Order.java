@@ -68,6 +68,9 @@ public class Order {
     }
 
     public void cancel() {
+        if(this.status != OrderStatus.ORDERED){
+            throw new IllegalArgumentException("주문이 이미 진행되었습니다.");
+        }
         this.status = OrderStatus.CANCEL;
     }
 
