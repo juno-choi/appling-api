@@ -1,6 +1,6 @@
 == 🍎 주문
 
-### 📗 임시 주문 등록 (주문전 등록 필수!)
+### 📗 임시 주문 등록 - temp (주문전 등록 필수!)
 
 ==== 🔵 REQUEST
 include::{snippets}/order-controller-docs/post-temp-order/http-request.adoc[]
@@ -43,26 +43,6 @@ include::{snippets}/order-controller-docs/get-temp-order/http-response.adoc[]
 ==== 🟢 RESPONSE FIELD
 
 include::{snippets}/order-controller-docs/get-temp-order/response-fields.adoc[]
-
-
-### 📗 주문 완료
-
-==== 🔵 REQUEST
-include::{snippets}/order-controller-docs/complete/http-request.adoc[]
-
-==== 🔵 REQUEST HEADER
-
-include::{snippets}/order-controller-docs/complete/request-headers.adoc[]
-
-==== 🔵 REQUEST FIELD
-
-include::{snippets}/order-controller-docs/complete/request-body.adoc[]
-
-include::{snippets}/order-controller-docs/complete/request-fields.adoc[]
-
-==== 🟢 RESPONSE
-
-include::{snippets}/order-controller-docs/complete/http-response.adoc[]
 
 ==== 🟢 RESPONSE FIELD
 
@@ -156,7 +136,28 @@ include::{snippets}/order-controller-docs/get-order-detail-by-member/http-respon
 include::{snippets}/order-controller-docs/get-order-detail-by-member/response-fields.adoc[]
 
 
-### 📗 주문 취소 (seller)
+
+### 📗 주문 완료 - ordered
+
+==== 🔵 REQUEST
+include::{snippets}/order-controller-docs/complete/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/order-controller-docs/complete/request-headers.adoc[]
+
+==== 🔵 REQUEST FIELD
+
+include::{snippets}/order-controller-docs/complete/request-body.adoc[]
+
+include::{snippets}/order-controller-docs/complete/request-fields.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/order-controller-docs/complete/http-response.adoc[]
+
+
+### 📗 주문 취소 - cancel (seller)
 
 ==== 🔵 REQUEST
 include::{snippets}/order-controller-docs/cancel-order-by-seller/http-request.adoc[]
@@ -178,7 +179,7 @@ include::{snippets}/order-controller-docs/cancel-order-by-seller/http-response.a
 include::{snippets}/order-controller-docs/cancel-order-by-seller/response-fields.adoc[]
 
 
-### 📗 주문 취소 (member)
+### 📗 주문 취소 - cancel (member)
 
 ==== 🔵 REQUEST
 include::{snippets}/order-controller-docs/cancel-order/http-request.adoc[]
@@ -198,3 +199,45 @@ include::{snippets}/order-controller-docs/cancel-order/http-response.adoc[]
 ==== 🟢 RESPONSE FIELD
 
 include::{snippets}/order-controller-docs/cancel-order/response-fields.adoc[]
+
+### 📗 주문확인/상품준비중 - processing (seller)
+
+==== 🔵 REQUEST
+include::{snippets}/order-controller-docs/processing-order/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/order-controller-docs/processing-order/request-headers.adoc[]
+
+==== 🔵 REQUEST BODY
+
+include::{snippets}/order-controller-docs/processing-order/request-body.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/order-controller-docs/processing-order/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/order-controller-docs/processing-order/response-fields.adoc[]
+
+## 📗 배송완료/발송완료 - Confirm (seller)
+
+==== 🔵 REQUEST
+include::{snippets}/order-controller-docs/confirm-order/http-request.adoc[]
+
+==== 🔵 REQUEST HEADER
+
+include::{snippets}/order-controller-docs/confirm-order/request-headers.adoc[]
+
+==== 🔵 REQUEST BODY
+
+include::{snippets}/order-controller-docs/confirm-order/request-body.adoc[]
+
+==== 🟢 RESPONSE
+
+include::{snippets}/order-controller-docs/confirm-order/http-response.adoc[]
+
+==== 🟢 RESPONSE FIELD
+
+include::{snippets}/order-controller-docs/confirm-order/response-fields.adoc[]

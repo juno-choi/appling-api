@@ -3,15 +3,13 @@ package com.juno.appling.order.controller;
 import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.port.MemberJpaRepository;
-import com.juno.appling.order.controller.request.CancelOrderRequest;
+import com.juno.appling.order.controller.request.*;
+import com.juno.appling.order.domain.entity.OrderItemEntity;
 import com.juno.appling.order.domain.model.Order;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.order.port.*;
 import com.juno.appling.product.port.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
-import com.juno.appling.order.controller.request.CompleteOrderRequest;
-import com.juno.appling.order.controller.request.TempOrderDto;
-import com.juno.appling.order.controller.request.TempOrderRequest;
 import com.juno.appling.order.domain.entity.OrderEntity;
 import com.juno.appling.product.port.CategoryJpaRepository;
 import com.juno.appling.product.port.OptionJpaRepository;
@@ -33,6 +31,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
@@ -40,6 +39,7 @@ import java.util.List;
 
 import static com.juno.appling.Base.*;
 import static com.juno.appling.OrderBase.ORDER_FIRST_ID;
+import static com.juno.appling.OrderBase.ORDER_SECOND_ID;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -779,6 +779,37 @@ class OrderControllerDocs extends RestdocsBaseTest {
                         .header(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(cancelOrderRequest))
+        );
+        //then
+        perform.andDo(docs.document(
+                requestHeaders(
+                        headerWithName(AUTHORIZATION).description("access token (SELLER 권한 이상)")
+                ),
+                requestFields(
+                        fieldWithPath("order_id").description("주문 id").type(JsonFieldType.NUMBER)
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메세지"),
+                        fieldWithPath("data.message").type(JsonFieldType.STRING).description("결과 메세지")
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName(PREFIX + "/seller/confirm (PATCH)")
+    @SqlGroup({
+            @Sql(scripts = {"/sql/init.sql", "/sql/product.sql", "/sql/order.sql", "/sql/delivery.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    })
+    void confirmOrder() throws Exception {
+        //given
+        ConfirmOrderRequest confirmOrderRequest = ConfirmOrderRequest.builder().orderId(ORDER_SECOND_ID).build();
+        //when
+        ResultActions perform = mock.perform(
+                patch(PREFIX + "/seller/confirm")
+                        .header(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(confirmOrderRequest))
         );
         //then
         perform.andDo(docs.document(
