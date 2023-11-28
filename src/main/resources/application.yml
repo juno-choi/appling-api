@@ -72,7 +72,7 @@ spring:
       path: /h2-console
   jpa:
     hibernate:
-      ddl-auto: update  #절대 수정 금지
+      ddl-auto: none  #절대 수정 금지
       format_sql: true
     show-sql: true
     defer-datasource-initialization: true

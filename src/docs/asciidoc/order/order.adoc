@@ -1,6 +1,6 @@
 == 🍎 주문
 
-### 📗 임시 주문 등록 - temp (주문전 등록 필수!)
+### 📗 임시 주문 등록
 
 ==== 🔵 REQUEST
 include::{snippets}/order-controller-docs/post-temp-order/http-request.adoc[]
@@ -48,7 +48,7 @@ include::{snippets}/order-controller-docs/get-temp-order/response-fields.adoc[]
 
 include::{snippets}/order-controller-docs/complete/response-fields.adoc[]
 
-### 📗 주문 내역 확인 (seller)
+### 📗 주문 내역 확인 seller
 
 ==== 🔵 REQUEST
 include::{snippets}/order-controller-docs/get-order-by-seller/http-request.adoc[]
@@ -69,7 +69,7 @@ include::{snippets}/order-controller-docs/get-order-by-seller/http-response.adoc
 
 include::{snippets}/order-controller-docs/get-order-by-seller/response-fields.adoc[]
 
-### 📗 주문 내역 확인 (member)
+### 📗 주문 내역 확인 member
 
 ==== 🔵 REQUEST
 include::{snippets}/order-controller-docs/get-order-by-member/http-request.adoc[]
@@ -92,7 +92,7 @@ include::{snippets}/order-controller-docs/get-order-by-member/response-fields.ad
 
 
 
-### 📗 주문 상세 확인 (seller)
+### 📗 주문 상세 확인 seller
 
 ==== 🔵 REQUEST
 include::{snippets}/order-controller-docs/get-order-detail-by-seller/http-request.adoc[]
@@ -114,7 +114,7 @@ include::{snippets}/order-controller-docs/get-order-detail-by-seller/http-respon
 include::{snippets}/order-controller-docs/get-order-detail-by-seller/response-fields.adoc[]
 
 
-### 📗 주문 상세 확인 (member)
+### 📗 주문 상세 확인 member
 
 ==== 🔵 REQUEST
 include::{snippets}/order-controller-docs/get-order-detail-by-member/http-request.adoc[]
@@ -137,7 +137,7 @@ include::{snippets}/order-controller-docs/get-order-detail-by-member/response-fi
 
 
 
-### 📗 주문 완료 - ordered
+### 📗 주문 완료 member
 
 ==== 🔵 REQUEST
 include::{snippets}/order-controller-docs/complete/http-request.adoc[]
@@ -157,7 +157,7 @@ include::{snippets}/order-controller-docs/complete/request-fields.adoc[]
 include::{snippets}/order-controller-docs/complete/http-response.adoc[]
 
 
-### 📗 주문 취소 - cancel (seller)
+### 📗 주문 취소 seller
 
 ==== 🔵 REQUEST
 include::{snippets}/order-controller-docs/cancel-order-by-seller/http-request.adoc[]
@@ -179,7 +179,7 @@ include::{snippets}/order-controller-docs/cancel-order-by-seller/http-response.a
 include::{snippets}/order-controller-docs/cancel-order-by-seller/response-fields.adoc[]
 
 
-### 📗 주문 취소 - cancel (member)
+### 📗 주문 취소 member
 
 ==== 🔵 REQUEST
 include::{snippets}/order-controller-docs/cancel-order/http-request.adoc[]
@@ -200,7 +200,7 @@ include::{snippets}/order-controller-docs/cancel-order/http-response.adoc[]
 
 include::{snippets}/order-controller-docs/cancel-order/response-fields.adoc[]
 
-### 📗 주문확인/상품준비중 - processing (seller)
+### 📗 주문확인 상품준비중 seller
 
 ==== 🔵 REQUEST
 include::{snippets}/order-controller-docs/processing-order/http-request.adoc[]
@@ -221,7 +221,7 @@ include::{snippets}/order-controller-docs/processing-order/http-response.adoc[]
 
 include::{snippets}/order-controller-docs/processing-order/response-fields.adoc[]
 
-## 📗 배송완료/발송완료 - Confirm (seller)
+### 📗 배송완료 발송완료 seller
 
 ==== 🔵 REQUEST
 include::{snippets}/order-controller-docs/confirm-order/http-request.adoc[]
