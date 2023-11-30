@@ -1,25 +1,24 @@
 package com.juno.appling.order.service;
 
 import com.juno.appling.member.port.MemberJpaRepository;
+import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.*;
+import com.juno.appling.order.controller.response.CompleteOrderResponse;
 import com.juno.appling.order.controller.response.OrderListResponse;
 import com.juno.appling.order.controller.response.OrderResponse;
+import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.domain.entity.OrderEntity;
 import com.juno.appling.order.domain.entity.OrderItemEntity;
 import com.juno.appling.order.domain.model.Order;
-import com.juno.appling.order.domain.model.OrderItem;
 import com.juno.appling.order.enums.OrderItemStatus;
 import com.juno.appling.order.enums.OrderStatus;
-import com.juno.appling.product.port.SellerJpaRepository;
-import com.juno.appling.member.service.MemberAuthService;
-import com.juno.appling.order.controller.response.CompleteOrderResponse;
-import com.juno.appling.order.controller.response.PostTempOrderResponse;
 import com.juno.appling.order.port.DeliveryJpaRepository;
 import com.juno.appling.order.port.OrderItemJpaRepository;
 import com.juno.appling.order.port.OrderJpaRepository;
 import com.juno.appling.product.port.CategoryJpaRepository;
 import com.juno.appling.product.port.OptionJpaRepository;
 import com.juno.appling.product.port.ProductJpaRepository;
+import com.juno.appling.product.port.SellerJpaRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +36,6 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
@@ -219,6 +217,7 @@ class OrderServiceTest {
         OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
         assertThat(orderEntity.getStatus()).isEqualTo(OrderStatus.CANCEL);
         orderEntity.getOrderItemList().forEach(orderItemEntity -> assertThat(orderItemEntity.getStatus()).isEqualTo(OrderItemStatus.CANCEL));
+        orderEntity.getOrderItemList().forEach(orderItemEntity ->assertThat(orderItemEntity.getOrder()).isNotNull());
     }
 
     @Test
@@ -236,6 +235,7 @@ class OrderServiceTest {
         OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
         assertThat(orderEntity.getStatus()).isEqualTo(OrderStatus.CANCEL);
         orderEntity.getOrderItemList().forEach(orderItemEntity -> assertThat(orderItemEntity.getStatus()).isEqualTo(OrderItemStatus.CANCEL));
+        orderEntity.getOrderItemList().forEach(orderItemEntity ->assertThat(orderItemEntity.getOrder()).isNotNull());
     }
 
     @Test
@@ -253,6 +253,7 @@ class OrderServiceTest {
         OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
         assertThat(orderEntity.getStatus()).isEqualTo(OrderStatus.PROCESSING);
         orderEntity.getOrderItemList().forEach(orderItemEntity -> assertThat(orderItemEntity.getStatus()).isEqualTo(OrderItemStatus.PROCESSING));
+        orderEntity.getOrderItemList().forEach(orderItemEntity ->assertThat(orderItemEntity.getOrder()).isNotNull());
     }
 
     @Test
@@ -278,5 +279,6 @@ class OrderServiceTest {
         //then
         assertThat(orderEntity.getStatus()).isEqualTo(OrderStatus.CONFIRM);
         orderEntity.getOrderItemList().forEach(orderItemEntity -> assertThat(orderItemEntity.getStatus()).isEqualTo(OrderItemStatus.CONFIRM));
+        orderEntity.getOrderItemList().forEach(orderItemEntity ->assertThat(orderItemEntity.getOrder()).isNotNull());
     }
 }

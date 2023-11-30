@@ -223,9 +223,12 @@ public class OrderServiceImpl implements OrderService {
         order.cancel();
         orderRepository.save(order);
 
-        List<OrderItem> orderItemList = order.getOrderItemList();
-        orderItemList.forEach(orderItem -> orderItem.cancel());
-        orderItemRepository.saveAll(orderItemList);
+        List<OrderItem> orderItemList = orderItemRepository.findAllByOrder(order);
+        orderItemList.forEach(orderItem -> {
+            orderItem.cancel();
+            orderItem.order(order);
+            orderItemRepository.save(orderItem);
+        });
     }
 
     @Override
@@ -237,9 +240,12 @@ public class OrderServiceImpl implements OrderService {
         order.cancel();
         orderRepository.save(order);
 
-        List<OrderItem> orderItemList = order.getOrderItemList();
-        orderItemList.forEach(orderItem -> orderItem.cancel());
-        orderItemRepository.saveAll(orderItemList);
+        List<OrderItem> orderItemList = orderItemRepository.findAllByOrder(order);
+        orderItemList.forEach(orderItem -> {
+            orderItem.cancel();
+            orderItem.order(order);
+            orderItemRepository.save(orderItem);
+        });
     }
 
     @Override
@@ -251,9 +257,12 @@ public class OrderServiceImpl implements OrderService {
         order.processing();
         orderRepository.save(order);
 
-        List<OrderItem> orderItemList = order.getOrderItemList();
-        orderItemList.forEach(orderItem -> orderItem.processing());
-        orderItemRepository.saveAll(orderItemList);
+        List<OrderItem> orderItemList = orderItemRepository.findAllByOrder(order);
+        orderItemList.forEach(orderItem -> {
+            orderItem.processing();
+            orderItem.order(order);
+            orderItemRepository.save(orderItem);
+        });
     }
 
     @Override
@@ -265,8 +274,11 @@ public class OrderServiceImpl implements OrderService {
         order.confirm();
         orderRepository.save(order);
 
-        List<OrderItem> orderItemList = order.getOrderItemList();
-        orderItemList.forEach(orderItem -> orderItem.confirm());
-        orderItemRepository.saveAll(orderItemList);
+        List<OrderItem> orderItemList = orderItemRepository.findAllByOrder(order);
+        orderItemList.forEach(orderItem -> {
+            orderItem.confirm();
+            orderItem.order(order);
+            orderItemRepository.save(orderItem);
+        });
     }
 }

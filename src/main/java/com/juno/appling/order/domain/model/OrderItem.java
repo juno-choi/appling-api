@@ -95,4 +95,8 @@ public class OrderItem {
     public void confirm() {
         this.status = OrderItemStatus.CONFIRM;
     }
+
+    public void order(Order order) {
+        this.order = order;
+    }
 }
