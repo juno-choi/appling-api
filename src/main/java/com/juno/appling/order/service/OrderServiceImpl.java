@@ -220,23 +220,10 @@ public class OrderServiceImpl implements OrderService {
         Member member = memberUtil.getMember(request).toModel();
         Order order = orderRepository.findById(cancelOrderRequest.getOrderId());
         order.checkOrder(member);
-        order.cancel();
-        orderRepository.save(order);
-
-        List<OrderItem> orderItemList = orderItemRepository.findAllByOrder(order);
-        orderItemList.forEach(orderItem -> {
-            orderItem.cancel();
-            orderItem.order(order);
-            orderItemRepository.save(orderItem);
-        });
+        orderCancel(order);
     }
 
-    @Override
-    @Transactional
-    public void cancelOrderBySeller(CancelOrderRequest cancelOrderRequest, HttpServletRequest request) {
-        Member member = memberUtil.getMember(request).toModel();
-        Seller seller = sellerRepository.findByMember(member);
-        Order order = orderRepository.findByIdAndSeller(cancelOrderRequest.getOrderId(), seller);
+    private void orderCancel(Order order) {
         order.cancel();
         orderRepository.save(order);
 
@@ -263,6 +250,15 @@ public class OrderServiceImpl implements OrderService {
                 optionRepository.save(option);
             }
         });
+    }
+
+    @Override
+    @Transactional
+    public void cancelOrderBySeller(CancelOrderRequest cancelOrderRequest, HttpServletRequest request) {
+        Member member = memberUtil.getMember(request).toModel();
+        Seller seller = sellerRepository.findByMember(member);
+        Order order = orderRepository.findByIdAndSeller(cancelOrderRequest.getOrderId(), seller);
+        orderCancel(order);
     }
 
     @Override
