@@ -36,4 +36,7 @@ public class Option {
     public void minusEa(int ea) {
         this.ea -= ea;
     }
+    public void plusEa(int ea) {
+        this.ea += ea;
+    }
 }

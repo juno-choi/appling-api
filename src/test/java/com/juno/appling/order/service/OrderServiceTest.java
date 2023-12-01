@@ -15,6 +15,7 @@ import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.order.port.DeliveryJpaRepository;
 import com.juno.appling.order.port.OrderItemJpaRepository;
 import com.juno.appling.order.port.OrderJpaRepository;
+import com.juno.appling.product.domain.entity.ProductEntity;
 import com.juno.appling.product.port.CategoryJpaRepository;
 import com.juno.appling.product.port.OptionJpaRepository;
 import com.juno.appling.product.port.ProductJpaRepository;
@@ -229,13 +230,17 @@ class OrderServiceTest {
         //given
         request.addHeader(AUTHORIZATION, "Bearer " + SELLER_LOGIN.getAccessToken());
         CancelOrderRequest cancelOrderRequest = CancelOrderRequest.builder().orderId(ORDER_FIRST_ID).build();
+        OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
+        ProductEntity productEntity = productJpaRepository.findById(orderEntity.getOrderItemList().get(0).getOrderProduct().getProductId()).get();
+        int beforeEa = productEntity.getEa();
         //when
         orderService.cancelOrderBySeller(cancelOrderRequest, request);
         //then
-        OrderEntity orderEntity = orderJpaRepository.findById(ORDER_FIRST_ID).get();
         assertThat(orderEntity.getStatus()).isEqualTo(OrderStatus.CANCEL);
         orderEntity.getOrderItemList().forEach(orderItemEntity -> assertThat(orderItemEntity.getStatus()).isEqualTo(OrderItemStatus.CANCEL));
         orderEntity.getOrderItemList().forEach(orderItemEntity ->assertThat(orderItemEntity.getOrder()).isNotNull());
+        int afterEa = productEntity.getEa();
+        assertThat(afterEa).isGreaterThan(beforeEa);
     }
 
     @Test

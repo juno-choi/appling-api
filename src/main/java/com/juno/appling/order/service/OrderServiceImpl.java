@@ -245,6 +245,23 @@ public class OrderServiceImpl implements OrderService {
             orderItem.cancel();
             orderItem.order(order);
             orderItemRepository.save(orderItem);
+
+            OrderProduct orderProduct = orderItem.getOrderProduct();
+            ProductType type = orderProduct.getType();
+            Long optionId = Optional.ofNullable(orderProduct.getOrderOption())
+                    .orElse(OrderOption.builder().optionId(0L).build()).getOptionId();
+            int ea = orderItem.getEa();
+            Product product = productRepository.findById(orderProduct.getProductId());
+
+            // 상품 플러스 처리
+            if (type == ProductType.NORMAL) {
+                product.plusEa(ea);
+                productRepository.save(product);
+            } else if (type == ProductType.OPTION) {
+                Option option = optionRepository.findById(optionId);
+                option.plusEa(ea);
+                optionRepository.save(option);
+            }
         });
     }
 
