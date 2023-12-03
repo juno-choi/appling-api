@@ -18,11 +18,11 @@ VALUES(2, '2023-09-26 15:09:27.363409000', 'https://image1', 'https://image2', '
 
 INSERT INTO order_item
 (order_item_id, order_id, ea, product_price, product_total_price, status, order_product_id, created_at, modified_at)
-VALUES(1, 1, 2, 300, 600, 'TEMP', 1, '2023-11-07 22:29:38.583188', '2023-11-07 22:29:38.583204');
+VALUES(1, 1, 2, 9000, 27000, 'TEMP', 1, '2023-11-07 22:29:38.583188', '2023-11-07 22:29:38.583204');
 
 INSERT INTO order_item
 (order_item_id, order_id, ea, product_price, product_total_price, status, order_product_id, created_at, modified_at)
-VALUES(2, 1, 3, 1000, 100, 'TEMP', 2, '2023-11-07 22:29:38.583188', '2023-11-07 22:29:38.583204');
+VALUES(2, 1, 3, 9300, 27900, 'TEMP', 2, '2023-11-07 22:29:38.583188', '2023-11-07 22:29:38.583204');
 
 
 -- 1번 seller

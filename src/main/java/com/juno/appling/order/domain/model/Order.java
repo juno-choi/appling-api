@@ -99,6 +99,7 @@ public class Order {
                 .orderItemList(orderItemList.stream().map(OrderItem::toResponse).collect(Collectors.toList()))
                 .delivery(delivery == null ? null : delivery.toResponse())
                 .status(status)
+                .totalPrice(orderItemList.stream().mapToInt(OrderItem::getProductTotalPrice).sum())
                 .orderName(orderName)
                 .createdAt(createdAt)
                 .modifiedAt(modifiedAt)

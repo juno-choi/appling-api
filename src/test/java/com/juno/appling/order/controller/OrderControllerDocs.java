@@ -3,17 +3,16 @@ package com.juno.appling.order.controller;
 import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.port.MemberJpaRepository;
+import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.order.controller.request.*;
-import com.juno.appling.order.domain.entity.OrderItemEntity;
+import com.juno.appling.order.domain.entity.OrderEntity;
 import com.juno.appling.order.domain.model.Order;
 import com.juno.appling.order.enums.OrderStatus;
 import com.juno.appling.order.port.*;
-import com.juno.appling.product.port.SellerJpaRepository;
-import com.juno.appling.member.service.MemberAuthService;
-import com.juno.appling.order.domain.entity.OrderEntity;
 import com.juno.appling.product.port.CategoryJpaRepository;
 import com.juno.appling.product.port.OptionJpaRepository;
 import com.juno.appling.product.port.ProductJpaRepository;
+import com.juno.appling.product.port.SellerJpaRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +30,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
@@ -388,6 +386,7 @@ class OrderControllerDocs extends RestdocsBaseTest {
                 fieldWithPath("data.list[].order_number").description("주문 번호").type(JsonFieldType.STRING),
                 fieldWithPath("data.list[].status").description("주문 상태").type(JsonFieldType.STRING),
                 fieldWithPath("data.list[].order_name").description("주문 이름").type(JsonFieldType.STRING),
+                fieldWithPath("data.list[].total_price").description("주문 총금액").type(JsonFieldType.NUMBER),
                 fieldWithPath("data.list[].created_at").description("주문 등록일").type(JsonFieldType.STRING),
                 fieldWithPath("data.list[].modified_at").description("주문 수정일").type(JsonFieldType.STRING),
                 fieldWithPath("data.list[].delivery.delivery_id").description("배송지 id").type(JsonFieldType.NUMBER),
@@ -498,6 +497,7 @@ class OrderControllerDocs extends RestdocsBaseTest {
                         fieldWithPath("data.list[].order_number").description("주문 번호").type(JsonFieldType.STRING),
                         fieldWithPath("data.list[].status").description("주문 상태").type(JsonFieldType.STRING),
                         fieldWithPath("data.list[].order_name").description("주문 이름").type(JsonFieldType.STRING),
+                        fieldWithPath("data.list[].total_price").description("주문 총금액").type(JsonFieldType.NUMBER),
                         fieldWithPath("data.list[].created_at").description("주문 등록일").type(JsonFieldType.STRING),
                         fieldWithPath("data.list[].modified_at").description("주문 수정일").type(JsonFieldType.STRING),
                         fieldWithPath("data.list[].delivery.delivery_id").description("배송지 id").type(JsonFieldType.NUMBER),
@@ -596,6 +596,7 @@ class OrderControllerDocs extends RestdocsBaseTest {
                         fieldWithPath("data.order_number").description("주문 번호").type(JsonFieldType.STRING),
                         fieldWithPath("data.status").description("주문 상태").type(JsonFieldType.STRING),
                         fieldWithPath("data.order_name").description("주문 이름").type(JsonFieldType.STRING),
+                        fieldWithPath("data.total_price").description("주문 총금액").type(JsonFieldType.NUMBER),
                         fieldWithPath("data.created_at").description("주문 등록일").type(JsonFieldType.STRING),
                         fieldWithPath("data.modified_at").description("주문 수정일").type(JsonFieldType.STRING),
                         fieldWithPath("data.delivery.delivery_id").description("배송지 id").type(JsonFieldType.NUMBER),
@@ -694,6 +695,7 @@ class OrderControllerDocs extends RestdocsBaseTest {
                         fieldWithPath("data.order_number").description("주문 번호").type(JsonFieldType.STRING),
                         fieldWithPath("data.status").description("주문 상태").type(JsonFieldType.STRING),
                         fieldWithPath("data.order_name").description("주문 이름").type(JsonFieldType.STRING),
+                        fieldWithPath("data.total_price").description("주문 총금액").type(JsonFieldType.NUMBER),
                         fieldWithPath("data.created_at").description("주문 등록일").type(JsonFieldType.STRING),
                         fieldWithPath("data.modified_at").description("주문 수정일").type(JsonFieldType.STRING),
                         fieldWithPath("data.delivery.delivery_id").description("배송지 id").type(JsonFieldType.NUMBER),

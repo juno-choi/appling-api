@@ -28,6 +28,7 @@ public class OrderResponse {
     private DeliveryResponse delivery;
     private OrderStatus status;
     private String orderName;
+    private int totalPrice;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
