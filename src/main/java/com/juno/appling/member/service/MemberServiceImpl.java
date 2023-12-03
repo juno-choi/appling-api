@@ -3,39 +3,37 @@ package com.juno.appling.member.service;
 import com.juno.appling.global.base.MessageVo;
 import com.juno.appling.global.s3.S3Service;
 import com.juno.appling.global.security.TokenProvider;
-import com.juno.appling.member.controller.request.PatchMemberRequest;
-import com.juno.appling.member.controller.request.PostIntroduceRequest;
-import com.juno.appling.member.controller.request.PostRecipientRequest;
-import com.juno.appling.member.controller.request.PostSellerRequest;
-import com.juno.appling.member.controller.request.PutSellerRequest;
+import com.juno.appling.member.controller.request.*;
 import com.juno.appling.member.controller.response.MemberResponse;
 import com.juno.appling.member.controller.response.RecipientListResponse;
 import com.juno.appling.member.controller.response.RecipientResponse;
-import com.juno.appling.member.enums.MemberRole;
-import com.juno.appling.product.domain.entity.IntroduceEntity;
-import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.domain.entity.MemberApplySellerEntity;
+import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.domain.entity.RecipientEntity;
-import com.juno.appling.product.domain.entity.SellerEntity;
 import com.juno.appling.member.enums.IntroduceStatus;
 import com.juno.appling.member.enums.MemberApplySellerStatus;
+import com.juno.appling.member.enums.MemberRole;
 import com.juno.appling.member.enums.RecipientInfoStatus;
 import com.juno.appling.member.port.IntroduceJpaRepository;
 import com.juno.appling.member.port.MemberApplySellerJpaRepository;
 import com.juno.appling.member.port.MemberJpaRepository;
 import com.juno.appling.member.port.RecipientJpaRepository;
-import com.juno.appling.product.port.SellerJpaRepository;
 import com.juno.appling.product.controller.response.SellerResponse;
+import com.juno.appling.product.domain.entity.IntroduceEntity;
+import com.juno.appling.product.domain.entity.SellerEntity;
+import com.juno.appling.product.port.SellerJpaRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -121,10 +119,7 @@ public class MemberServiceImpl implements MemberService{
         });
 
         if (!recipientEntityList.isEmpty()) {
-            RecipientEntity r = recipientEntityList.get(0);
-            list.add(
-                    RecipientResponse.from(r)
-            );
+            list = recipientEntityList.stream().map(RecipientResponse::from).collect(Collectors.toList());
         }
 
         return RecipientListResponse.builder().list(list).build();

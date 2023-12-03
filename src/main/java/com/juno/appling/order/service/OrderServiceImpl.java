@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
 
         // 주문 발급
         Member member = memberUtil.getMember(request).toModel();
-        List<Long> productIdList = tempOrderRequest.getOrderList().stream().mapToLong(TempOrderDto::getProductId).boxed().toList();
+        List<Long> productIdList = tempOrderRequest.getOrderList().stream().mapToLong(TempOrderDto::getProductId).boxed().collect(Collectors.toList());
         List<Product> productList = productRepository.findAllById(productIdList);
         // 주문 상품 등록
         Order createOrder = Order.create(member, productList);
