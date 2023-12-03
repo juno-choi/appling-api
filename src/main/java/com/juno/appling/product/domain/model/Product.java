@@ -104,4 +104,10 @@ public class Product {
             this.ea -= ea;
         }
     }
+
+    public void plusEa(int ea) {
+        if (this.type == ProductType.NORMAL) {
+            this.ea += ea;
+        }
+    }
 }
