@@ -1,35 +1,9 @@
 package com.juno.appling.member.controller;
 
-import static com.juno.appling.Base.MEMBER_EMAIL;
-import static com.juno.appling.Base.MEMBER_LOGIN;
-import static com.juno.appling.Base.SELLER2_LOGIN;
-import static com.juno.appling.Base.SELLER_LOGIN;
-import static com.juno.appling.Base.objectMapper;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.juno.appling.RestdocsBaseTest;
 import com.juno.appling.global.base.ResultCode;
 import com.juno.appling.global.s3.S3Service;
-import com.juno.appling.member.controller.request.JoinRequest;
-import com.juno.appling.member.controller.request.LoginRequest;
-import com.juno.appling.member.controller.request.PatchMemberRequest;
-import com.juno.appling.member.controller.request.PostIntroduceRequest;
-import com.juno.appling.member.controller.request.PostRecipientRequest;
-import com.juno.appling.member.controller.request.PostSellerRequest;
-import com.juno.appling.member.controller.request.PutSellerRequest;
+import com.juno.appling.member.controller.request.*;
 import com.juno.appling.member.controller.response.LoginResponse;
 import com.juno.appling.member.domain.entity.MemberEntity;
 import com.juno.appling.member.domain.entity.RecipientEntity;
@@ -38,11 +12,10 @@ import com.juno.appling.member.enums.RecipientInfoStatus;
 import com.juno.appling.member.port.IntroduceJpaRepository;
 import com.juno.appling.member.port.MemberJpaRepository;
 import com.juno.appling.member.port.RecipientJpaRepository;
-import com.juno.appling.product.port.SellerJpaRepository;
 import com.juno.appling.member.service.MemberAuthService;
 import com.juno.appling.member.service.MemberService;
 import com.juno.appling.product.port.CategoryJpaRepository;
-import java.nio.charset.StandardCharsets;
+import com.juno.appling.product.port.SellerJpaRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -62,6 +35,19 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.nio.charset.StandardCharsets;
+
+import static com.juno.appling.Base.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SqlGroup({
@@ -383,7 +369,6 @@ class MemberControllerDocs extends RestdocsBaseTest {
 
     @Test
     @DisplayName(PREFIX + "/recipient (GET)")
-    @Transactional
     void getRecipient() throws Exception {
         //given
         MemberEntity memberEntity = memberJpaRepository.findByEmail(MEMBER_EMAIL).get();
@@ -392,11 +377,8 @@ class MemberControllerDocs extends RestdocsBaseTest {
             RecipientInfoStatus.NORMAL);
         RecipientEntity recipientEntity2 = RecipientEntity.of(memberEntity, "수령인2", "1234", "주소2", "상세 주소", "01012341234",
             RecipientInfoStatus.NORMAL);
-        RecipientEntity saveRecipient1Entity = recipientJpaRepository.save(recipientEntity1);
-        RecipientEntity saveRecipient2Entity = recipientJpaRepository.save(recipientEntity2);
-
-        memberEntity.getRecipientList().add(saveRecipient1Entity);
-        memberEntity.getRecipientList().add(saveRecipient2Entity);
+        recipientJpaRepository.save(recipientEntity1);
+        recipientJpaRepository.save(recipientEntity2);
 
         //when
         ResultActions resultActions = mock.perform(
