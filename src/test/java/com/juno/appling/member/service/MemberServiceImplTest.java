@@ -118,6 +118,7 @@ public class MemberServiceImplTest {
         // when
         RecipientListResponse recipient = memberService.getRecipient(request);
         // then
+        assertThat(recipient.getList().size()).isEqualTo(2);
         assertThat(recipient.getList()
             .get(0)
             .getName()
